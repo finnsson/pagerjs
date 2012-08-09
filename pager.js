@@ -99,9 +99,6 @@ ko.bindingHandlers.page = {
             }
         };
 
-        if (value.id === '?' || value.id === 'start') {
-            console.error(value.id + ', matched: ' + page.matched + ', pageid: ' + page.__id__);
-        }
         if (value.id === page.route()[0]) {
             // show element
             show();
@@ -113,7 +110,6 @@ ko.bindingHandlers.page = {
             // hide element
             if ($(element).is(':visible')) {
                 page.matched--;
-                console.error("id: " + value.id + ", pageid: " + page.__id__);
                 $(element).hide();
             }
         }
