@@ -4,13 +4,16 @@ pager.start = function (viewModel) {
     $(window).bind('hashchange', function () {
         pager.route(viewModel.$page, window.location.hash);
     });
-    pager.route(viewModel.$page, window.location.hash);
+    //pager.route(viewModel.$page, window.location.hash);
 };
 
 pager.extendWithPage = function (viewModel) {
     viewModel.$page = ko.observable({
         children:ko.observableArray([]),
-        route:ko.observableArray(['start'])
+        route:ko.observableArray([]),
+        parentRoute:ko.observableArray([]),
+        matched:0,
+        __id__:Math.random()
     });
 };
 
@@ -36,6 +39,7 @@ pager.route = function ($page, hash) {
  */
 ko.bindingHandlers.page = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        $(element).hide();
         var value = ko.utils.unwrapObservable(valueAccessor());
         var $page = bindingContext.$page || bindingContext.$data.$page;
         var page = $page();
@@ -56,7 +60,9 @@ ko.bindingHandlers.page = {
             "$page":ko.observable({
                 children:ko.observableArray([]),
                 parentRoute:parentRoute,
-                route:route
+                route:route,
+                matched:0,
+                __id__:Math.random()
             })
         };
 
@@ -78,6 +84,7 @@ ko.bindingHandlers.page = {
         var show = function () {
             var $element = $(element);
             if (!$element.is(':visible')) {
+                page.matched++;
                 $(element).show();
 
                 // Fetch source
@@ -92,14 +99,23 @@ ko.bindingHandlers.page = {
             }
         };
 
+        if (value.id === '?' || value.id === 'start') {
+            console.error(value.id + ', matched: ' + page.matched + ', pageid: ' + page.__id__);
+        }
         if (value.id === page.route()[0]) {
             // show element
             show();
-        } else if (page.route()[0] === '' && value.id === 'start') {
+        } else if ((page.route()[0] === '' || page.route()[0] == null ) && value.id === 'start') {
+            show();
+        } else if (page.matched === 0 && value.id === '?') {
             show();
         } else {
             // hide element
-            $(element).hide();
+            if ($(element).is(':visible')) {
+                page.matched--;
+                console.error("id: " + value.id + ", pageid: " + page.__id__);
+                $(element).hide();
+            }
         }
     }
 };

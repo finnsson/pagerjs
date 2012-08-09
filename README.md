@@ -120,14 +120,13 @@ Based on the total path of the page the binding calculates an absolute href.
       <div data-bind="text: name"></div>
     </div>
 
-
-## In the pipeline
-
 ### Should match wildcard IDs if no other ID can match exactly
 
     <div data-bind="page: {id: 'admin'}"></div>
     <!-- The page below match anything except 'admin' -->
     <div data-bind="page: {id: '?'}"></div>
+
+## In the pipeline
 
 
 

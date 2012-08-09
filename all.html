@@ -25,6 +25,8 @@
     <a href="#lazyLoremCached">Go to Lazy Lorem Cached</a>
     <br/>
     <a href="#lazyLoremCached5seconds">Go to Lazy Lorem Cached 5 seconds</a>
+    <br/>
+    <a href="#some_random_url">Go to error page</a>
 </div>
 
 <div data-bind="page: {id: 'user'}">
@@ -59,6 +61,11 @@
 
 <div data-bind="page: {id: 'lazyLoremCached5seconds', sourceOnShow: 'lorem.html .content', sourceCache: 5}"></div>
 
+<div data-bind="page: {id: '?'}">
+    Error Page
+    <br/>
+    <a href="#">Go to start</a>
+</div>
 
 <script type="text/javascript">
     var viewModel = {
