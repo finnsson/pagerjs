@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All</title>
+    <script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="lib/underscore-min.js"></script>
+    <script type="text/javascript" src="lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="pager.js"></script>
+
+</head>
+<body>
+<h1>All</h1>
+
+<div data-bind="page: {id: 'start'}">
+    <a href="#user/pelle">Go to Pelle</a>
+    <br/>
+    <a href="#user/arne">Go to Arne</a>
+    <br/>
+    <a href="#user/sofia">Go to Sofia</a>
+    <br/>
+    <a href="#lorem">Go to Lorem</a>
+    <br/>
+    <a href="#lazyLorem">Go to Lazy Lorem</a>
+    <br/>
+    <a href="#lazyLoremCached">Go to Lazy Lorem Cached</a>
+    <br/>
+    <a href="#lazyLoremCached5seconds">Go to Lazy Lorem Cached 5 seconds</a>
+</div>
+
+<div data-bind="page: {id: 'user'}">
+    <div data-bind="page: {id: 'pelle'}">
+        Pelle
+    </div>
+    <div data-bind="page: {id: 'arne', with: arneData}">
+        <span data-bind="text: name"></span>
+        <br/>
+        <a data-bind="page-href: '../pelle'">Show Pelle</a>
+    </div>
+    <div data-bind="with: sofiaData">
+        <div data-bind="page: {id: 'sofia'}, text: name"></div>
+    </div>
+    <br/>
+    <a data-bind="page-href: 'pelle'">Show Pelle</a>
+    <br/>
+    <a data-bind="page-href: 'arne'">Show Arne</a>
+    <br/>
+    <a data-bind="page-href: 'sofia'">Show Sofia</a>
+    <br/>
+    <a data-bind="page-href: '../start'">Go to Start</a>
+    <br/>
+    <a href="#start">Go to Start</a>
+</div>
+
+<div data-bind="page: {id: 'lorem', source: 'lorem.html .content'}"></div>
+
+<div data-bind="page: {id: 'lazyLorem', sourceOnShow: 'lorem.html .content'}"></div>
+
+<div data-bind="page: {id: 'lazyLoremCached', sourceOnShow: 'lorem.html .content', sourceCache: true}"></div>
+
+<div data-bind="page: {id: 'lazyLoremCached5seconds', sourceOnShow: 'lorem.html .content', sourceCache: 5}"></div>
+
+
+<script type="text/javascript">
+    var viewModel = {
+        pelleData:{},
+        arneData:{
+            name:'Arne'
+        },
+        sofiaData:{
+            name:ko.observable('Sofia')
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start(viewModel);
+
+</script>
+
+</body>
+</html>

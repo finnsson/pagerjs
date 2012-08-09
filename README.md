@@ -4,26 +4,22 @@ pager.js provides the possibility of creating single page applications in a decl
 
 This makes it easier to design large scale single page web sites.
 
-## Misc Notes
-
-Use bindingContext + control descendant bindings (with a $page custom variable).
-
-Check out `ko.applyBindingsToNode`.
-
 ## Helpers
 
-* pager.route
-  Used like
+* `pager.route`
+* `pager.start`
+* `pager.extendWithPage`
 
-    $(window).bind('hashchange', function() {
-      viewModel.$page(pager.route(window.location.hash));
-    });
+### Example
 
-  and will hide and show pages according to their routes/IDs.
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start(viewModel);
+
 
 ## Custom Bindings
 
-pager.js extends KnockoutJS with one custom binding: `page`.
+pager.js extends KnockoutJS with two custom bindings: `page` and `page-href`.
 
 ### page
 
@@ -31,68 +27,19 @@ pager.js extends KnockoutJS with one custom binding: `page`.
     </div>
 
 Configurations:
-* {Function} init code to run once the page is processed
-* {String} sourceUrl to fetch into page. Optionally with a selector (e.g. foo/#content).
-* {String} id of scoped page that a router should react to.
 
-## List of Custom Data Attributes
+* `{String} id` of scoped page that a router should react to. E.g. `start` or `user/me`.
+* `{Object} with` that can change the scope of elements descendants.
+* `{String} source` to load into element using jQuery.load
+* `{String} sourceOnShow` to load into element using jQuery.load when the element is displayed
+* `{Boolean/Number} sourceCache` can be set to true in order for sourceOnShow to only load the source once.
+  If a number is specified the cache is valid for that amount of time in seconds.
 
-All micro-format is based on data-role="page", data-page-*="*" or data-page-*-js="*"
+### page-href
 
-17 custom attributes in total.
+    <a data-bind="page-href: 'somePagePath'"></a>
 
-- data-role="page"
-- data-page-js="javascript"
-  JS to run once the page is located and processed by pager.js
-- data-page-source="{URL}/({SELECTOR})?"
-  URL to fetch into page.
-  Optionally with a selector (e.g. foo/#content).
-  The URL and/or SELECTOR can be a route.
-- data-page-id="{ID}"
-  If ID=="start" then the page is displayed by default. Otherwise the first page is displayed
-  The ID can be a route.
-- data-page-href="{PATH}"
-  relative path to a page.
-  Valid syntax is:
-    (../)* (\w )(/\w)* e.g. foo, foo/bar, ../foo/bar, ../../foo/bar
-    **/ (\w )(/\w)* e.g. **/foo, **/foo/bar    
-- data-page-target="{ID}"
-  If ID=="_" then the target is the current page. 
-  the data-page with the matching id or data-page-id is the target of the URL.
-- data-page-title="{TITLE}"
-  Updates the title in the browser to TITLE.
-- data-page-role="(external|internal)"
-  internal by default. external means the id or data-page-id corresponds to a relative URL.
-- data-page-frame="(div|iframe)"
-  div by default. If iframe an iframe will be created inside the element that contains the external content.
-  Can be useful for sandboxing. If an iframe is specified inside the element that
-  iframe (will all its attributes) will be used.
-- data-page-*-js="javascript"
-  Specifies JS to run instead of the corresponding attribute.
-  E.g. data-page-title-js="someTitleMethod" specifies a function that will run
-  that can set the title.
-- data-page-transition="{TEXT}"
-  The transition to use when navigating.
-  The attribute can be put either on the a-tag or the page-element.
-  The transition must be registered in the pager-object.
-- data-page-loader-text="{TEXT}"
-  Loader text used when loading the page.
-  The attribute can be put either on the a-tag or the page-element.
-- data-page-to-js="javascript"
-  JS to run when navigating to the page.
-  Return false to stop the navigation.
-- data-page-from-js="javascript"
-  JS to run when navigating from the page.
-  Return false to stop the navigation.
-- data-page-failed-js="javascript"
-  JS to run when navigating to the page failed.
-- data-page-prefetch="false|true"
-  If true then the page will be prefetched.
-- data-page-cache="false|true|{SECONDS}"
-  If true then the page will be cached. If SECONDS is specified then the
-  page will be cached for the specified amount of seconds.
-- data-page-layout="block|modal"
-  block by default. If modal then the page will be modal on top of the parent.
+Calculates absolute href based on the location of the element.
 
 ## Dependencies
 
@@ -100,154 +47,94 @@ All micro-format is based on data-role="page", data-page-*="*" or data-page-*-js
 - Knockoutjs
 - Underscore
 
-## General features
-
-All values can be data bound using Knockoutjs.
-
-## Questions and Answers
-
-Q: How should custom JS be possible to inject in a regular fashion?
-A: By appending "-js" after the attribute.
-    E.g. data-page-cache="true" -> data-page-cache-js="someJsFunction()"
-
-Q: How should extensions be possible?
-A: JS-events.
-
-Q: How should MVC/MVVM-triads be put together? How can the application be
-   split into multiple MVVM-triads?
-A: Sub-pages can be initialized with a viewmodel instance on demand.
-
-## Architecture of an application using pager.js
-
-- Build multiple small web applications as stand alone web pages.
-- Keep reusable JS in separate files and JS specific to the web page in a separate file.
-- Create a master page where sub pages are specified.
-
 ## Behaviors
 
-29 behaviors are specified.
+The following behaviors specify and exemplify what `pager.js` is capable of.
 
-### Should display first page by default
-
-    <div data-role="page"><a href="#!/foo">Go to foo</a></div>
-    <div data-role="page" id="foo">Foo</div>
-
-### Should display page with id="start" or data-page-id="start" by default
+### Should display page with id start by default
 
     <div>
-      <div data-role="page">Bar</div>
-      <!-- it is OK to have the page nested inside one or many layers div-elements -->
-      <div data-role="page" data-page-id="start">Foo</div>
+      <div data-bind="page: {id: 'bar'}">Bar</div>
+      <!-- Foo is displayed -->
+      <div data-bind="page: {id: 'start'}">Foo</div>
     </div>
 
 ### Should navigate to page using scoped IDs.
 
-    <div data-role="page">
-      <a href="#!/foo">Go to foo</a>
-    </div>
+    <div data-bind="page: {id:'start'}"><a href="#foo">Go to foo</a></div>
+    <div data-bind="page: {id: 'foo'}">Foo. Go to <a href="#start">start</a></div>
 
-    <!-- Here "foo" must be unique to the parent container -->
-    <div data-role="page" data-role-page-id="foo">
-      Foo
-    </div>
-
-### Should navigate using both a-tags and form-tags
+### Should be possible to do deep navigation
 
     <div data-role="page">
-      <a href="#!/foo">Go to foo</a>
-
-      <form action="#!/foo"><input type="submit">Go to foo</input></form>
-
+      <a href="user/pelle">Go to Pelle</a>
     </div>
 
-    <div data-role="page" data-role-page-id="foo">
-      Foo
+    <div data-role="page" data-page-id="user">
+      <div data-role="page" data-page-id="pelle">Pelle</div>
+    </div>
+
+### Should load external content into a page using `source`
+
+    <div data-bind="page: {id: 'lorem', source: 'lorem.html .content'}"></div>
+
+The source can contain a selector (see `.content` above) in order to extract a fragment on the site.
+
+### Should lazy load a external content into a page if `sourceOnShow` is declared
+
+    <div data-bind="page: {id: 'lazyLorem', sourceOnShow: 'lorem.html .content'}"></div>
+
+`sourceOnShow` tells the page to load the content when the page is displayed.
+
+### Should cache lazy loaded content when `sourceCache: true`
+
+    <div data-bind="page: {id: 'lazyLoremCached', sourceOnShow: 'lorem.html .content', sourceCache: true}"></div>
+
+### Should cache lazy loaded content the number of seconds specified by `sourceCache`
+
+    <div data-bind="page: {id: 'lazyLoremCached5seconds', sourceOnShow: 'lorem.html .content', sourceCache: 5}"></div>
+
+`sourceCache` can specify the amount of seconds the external content should be cached.
+
+### Should specify relative page paths using `page-href`
+
+    <div data-bind="page: {id: 'start'}">
+      <!-- This will update href to #start/arne -->
+      <a data-bind="page-href: 'arne'">Arne</a>
+
+      <!-- This will update href to #admin/login -->
+      <a data-bind="page-href: '../admin/login'">Admin Login</a>
+
+      <div data-bind="page: {id: 'arne'}">Arne!</div>
+    </div>
+    <div data-bind="page: {id: 'admin'}">
+      <div data-bind="page: {id: 'login'}"></div>
+    </div>
+
+Based on the total path of the page the binding calculates an absolute href.
+
+### Should change binding context using `with`
+
+    <div data-bind="page: {id: 'user', with: user}">
+      <!-- Here name is user.name -->
+      <div data-bind="text: name"></div>
     </div>
 
 
-### Should find relative IDs using data-page-href
+## In the pipeline
 
-    <div data-role="page">
-      <a href="#!/foo">Go to foo</a>
-    </div>
+### Should match wildcard IDs if no other ID can match exactly
 
-    <div data-role="page" data-page-id="A">A1</div>
-    <div data-role="page" data-page-id="B">B1</div>
-    <div data-role="page" data-page-id="C">C1</div>
-
-    <!-- Here "foo" must be unique to the parent container -->
-    <div data-role="page" data-role-page-id="foo">
-      Foo
-
-      <!-- Go to A2 since relative to foo -->
-      <a data-page-href="A"/>Go to A2</a>
-
-      <!-- Go to B1 since relative to foo -->
-      <a data-page-href="../B"/>Go to B1</a>
-
-      <!-- Go to first C in foos parents -->
-      <a data-page-href="**/C"/>Go to C</a>
-
-      <div data-role="page" data-page-id="A">A2</div>
-      <div data-role="page" data-page-id="B">B2</div>
-
-    </div>
+    <div data-bind="page: {id: 'admin'}"></div>
+    <!-- The page below match anything except 'admin' -->
+    <div data-bind="page: {id: '?'}"></div>
 
 
-### Should be possible to navigate to external page into current page
 
-    <div data-role="page">
-      Start
-      <a data-page-target="_" href="foo.html">Go to foo</a>
-    </div>
+## Backlog
 
-### Should be possible to navigate to fragment of external page.
+There are a lot of features waiting to be implemented. Here are some of them.
 
-    <div data-role="page">
-      Start
-      <!-- Here only the content inside the selector "#content" is used -->
-      <a data-page-target="_" data-page-source="#content" href="foo.html">Go to foo</a>
-    </div>
-
-### Should be possible to specify rendering location of external page
-
-    <div data-role="page">
-      <a data-page-target="foo" href="foo.html">Show foo.html inside foo-page</a>
-      <a data-page-target="foo" href="bar.html">Show bar.html inside bar-page</a>
-    </div>
-
-    <div data-role="page" data-page-id="foo" />
-
-### Should be possible specify external page as content
-
-    <div data-role="page">
-      <a href="#!/foo">Go to foo</a>
-    </div>
-
-    <!-- Will automatically load /foo when requested -->
-    <div data-role="page" data-page-role="external" data-page-id="foo"/>
-
-### Should be possible to specify external page separate from ID as content
-
-    <div data-role="page">
-      <!-- You can specify the href as "foo" or "#!/foo" if the router used is listening for both -->
-      <a href="foo">Go to foo</a>
-    </div>
-
-    <!-- Will automatically load /bar.html when requested -->
-    <div data-role="page" data-page-id="foo" data-page-source="bar.html"/>
-
-### Should be possible to specify fragment of external page as content
-
-    <div data-role="page">
-      <a href="foo">Go to foo</a>
-      <a href="bar">Go to bar</a>
-    </div>
-
-    <!-- Will automatically load /bar.html#content when requested -->
-    <div data-role="page" data-role-page="external" data-role-id="foo" data-role-source="bar.html/#content"/>
-    <!-- Will automatically load /bar#content when requested -->
-    <div data-role="page" data-role-page="external" data-role-id="bar" data-role-source="/#content"/>
 
 ### Should be possible to specify page routes in page-id and page-source
 
@@ -259,15 +146,6 @@ A: Sub-pages can be initialized with a viewmodel instance on demand.
     <!-- the :name-value is extracted in data-page-id and sent to data-page-source -->
     <div data-role="page" data-page-id="user/:name" data-page-source="user/:name" />
 
-### Should be possible to do deep navigation
-
-    <div data-role="page">
-      <a href="user/pelle">Go to Pelle</a>
-    </div>
-
-    <div data-role="page" data-page-id="user">
-      <div data-role="page" data-page-id="pelle">Pelle</div>
-    </div>
 
 ### Should be possible to do deep navigation with page routes
 
@@ -280,7 +158,7 @@ A: Sub-pages can be initialized with a viewmodel instance on demand.
       <div data-role="page" data-page-id=":name" data-page-source="user/:name" />
     </div>
 
-## Should be possible to specify page transitions on links
+### Should be possible to specify page transitions on links
 
     <div data-role="page">
       <a href="#!/user" data-page-transition="flip">Flipping transition</a>
@@ -290,7 +168,7 @@ A: Sub-pages can be initialized with a viewmodel instance on demand.
       User
     </div>
 
-## Should be possible to specify page transitions on pages
+### Should be possible to specify page transitions on pages
 
     <div data-role="page">
       <a href="#!/user">Flipping transition</a>
@@ -300,7 +178,7 @@ A: Sub-pages can be initialized with a viewmodel instance on demand.
       User
     </div>
 
-## Should be possible to specify inheritable page transitions on pages
+### Should be possible to specify inheritable page transitions on pages
 
     <div data-page-transition="flip">
 
@@ -320,7 +198,7 @@ A: Sub-pages can be initialized with a viewmodel instance on demand.
       User
     </div>
 
-## Should be possible to load content into iframes
+### Should be possible to load content into iframes
 
     <!-- An iframe will be created inside the div -->
     <div data-role="page" data-page-frame="iframe" data-page-source="pelle.html" />
@@ -395,3 +273,42 @@ circumvent the routing using the router used.
 
     <!-- The following page will only refresh every 60 seconds -->
     <div data-role="page" data-page-cache="60" id="foo" />
+
+## List of Configurations to Implement
+
+17 custom attributes in total.
+
+- source="{URL}/({SELECTOR})?"
+  URL to fetch into page.
+  Optionally with a selector (e.g. foo/#content).
+  The URL and/or SELECTOR can be a route.
+- target="{ID}"
+  If ID=="_" then the target is the current page.
+  the data-page with the matching id or id is the target of the URL.
+- title="{TITLE}"
+  Updates the title in the browser to TITLE.
+- role="(external|internal)"
+  internal by default. external means the id or id corresponds to a relative URL.
+- frame="(div|iframe)"
+  div by default. If iframe an iframe will be created inside the element that contains the external content.
+  Can be useful for sandboxing. If an iframe is specified inside the element that
+  iframe (will all its attributes) will be used.
+- transition="{TEXT}"
+  The transition to use when navigating.
+  The attribute can be put either on the a-tag or the page-element.
+  The transition must be registered in the pager-object.
+- loader-text="{TEXT}"
+  Loader text used when loading the page.
+  The attribute can be put either on the a-tag or the page-element.
+- to-js="javascript"
+  JS to run when navigating to the page.
+  Return false to stop the navigation.
+- from-js="javascript"
+  JS to run when navigating from the page.
+  Return false to stop the navigation.
+- failed-js="javascript"
+  JS to run when navigating to the page failed.
+- layout="block|modal"
+  block by default. If modal then the page will be modal on top of the parent.
+- withOnShow=Function/Observable
+  Function to run to get a viewModel once the page is displayed.
