@@ -1,10 +1,11 @@
 window.pager = {};
 
 pager.start = function (viewModel) {
-    $(window).bind('hashchange', function () {
+    var onHashChange = function () {
         pager.route(viewModel.$page, window.location.hash);
-    });
-    //pager.route(viewModel.$page, window.location.hash);
+    };
+    $(window).bind('hashchange', onHashChange);
+    onHashChange();
 };
 
 pager.extendWithPage = function (viewModel) {
@@ -24,8 +25,13 @@ pager.route = function ($page, hash) {
     }
     // split on '/'
     var hashRoute = hash.split('/');
+    console.error("hash: " + hashRoute.toString());
     // update route
     $page().route(hashRoute);
+
+    ko.computed(function() {
+
+    });
 };
 
 /**
@@ -61,6 +67,10 @@ ko.bindingHandlers.page = {
                 children:ko.observableArray([]),
                 parentRoute:parentRoute,
                 route:route,
+                parent: {
+                    page: page,
+                    element: element
+                },
                 matched:0,
                 __id__:Math.random()
             })
@@ -81,7 +91,25 @@ ko.bindingHandlers.page = {
         var $page = bindingContext.$page || bindingContext.$data.$page;
         var page = $page();
 
+        var sourceUrl = function() {
+            var source = value.sourceOnShow;
+            if(value.id === '?') {
+                console.error("parentRoute:" + page.parentRoute());
+                console.error(page.route());
+                return source.replace('{1}', page.route()[0]);
+            } else {
+                return source;
+            }
+        };
+
+        console.error("id:" + value.id);
         var show = function () {
+            /*if(page.parent) {
+                var $parentElement = $(page.parent.element);
+                if(!$parentElement.is(':visible')) {
+                    return;
+                }
+            }*/
             var $element = $(element);
             if (!$element.is(':visible')) {
                 page.matched++;
@@ -93,7 +121,8 @@ ko.bindingHandlers.page = {
                         || !element.__pagerLoaded__
                         || (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < Date.now())) {
                         element.__pagerLoaded__ = Date.now();
-                        $(element).load(value.sourceOnShow);
+                        console.error(sourceUrl());
+                        $(element).load(sourceUrl());
                     }
                 }
             }

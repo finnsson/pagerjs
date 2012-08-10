@@ -26,7 +26,11 @@
     <br/>
     <a href="#lazyLoremCached5seconds">Go to Lazy Lorem Cached 5 seconds</a>
     <br/>
-    <a href="#some_random_url">Go to error page</a>
+    <a href="#some_random_url">Go to some misc page</a>
+    <br/>
+    <a href="#misc_misc/doit">Go to do it</a>
+    <br/>
+    <a href="#wildLoad/lorem">Wild card load lorem ipsum</a>
 </div>
 
 <div data-bind="page: {id: 'user'}">
@@ -61,8 +65,17 @@
 
 <div data-bind="page: {id: 'lazyLoremCached5seconds', sourceOnShow: 'lorem.html .content', sourceCache: 5}"></div>
 
+<div data-bind="page: {id: 'wildLoad'}">
+    <div data-bind="page: {id: '?', sourceOnShow: '{1}.html .content'}"></div>
+</div>
+
+
+<!-- This page must be placed last since it will match anything -->
 <div data-bind="page: {id: '?'}">
-    Error Page
+    Misc page
+    <div data-bind="page: {id: 'doit'}">
+        Do it!
+    </div>
     <br/>
     <a href="#">Go to start</a>
 </div>
@@ -79,8 +92,8 @@
     };
 
     pager.extendWithPage(viewModel);
-    ko.applyBindings(viewModel);
     pager.start(viewModel);
+    ko.applyBindings(viewModel);
 
 </script>
 

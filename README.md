@@ -126,36 +126,77 @@ Based on the total path of the page the binding calculates an absolute href.
     <!-- The page below match anything except 'admin' -->
     <div data-bind="page: {id: '?'}"></div>
 
+### Should do deep navigation with wildcards
+
+    <div data-bind="page: {id: 'start'}>
+      <a href="user/pelle">Go to Pelle</a>
+    </div>
+
+    <div data-bind="page: {id: '?'}">
+      Misc:
+      <div data-bind="page: {id: 'pelle'}">
+        Pelle
+      </div>
+    </div>
+
 ## In the pipeline
 
+
+### Should send wildcards to source
+
+    <div data-bind="page: {id: 'start'}>
+      <a href="user/pelle">Go to Pelle</a>
+    </div>
+
+    <div data-bind="page: {id: 'user'}">
+      User:
+      <!-- {1} will be replaced with whatever matched the wildcard -->
+      <div data-bind="page: {id: '?', sourceOnShow: 'user/{1}.html'}">
+      </div>
+    </div>
+
+
+## Bugs
+
+### Sub pages are displayed/hidden even when parent pages are hidden
+
+Sub pages should only update if their parent page is visible.
+
+The solution is to track both children and parents systematically
+and this tracking should contain both the configurations and the elements.
+
+A serious data model of the relations between pages and their data needs to be modelled.
 
 
 ## Backlog
 
 There are a lot of features waiting to be implemented. Here are some of them.
 
+### Should be possible to load content into iframes
 
-### Should be possible to specify page routes in page-id and page-source
+    <!-- An iframe will be created inside the div -->
+    <div data-role="page" data-page-frame="iframe" data-page-source="pelle.html" />
 
-    <div data-role="page">
-      <a href="user/pelle">To go Pelle</a>
-      <a href="user/arne">To go Arne</a>
+    <!-- The iframe specified will be used -->
+    <div data-role="page" data-page-frame="iframe" data-page-source="pelle.html">
+      <iframe sandbox=""/>
     </div>
 
-    <!-- the :name-value is extracted in data-page-id and sent to data-page-source -->
-    <div data-role="page" data-page-id="user/:name" data-page-source="user/:name" />
+### `withOnShow` should bind a new view model to the page
 
+    <div data-bind="page: {id: 'user', withOnShow: someMethod('someMethod')}"></div>
 
-### Should be possible to do deep navigation with page routes
+`someMethod` must return a function that takes a callback that takes a view model.
 
-    <div data-role="page">
-      <a href="user/pelle">Go to Pelle</a>
-    </div>
+E.g.
 
-    <div data-role="page" data-page-id="user">
-      User:
-      <div data-role="page" data-page-id=":name" data-page-source="user/:name" />
-    </div>
+    function requireVM(module) {
+      return function(callback) {
+        require([module], function(mod) {
+          callback(mod.getVM());
+        });
+      };
+    }
 
 ### Should be possible to specify page transitions on links
 
@@ -195,16 +236,6 @@ There are a lot of features waiting to be implemented. Here are some of them.
 
     <div data-role="page" data-page-id="user" data-page-loader-text="Loading Page">
       User
-    </div>
-
-### Should be possible to load content into iframes
-
-    <!-- An iframe will be created inside the div -->
-    <div data-role="page" data-page-frame="iframe" data-page-source="pelle.html" />
-
-    <!-- The iframe specified will be used -->
-    <div data-role="page" data-page-frame="iframe" data-page-source="pelle.html">
-      <iframe sandbox=""/>
     </div>
 
 ### Should be possible to run custom JS on "navigate to"
@@ -259,19 +290,6 @@ circumvent the routing using the router used.
       OK
     </div>
 
-### Should prefetch pages if data-page-prefetch is true
-
-    <!-- The content of the page will be prefetched and cached -->
-    <div data-role="page" data-page-prefetch="true" id="foo" data-page-source="foo" />
-
-### Should cache pages between navigations/paging if data-page-cache is true
-
-    <div data-role="page" data-page-cache="true" id="foo" data-page-source="/foo" />
-
-### Should cache pages the amount of seconds specified by data-page-cache
-
-    <!-- The following page will only refresh every 60 seconds -->
-    <div data-role="page" data-page-cache="60" id="foo" />
 
 ## List of Configurations to Implement
 
@@ -281,13 +299,8 @@ circumvent the routing using the router used.
   URL to fetch into page.
   Optionally with a selector (e.g. foo/#content).
   The URL and/or SELECTOR can be a route.
-- target="{ID}"
-  If ID=="_" then the target is the current page.
-  the data-page with the matching id or id is the target of the URL.
 - title="{TITLE}"
   Updates the title in the browser to TITLE.
-- role="(external|internal)"
-  internal by default. external means the id or id corresponds to a relative URL.
 - frame="(div|iframe)"
   div by default. If iframe an iframe will be created inside the element that contains the external content.
   Can be useful for sandboxing. If an iframe is specified inside the element that
@@ -309,5 +322,3 @@ circumvent the routing using the router used.
   JS to run when navigating to the page failed.
 - layout="block|modal"
   block by default. If modal then the page will be modal on top of the parent.
-- withOnShow=Function/Observable
-  Function to run to get a viewModel once the page is displayed.
