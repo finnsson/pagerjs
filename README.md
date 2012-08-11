@@ -139,9 +139,6 @@ Based on the total path of the page the binding calculates an absolute href.
       </div>
     </div>
 
-## In the pipeline
-
-
 ### Should send wildcards to source
 
     <div data-bind="page: {id: 'start'}>
@@ -155,32 +152,28 @@ Based on the total path of the page the binding calculates an absolute href.
       </div>
     </div>
 
+### Should be possible to load content into iframes
 
-## Bugs
+    <!-- An iframe will be created inside the div -->
+    <div data-bind="page: {id: 'user', frame: 'iframe', source: 'user.html'}"></div>
 
-### Sub pages are displayed/hidden even when parent pages are hidden
+    <!-- The iframe specified will be used -->
+    <div data-bind="page: {id: 'pelle', frame: 'iframe', source: 'pelle.html'}"></div>
+      <iframe sandbox=""/>
+    </div>
 
-Sub pages should only update if their parent page is visible.
 
-The solution is to track both children and parents systematically
-and this tracking should contain both the configurations and the elements.
+## In the pipeline
 
-A serious data model of the relations between pages and their data needs to be modelled.
+* Refactor `page`-binding into a class in order to make it extendable.
+* Extract local functions to methods on `pager.Page`-prototype so they can be overwritten by sub classes.
+* Start using Grunt
+* 
 
 
 ## Backlog
 
 There are a lot of features waiting to be implemented. Here are some of them.
-
-### Should be possible to load content into iframes
-
-    <!-- An iframe will be created inside the div -->
-    <div data-role="page" data-page-frame="iframe" data-page-source="pelle.html" />
-
-    <!-- The iframe specified will be used -->
-    <div data-role="page" data-page-frame="iframe" data-page-source="pelle.html">
-      <iframe sandbox=""/>
-    </div>
 
 ### `withOnShow` should bind a new view model to the page
 

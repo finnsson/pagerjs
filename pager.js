@@ -1,6 +1,7 @@
 window.pager = {};
 
 pager.start = function (viewModel) {
+
     var onHashChange = function () {
         pager.route(viewModel.$page, window.location.hash);
     };
@@ -13,10 +14,55 @@ pager.extendWithPage = function (viewModel) {
         children:ko.observableArray([]),
         route:ko.observableArray([]),
         parentRoute:ko.observableArray([]),
-        matched:0,
         __id__:Math.random()
     });
+
+    pager.childManager = new ChildManager(viewModel.$page().children, viewModel.$page().route);
 };
+
+
+var ChildManager = function (children, route) {
+
+    var currentChild = null;
+
+    /*
+
+     Will show or hide child pages
+
+     Goals:
+     1. Get rid of parent
+     2. Make use of children
+     */
+    this.showChild = function () {
+        if (currentChild) {
+            currentChild.hide();
+            currentChild = null;
+        }
+        var match = false;
+        var currentRoute = route()[0];
+        var wildcard = null;
+        _.each(children(), function (child) {
+            if (!match) {
+                var childValue = ko.utils.unwrapObservable(child.valueAccessor());
+                if (childValue.id === currentRoute ||
+                    ((currentRoute == '' || currentRoute == null) && childValue.id === 'start')) {
+                    match = true;
+                    currentChild = child;
+                }
+                if (childValue.id === '?') {
+                    wildcard = child;
+                }
+            }
+        });
+        if (!currentChild) {
+            currentChild = wildcard;
+        }
+        if (currentChild) {
+            currentChild.show();
+        }
+    };
+};
+
 
 pager.route = function ($page, hash) {
     // skip #
@@ -25,13 +71,121 @@ pager.route = function ($page, hash) {
     }
     // split on '/'
     var hashRoute = hash.split('/');
-    console.error("hash: " + hashRoute.toString());
     // update route
     $page().route(hashRoute);
 
-    ko.computed(function() {
+    pager.childManager.showChild();
 
+};
+
+pager.Page = function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    this.element = element;
+    this.valueAccessor = valueAccessor;
+    this.allBindingsAccessor = allBindingsAccessor;
+    this.viewModel = viewModel;
+    this.bindingContext = bindingContext;
+
+    $(element).hide();
+    var value = ko.utils.unwrapObservable(valueAccessor());
+    var $page = bindingContext.$page || bindingContext.$data.$page;
+    var page = $page();
+    var route = ko.observableArray([]);
+    var parentRoute = ko.observableArray([]);
+
+    var sourceUrl = function (source) {
+        if (value.id === '?') {
+            return source.replace('{1}', page.route()[0]);
+        } else {
+            return source;
+        }
+    };
+
+    var loadSource = function (source) {
+        if (value.frame === 'iframe') {
+            var iframe = $('iframe', $(element));
+            if (iframe.length === 0) {
+                iframe = $('<iframe></iframe>');
+                $(element).append(iframe);
+            }
+            iframe.attr('src', sourceUrl(source));
+        } else {
+            $(element).load(sourceUrl(source));
+        }
+    };
+
+    var show = function () {
+        var $element = $(element);
+        if (!$element.is(':visible')) {
+            $(element).show();
+
+            // Fetch source
+            if (value.sourceOnShow) {
+                if (!value.sourceCache
+                    || !element.__pagerLoaded__
+                    || (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < Date.now())) {
+                    element.__pagerLoaded__ = Date.now();
+                    loadSource(value.sourceOnShow);
+                }
+            }
+        }
+    };
+
+    page.children.push({
+        valueAccessor:valueAccessor,
+        element:element,
+        page:page,
+        show:function () {
+            show();
+            childManager.showChild();
+        },
+        hide:function () {
+            $(element).hide();
+        }
     });
+
+    // computed observable that triggers on parent route changes
+    // and might trigger changes down to child pages
+    ko.computed(function () {
+        route(page.route().slice(1));
+
+        if (page.parentRoute) {
+            var copyOfParent = page.parentRoute().slice(0);
+            copyOfParent.push(value.id);
+            parentRoute(copyOfParent);
+        } else {
+            parentRoute([value.id]);
+        }
+    });
+    var childManager = null;
+    var pagerValues = {
+        "$page":ko.observable({
+            children:ko.observableArray([]),
+            parentRoute:parentRoute,
+            route:route,
+            /*parent:{
+             page:page,
+             element:element
+             },*/
+            __id__:Math.random()
+        })
+    };
+
+
+
+    this.init = function() {
+        childManager = new ChildManager(pagerValues.$page().children, route);
+
+        // Fetch source
+        if (value.source) {
+            loadSource(value.source);
+        }
+
+        var childBindingContext = bindingContext.createChildContext(value.with ? value.with : viewModel);
+        ko.utils.extend(childBindingContext, pagerValues);
+        ko.applyBindingsToDescendants(childBindingContext, element);
+        return { controlsDescendantBindings:true};
+    };
+
 };
 
 /**
@@ -45,124 +199,34 @@ pager.route = function ($page, hash) {
  */
 ko.bindingHandlers.page = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        $(element).hide();
-        var value = ko.utils.unwrapObservable(valueAccessor());
-        var $page = bindingContext.$page || bindingContext.$data.$page;
-        var page = $page();
-        var route = ko.observableArray([]);
-        var parentRoute = ko.observableArray([]);
-        ko.computed(function () {
-            route(page.route().slice(1));
-
-            if (page.parentRoute) {
-                var copyOfParent = page.parentRoute().slice(0);
-                copyOfParent.push(value.id);
-                parentRoute(copyOfParent);
-            } else {
-                parentRoute([value.id]);
-            }
-        });
-        var pagerValues = {
-            "$page":ko.observable({
-                children:ko.observableArray([]),
-                parentRoute:parentRoute,
-                route:route,
-                parent: {
-                    page: page,
-                    element: element
-                },
-                matched:0,
-                __id__:Math.random()
-            })
-        };
-
-        // Fetch source
-        if (value.source) {
-            $(element).load(value.source);
-        }
-
-        var childBindingContext = bindingContext.createChildContext(value.with ? value.with : viewModel);
-        ko.utils.extend(childBindingContext, pagerValues);
-        ko.applyBindingsToDescendants(childBindingContext, element);
-        return { controlsDescendantBindings:true};
+        var page = new pager.Page(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+        return page.init();
     },
     update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        var value = ko.utils.unwrapObservable(valueAccessor());
-        var $page = bindingContext.$page || bindingContext.$data.$page;
-        var page = $page();
-
-        var sourceUrl = function() {
-            var source = value.sourceOnShow;
-            if(value.id === '?') {
-                console.error("parentRoute:" + page.parentRoute());
-                console.error(page.route());
-                return source.replace('{1}', page.route()[0]);
-            } else {
-                return source;
-            }
-        };
-
-        console.error("id:" + value.id);
-        var show = function () {
-            /*if(page.parent) {
-                var $parentElement = $(page.parent.element);
-                if(!$parentElement.is(':visible')) {
-                    return;
-                }
-            }*/
-            var $element = $(element);
-            if (!$element.is(':visible')) {
-                page.matched++;
-                $(element).show();
-
-                // Fetch source
-                if (value.sourceOnShow) {
-                    if (!value.sourceCache
-                        || !element.__pagerLoaded__
-                        || (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < Date.now())) {
-                        element.__pagerLoaded__ = Date.now();
-                        console.error(sourceUrl());
-                        $(element).load(sourceUrl());
-                    }
-                }
-            }
-        };
-
-        if (value.id === page.route()[0]) {
-            // show element
-            show();
-        } else if ((page.route()[0] === '' || page.route()[0] == null ) && value.id === 'start') {
-            show();
-        } else if (page.matched === 0 && value.id === '?') {
-            show();
-        } else {
-            // hide element
-            if ($(element).is(':visible')) {
-                page.matched--;
-                $(element).hide();
-            }
-        }
     }
 };
 
 ko.bindingHandlers['page-href'] = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-
-    },
-    update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        var value = ko.utils.unwrapObservable(valueAccessor());
         var $page = bindingContext.$page || bindingContext.$data.$page;
         var page = $page();
 
-        var parentsToTrim = 0;
-        while (value.substring(0, 3) === '../') {
-            parentsToTrim++;
-            value = value.slice(3);
-        }
+        // The href reacts to changes in the value or the parentRoute.
+        ko.computed(function () {
+            var value = ko.utils.unwrapObservable(valueAccessor());
+            var parentsToTrim = 0;
+            while (value.substring(0, 3) === '../') {
+                parentsToTrim++;
+                value = value.slice(3);
+            }
 
-        var parentPath = page.parentRoute().slice(0, page.parentRoute().length - parentsToTrim).join('/');
-        $(element).attr({
-            'href':'#' + (parentPath === '' ? '' : parentPath + '/') + value
+            var parentPath = page.parentRoute().slice(0, page.parentRoute().length - parentsToTrim).join('/');
+            $(element).attr({
+                'href':'#' + (parentPath === '' ? '' : parentPath + '/') + value
+            });
         });
+
+    },
+    update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
     }
 };

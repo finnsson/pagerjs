@@ -31,6 +31,10 @@
     <a href="#misc_misc/doit">Go to do it</a>
     <br/>
     <a href="#wildLoad/lorem">Wild card load lorem ipsum</a>
+    <br/>
+    <a href="#iframeTest">Iframe test</a>
+    <br/>
+    <a href="#iframeTestConfigured">Iframe test configured</a>
 </div>
 
 <div data-bind="page: {id: 'user'}">
@@ -69,6 +73,12 @@
     <div data-bind="page: {id: '?', sourceOnShow: '{1}.html .content'}"></div>
 </div>
 
+<div data-bind="page: {id: 'iframeTest', frame: 'iframe', source: 'lorem.html'}"></div>
+
+
+<div data-bind="page: {id: 'iframeTestConfigured', frame: 'iframe', source: 'lorem.html'}">
+    <iframe seamless></iframe>
+</div>
 
 <!-- This page must be placed last since it will match anything -->
 <div data-bind="page: {id: '?'}">
@@ -92,8 +102,8 @@
     };
 
     pager.extendWithPage(viewModel);
-    pager.start(viewModel);
     ko.applyBindings(viewModel);
+    pager.start(viewModel);
 
 </script>
 
