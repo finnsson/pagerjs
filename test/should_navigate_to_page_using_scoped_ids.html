@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should navigate to page using scoped IDs</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div id="start" data-bind="page: {id:'start'}"><a href="#foo">Go to foo</a></div>
+<div id="foo" data-bind="page: {id: 'foo'}">Foo. Go to <a href="#start">start</a></div>
+
+<script type="text/javascript">
+
+    var viewModel = {};
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+    asyncTest("should navigate to page using scoped ids", function () {
+
+        $(window).one('hashchange', function () {
+            ok(!$('#start').is(':visible'), "start should be hidden");
+            ok($('#foo').is(':visible'), "foo should be visible");
+
+            $(window).one('hashchange', function () {
+                ok($('#start').is(':visible'), "start should be visible");
+                ok(!$('#foo').is(':visible'), "foo should be hidden");
+                start();
+            });
+            window.location.hash = '#start';
+        });
+        window.location.hash = '#foo';
+
+    });
+</script>
+
+
+</body>
+</html>

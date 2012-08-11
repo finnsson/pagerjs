@@ -165,7 +165,6 @@ Based on the total path of the page the binding calculates an absolute href.
 
 ## In the pipeline
 
-* Start using Grunt
 * Write tests in QUnit
 * Refactor `page`-binding into a class in order to make it extendable.
 * Extract local functions to methods on `pager.Page`-prototype so they can be overwritten by sub classes.
