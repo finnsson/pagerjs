@@ -165,11 +165,11 @@ Based on the total path of the page the binding calculates an absolute href.
 
 ## In the pipeline
 
+* Start using Grunt
+* Write tests in QUnit
 * Refactor `page`-binding into a class in order to make it extendable.
 * Extract local functions to methods on `pager.Page`-prototype so they can be overwritten by sub classes.
-* Start using Grunt
-* 
-
+* Write example files in /example and push them to gh-pages branch
 
 ## Backlog
 
@@ -191,38 +191,19 @@ E.g.
       };
     }
 
-### Should be possible to specify page transitions on links
+### Should be possible to route to custom widgets (dialogs, carousels, accordions)
 
-    <div data-role="page">
-      <a href="#!/user" data-page-transition="flip">Flipping transition</a>
+    <!-- since some.js.code is executed once the pager is navigating to the dialog
+    it is possible for custom JS to inject custom behavior -->
+    <div data-role="page" id="dialog" data-page-to-js="some.js.code">
+      Here goes custom HTML.
     </div>
 
-    <div data-role="page" data-page-id="user">
-      User
-    </div>
+### Should be possible to specify page transitions between sub pages
 
-### Should be possible to specify page transitions on pages
-
-    <div data-role="page">
-      <a href="#!/user">Flipping transition</a>
-    </div>
-
-    <div data-role="page" data-page-transition="flip" data-page-id="user">
-      User
-    </div>
-
-### Should be possible to specify inheritable page transitions on pages
-
-    <div data-page-transition="flip">
-
-      <div data-role="page">
-        <a href="#!/user">Flipping transition</a>
-      </div>
-
-      <div data-role="page" data-page-id="user">
-        User
-      </div>
-
+    <div data-bind="page: {id: 'user', transition: 'fade'}">
+      <div data-bind="page: {id: 'pelle'}">Pelle</div>
+      <div data-bind="page: {id: 'arne'}">Arne</div>
     </div>
 
 ### Should be possible to specify loaders text on pages
@@ -246,14 +227,6 @@ E.g.
 ### Should be possible to change the page title
 
     <div data-role="page" data-page-title="Pelle" data-page-source="pelle.html" />
-
-### Should be possible to route to custom widgets (dialogs, carousels, accordions)
-
-    <!-- since some.js.code is executed once the pager is navigating to the dialog
-    it is possible for custom JS to inject custom behavior -->
-    <div data-role="page" id="dialog" data-page-to-js="some.js.code">
-      Here goes custom HTML.
-    </div>
 
 ### Should be possible to circumvent the routing
 

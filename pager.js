@@ -1,26 +1,3 @@
-window.pager = {};
-
-pager.start = function (viewModel) {
-
-    var onHashChange = function () {
-        pager.route(viewModel.$page, window.location.hash);
-    };
-    $(window).bind('hashchange', onHashChange);
-    onHashChange();
-};
-
-pager.extendWithPage = function (viewModel) {
-    viewModel.$page = ko.observable({
-        children:ko.observableArray([]),
-        route:ko.observableArray([]),
-        parentRoute:ko.observableArray([]),
-        __id__:Math.random()
-    });
-
-    pager.childManager = new ChildManager(viewModel.$page().children, viewModel.$page().route);
-};
-
-
 var ChildManager = function (children, route) {
 
     var currentChild = null;
@@ -45,7 +22,7 @@ var ChildManager = function (children, route) {
             if (!match) {
                 var childValue = ko.utils.unwrapObservable(child.valueAccessor());
                 if (childValue.id === currentRoute ||
-                    ((currentRoute == '' || currentRoute == null) && childValue.id === 'start')) {
+                    ((currentRoute === '' || currentRoute == null) && childValue.id === 'start')) {
                     match = true;
                     currentChild = child;
                 }
@@ -61,6 +38,31 @@ var ChildManager = function (children, route) {
             currentChild.show();
         }
     };
+};
+
+
+var pager = {};
+
+window.pager = pager;
+
+pager.start = function (viewModel) {
+
+    var onHashChange = function () {
+        pager.route(viewModel.$page, window.location.hash);
+    };
+    $(window).bind('hashchange', onHashChange);
+    onHashChange();
+};
+
+pager.extendWithPage = function (viewModel) {
+    viewModel.$page = ko.observable({
+        children:ko.observableArray([]),
+        route:ko.observableArray([]),
+        parentRoute:ko.observableArray([]),
+        __id__:Math.random()
+    });
+
+    pager.childManager = new ChildManager(viewModel.$page().children, viewModel.$page().route);
 };
 
 
@@ -120,9 +122,9 @@ pager.Page = function(element, valueAccessor, allBindingsAccessor, viewModel, bi
 
             // Fetch source
             if (value.sourceOnShow) {
-                if (!value.sourceCache
-                    || !element.__pagerLoaded__
-                    || (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < Date.now())) {
+                if (!value.sourceCache ||
+                    !element.__pagerLoaded__ ||
+                    (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < Date.now())) {
                     element.__pagerLoaded__ = Date.now();
                     loadSource(value.sourceOnShow);
                 }
@@ -180,7 +182,7 @@ pager.Page = function(element, valueAccessor, allBindingsAccessor, viewModel, bi
             loadSource(value.source);
         }
 
-        var childBindingContext = bindingContext.createChildContext(value.with ? value.with : viewModel);
+        var childBindingContext = bindingContext.createChildContext(value['with'] ? value['with'] : viewModel);
         ko.utils.extend(childBindingContext, pagerValues);
         ko.applyBindingsToDescendants(childBindingContext, element);
         return { controlsDescendantBindings:true};
