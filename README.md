@@ -57,6 +57,7 @@ For development you'll need
 - [Grunt](https://github.com/cowboy/grunt)
 - [QUnit](http://qunitjs.com/)
 - [PhantomJS](http://phantomjs.org/)
+- [RequireJS](http://requirejs.org/)
 
 ## Behaviors
 
@@ -174,16 +175,7 @@ Based on the total path of the page the binding calculates an absolute href.
         <iframe sandbox=""></iframe>
     </div>
 
-## In the pipeline
-
-* Extract local functions to methods on `pager.Page`-prototype so they can be overwritten by sub classes.
-* Write an extensive example.html and push it to gh-pages branch.
-
-## Backlog
-
-There are a lot of features waiting to be implemented. Here are some of them.
-
-### `withOnShow` should bind a new view model to the page
+### `withOnShow` should lazy bind a new view model to the page
 
     <div data-bind="page: {id: 'user', withOnShow: someMethod('someMethod')}"></div>
 
@@ -199,100 +191,50 @@ E.g.
       };
     }
 
+
 ### Should be possible to route to custom widgets (dialogs, carousels, accordions)
 
-    <!-- since some.js.code is executed once the pager is navigating to the dialog
-    it is possible for custom JS to inject custom behavior -->
-    <div data-role="page" id="dialog" data-page-to-js="some.js.code">
-      Here goes custom HTML.
+It is possible to create custom widgets that jack into the pager-system.
+The `page`-binding (`pager.Page`-class) is possible to extend at multiple points.
+
+One custom widget (`page-accordion-item`) is already implemented.
+
+    <div data-bind="page-accordion-item: {id: 'dog'}">
+        <a href="#animals/dog">Dog</a>
+
+        <div>Dog Information</div>
     </div>
+    <div data-bind="page-accordion-item: {id: 'cat'}">
+        <a href="#animals/cat">Cat</a>
 
-### Should be possible to specify page transitions between sub pages
-
-    <div data-bind="page: {id: 'user', transition: 'fade'}">
-      <div data-bind="page: {id: 'pelle'}">Pelle</div>
-      <div data-bind="page: {id: 'arne'}">Arne</div>
+        <div>Cat Information</div>
     </div>
-
-### Should be possible to specify loaders text on pages
-
-    <div data-role="page" data-page-id="user" data-page-loader-text="Loading Page">
-      User
-    </div>
-
-### Should be possible to run custom JS on "navigate to"
-
-    <div data-role="page" data-page-to-js="someJS()" data-page-source="pelle.html" />
-
-### Should be possible to run custom JS on "navigate from"
-
-    <div data-role="page" data-page-from-js="someJS()" data-page-source="pelle.html" />
-
-### Should be possible to run custom JS on "navigate failed"
-
-    <div data-role="page" data-page-failed-js="someJS()" data-page-source="pelle.html" />
-
-### Should be possible to change the page title
-
-    <div data-role="page" data-page-title="Pelle" data-page-source="pelle.html" />
 
 ### Should be possible to circumvent the routing
 
 Since pager is not responsible for listening on the location it is possible to
-circumvent the routing using the router used.
+circumvent the routing using the router used. Just do not use `pager.start`.
+
+## In the pipeline
+
+* Write an extensive example and push it to gh-pages branch.
+
+## Backlog
+
+There are a lot of features waiting to be implemented. Here are some of them.
+
+### Should be possible to specify page transitions between sub pages
+
+### Should be possible to specify loaders text on pages
+
+### Should be possible to run custom JS on "navigate to"
+
+### Should be possible to run custom JS on "navigate from"
+
+### Should be possible to run custom JS on "navigate failed"
+
+### Should be possible to change the page title
 
 ### Should be possible to navigate into a layer without loosing context
 
-    <div data-role="page" id="foo">
-      <a href="#!/foo/ok">OK</a>
-    </div>
-
-    <!-- This page route matches against anything ending with /ok -->
-    <!-- data-page-layout means the page is modal on top of the last page (*) -->
-    <div data-role="page" data-page-id="*/ok" data-page-layout="modal">
-      OK
-    </div>
-
 ### Should be possible to navigate into a layer and loose context
-
-    <div data-role="page" id="foo">
-      <a href="#!/ok">OK</a>
-    </div>
-
-    <!-- data-page-layout means the page is modal on top of the parent page -->
-    <div data-role="page" data-page-id="ok" data-page-layout="modal">
-      OK
-    </div>
-
-
-## List of Configurations to Implement
-
-17 custom attributes in total.
-
-- source="{URL}/({SELECTOR})?"
-  URL to fetch into page.
-  Optionally with a selector (e.g. foo/#content).
-  The URL and/or SELECTOR can be a route.
-- title="{TITLE}"
-  Updates the title in the browser to TITLE.
-- frame="(div|iframe)"
-  div by default. If iframe an iframe will be created inside the element that contains the external content.
-  Can be useful for sandboxing. If an iframe is specified inside the element that
-  iframe (will all its attributes) will be used.
-- transition="{TEXT}"
-  The transition to use when navigating.
-  The attribute can be put either on the a-tag or the page-element.
-  The transition must be registered in the pager-object.
-- loader-text="{TEXT}"
-  Loader text used when loading the page.
-  The attribute can be put either on the a-tag or the page-element.
-- to-js="javascript"
-  JS to run when navigating to the page.
-  Return false to stop the navigation.
-- from-js="javascript"
-  JS to run when navigating from the page.
-  Return false to stop the navigation.
-- failed-js="javascript"
-  JS to run when navigating to the page failed.
-- layout="block|modal"
-  block by default. If modal then the page will be modal on top of the parent.

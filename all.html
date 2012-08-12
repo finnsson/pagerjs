@@ -35,6 +35,8 @@
     <a href="#iframeTest">Iframe test</a>
     <br/>
     <a href="#iframeTestConfigured">Iframe test configured</a>
+    <br/>
+    <a href="#animals">Animals</a>
 </div>
 
 <div data-bind="page: {id: 'user'}">
@@ -80,7 +82,25 @@
     <iframe seamless></iframe>
 </div>
 
-<!-- This page must be placed last since it will match anything -->
+
+<div data-bind="page: {id: 'animals'}">
+    <h2>Accordion</h2>
+
+    <div>
+        <div data-bind="page-accordion-item: {id: 'dog'}">
+            <a href="#animals/dog">Dog</a>
+
+            <div>Dog Information</div>
+        </div>
+        <div data-bind="page-accordion-item: {id: 'cat'}">
+            <a href="#animals/cat">Cat</a>
+
+            <div>Cat Information</div>
+        </div>
+    </div>
+</div>
+
+
 <div data-bind="page: {id: '?'}">
     Misc page
     <div data-bind="page: {id: 'doit'}">
@@ -99,7 +119,7 @@
         sofiaData:{
             name:ko.observable('Sofia')
         },
-        iframeLoaded: function() {
+        iframeLoaded:function () {
         }
     };
 

@@ -54,8 +54,6 @@ pager.ChildManager = function (children, route) {
     };
 };
 
-window.pager = pager;
-
 pager.start = function (viewModel) {
 
     var onHashChange = function () {
@@ -133,9 +131,10 @@ pager.Page.prototype.init = function () {
             this.show();
             childManager.showChild();
         }, this),
-        hide:function () {
-            $(element).hide();
-        }
+        hide:_.bind(function () {
+            this.hideElement();
+            //$(element).hide();
+        }, this)
     });
 
     // computed observable that triggers on parent route changes
@@ -161,9 +160,11 @@ pager.Page.prototype.init = function () {
             __id__:Math.random()
         })
     };
+    this.pagerValues = pagerValues;
 
 
-    $(element).hide();
+    this.hideElement();
+    //$(element).hide();
 
     childManager = new pager.ChildManager(pagerValues.$page().children, route);
 
@@ -172,7 +173,17 @@ pager.Page.prototype.init = function () {
         this.loadSource(value.source);
     }
 
-    var childBindingContext = this.bindingContext.createChildContext(value['with'] ? ko.utils.unwrapObservable(value['with']) : this.viewModel);
+    //var childBindingContext = this.bindingContext.createChildContext(value['with'] ? ko.utils.unwrapObservable(value['with']) : this.viewModel);
+    var ctx = null;
+    if (value['with']) {
+        ctx = _ko.value(value['with']);
+    } else if (value['withOnShow']) {
+        ctx = {};
+    } else {
+        ctx = this.viewModel;
+    }
+    var childBindingContext = this.bindingContext.createChildContext(ctx);
+
     ko.utils.extend(childBindingContext, pagerValues);
     ko.applyBindingsToDescendants(childBindingContext, element);
     return { controlsDescendantBindings:true};
@@ -251,8 +262,20 @@ pager.Page.prototype.show = function () {
     var element = this.element;
     var value = this.getValue();
     var $element = $(element);
-    if (!$element.is(':visible')) {
-        $(element).show();
+    if (!this.isVisible()) {
+        this.showElement();
+        if (value.withOnShow) {
+            if (!this.withOnShowLoaded) {
+                this.withOnShowLoaded = true;
+                value.withOnShow(_.bind(function (vm) {
+                    var childBindingContext = this.bindingContext.createChildContext(vm);
+
+                    ko.utils.extend(childBindingContext, this.pagerValues);
+                    ko.applyBindingsToDescendants(childBindingContext, this.element);
+
+                }, this));
+            }
+        }
 
         // Fetch source
         if (value.sourceOnShow) {
@@ -266,6 +289,18 @@ pager.Page.prototype.show = function () {
     }
 };
 
+pager.Page.prototype.showElement = function () {
+    $(this.element).show();
+};
+
+pager.Page.prototype.hideElement = function () {
+    $(this.element).hide();
+};
+
+pager.Page.prototype.isVisible = function () {
+    return $(this.element).is(':visible');
+};
+
 ko.bindingHandlers.page = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         var page = new pager.Page(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
@@ -274,6 +309,8 @@ ko.bindingHandlers.page = {
     update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
     }
 };
+
+// page-href
 
 ko.bindingHandlers['page-href'] = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -296,6 +333,44 @@ ko.bindingHandlers['page-href'] = {
         });
 
     },
-    update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    update:function () {
+    }
+};
+
+// page-accordion-item
+
+pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    pager.Page.apply(this, arguments);
+};
+
+pager.PageAccordionItem.prototype = new pager.Page();
+
+pager.PageAccordionItem.prototype.getAccordionBody = function () {
+    return $(this.element).children()[1];
+};
+
+pager.PageAccordionItem.prototype.hideElement = function () {
+    if (!this.pageAccordionItemHidden) {
+        this.pageAccordionItemHidden = true;
+        $(this.getAccordionBody()).hide();
+    } else {
+        $(this.getAccordionBody()).slideUp();
+    }
+};
+
+pager.PageAccordionItem.prototype.showElement = function () {
+    $(this.getAccordionBody()).slideDown();
+};
+
+pager.PageAccordionItem.prototype.isVisible = function () {
+    return $(this.getAccordionBody()).is(':visible');
+};
+
+ko.bindingHandlers['page-accordion-item'] = {
+    init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        var pageAccordionItem = new pager.PageAccordionItem(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+        pageAccordionItem.init();
+    },
+    update:function () {
     }
 };
