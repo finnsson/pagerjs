@@ -14,7 +14,7 @@
 
 <div id="qunit"></div>
 
-<div data-bind="page: {id: 'lorem', source: '../lorem.html .content', sourceLoaded: sourceLoaded}"></div>
+<div data-bind="page: {id: 'lorem', source: '../test-data/lorem.html .content', sourceLoaded: sourceLoaded}"></div>
 
 <div id="lorem2" data-bind="page: {id: 'lorem2', source: source, sourceLoaded: source2Loaded}"></div>
 
@@ -29,7 +29,7 @@
         source2Loaded:function () {
             source2isLoaded(true);
         },
-        source:ko.observable('../lorem.html .content')
+        source:ko.observable('../test-data/lorem.html .content')
     };
 
     pager.extendWithPage(viewModel);
