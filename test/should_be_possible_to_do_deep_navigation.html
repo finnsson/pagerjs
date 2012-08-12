@@ -18,13 +18,16 @@
     <a href="#user/pelle">Go to Pelle</a>
 </div>
 
-<div id="user" data-bind="page: {id: 'user'}">
+<div id="user" data-bind="page: {id: userId}">
     <div id="pelle" data-bind="page: {id: 'pelle'}">Pelle</div>
+    <div id="arne" data-bind="page: {id: 'arne'}">Arne</div>
 </div>
 
 <script type="text/javascript">
 
-    var viewModel = {};
+    var viewModel = {
+        userId:ko.observable('user')
+    };
 
     pager.extendWithPage(viewModel);
     ko.applyBindings(viewModel);
@@ -34,7 +37,7 @@
 <script type="text/javascript" src="../lib/qunit.js"></script>
 
 <script type="text/javascript">
-    asyncTest("should navigate to palle", function () {
+    asyncTest("should navigate to pelle", function () {
 
         $(window).one('hashchange', function () {
             ok(!$('#start').is(':visible'), "start should be hidden");
@@ -50,6 +53,18 @@
         });
         window.location.hash = '#user/pelle';
 
+    });
+
+    asyncTest("userId should be possible to change", function () {
+        viewModel.userId("admin");
+
+
+        $(window).one('hashchange', function () {
+            ok($('#user').is(':visible'), "user as admin should be visible");
+            ok($('#arne').is(':visible'), "arne should be visible");
+            start();
+        });
+        window.location.hash = '#admin/arne';
     });
 </script>
 

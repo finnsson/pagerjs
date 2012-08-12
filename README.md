@@ -29,12 +29,15 @@ pager.js extends KnockoutJS with two custom bindings: `page` and `page-href`.
 Configurations:
 
 * `{String} id` of scoped page that a router should react to. E.g. `start` or `user/me`.
+  If the id is `?` (wildcard) it will match anything if no other page in the same parent match.
 * `{Object} with` that can change the scope of elements descendants.
 * `{String} source` to load into element using jQuery.load
 * `{Function} sourceLoaded` is a method to run once the `source` (or `sourceOnShow`) is loaded.
 * `{String} sourceOnShow` to load into element using jQuery.load when the element is displayed
 * `{Boolean/Number} sourceCache` can be set to true in order for sourceOnShow to only load the source once.
   If a number is specified the cache is valid for that amount of time in seconds.
+* `{String}` frame can be set to `iframe` in order for the source to be loaded into an iframe. If the page contains
+  an iframe that element is used.
 
 ### page-href
 
@@ -44,9 +47,16 @@ Calculates absolute href based on the location of the element.
 
 ## Dependencies
 
-- jQuery
-- Knockoutjs
-- Underscore
+- [jQuery](http://jquery.com/)
+- [KnockoutJS](http://knockoutjs.com/)
+- [Underscore.js](http://underscorejs.org/)
+
+For development you'll need
+
+- [Node.js](http://nodejs.org/)
+- [Grunt](https://github.com/cowboy/grunt)
+- [QUnit](http://qunitjs.com/)
+- [PhantomJS](http://phantomjs.org/)
 
 ## Behaviors
 
@@ -166,8 +176,6 @@ Based on the total path of the page the binding calculates an absolute href.
 
 ## In the pipeline
 
-* Write tests in QUnit.
-* Verify that all configuration options can be observables.
 * Extract local functions to methods on `pager.Page`-prototype so they can be overwritten by sub classes.
 * Write an extensive example.html and push it to gh-pages branch.
 

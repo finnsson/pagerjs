@@ -22,11 +22,16 @@
     <div id="pelle" data-bind="page: {id: 'pelle'}">
         Pelle
     </div>
+    <div id="wild" data-bind="page: {id: wildId}">
+        Wild
+    </div>
 </div>
 
 <script type="text/javascript">
 
-    var viewModel = {};
+    var viewModel = {
+        wildId:ko.observable('?')
+    };
 
     pager.extendWithPage(viewModel);
     ko.applyBindings(viewModel);
@@ -43,7 +48,12 @@
         $(window).one('hashchange', function () {
             equal($('#pelle').is(':visible'), true, 'pelle is visible');
             equal($('#start').is(':visible'), false, 'start is hidden');
-            start();
+
+            $(window).one('hashchange', function () {
+                equal($('#wild').is(':visible'), true, 'wild is visible');
+                start();
+            });
+            window.location.hash = '#user/other';
         });
         window.location.hash = '#user/pelle';
 

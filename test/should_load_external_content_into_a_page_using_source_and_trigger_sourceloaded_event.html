@@ -16,13 +16,20 @@
 
 <div data-bind="page: {id: 'lorem', source: '../lorem.html .content', sourceLoaded: sourceLoaded}"></div>
 
+<div id="lorem2" data-bind="page: {id: 'lorem2', source: source, sourceLoaded: source2Loaded}"></div>
+
 <script type="text/javascript">
 
     var isLoaded = ko.observable(false);
+    var source2isLoaded = ko.observable(false);
     var viewModel = {
-        sourceLoaded: function() {
+        sourceLoaded:function () {
             isLoaded(true);
-        }
+        },
+        source2Loaded:function () {
+            source2isLoaded(true);
+        },
+        source:ko.observable('../lorem.html .content')
     };
 
     pager.extendWithPage(viewModel);
@@ -35,10 +42,13 @@
 <script type="text/javascript">
     asyncTest("should load lorem.html", function () {
 
-        ko.computed(function() {
-            if(isLoaded()) {
+        ko.computed(function () {
+            if (isLoaded()) {
                 ok(true, "lorem.html is loaded");
-                start();
+                if (source2isLoaded()) {
+                    equal($('.content', $('#lorem2')).text().trim(), 'Lorem Ipsum', "lorem2 should contain Lorem Ipsum");
+                    start();
+                }
             }
         });
 

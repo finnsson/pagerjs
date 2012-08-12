@@ -1,4 +1,17 @@
-var ChildManager = function (children, route) {
+var pager = {};
+
+// common KnockoutJS helpers
+var _ko = {};
+
+_ko.value = ko.utils.unwrapObservable;
+
+_ko.arrayValue = function (arr) {
+    return _.map(arr, function (e) {
+        return _ko.value(e);
+    });
+};
+
+pager.ChildManager = function (children, route) {
 
     var currentChild = null;
 
@@ -20,13 +33,14 @@ var ChildManager = function (children, route) {
         var wildcard = null;
         _.each(children(), function (child) {
             if (!match) {
-                var childValue = ko.utils.unwrapObservable(child.valueAccessor());
-                if (childValue.id === currentRoute ||
-                    ((currentRoute === '' || currentRoute == null) && childValue.id === 'start')) {
+                //var childValue = ko.utils.unwrapObservable(child.valueAccessor());
+                var id = _ko.value(_ko.value(child.valueAccessor()).id);
+                if (id === currentRoute ||
+                    ((currentRoute === '' || currentRoute == null) && id === 'start')) {
                     match = true;
                     currentChild = child;
                 }
-                if (childValue.id === '?') {
+                if (id === '?') {
                     wildcard = child;
                 }
             }
@@ -39,9 +53,6 @@ var ChildManager = function (children, route) {
         }
     };
 };
-
-
-var pager = {};
 
 window.pager = pager;
 
@@ -62,7 +73,7 @@ pager.extendWithPage = function (viewModel) {
         __id__:Math.random()
     });
 
-    pager.childManager = new ChildManager(viewModel.$page().children, viewModel.$page().route);
+    pager.childManager = new pager.ChildManager(viewModel.$page().children, viewModel.$page().route);
 };
 
 
@@ -80,69 +91,48 @@ pager.route = function ($page, hash) {
 
 };
 
+/**
+ * @class pager.Page
+ */
+
+/**
+ * @param element
+ * @param valueAccessor
+ * @param allBindingsAccessor
+ * @param viewModel
+ * @param bindingContext
+ * @constructor
+ */
 pager.Page = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
     this.element = element;
     this.valueAccessor = valueAccessor;
     this.allBindingsAccessor = allBindingsAccessor;
     this.viewModel = viewModel;
     this.bindingContext = bindingContext;
+};
 
-    $(element).hide();
-    var value = ko.utils.unwrapObservable(valueAccessor());
-    var $page = bindingContext.$page || bindingContext.$data.$page;
-    var page = $page();
+/**
+ * @method init
+ * @return {Object}
+ */
+pager.Page.prototype.init = function () {
+
+    var value = this.getValue();
+    var page = this.getPage();
     var route = ko.observableArray([]);
     var parentRoute = ko.observableArray([]);
+    var element = this.element;
 
-    var sourceUrl = function (source) {
-        if (value.id === '?') {
-            return source.replace('{1}', page.route()[0]);
-        } else {
-            return source;
-        }
-    };
-
-    var loadSource = function (source) {
-        if (value.frame === 'iframe') {
-            var iframe = $('iframe', $(element));
-            if (iframe.length === 0) {
-                iframe = $('<iframe></iframe>');
-                $(element).append(iframe);
-            }
-            if (value.sourceLoaded) {
-                iframe.one('load', value.sourceLoaded);
-            }
-            iframe.attr('src', sourceUrl(source));
-        } else {
-            $(element).load(sourceUrl(source), value.sourceLoaded);
-        }
-    };
-
-    var show = function () {
-        var $element = $(element);
-        if (!$element.is(':visible')) {
-            $(element).show();
-
-            // Fetch source
-            if (value.sourceOnShow) {
-                if (!value.sourceCache ||
-                    !element.__pagerLoaded__ ||
-                    (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < Date.now())) {
-                    element.__pagerLoaded__ = Date.now();
-                    loadSource(value.sourceOnShow);
-                }
-            }
-        }
-    };
 
     page.children.push({
-        valueAccessor:valueAccessor,
+        valueAccessor:this.valueAccessor,
         element:element,
         page:page,
-        show:function () {
-            show();
+        show:_.bind(function () {
+
+            this.show();
             childManager.showChild();
-        },
+        }, this),
         hide:function () {
             $(element).hide();
         }
@@ -152,13 +142,14 @@ pager.Page = function (element, valueAccessor, allBindingsAccessor, viewModel, b
     // and might trigger changes down to child pages
     ko.computed(function () {
         route(page.route().slice(1));
+        var id = _ko.value(value).id;
 
         if (page.parentRoute) {
             var copyOfParent = page.parentRoute().slice(0);
-            copyOfParent.push(value.id);
+            copyOfParent.push(id);
             parentRoute(copyOfParent);
         } else {
-            parentRoute([value.id]);
+            parentRoute([id]);
         }
     });
     var childManager = null;
@@ -167,40 +158,114 @@ pager.Page = function (element, valueAccessor, allBindingsAccessor, viewModel, b
             children:ko.observableArray([]),
             parentRoute:parentRoute,
             route:route,
-            /*parent:{
-             page:page,
-             element:element
-             },*/
             __id__:Math.random()
         })
     };
 
 
-    this.init = function () {
-        childManager = new ChildManager(pagerValues.$page().children, route);
+    $(element).hide();
 
-        // Fetch source
-        if (value.source) {
-            loadSource(value.source);
-        }
+    childManager = new pager.ChildManager(pagerValues.$page().children, route);
 
-        var childBindingContext = bindingContext.createChildContext(value['with'] ? ko.utils.unwrapObservable(value['with']) : viewModel);
-        ko.utils.extend(childBindingContext, pagerValues);
-        ko.applyBindingsToDescendants(childBindingContext, element);
-        return { controlsDescendantBindings:true};
-    };
+    // Fetch source
+    if (value.source) {
+        this.loadSource(value.source);
+    }
 
+    var childBindingContext = this.bindingContext.createChildContext(value['with'] ? ko.utils.unwrapObservable(value['with']) : this.viewModel);
+    ko.utils.extend(childBindingContext, pagerValues);
+    ko.applyBindingsToDescendants(childBindingContext, element);
+    return { controlsDescendantBindings:true};
 };
 
 /**
- *
- * @class ko.bindingHandlers.page
- *
- * Configuration options:
- * id
- * with
- *
+ * @method getValue
+ * @return {*}
  */
+pager.Page.prototype.getValue = function () {
+    return _ko.value(this.valueAccessor());
+};
+
+/**
+ * @method getPage
+ * @return {*}
+ */
+pager.Page.prototype.getPage = function () {
+    return (this.bindingContext.$page || this.bindingContext.$data.$page)();
+};
+
+/**
+ * @method sourceUrl
+ * @param source
+ * @return {*}
+ */
+pager.Page.prototype.sourceUrl = function (source) {
+    var value = this.getValue();
+    var page = this.getPage();
+    if (_ko.value(value).id === '?') {
+        return ko.computed(function () {
+            return _ko.value(source).replace('{1}', page.route()[0]);
+        });
+    } else {
+        return ko.computed(function () {
+            return _ko.value(source);
+        });
+    }
+};
+
+/**
+ * @method loadSource
+ * @param source
+ */
+pager.Page.prototype.loadSource = function (source) {
+    var value = this.getValue();
+    var element = this.element;
+    if (value.frame === 'iframe') {
+        var iframe = $('iframe', $(element));
+        if (iframe.length === 0) {
+            iframe = $('<iframe></iframe>');
+            $(element).append(iframe);
+        }
+        if (value.sourceLoaded) {
+            iframe.one('load', value.sourceLoaded);
+        }
+        // TODO: remove src binding and add this binding
+        ko.applyBindingsToNode(iframe[0], {
+            attr:{
+                src:this.sourceUrl(source)
+            }
+        });
+    } else {
+        // TODO: remove all children and add sourceUrl(source)
+        ko.computed(function () {
+            var s = _ko.value(this.sourceUrl(source));
+            $(element).load(s, value.sourceLoaded);
+        }, this);
+    }
+};
+
+/**
+ * @method show
+ */
+pager.Page.prototype.show = function () {
+    var element = this.element;
+    var value = this.getValue();
+    var $element = $(element);
+    if (!$element.is(':visible')) {
+        $(element).show();
+
+        // Fetch source
+        if (value.sourceOnShow) {
+            if (!value.sourceCache ||
+                !element.__pagerLoaded__ ||
+                (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < Date.now())) {
+                element.__pagerLoaded__ = Date.now();
+                this.loadSource(value.sourceOnShow);
+            }
+        }
+    }
+};
+
 ko.bindingHandlers.page = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         var page = new pager.Page(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
@@ -224,7 +289,7 @@ ko.bindingHandlers['page-href'] = {
                 value = value.slice(3);
             }
 
-            var parentPath = page.parentRoute().slice(0, page.parentRoute().length - parentsToTrim).join('/');
+            var parentPath = _ko.arrayValue(page.parentRoute().slice(0, page.parentRoute().length - parentsToTrim)).join('/');
             $(element).attr({
                 'href':'#' + (parentPath === '' ? '' : parentPath + '/') + value
             });
