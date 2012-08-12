@@ -4,6 +4,18 @@ pager.js provides the possibility of creating single page applications in a decl
 
 This makes it easier to design large scale single page web sites.
 
+## Getting Started
+
+* Download the [developer version](https://raw.github.com/finnsson/pagerjs/master/pager.js)
+   or the [minified version](https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js)
+   of pager.js
+* Include all dependencies (jQuery, Underscore.js, KnockoutJS) as well as pager.js in your site
+* Start using the bindings `page`, `page-href`, and `page-accordion-item`. Consult the
+  [web page](http://oscar.finnsson.nu/pagerjs/) or
+  [test cases](https://github.com/finnsson/pagerjs/tree/master/test) for how to use the bindings.
+* Insert the lines `pager.extendWithPage(viewModel); ko.applyBindings(viewModel); pager.start(viewModel);`
+* Rock 'n' Roll!
+
 ## Helpers
 
 * `pager.route`
@@ -12,14 +24,21 @@ This makes it easier to design large scale single page web sites.
 
 ### Example
 
+    // viewModel is your KnockoutJS view model
+    var viewModel = {};
+    // pager.extendWithPage extends your
+    // view model with some pager-specific data
     pager.extendWithPage(viewModel);
+    // apply your view model as normal
     ko.applyBindings(viewModel);
+    // start the pager. Will listen to hashchange and
+    // show/hide pages depending on their page IDs
     pager.start(viewModel);
 
 
 ## Custom Bindings
 
-pager.js extends KnockoutJS with two custom bindings: `page` and `page-href`.
+pager.js extends KnockoutJS with three custom bindings: `page`, `page-href` and `page-accordion-item`.
 
 ### page
 
@@ -30,13 +49,16 @@ Configurations:
 
 * `{String} id` of scoped page that a router should react to. E.g. `start` or `user/me`.
   If the id is `?` (wildcard) it will match anything if no other page in the same parent match.
-* `{Object} with` that can change the scope of elements descendants.
-* `{String} source` to load into element using jQuery.load
-* `{Function} sourceLoaded` is a method to run once the `source` (or `sourceOnShow`) is loaded.
-* `{String} sourceOnShow` to load into element using jQuery.load when the element is displayed
+* `{Object} with` that can change the scope of elements descendants. The same behavior as the normal `with`-binding.
+* `{Function} withOnShow` sets the view model of elements descendants async after the page is shown. This is useful
+  so you can extract sub pages view models to other `.js`-files.
+* `{String} source` to load into element using `jQuery#load`. The source will be loaded once the page is processed.
+* `{Function} sourceLoaded` is a method/event/callback to run once the `source` (or `sourceOnShow`) is loaded.
+* `{String} sourceOnShow` to load into element using `jQuery#load` when the element is displayed. Thus sub pages
+  can be extracted and loaded on demand.
 * `{Boolean/Number} sourceCache` can be set to true in order for sourceOnShow to only load the source once.
   If a number is specified the cache is valid for that amount of time in seconds.
-* `{String}` frame can be set to `iframe` in order for the source to be loaded into an iframe. If the page contains
+* `{String} frame` can be set to `iframe` in order for the source to be loaded into an iframe. If the page contains
   an iframe that element is used.
 
 ### page-href
@@ -45,13 +67,29 @@ Configurations:
 
 Calculates absolute href based on the location of the element.
 
+### page-accordion-item
+
+    <!-- First item in accordion -->
+    <div data-bind="page-accordion-item: {id: 'dog'}">
+        <a href="#animals/dog">Dog</a>
+        <div>Dog Information</div>
+    </div>
+    <!-- Second item in accordion -->
+    <div data-bind="page-accordion-item: {id: 'cat'}">
+        <a href="#animals/cat">Cat</a>
+        <div>Cat Information</div>
+    </div>
+
+`page-accordion-item` is a subclass / subbinding of `page` enabling deep linking and navigation of accordions.
+
+
 ## Dependencies
 
-- [jQuery](http://jquery.com/)
 - [KnockoutJS](http://knockoutjs.com/)
+- [jQuery](http://jquery.com/)
 - [Underscore.js](http://underscorejs.org/)
 
-For development you'll need
+For developing pager.js you'll need
 
 - [Node.js](http://nodejs.org/)
 - [Grunt](https://github.com/cowboy/grunt)
@@ -61,7 +99,7 @@ For development you'll need
 
 ## Behaviors
 
-The following behaviors specify and exemplify what `pager.js` is capable of.
+The following behaviors specify and exemplify what pager.js is capable of.
 
 ### Should display page with id start by default
 
@@ -73,17 +111,21 @@ The following behaviors specify and exemplify what `pager.js` is capable of.
 
 ### Should navigate to page using scoped IDs.
 
-    <div data-bind="page: {id:'start'}"><a href="#foo">Go to foo</a></div>
-    <div data-bind="page: {id: 'foo'}">Foo. Go to <a href="#start">start</a></div>
+    <div data-bind="page: {id:'start'}">
+      <a href="#foo">Go to foo</a>
+    </div>
+    <div data-bind="page: {id: 'foo'}">
+      Foo. Go to <a href="#start">start</a>
+    </div>
 
 ### Should be possible to do deep navigation
 
     <div id="start" data-bind="page: {id: 'start'}">
-        <a href="#user/pelle">Go to Pelle</a>
+        <a href="#user/fry">Go to Fry</a>
     </div>
 
     <div id="user" data-bind="page: {id: 'user'}">
-        <div id="pelle" data-bind="page: {id: 'pelle'}">Pelle</div>
+        <div id="fry" data-bind="page: {id: 'fry'}">Fry</div>
     </div>
 
 ### Should load external content into a page using `source` and trigger `sourceLoaded` event
@@ -112,13 +154,13 @@ In the example above `loremIsLoaded` is a function that is triggered after `lore
 ### Should specify relative page paths using `page-href`
 
     <div data-bind="page: {id: 'start'}">
-      <!-- This will update href to #start/arne -->
-      <a data-bind="page-href: 'arne'">Arne</a>
+      <!-- This will update href to #start/bender -->
+      <a data-bind="page-href: 'bender'">Bender</a>
 
       <!-- This will update href to #admin/login -->
       <a data-bind="page-href: '../admin/login'">Admin Login</a>
 
-      <div data-bind="page: {id: 'arne'}">Arne!</div>
+      <div data-bind="page: {id: 'bender'}">Bender!</div>
     </div>
     <div data-bind="page: {id: 'admin'}">
       <div data-bind="page: {id: 'login'}">Login</div>
@@ -142,20 +184,20 @@ Based on the total path of the page the binding calculates an absolute href.
 ### Should do deep navigation with wildcards
 
     <div data-bind="page: {id: 'start'}">
-          <a href="#user/pelle">Go to Pelle</a>
+          <a href="#user/leela">Go to Leela</a>
     </div>
 
     <div data-bind="page: {id: '?'}">
         Misc:
-        <div data-bind="page: {id: 'pelle'}">
-            Pelle
+        <div data-bind="page: {id: 'leela'}">
+            Leela
         </div>
     </div>
 
 ### Should send wildcards to source
 
     <div data-bind="page: {id: 'start'}">
-        <a href="#user/pelle">Go to Pelle</a>
+        <a href="#user/fry">Go to Fry</a>
     </div>
 
     <div data-bind="page: {id: 'user'}">
@@ -171,7 +213,7 @@ Based on the total path of the page the binding calculates an absolute href.
     <div data-bind="page: {id: 'user', frame: 'iframe', source: 'user.html'}"></div>
 
     <!-- The iframe specified will be used -->
-    <div data-bind="page: {id: 'pelle', frame: 'iframe', source: 'pelle.html'}">
+    <div data-bind="page: {id: 'fry', frame: 'iframe', source: 'fry.html'}">
         <iframe sandbox=""></iframe>
     </div>
 
@@ -199,15 +241,15 @@ The `page`-binding (`pager.Page`-class) is possible to extend at multiple points
 
 One custom widget (`page-accordion-item`) is already implemented.
 
-    <div data-bind="page-accordion-item: {id: 'dog'}">
-        <a href="#animals/dog">Dog</a>
-
-        <div>Dog Information</div>
-    </div>
-    <div data-bind="page-accordion-item: {id: 'cat'}">
-        <a href="#animals/cat">Cat</a>
-
-        <div>Cat Information</div>
+    <div data-bind="page: {id: 'employee'}">
+        <div data-bind="page-accordion-item: {id: 'zoidberg'}">
+            <a href="#employee/zoidberg">Dog</a>
+            <div>Zoidberg Information</div>
+        </div>
+        <div data-bind="page-accordion-item: {id: 'hermes'}">
+            <a href="#employee/hermes">Cat</a>
+            <div>Hermes Information</div>
+        </div>
     </div>
 
 ### Should be possible to circumvent the routing
@@ -222,6 +264,12 @@ circumvent the routing using the router used. Just do not use `pager.start`.
 ## Backlog
 
 There are a lot of features waiting to be implemented. Here are some of them.
+
+### Custom Widgets
+
+#### Tab Panel
+
+#### Panel
 
 ### Should be possible to specify page transitions between sub pages
 

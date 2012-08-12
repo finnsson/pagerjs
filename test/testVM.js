@@ -3,5 +3,5 @@ define(function () {
         getVM:function () {
             return {name:ko.observable("Karl V")};
         }
-    }
+    };
 });

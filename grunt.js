@@ -56,6 +56,7 @@ module.exports = function (grunt) {
                 jQuery:true,
                 ko:true,
                 $:true,
+                define:true,
                 _:true
             }
         },
