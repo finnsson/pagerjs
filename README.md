@@ -31,6 +31,7 @@ Configurations:
 * `{String} id` of scoped page that a router should react to. E.g. `start` or `user/me`.
 * `{Object} with` that can change the scope of elements descendants.
 * `{String} source` to load into element using jQuery.load
+* `{Function} sourceLoaded` is a method to run once the `source` (or `sourceOnShow`) is loaded.
 * `{String} sourceOnShow` to load into element using jQuery.load when the element is displayed
 * `{Boolean/Number} sourceCache` can be set to true in order for sourceOnShow to only load the source once.
   If a number is specified the cache is valid for that amount of time in seconds.
@@ -66,21 +67,22 @@ The following behaviors specify and exemplify what `pager.js` is capable of.
 
 ### Should be possible to do deep navigation
 
-    <div data-role="page">
-      <a href="user/pelle">Go to Pelle</a>
+    <div id="start" data-bind="page: {id: 'start'}">
+        <a href="#user/pelle">Go to Pelle</a>
     </div>
 
-    <div data-role="page" data-page-id="user">
-      <div data-role="page" data-page-id="pelle">Pelle</div>
+    <div id="user" data-bind="page: {id: 'user'}">
+        <div id="pelle" data-bind="page: {id: 'pelle'}">Pelle</div>
     </div>
 
-### Should load external content into a page using `source`
+### Should load external content into a page using `source` and trigger `sourceLoaded` event
 
-    <div data-bind="page: {id: 'lorem', source: 'lorem.html .content'}"></div>
+    <div data-bind="page: {id: 'lorem', source: 'lorem.html .content', sourceLoaded: loremIsLoaded}"></div>
 
 The source can contain a selector (see `.content` above) in order to extract a fragment on the site.
+In the example above `loremIsLoaded` is a function that is triggered after `lorem.html` is loaded.
 
-### Should lazy load a external content into a page if `sourceOnShow` is declared
+### Should lazy load an external content into a page if `sourceOnShow` is declared
 
     <div data-bind="page: {id: 'lazyLorem', sourceOnShow: 'lorem.html .content'}"></div>
 
@@ -108,7 +110,7 @@ The source can contain a selector (see `.content` above) in order to extract a f
       <div data-bind="page: {id: 'arne'}">Arne!</div>
     </div>
     <div data-bind="page: {id: 'admin'}">
-      <div data-bind="page: {id: 'login'}"></div>
+      <div data-bind="page: {id: 'login'}">Login</div>
     </div>
 
 Based on the total path of the page the binding calculates an absolute href.
@@ -128,28 +130,28 @@ Based on the total path of the page the binding calculates an absolute href.
 
 ### Should do deep navigation with wildcards
 
-    <div data-bind="page: {id: 'start'}>
-      <a href="user/pelle">Go to Pelle</a>
+    <div data-bind="page: {id: 'start'}">
+          <a href="#user/pelle">Go to Pelle</a>
     </div>
 
     <div data-bind="page: {id: '?'}">
-      Misc:
-      <div data-bind="page: {id: 'pelle'}">
-        Pelle
-      </div>
+        Misc:
+        <div data-bind="page: {id: 'pelle'}">
+            Pelle
+        </div>
     </div>
 
 ### Should send wildcards to source
 
-    <div data-bind="page: {id: 'start'}>
-      <a href="user/pelle">Go to Pelle</a>
+    <div data-bind="page: {id: 'start'}">
+        <a href="#user/pelle">Go to Pelle</a>
     </div>
 
     <div data-bind="page: {id: 'user'}">
-      User:
-      <!-- {1} will be replaced with whatever matched the wildcard -->
-      <div data-bind="page: {id: '?', sourceOnShow: 'user/{1}.html'}">
-      </div>
+        User:
+        <!-- {1} will be replaced with whatever matched the wildcard -->
+        <div data-bind="page: {id: '?', sourceOnShow: 'user/{1}.html'}">
+        </div>
     </div>
 
 ### Should be possible to load content into iframes
@@ -158,17 +160,16 @@ Based on the total path of the page the binding calculates an absolute href.
     <div data-bind="page: {id: 'user', frame: 'iframe', source: 'user.html'}"></div>
 
     <!-- The iframe specified will be used -->
-    <div data-bind="page: {id: 'pelle', frame: 'iframe', source: 'pelle.html'}"></div>
-      <iframe sandbox=""/>
+    <div data-bind="page: {id: 'pelle', frame: 'iframe', source: 'pelle.html'}">
+        <iframe sandbox=""></iframe>
     </div>
-
 
 ## In the pipeline
 
-* Write tests in QUnit
-* Refactor `page`-binding into a class in order to make it extendable.
+* Write tests in QUnit.
+* Verify that all configuration options can be observables.
 * Extract local functions to methods on `pager.Page`-prototype so they can be overwritten by sub classes.
-* Write example files in /example and push them to gh-pages branch
+* Write an extensive example.html and push it to gh-pages branch.
 
 ## Backlog
 

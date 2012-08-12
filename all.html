@@ -76,7 +76,7 @@
 <div data-bind="page: {id: 'iframeTest', frame: 'iframe', source: 'lorem.html'}"></div>
 
 
-<div data-bind="page: {id: 'iframeTestConfigured', frame: 'iframe', source: 'lorem.html'}">
+<div data-bind="page: {id: 'iframeTestConfigured', frame: 'iframe', source: 'lorem.html', sourceLoaded: iframeLoaded}">
     <iframe seamless></iframe>
 </div>
 
@@ -98,6 +98,9 @@
         },
         sofiaData:{
             name:ko.observable('Sofia')
+        },
+        iframeLoaded: function() {
+            console.error("iframe loaded");
         }
     };
 

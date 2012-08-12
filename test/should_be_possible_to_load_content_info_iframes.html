@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should do deep navigation with wildcards</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<!-- An iframe will be created inside the div -->
+<div id="user" data-bind="page: {id: 'user', frame: 'iframe', source: '../lorem.html', sourceLoaded: userLoad}"></div>
+
+<!-- The iframe specified will be used -->
+<div id="pelle" data-bind="page: {id: 'pelle', frame: 'iframe', source: '../lorem.html', sourceLoaded: pelleLoad}">
+    <iframe sandbox="allow-same-origin"></iframe>
+</div>
+
+<script type="text/javascript">
+
+    var userLoaded = ko.observable(false);
+    var pelleLoaded = ko.observable(false);
+    var viewModel = {
+        userLoad:function () {
+            userLoaded(true);
+        },
+        pelleLoad:function () {
+            pelleLoaded(true);
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("should load content info iframes", function () {
+
+        ko.computed(function () {
+            if (userLoaded()) {
+                if (pelleLoaded()) {
+                    equal($('iframe', $('#user')).length, 1, "user should contain an iframe");
+                    equal($('iframe', $('#pelle')).length, 1, "pelle should contain an iframe");
+                    equal($('iframe', $('#pelle')).attr('sandbox'), "allow-same-origin", "iframes sandbox should be used");
+                    start();
+                }
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>

@@ -80,7 +80,7 @@ pager.route = function ($page, hash) {
 
 };
 
-pager.Page = function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+pager.Page = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
     this.element = element;
     this.valueAccessor = valueAccessor;
     this.allBindingsAccessor = allBindingsAccessor;
@@ -109,9 +109,12 @@ pager.Page = function(element, valueAccessor, allBindingsAccessor, viewModel, bi
                 iframe = $('<iframe></iframe>');
                 $(element).append(iframe);
             }
+            if (value.sourceLoaded) {
+                iframe.one('load', value.sourceLoaded);
+            }
             iframe.attr('src', sourceUrl(source));
         } else {
-            $(element).load(sourceUrl(source));
+            $(element).load(sourceUrl(source), value.sourceLoaded);
         }
     };
 
@@ -173,8 +176,7 @@ pager.Page = function(element, valueAccessor, allBindingsAccessor, viewModel, bi
     };
 
 
-
-    this.init = function() {
+    this.init = function () {
         childManager = new ChildManager(pagerValues.$page().children, route);
 
         // Fetch source
@@ -182,7 +184,7 @@ pager.Page = function(element, valueAccessor, allBindingsAccessor, viewModel, bi
             loadSource(value.source);
         }
 
-        var childBindingContext = bindingContext.createChildContext(value['with'] ? value['with'] : viewModel);
+        var childBindingContext = bindingContext.createChildContext(value['with'] ? ko.utils.unwrapObservable(value['with']) : viewModel);
         ko.utils.extend(childBindingContext, pagerValues);
         ko.applyBindingsToDescendants(childBindingContext, element);
         return { controlsDescendantBindings:true};

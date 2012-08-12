@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should change binding context using with</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'user', with: user}">
+    <!-- Here name is user.name -->
+    <div id="name" data-bind="text: name"></div>
+</div>
+<div data-bind="page: {id: 'admin', with: admin}">
+    <!-- Here name is user.name -->
+    <div id="error" data-bind="text: error"></div>
+</div>
+
+<script type="text/javascript">
+
+    var viewModel = {
+        user:ko.observable({
+            name:ko.observable("Arne")
+        }),
+        admin:{
+            error:"404"
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    test("Should change binding context using with", function () {
+        equal($('#name').text(), "Arne", "the name should be Arne");
+        equal($('#error').text(), "404", "the error should be 404");
+
+        viewModel.user().name("Sofia");
+        equal($('#name').text(), "Sofia", "the name should be Sofia now");
+
+    });
+
+</script>
+
+
+</body>
+</html>

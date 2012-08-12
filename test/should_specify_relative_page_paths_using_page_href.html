@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should cache lazy loaded content when sourceCache: true</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'start'}">
+    <!-- This will update href to #start/arne -->
+    <a id="arneLink" data-bind="page-href: 'arne'">Arne</a>
+
+    <!-- This will update href to #admin/login -->
+    <a id="adminLink" data-bind="page-href: '../admin/login'">Admin Login</a>
+
+    <div data-bind="page: {id: 'arne'}">Arne!</div>
+</div>
+<div data-bind="page: {id: 'admin'}">
+    <div data-bind="page: {id: 'login'}">Login</div>
+</div>
+
+<script type="text/javascript">
+
+    var viewModel = {};
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    test("Links should be relative", function () {
+        equal($('#arneLink').attr('href'), '#start/arne', "arneLink should be #start/arne");
+        equal($('#adminLink').attr('href'), '#admin/login', "adminLink should be #admin/login");
+    });
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should cache lazy loaded content when sourceCache: true</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'loremCached', sourceOnShow: '../lorem.html .content', sourceLoaded: sourceLoadedCached, sourceCache: true}"></div>
+<div data-bind="page: {id: 'lorem', sourceOnShow: '../lorem.html .content', sourceLoaded: sourceLoaded}"></div>
+
+<script type="text/javascript">
+
+    var numberOfNotCachedTimesLoaded = ko.observable(0);
+    var numberOfTimesLoaded = ko.observable(0);
+    var viewModel = {
+        sourceLoaded:function () {
+            numberOfNotCachedTimesLoaded(numberOfNotCachedTimesLoaded() + 1);
+        },
+        sourceLoadedCached:function () {
+            numberOfTimesLoaded(numberOfTimesLoaded() + 1);
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    /*
+
+     1. Go to loremCached
+     2. Go to lorem
+     3. Go to loremCached again
+     4. Go to lorem again
+
+     */
+
+    asyncTest("should lazy load lorem.html and cache", function () {
+
+        ok(numberOfNotCachedTimesLoaded() === 0, "lorem.html should not be loaded in the beginning");
+        ok(numberOfTimesLoaded() === 0, "lorem.html should not be loaded in the beginning");
+
+        until(function () {
+            return numberOfTimesLoaded() === 1;
+        }, function () {
+            ok(numberOfNotCachedTimesLoaded() === 0, "non-cached should not be loaded yet");
+            ok(numberOfTimesLoaded() === 1, "lorem.html first load");
+
+            until(function () {
+                return numberOfNotCachedTimesLoaded() === 1;
+            }, function () {
+                ok(numberOfNotCachedTimesLoaded() === 1, "non-cached should be loaded");
+                ok(numberOfTimesLoaded() === 1, "lorem.html should not be reloaded");
+
+                $(window).one('hashchange', function () {
+                    ok(numberOfNotCachedTimesLoaded() === 1, "non-cached should not be reloaded");
+                    ok(numberOfTimesLoaded() === 1, "cached should be cached");
+
+                    until(function () {
+                        return numberOfNotCachedTimesLoaded() === 2;
+                    }, function () {
+                        ok(numberOfNotCachedTimesLoaded() === 2, "lorem.html should be reloaded");
+                        ok(numberOfTimesLoaded() === 1, "cached should not be reloaded again");
+                        start();
+                    });
+                    window.location.hash = '#lorem';
+                });
+                window.location.hash = '#loremCached';
+            });
+            window.location.hash = '#lorem';
+        });
+
+        window.location.hash = '#loremCached';
+
+    });
+</script>
+
+
+</body>
+</html>

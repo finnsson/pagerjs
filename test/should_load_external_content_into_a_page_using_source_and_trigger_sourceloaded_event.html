@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should load external content into a page using source and trigger sourceLoaded event</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'lorem', source: '../lorem.html .content', sourceLoaded: sourceLoaded}"></div>
+
+<script type="text/javascript">
+
+    var isLoaded = ko.observable(false);
+    var viewModel = {
+        sourceLoaded: function() {
+            isLoaded(true);
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+    asyncTest("should load lorem.html", function () {
+
+        ko.computed(function() {
+            if(isLoaded()) {
+                ok(true, "lorem.html is loaded");
+                start();
+            }
+        });
+
+    });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should do deep navigation with wildcards</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'start'}">
+    <a href="#user/pelle">Go to Pelle</a>
+</div>
+
+<div data-bind="page: {id: 'user'}">
+    User:
+    <!-- {1} will be replaced with whatever matched the wildcard -->
+    <div id="lorem" data-bind="page: {id: '?', sourceOnShow: '../{1}.html', sourceLoaded: loaded}">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var isLoaded = ko.observable(false);
+    var viewModel = {
+        loaded:function () {
+            isLoaded(true);
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("should match wildcard", function () {
+
+        $(window).one('hashchange', function () {
+
+            until(function () {
+                return isLoaded();
+            }, function () {
+                equal($('.content').text().trim(), 'Lorem Ipsum', "lorem.html is loaded");
+                start();
+            });
+        });
+        window.location.hash = '#user/lorem';
+
+    });
+</script>
+
+
+</body>
+</html>

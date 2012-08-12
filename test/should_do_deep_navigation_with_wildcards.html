@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should do deep navigation with wildcards</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div id="start" data-bind="page: {id: 'start'}">
+    <a href="#user/pelle">Go to Pelle</a>
+</div>
+
+<div data-bind="page: {id: '?'}">
+    Misc:
+    <div id="pelle" data-bind="page: {id: 'pelle'}">
+        Pelle
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var viewModel = {};
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("should match wildcard", function () {
+
+        $(window).one('hashchange', function () {
+            equal($('#pelle').is(':visible'), true, 'pelle is visible');
+            equal($('#start').is(':visible'), false, 'start is hidden');
+            start();
+        });
+        window.location.hash = '#user/pelle';
+
+    });
+</script>
+
+
+</body>
+</html>
