@@ -45,7 +45,7 @@ pager.js extends KnockoutJS with three custom bindings: `page`, `page-href` and 
     <div data-bind="page: {}">
     </div>
 
-Configurations:
+#### Configurations
 
 * `{String} id` of scoped page that a router should react to. E.g. `start` or `user/me`.
   If the id is `?` (wildcard) it will match anything if no other page in the same parent match.
