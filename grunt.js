@@ -9,7 +9,9 @@ module.exports = function (grunt) {
                 '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
                 '* http://oscar.finnsson.nu/pagerjs/\n' +
                 '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
-                'Oscar Finnsson; Licensed MIT */'
+                'Oscar Finnsson; Licensed MIT */',
+            amdStart:"define(['jquery','underscore','knockout'], function($,_,ko) {",
+            amdEnd:'return pager;});'
         },
         server:{
             port:8000,
@@ -24,7 +26,11 @@ module.exports = function (grunt) {
         concat:{
             dist:{
                 src:['<banner:meta.banner>', '<file_strip_banner:pager.js>'],
-                dest:'dist/pager-concat.js'
+                dest:'dist/pager.concat.js'
+            },
+            amd:{
+                src:['<banner:meta.banner>', '<banner:meta.amdStart>', '<file_strip_banner:pager.js>', '<banner:meta.amdEnd>'],
+                dest:'dist/pager.amd.concat.js'
             }
         },
         min:{
@@ -32,6 +38,14 @@ module.exports = function (grunt) {
                 src:['<banner:meta.banner>', '<file_strip_banner:pager.js>'],
                 //src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
                 dest:'dist/pager.min.js'
+            },
+            amd:{
+                src:['<banner:meta.banner>', '<banner:meta.amdStart>', '<file_strip_banner:pager.js>', '<banner:meta.amdEnd>'],
+                dest:'dist/pager.amd.min.js'
+            },
+            amddemo:{
+                src:['<banner:meta.banner>', '<banner:meta.amdStart>', '<file_strip_banner:pager.js>', '<banner:meta.amdEnd>'],
+                dest:'demo/pager.amd.min.js'
             }
         },
         watch:{

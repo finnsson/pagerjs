@@ -1,3 +1,9 @@
+/*! pager.js - v0.1.0 - 2012-08-14
+* http://oscar.finnsson.nu/pagerjs/
+* Copyright (c) 2012 Oscar Finnsson; Licensed MIT */
+
+define(['jquery','underscore','knockout'], function($,_,ko) {
+
 var pager = {};
 
 // common KnockoutJS helpers
@@ -182,10 +188,10 @@ pager.Page.prototype.init = function () {
     } else {
         ctx = this.viewModel;
     }
-    this.childBindingContext = this.bindingContext.createChildContext(ctx);
+    var childBindingContext = this.bindingContext.createChildContext(ctx);
 
-    ko.utils.extend(this.childBindingContext, pagerValues);
-    ko.applyBindingsToDescendants(this.childBindingContext, element);
+    ko.utils.extend(childBindingContext, pagerValues);
+    ko.applyBindingsToDescendants(childBindingContext, element);
     return { controlsDescendantBindings:true};
 };
 
@@ -230,7 +236,6 @@ pager.Page.prototype.sourceUrl = function (source) {
  */
 pager.Page.prototype.loadSource = function (source) {
     var value = this.getValue();
-    var me = this;
     var element = this.element;
     if (value.frame === 'iframe') {
         var iframe = $('iframe', $(element));
@@ -251,13 +256,7 @@ pager.Page.prototype.loadSource = function (source) {
         // TODO: remove all children and add sourceUrl(source)
         ko.computed(function () {
             var s = _ko.value(this.sourceUrl(source));
-            //$(element).load(s, value.sourceLoaded);
-            $(element).load(s, function () {
-                ko.applyBindingsToDescendants(me.childBindingContext, me.element);
-                if (value.sourceLoaded) {
-                    value.sourceLoaded.apply(me, arguments);
-                }
-            });
+            $(element).load(s, value.sourceLoaded);
         }, this);
     }
 };
@@ -381,3 +380,4 @@ ko.bindingHandlers['page-accordion-item'] = {
     update:function () {
     }
 };
+return pager;});

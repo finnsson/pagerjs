@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div class="content">
+    <header class="jumbotron subhead">
+        <h1>Cached Lazy Loaded Content</h1>
+
+        <p class="lead">Lazy loaded content is possible to cache.
+            Data binding is also working into this file.
+            The view models name (<span data-bind="text: name"></span>) is data bound in this text.
+            Add <code>sourceCache: true</code>
+        </p>
+    </header>
+
+        <pre class="prettyprint">
+&lt;div data-bind="page: {
+      id: 'cached_lazy',
+      sourceCache: true,
+      sourceOnShow: 'cached_lazy.html .content'}"&gt;
+    ...
+&lt;/div&gt;
+        </pre>
+
+
+    <a href="#relative_path">Read about relative paths</a>
+
+</div>
+</body>
+</html>

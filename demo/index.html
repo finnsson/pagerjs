@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pager.js Demo</title>
+
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <script data-main="demo.js" type="text/javascript" src="require.js"></script>
+
+    <link href="google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="google-code-prettify/prettify.js"></script>
+
+    <script type="text/javascript">
+        require({
+            paths:{
+                jquery:'jquery-1.7.2.min',
+                underscore:'lodash.min',
+                knockout:'knockout-2.1.0',
+                pager:'pager.amd.min'
+            }
+        });
+    </script>
+
+</head>
+<body onload="prettyPrint()">
+
+<div class="container" style="padding-top: 30px;">
+
+    <div data-bind="page: {id: 'start'}">
+        <header class="jumbotron subhead">
+            <h1>Show start page by default</h1>
+
+            <p class="lead"> This is the default start page. It is so because the page ID is set to 'start'.</p>
+        </header>
+
+        <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    ...&lt;a href="#deep_navigation"&gt;jump&lt;/a&gt;...
+&lt;/div&gt;
+        </pre>
+
+
+        <!-- Generate source code here -->
+
+        You can <a href="#deep_navigation">jump</a> to another page using an absolute fragment identifier.
+
+    </div>
+
+    <div data-bind="page: {id: 'deep_navigation'}">
+        <header class="jumbotron subhead">
+            <h1>Deep Navigation</h1>
+
+            <p class="lead"> You can navigate into pages in pages, or pages in pages in pages.</p>
+        </header>
+
+
+        <div class="well" data-bind="page: {id: 'start'}">
+            This is the default sub page.
+            <a href="#deep_navigation/second">Show the second page</a>.
+        </div>
+        <div class="well" data-bind="page: {id: 'second'}">
+            This is the second sub page.
+
+            <a href="#deep_navigation">Go back to the first sub page</a>.
+        </div>
+
+        <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'deep_navigation'}"&gt;
+    ...
+    &lt;div data-bind="page: {id: 'start'}"&gt;
+        ...
+        &lt;a href="#deep_navigation/second"&gt;Show the second page&lt;/a&gt;.
+    &lt;/div&gt;
+    &lt;div data-bind="page: {id: 'second'}"&gt;
+        ...
+        &lt;a href="#deep_navigation"&gt;Go back to the first sub page&lt;/a&gt;.
+    &lt;/div&gt;
+    ...&lt;a href="#load_external_content"&gt;Go on&lt;/a&gt;...
+&lt;/div&gt;
+        </pre>
+
+        <a href="#load_external_content">Read about loading content</a>
+
+
+    </div>
+
+    <div data-bind="page: {id: 'load_external_content', source: 'load_external_content.html .content'}">
+    </div>
+
+    <div data-bind="page: {id: 'lazy_load_external_content', sourceOnShow: 'lazy_load_external_content.html .content'}">
+    </div>
+
+    <div data-bind="page: {id: 'cached_lazy', sourceOnShow: 'cached_lazy.html .content', sourceCache: true}">
+    </div>
+
+    <div data-bind="page: {id: 'relative_path'}">
+        <div class="well">
+            <h1>Coming Soon</h1>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+</html>

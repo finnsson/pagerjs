@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div class="content">
+
+    <header class="jumbotron subhead">
+        <h1>Load External Content</h1>
+
+        <p class="lead">It is possible to extract parts or your page into external HTML pages and load these pages into
+            your current page. Just use <code>source: 'someURL'</code></p>
+    </header>
+
+        <pre class="prettyprint">
+&lt;div data-bind="page: {
+      id: 'load_external_content',
+      source: 'load_external_content.html .content'}"&gt;
+    ...
+&lt;/div&gt;
+        </pre>
+
+    <a href="#lazy_load_external_content">Find out how to lazy load external content!</a>
+
+</div>
+</body>
+</html>
