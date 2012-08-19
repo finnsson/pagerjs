@@ -26,43 +26,104 @@
 
 <div class="container" style="padding-top: 30px;">
 
-    <div data-bind="page: {id: 'start'}">
-        <header class="jumbotron subhead">
-            <h1>Show start page by default</h1>
+<div data-bind="page: {id: 'start'}">
+    <header class="jumbotron subhead">
+        <h1>Show start page by default</h1>
 
-            <p class="lead"> This is the default start page. It is so because the page ID is set to 'start'.</p>
-        </header>
+        <p class="lead"> This is the default start page. It is so because the page ID is set to 'start'.
+            Every other element with a page binding (<code>data-bind="page: {id: ...}"</code>) will be hidden
+            by default.
+        </p>
+    </header>
 
         <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
-    ...&lt;a href="#deep_navigation"&gt;jump&lt;/a&gt;...
+    ...&lt;a href="#structure"&gt;Read about the structure.&lt;/a&gt;...
 &lt;/div&gt;
         </pre>
 
+    <a href="#structure">Read about the structure.</a>
 
-        <!-- Generate source code here -->
+</div>
 
-        You can <a href="#deep_navigation">jump</a> to another page using an absolute fragment identifier.
+<div data-bind="page: {id: 'structure'}">
+    <header class="jumbotron subhead">
+        <h1>Structure</h1>
 
+        <p class="lead">
+            A page is an element with a <code>page</code> custom binding. They can be placed anywhere in your site
+            and will work as pages that you can jump between. The ID of the page corresponds to the fragment
+            identifier in the URL (the thingy after #).
+            <br/>
+            All the main pages in this demo are placed inside a main container div.
+        </p>
+    </header>
+
+        <pre class="prettyprint linenums">
+&lt;html&gt;
+&lt;body&gt;
+&lt;div class="container" style="padding-top: 30px;"&gt;
+
+    &lt;div data-bind="page: {id: 'start'}"&gt;
+        &lt;!-- the previous page --&gt;
+    &lt;/div&gt;
+    &lt;div data-bind="page: {id: 'structure'}"&gt;
+        &lt;!-- this page --&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+        </pre>
+
+    <a href="#setup">Read about how to setup pagerjs</a>
+
+</div>
+
+<div data-bind="page: {id: 'setup'}">
+
+    <header class="jumbotron subhead">
+        <h1>Setup</h1>
+
+        <p class="lead">
+            Pager.js is depending on KnockoutJS, jQuery and Underscore.js (or lodash).
+            Apply the lines below (where the 4th line should be familiar from KnockoutJS).
+        </p>
+    </header>
+
+    <pre class="prettyprint linenums">
+// extend your view-model with pager.js specific data
+pager.extendWithPage(viewModel);
+// apply the view-model using KnockoutJS as normal
+ko.applyBindings(viewModel);
+// start pager.js - this method will listen to hashchange
+pager.start(viewModel);
+    </pre>
+
+
+    You can <a href="#deep_navigation">jump</a> to another page using an absolute fragment identifier.
+
+</div>
+
+<div data-bind="page: {id: 'deep_navigation'}">
+    <header class="jumbotron subhead">
+        <h1>Deep Navigation</h1>
+
+        <p class="lead">
+            You can navigate into pages in pages, or pages in pages in pages.
+            Just set the <code>href</code> to the same ID as the page.
+        </p>
+    </header>
+
+
+    <div class="well" data-bind="page: {id: 'start'}">
+        This is the default sub page.
+        <a href="#deep_navigation/second">Show the second page</a>.
     </div>
+    <div class="well" data-bind="page: {id: 'second'}">
+        This is the second sub page.
 
-    <div data-bind="page: {id: 'deep_navigation'}">
-        <header class="jumbotron subhead">
-            <h1>Deep Navigation</h1>
-
-            <p class="lead"> You can navigate into pages in pages, or pages in pages in pages.</p>
-        </header>
-
-
-        <div class="well" data-bind="page: {id: 'start'}">
-            This is the default sub page.
-            <a href="#deep_navigation/second">Show the second page</a>.
-        </div>
-        <div class="well" data-bind="page: {id: 'second'}">
-            This is the second sub page.
-
-            <a href="#deep_navigation">Go back to the first sub page</a>.
-        </div>
+        <a href="#deep_navigation">Go back to the first sub page</a>.
+    </div>
 
         <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'deep_navigation'}"&gt;
@@ -79,25 +140,304 @@
 &lt;/div&gt;
         </pre>
 
-        <a href="#load_external_content">Read about loading content</a>
+    <a href="#load_external_content">Read about loading content</a>
 
 
-    </div>
+</div>
 
-    <div data-bind="page: {id: 'load_external_content', source: 'load_external_content.html .content'}">
-    </div>
+<div data-bind="page: {id: 'load_external_content', source: 'load_external_content.html .content'}">
+</div>
 
-    <div data-bind="page: {id: 'lazy_load_external_content', sourceOnShow: 'lazy_load_external_content.html .content'}">
-    </div>
+<div data-bind="page: {id: 'lazy_load_external_content', sourceOnShow: 'lazy_load_external_content.html .content'}">
+</div>
 
-    <div data-bind="page: {id: 'cached_lazy', sourceOnShow: 'cached_lazy.html .content', sourceCache: true}">
-    </div>
+<div data-bind="page: {id: 'cached_lazy', sourceOnShow: 'cached_lazy.html .content', sourceCache: true}">
+</div>
 
-    <div data-bind="page: {id: 'relative_path'}">
-        <div class="well">
-            <h1>Coming Soon</h1>
+
+<div data-bind="page: {id: 'relative_path'}">
+    <header class="jumbotron subhead">
+        <h1>Relative path</h1>
+
+        <p class="lead">
+            It can be tricky to calculate the absolute path of a link -
+            especially if you know the page will be loaded form somewhere else.
+            <br/>
+            Just use the <code>page-href</code> custom binding instead of specifying
+            a <code>href</code> directly!
+            <br/>
+            The <code>page-href</code> link will be relative to the page where the
+            element is. So if an anchor tag is in the page "user" a value <code>pelle</code>
+            will be resolved to <code>user/pelle</code>. The binding also understands <code>../</code>
+            if you need to track back the page hierarchy!
+            .
+        </p>
+    </header>
+
+
+    <div data-bind="page: {id: 'start'}">
+        <ul class="nav nav-tabs">
+            <li data-bind="css: {active: ($page().route().slice(-1) == 'fry')}">
+                <a data-bind="page-href: 'fry'">Fry</a>
+            </li>
+            <li data-bind="css: {active: ($page().route().slice(-1) == 'interesting')}">
+                <a data-bind="page-href: 'interesting'">Interesting</a>
+            </li>
+        </ul>
+
+        <div data-bind="page: {id: 'fry'}">
+            <img src="fry.jpg"/>
+        </div>
+        <div data-bind="page: {id: 'interesting'}">
+            <a data-bind="page-href: '../../'">Close this tab</a>
+            <br/>
+            <img src="interesting.jpeg"/>
         </div>
     </div>
+
+        <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;ul class="nav nav-tabs"&gt;
+        &lt;li data-bind="css: {active: ($page().route().slice(-1) == 'fry')}"&gt;
+            &lt;a data-bind="page-href: 'fry'"&gt;Fry&lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li data-bind="css: {active: ($page().route().slice(-1) == 'interesting')}"&gt;
+            &lt;a data-bind="page-href: 'interesting'"&gt;Interesting&lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div data-bind="page: {id: 'fry'}"&gt;
+        &lt;img src="fry.jpg"/&gt;
+    &lt;/div&gt;
+    &lt;div data-bind="page: {id: 'interesting'}"&gt;
+        &lt;a data-bind="page-href: '../../'"&gt;Close this tab&lt;/a&gt;
+        &lt;br/&gt;
+        &lt;img src="interesting.jpg"/&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+        </pre>
+
+    <p>
+
+        <a href="#html5_history">What about HTML5 history?</a>
+    </p>
+
+</div>
+
+<div data-bind="page: {id: 'html5_history'}">
+    <header class="jumbotron subhead">
+        <h1>HTML5 History API</h1>
+
+        <p class="lead">
+            Just add the lines <code>pager.useHTML5history = true; pager.rootURI = '/demo/';</code>
+            to get HTML5 history support (well, replace <code>'/demo/'</code> with your own root URI)!
+            <br/>
+            All <code>page-href</code> bindings will use the HTML5 history API.
+        </p>
+    </header>
+
+        <pre class="prettyprint linenums">
+var viewModel = {
+    // your view model
+};
+
+pager.useHTML5history = true;
+pager.rootURI = '/demo/';
+pager.extendWithPage(viewModel);
+ko.applyBindings(viewModel);
+pager.start(viewModel);
+
+// this method navigates to a path - use it from your own click handlers etc.
+var navigate = function(path) {
+    pager.childManager.route(path().split('/'));
+    pager.childManager.showChild();
+};
+
+        </pre>
+
+
+    <a href="#change_binding_context">Read about changing binding context</a>
+
+
+</div>
+
+<div data-bind="page: {id: 'change_binding_context'}">
+    <header class="jumbotron subhead">
+        <h1>Change Binding Context</h1>
+
+        <p class="lead">
+            Use <code>with:</code> to change the binding context - similar to the <code>with</code> binding.
+        </p>
+    </header>
+
+    <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'user', with: user}"&gt;
+    &lt;span data-bind="text: name"&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+    viewModel = {
+        user:{
+            name:ko.observable("Amy")
+        }
+    };
+&lt;/script&gt;
+    </pre>
+
+    <a href="#lazy_bind_view_model">Read more about changing the binding context</a>
+
+</div>
+
+<div data-bind="page: {id: 'lazy_bind_view_model'}">
+    <header class="jumbotron subhead">
+        <h1>Change Binding Context on Show</h1>
+
+        <p class="lead">
+            If you construct an application with multiple pages you might want to data binding
+            the pages first when the pages are displayed.
+            Use <code>withOnShow:</code> to to an asynchronous data binding when the page is displayed.
+        </p>
+    </header>
+
+    <div data-bind="page: {id: 'start'}">
+        <p>
+            <a class="btn" data-bind="page-href: '../invention'">Show page and lazy load view model</a>
+        </p>
+    </div>
+
+    <div class="well" data-bind="page: {id: 'invention', withOnShow: requireVM('invention')}">
+        <h3 data-bind="text: name"></h3>
+
+        <p data-bind="text: description"></p>
+        <a data-bind="page-href: '../'">Hide this page</a>
+    </div>
+
+    <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;p&gt;
+        &lt;a class="btn" data-bind="page-href: '../invention'"&gt;Show page and lazy load view model&lt;/a&gt;
+    &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="well" data-bind="page: {id: 'invention', withOnShow: requireVM('invention')}"&gt;
+    &lt;h3 data-bind="text: name"&gt;&lt;/h3&gt;
+    &lt;p data-bind="text: description"&gt;&lt;/p&gt;
+    &lt;a data-bind="page-href: '../'"&gt;Hide this page&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;script type="text/javascript&gt;
+var requireVM = function (module) {
+    return function (callback) {
+        require([module], function (mod) {
+            callback(mod.getVM());
+        });
+    };
+};
+&lt;/script&gt;
+    </pre>
+
+    <a href="#matching_wildcards">And now about wildcards</a>
+
+</div>
+
+
+<div data-bind="page: {id: 'matching_wildcards'}">
+    <header class="jumbotron subhead">
+        <h1>Matching Wildcards</h1>
+
+        <p class="lead">
+            Setting the <code>id:</code> property to <code>'?'</code> will make it
+            match anything. This is useful for a catch-anything and error handling.
+        </p>
+    </header>
+
+    <div data-bind="page: {id: 'start'}">
+        <p>
+            <a data-bind="page-href: ('../' + (Math.random()*100).toFixed(0))">Go do some random site</a>
+        </p>
+    </div>
+    <div data-bind="page: {id: '?'}">
+        <h3>Error</h3>
+
+        <p>The page you requested does not exist.</p>
+
+        <p><a href="#matching_wildcards">Go back</a></p>
+    </div>
+
+    <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: '?'}"&gt;
+    &lt;h3&gt;Error&lt;/h3&gt;
+    &lt;p&gt;The page you requested does not exist.&lt;/p&gt;
+&lt;/div&gt;
+    </pre>
+
+    <a href="#deep_navigation_with_wildcards">Continue reading about wildcards</a>
+
+</div>
+
+<div data-bind="page: {id: 'deep_navigation_with_wildcards'}">
+    <header class="jumbotron subhead">
+        <h1>Deep Navigation with Wildcards</h1>
+
+        <p class="lead">
+            Lorem Ipsum
+        </p>
+    </header>
+
+    <pre class="prettyprint linenums">
+    </pre>
+
+    <a href="#send_wildcard_to_source">Further features of wildcards</a>
+
+</div>
+
+<div data-bind="page: {id: 'send_wildcard_to_source'}">
+    <header class="jumbotron subhead">
+        <h1>Sending the Wildcard to Source</h1>
+
+        <p class="lead">
+            Lorem Ipsum
+        </p>
+    </header>
+
+    <pre class="prettyprint linenums">
+    </pre>
+
+    <a href="#load_into_iframe">Read about loading content into iframes</a>
+
+</div>
+
+<div data-bind="page: {id: 'load_into_iframe'}">
+    <header class="jumbotron subhead">
+        <h1>Loading Content into iframe</h1>
+
+        <p class="lead">
+            Lorem Ipsum
+        </p>
+    </header>
+
+    <pre class="prettyprint linenums">
+    </pre>
+
+    <a href="#configure_iframe">Read more about how to configure the <code>iframe</code></a>
+
+</div>
+
+<div data-bind="page: {id: 'configure_iframe'}">
+    <header class="jumbotron subhead">
+        <h1>Configure an iframe</h1>
+
+        <p class="lead">
+            Lorem Ipsum
+        </p>
+    </header>
+
+    <pre class="prettyprint linenums">
+    </pre>
+
+    <a href="#custom_widgets">Read about custom widgets</a>
+
+</div>
 
 
 </div>

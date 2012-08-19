@@ -11,7 +11,9 @@ _ko.arrayValue = function (arr) {
     });
 };
 
-pager.ChildManager = function (children, route) {
+pager.ChildManager = function (children, route, page) {
+    this.route = route;
+    this.page = page;
 
     var currentChild = null;
 
@@ -71,7 +73,7 @@ pager.extendWithPage = function (viewModel) {
         __id__:Math.random()
     });
 
-    pager.childManager = new pager.ChildManager(viewModel.$page().children, viewModel.$page().route);
+    pager.childManager = new pager.ChildManager(viewModel.$page().children, viewModel.$page().route, viewModel.$page());
 };
 
 
@@ -185,7 +187,9 @@ pager.Page.prototype.init = function () {
     this.childBindingContext = this.bindingContext.createChildContext(ctx);
 
     ko.utils.extend(this.childBindingContext, pagerValues);
-    ko.applyBindingsToDescendants(this.childBindingContext, element);
+    if (!value['withOnShow']) {
+        ko.applyBindingsToDescendants(this.childBindingContext, element);
+    }
     return { controlsDescendantBindings:true};
 };
 
@@ -279,7 +283,6 @@ pager.Page.prototype.show = function () {
 
                     ko.utils.extend(childBindingContext, this.pagerValues);
                     ko.applyBindingsToDescendants(childBindingContext, this.element);
-
                 }, this));
             }
         }
@@ -319,13 +322,16 @@ ko.bindingHandlers.page = {
 
 // page-href
 
+pager.useHTML5history = false;
+pager.rootURI = '/';
+
 ko.bindingHandlers['page-href'] = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         var $page = bindingContext.$page || bindingContext.$data.$page;
         var page = $page();
 
         // The href reacts to changes in the value or the parentRoute.
-        ko.computed(function () {
+        var path = ko.computed(function () {
             var value = ko.utils.unwrapObservable(valueAccessor());
             var parentsToTrim = 0;
             while (value.substring(0, 3) === '../') {
@@ -334,10 +340,24 @@ ko.bindingHandlers['page-href'] = {
             }
 
             var parentPath = _ko.arrayValue(page.parentRoute().slice(0, page.parentRoute().length - parentsToTrim)).join('/');
-            $(element).attr({
-                'href':'#' + (parentPath === '' ? '' : parentPath + '/') + value
-            });
+            var fullPath = (parentPath === '' ? '' : parentPath + '/') + value;
+            var attr = {
+                'href':'#' + fullPath
+            };
+            $(element).attr(attr);
+            return fullPath;
         });
+
+        if (pager.useHTML5history && window.history && history.pushState) {
+            $(element).click(function (e) {
+                e.preventDefault();
+                history.pushState(null, null, pager.rootURI + path());
+                pager.childManager.route(path().split('/'));
+                pager.childManager.showChild();
+
+            });
+        }
+
 
     },
     update:function () {

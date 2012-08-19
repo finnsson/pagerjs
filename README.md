@@ -177,6 +177,22 @@ Based on the total path of the page the binding calculates an absolute href.
       <div data-bind="text: name"></div>
     </div>
 
+### `withOnShow` should lazy bind a new view model to the page
+
+    <div data-bind="page: {id: 'user', withOnShow: someMethod('someMethod')}"></div>
+
+`someMethod` must return a function that takes a callback that takes a view model.
+
+E.g.
+
+    function requireVM(module) {
+      return function(callback) {
+        require([module], function(mod) {
+          callback(mod.getVM());
+        });
+      };
+    }
+
 ### Should match wildcard IDs if no other ID can match exactly
 
     <div data-bind="page: {id: 'admin'}"></div>
@@ -218,23 +234,6 @@ Based on the total path of the page the binding calculates an absolute href.
     <div data-bind="page: {id: 'fry', frame: 'iframe', source: 'fry.html'}">
         <iframe sandbox=""></iframe>
     </div>
-
-### `withOnShow` should lazy bind a new view model to the page
-
-    <div data-bind="page: {id: 'user', withOnShow: someMethod('someMethod')}"></div>
-
-`someMethod` must return a function that takes a callback that takes a view model.
-
-E.g.
-
-    function requireVM(module) {
-      return function(callback) {
-        require([module], function(mod) {
-          callback(mod.getVM());
-        });
-      };
-    }
-
 
 ### Should be possible to route to custom widgets (dialogs, carousels, accordions)
 
