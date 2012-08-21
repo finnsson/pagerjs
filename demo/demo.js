@@ -1,4 +1,4 @@
-require(['jquery', 'knockout', 'underscore', 'pager'], function ($, ko, _, pager) {
+require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap'], function ($, ko, _, pager, bootstrap) {
     var viewModel = {
         name:ko.observable("Pelle"),
         description: ko.observable('pl')
@@ -15,6 +15,8 @@ require(['jquery', 'knockout', 'underscore', 'pager'], function ($, ko, _, pager
     pager.extendWithPage(viewModel);
     ko.applyBindings(viewModel);
     pager.start(viewModel);
+
+    $('.dropdown-toggle').dropdown();
 
 
 });

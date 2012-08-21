@@ -16,7 +16,8 @@
                 jquery:'jquery-1.7.2.min',
                 underscore:'lodash.min',
                 knockout:'knockout-2.1.0',
-                pager:'pager.amd.min'
+                pager:'pager.amd.min',
+                bootstrap:'bootstrap/js/bootstrap.min'
             }
         });
     </script>
@@ -24,7 +25,24 @@
 </head>
 <body onload="prettyPrint()">
 
-<div class="container" style="padding-top: 30px;">
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#start">pager.js</a>
+
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                <ul data-bind="foreach: $page().children" class="dropdown-menu" role="menu"
+                    aria-labelledby="dropdownMenu">
+                    <li><a data-bind="text: valueAccessor().id, attr: {href: '#' + valueAccessor().id}"></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-top: 60px;">
+
 
 <div data-bind="page: {id: 'start'}">
     <header class="jumbotron subhead">
@@ -380,11 +398,37 @@ var requireVM = function (module) {
         <h1>Deep Navigation with Wildcards</h1>
 
         <p class="lead">
-            Lorem Ipsum
+            The wildcard does not need to be at the end. It can be in a sub-page with sub-pages.
         </p>
     </header>
 
+    <div class="well">
+        <div data-bind="page: {id: 'start'}">
+            <a class="btn" href="#deep_navigation_with_wildcards/wild/leela">Go to Leela</a>
+        </div>
+
+        <div data-bind="page: {id: '?'}">
+            <h3>Character</h3>
+
+            <div data-bind="page: {id: 'leela'}">
+                Leela
+            </div>
+        </div>
+    </div>
+
+
     <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;a class="btn" href="#deep_navigation_with_wildcards/wild/leela"&gt;Go to Leela&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div data-bind="page: {id: '?'}"&gt;
+    &lt;h3&gt;Character&lt;/h3&gt;
+
+    &lt;div data-bind="page: {id: 'leela'}"&gt;
+        Leela
+    &lt;/div&gt;
+&lt;/div&gt;
     </pre>
 
     <a href="#send_wildcard_to_source">Further features of wildcards</a>
@@ -396,11 +440,37 @@ var requireVM = function (module) {
         <h1>Sending the Wildcard to Source</h1>
 
         <p class="lead">
-            Lorem Ipsum
+            The page ID that matched the wildcard can be sent to the <code>source:</code> or
+            <code>sourceOnShow:</code>.
+            Just att <code>{1}</code> inside the <code>source:</code> or <code>sourceOnShow:</code>
+            and <code>{1}</code> will be replaced by the page ID.
         </p>
     </header>
 
+    <div class="well">
+        <div data-bind="page: {id: 'start'}">
+            <a href="#send_wildcard_to_source/character/fry">Go to Fry</a>
+        </div>
+
+        <div data-bind="page: {id: 'character'}">
+            <h3>Character</h3>
+
+            <div data-bind="page: {id: '?', sourceOnShow: 'character/{1}.html'}">
+            </div>
+        </div>
+    </div>
+
     <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;a href="#send_wildcard_to_source/character/fry"&gt;Go to Fry&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div data-bind="page: {id: 'character'}"&gt;
+    &lt;h3&gt;Character&lt;/h3&gt;
+
+    &lt;div data-bind="page: {id: '?', sourceOnShow: 'character/{1}.html'}"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
     </pre>
 
     <a href="#load_into_iframe">Read about loading content into iframes</a>
@@ -412,11 +482,17 @@ var requireVM = function (module) {
         <h1>Loading Content into iframe</h1>
 
         <p class="lead">
-            Lorem Ipsum
+            Sometimes it can be sound to use iframes instead of loading content directly into the page.
+            <br/>
+            Just use <code>frame: 'iframe'</code> to load the content from <code>source:</code>
+            or <code>sourceOnShow:</code> into an <code>iframe</code>.
         </p>
     </header>
 
+    <div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}"></div>
+
     <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}"&gt;&lt;/div&gt;
     </pre>
 
     <a href="#configure_iframe">Read more about how to configure the <code>iframe</code></a>
@@ -428,14 +504,146 @@ var requireVM = function (module) {
         <h1>Configure an iframe</h1>
 
         <p class="lead">
-            Lorem Ipsum
+            Often you might need to configure the <code>iframe</code> element used.
+            Just include an <code>iframe</code> element inside the page and that
+            <code>iframe</code> will be used.
         </p>
     </header>
 
+    <div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}">
+        <iframe sandbox="" height="100" width="920"></iframe>
+    </div>
+
     <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}"&gt;
+    &lt;iframe sandbox="" height="100" width="920"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
     </pre>
 
     <a href="#custom_widgets">Read about custom widgets</a>
+
+</div>
+
+<div data-bind="page: {id: 'custom_widgets'}">
+    <header class="jumbotron subhead">
+        <h1>Custom Widgets</h1>
+
+        <p class="lead">
+            pager.js is based on sound object oriented principles, making it easy to extend
+            with new custom widgets.
+            <br/>
+            In this tutorial the custom binding <code>page-accordion-item</code> is demonstrated.
+        </p>
+    </header>
+
+    <p>The page-accordion-item works like</p>
+
+    <div data-bind="page: {id: 'start'}" class="well">
+        <div data-bind="page-accordion-item: {id: 'zoidberg'}">
+            <a href="#custom_widgets/start/zoidberg">Zoidberg</a>
+
+            <div>Zoidberg Information</div>
+        </div>
+        <div data-bind="page-accordion-item: {id: 'hermes'}">
+            <a href="#custom_widgets/start/hermes">Hermes</a>
+
+            <div>Hermes Information</div>
+        </div>
+    </div>
+
+    and is constructed with the markup
+
+    <pre class="prettyprint linenums">
+&lt;div data-bind="page-accordion-item: {id: 'zoidberg'}"&gt;
+    &lt;a href="#custom_widgets/start/zoidberg"&gt;Zoidberg&lt;/a&gt;
+
+    &lt;div&gt;Zoidberg Information&lt;/div&gt;
+&lt;/div&gt;
+&lt;div data-bind="page-accordion-item: {id: 'hermes'}"&gt;
+    &lt;a href="#custom_widgets/start/hermes"&gt;Hermes&lt;/a&gt;
+
+    &lt;div&gt;Hermes Information&lt;/div&gt;
+&lt;/div&gt;
+    </pre>
+
+
+    <p>
+        First we need to create a class that inherits from <code>pager.Page</code>.
+    </p>
+
+    <pre class="prettyprint linenums">
+pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    pager.Page.apply(this, arguments);
+};
+pager.PageAccordionItem.prototype = new pager.Page();
+    </pre>
+
+    <p>
+        The <code>Page</code> class got these methods to override:
+    </p>
+    <pre class="prettyprint linenums">
+init : void
+getValue : void
+getPage : void
+sourceUrl : String
+loadSource : String
+show: void
+showElement: void
+hideElement : void
+isVisible : void
+    </pre>
+
+    <p>
+        We want our custom binding to always show the first child element and only hide the second child element.
+        Thus we need to override <code>showElement</code>, <code>hideElement</code> and <code>isVisible</code>.
+        <code>showElement</code> should show the second child, <code>hideElement</code> should hide the second child
+        and <code>isVisible</code> should return true if the second child is visible.
+    </p>
+
+
+    <pre class="prettyprint linenums">
+// get second child
+pager.PageAccordionItem.prototype.getAccordionBody = function () {
+    return $(this.element).children()[1];
+};
+
+// hide second child
+pager.PageAccordionItem.prototype.hideElement = function () {
+    // use hide if it is the first time the page is hidden
+    if (!this.pageAccordionItemHidden) {
+        this.pageAccordionItemHidden = true;
+        $(this.getAccordionBody()).hide();
+    } else { // else use a slideUp animation
+        $(this.getAccordionBody()).slideUp();
+    }
+};
+
+// show the second child using a slideDown animation
+pager.PageAccordionItem.prototype.showElement = function () {
+    $(this.getAccordionBody()).slideDown();
+};
+
+// return true if the second child is visible
+pager.PageAccordionItem.prototype.isVisible = function () {
+    return $(this.getAccordionBody()).is(':visible');
+};
+    </pre>
+
+    <p>
+        Finally you need to add the new class as a new custom binding.
+    </p>
+
+        <pre class="prettyprint linenums">
+ko.bindingHandlers['page-accordion-item'] = {
+    init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        var pageAccordionItem = new pager.PageAccordionItem(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+        pageAccordionItem.init();
+    },
+    update:function () {
+    }
+};
+        </pre>
+
 
 </div>
 
