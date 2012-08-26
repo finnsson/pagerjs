@@ -4,7 +4,7 @@ pager.js provides the possibility of creating single page applications in a decl
 
 This makes it easier to design large scale single page web sites.
 
-See the [demo](demo/).
+See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
 
 ## Getting Started
 

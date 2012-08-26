@@ -74,14 +74,14 @@ pager.start = function (viewModel) {
 };
 
 pager.extendWithPage = function (viewModel) {
-    viewModel.$page = ko.observable({
+    viewModel.$page = {
         children:ko.observableArray([]),
         route:ko.observableArray([]),
         parentRoute:ko.observableArray([]),
         __id__:Math.random()
-    });
+    };
 
-    pager.childManager = new pager.ChildManager(viewModel.$page().children, viewModel.$page().route, viewModel.$page());
+    pager.childManager = new pager.ChildManager(viewModel.$page.children, viewModel.$page.route, viewModel.$page);
 };
 
 
@@ -93,7 +93,7 @@ pager.route = function ($page, hash) {
     // split on '/'
     var hashRoute = hash.split('/');
     // update route
-    $page().route(hashRoute);
+    $page.route(hashRoute);
 
     pager.childManager.showChild();
 
@@ -142,7 +142,6 @@ pager.Page.prototype.init = function () {
         }, this),
         hide:_.bind(function (callback) {
             this.hideElementWrapper(callback);
-            //$(element).hide();
         }, this)
     });
 
@@ -162,12 +161,12 @@ pager.Page.prototype.init = function () {
     });
     var childManager = null;
     var pagerValues = {
-        "$page":ko.observable({
+        "$page":{
             children:ko.observableArray([]),
             parentRoute:parentRoute,
             route:route,
             __id__:Math.random()
-        })
+        }
     };
     this.pagerValues = pagerValues;
 
@@ -175,7 +174,7 @@ pager.Page.prototype.init = function () {
     this.hideElement();
     //$(element).hide();
 
-    childManager = new pager.ChildManager(pagerValues.$page().children, route);
+    childManager = new pager.ChildManager(pagerValues.$page.children, route);
 
     // Fetch source
     if (value.source) {
@@ -213,7 +212,7 @@ pager.Page.prototype.getValue = function () {
  * @return {*}
  */
 pager.Page.prototype.getPage = function () {
-    return (this.bindingContext.$page || this.bindingContext.$data.$page)();
+    return this.bindingContext.$page || this.bindingContext.$data.$page;
 };
 
 /**
@@ -370,7 +369,7 @@ pager.rootURI = '/';
 ko.bindingHandlers['page-href'] = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         var $page = bindingContext.$page || bindingContext.$data.$page;
-        var page = $page();
+        var page = $page;
 
         // The href reacts to changes in the value or the parentRoute.
         var path = ko.computed(function () {
