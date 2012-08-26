@@ -260,7 +260,101 @@ circumvent the routing using the router used. Just do not use `pager.start`.
 
 ## In the pipeline
 
-* Write an extensive example and push it to gh-pages branch.
+### Should be possible to run custom JS on "before/after navigate from/to"
+
+There are four alternatives:
+
+* global registration using `pager.route`
+* global data binding on body using `click`
+* local data binding on anchor using `click`
+* local data binding on page using `beforeHide`, `afterHide`, `beforeShow`, and `afterShow`
+
+
+    // global registration using pager.route
+    var pager = viewModel.pager();
+    ko.computed(function() {
+      // this method is triggered every time route is changed
+      console.error(pager.route());
+    });
+
+    <body data-bind="click: globalClick">
+
+        // local data binding on page
+        <div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden}
+
+        // local data binding on anchor using click
+        <a data-bind="page-href: 'fry' click: anchorClicked}">Go to Fry</a>
+
+    </body>
+
+    var beforeFryIsHidden = function(page) {
+        console.error(page);
+    };
+
+    var anchorClicked = function(page, e) {
+        // otherwise the event will be stopped
+        return true;
+    };
+
+    var globalClick = function() {
+        // otherwise the event will be stopped
+        return true;
+    };
+
+The click data-binding can be used to run validations before navigations. Just do not `return true`
+to prevent the navigation from happening.
+
+### Should be possible to supply custom showElement and hideElement-methods
+
+    <div data-bind="page: {id: 'fry', showElement: showFry, hideElement: hideFry}">
+      Fry
+    </div>
+
+    // new default hide
+    pager.hideElement = function(callback) {
+      $(this.element).slideUp(600);
+      if(callback) {
+        callback();
+      }
+    };
+
+    // new default show
+    pager.showElement = function(callback) {
+      $(this.element).slideDown(600);
+      if(callback) {
+        callback();
+      }
+    };
+
+    var showFry = function(callback) {
+      $(this.element).fadeIn(500, callback);
+    };
+    var hideFry = function(callback) {
+      $(this.element).fadeOut(500, callback);
+    };
+
+### Should be possible to change the page title
+
+    <div data-bind="page: {id: 'fry', title: 'Fry'}">
+      Fry
+    </div>
+
+Setting the 'title' configuration property will update the document title when navigating to
+the page.
+
+### Should be possible to specify loaders in pages
+
+### Should be possible to specify global loaders
+
+### Tab panel custom widget
+
+### Wildcards should deep-load content if configured so
+
+    <a href="some/other/url">Go to some/other/url.html</a>
+
+    <div data-bind="page: {id: '?', deep: true, sourceOnShow: '{?}.html'}>
+    </div>
+
 
 ## Backlog
 
@@ -268,22 +362,43 @@ There are a lot of features waiting to be implemented. Here are some of them.
 
 ### Custom Widgets
 
-#### Tab Panel
+#### Site map custom widget
 
-#### Panel
+### Should be possible to use a page as template for other pages
 
-### Should be possible to specify page transitions between sub pages
+    <div id="sourceTpl" data-tpl="page: {sourceCache: true, sourceOnShow: '{?}.html'}">
+      <div class="loader">
+        The page is loading...
+      </div>
+    </div>
 
-### Should be possible to specify loaders text on pages
+    <div data-bind="page: {id: 'fry', tpl: 'sourceTpl'}">
+    </div>
 
-### Should be possible to run custom JS on "navigate to"
+### Should be possible to navigate into a layer (modal dialog) without losing context
 
-### Should be possible to run custom JS on "navigate from"
+    <div data-bind="page: {id: 'start'}">
+      <div data-bind="page: {id: 'admin'}>
+        <a href="#start/admin/ok">Show OK</a>
+      </div>
+      <div data-bind="page: {id: 'ok', modal: true, title: 'OK?'}">
+            <a href="#admin">OK?</a>
+      </div>
+    </div>
 
-### Should be possible to run custom JS on "navigate failed"
+If a `page` is set to `modal` is can match IDs deeper down the hierarchy. In this case
+start/ok also matches start/admin/ok making the page available as a modal dialog
+in other contexts.
 
-### Should be possible to change the page title
+### Should be possible to navigate into a layer (modal dialog) and lose context
 
-### Should be possible to navigate into a layer without loosing context
+    <div data-bind="page: {id: 'start'}">
+      <div data-bind="page: {id: 'admin'}>
+        <a href="#start/ok">Show OK</a>
+      </div>
+      <div data-bind="page: {id: 'ok', modal: true}">
+            <a href="#admin">OK?</a>
+      </div>
+    </div>
 
-### Should be possible to navigate into a layer and loose context
+Losing the context is nothing special. Just navigate away form the current page.

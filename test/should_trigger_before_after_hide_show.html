@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should trigger before after hide show</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'first', hideElement: hideElement, beforeShow: beforeShowFirst, afterShow: afterShowFirst, beforeHide: beforeHideFirst, afterHide: afterHideFirst}">
+    First
+</div>
+
+<div data-bind="page: {id: 'second', showElement: showElement, title: 'Second page!!!'}">
+    Second
+</div>
+
+
+<script type="text/javascript">
+    var beforeShowFirst = ko.observable(false);
+    var afterShowFirst = ko.observable(false);
+    var beforeHideFirst = ko.observable(false);
+    var afterHideFirst = ko.observable(false);
+
+    var viewModel = {
+        hideElement:function (callback) {
+            $(this.element).slideUp(600);
+            if (callback) {
+                callback();
+            }
+        },
+        showElement:function (callback) {
+            $(this.element).slideDown(600, callback);
+        },
+        beforeShowFirst:function () {
+            beforeShowFirst(true);
+        },
+        afterShowFirst:function () {
+            afterShowFirst(true);
+        },
+        beforeHideFirst:function () {
+            beforeHideFirst(true);
+        },
+        afterHideFirst:function () {
+            afterHideFirst(true);
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("should trigger before after hide show", function () {
+
+        until(function () {
+            return beforeShowFirst() && afterShowFirst();
+        }, function () {
+            ok(true, "beforeShow and afterShow is triggered");
+            until(function () {
+                return beforeHideFirst() && afterHideFirst();
+            }, function () {
+                ok(true, "beforeHide and afterHide is triggered");
+                equal(window.document.title, "Second page!!!");
+                start();
+            });
+            window.location.hash = '#second';
+
+        });
+        window.location.hash = '#first';
+
+    });
+</script>
+
+
+</body>
+</html>

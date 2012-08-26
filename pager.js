@@ -26,10 +26,12 @@ pager.ChildManager = function (children, route, page) {
      2. Make use of children
      */
     this.showChild = function () {
-        if (currentChild) {
-            currentChild.hide();
-            currentChild = null;
-        }
+        /*if (currentChild) {
+         currentChild.hide();
+         currentChild = null;
+         }*/
+        var oldCurrentChild = currentChild;
+        currentChild = null;
         var match = false;
         var currentRoute = route()[0];
         var wildcard = null;
@@ -50,7 +52,13 @@ pager.ChildManager = function (children, route, page) {
         if (!currentChild) {
             currentChild = wildcard;
         }
-        if (currentChild) {
+        if (oldCurrentChild) {
+            oldCurrentChild.hide(function () {
+                if (currentChild) {
+                    currentChild.show();
+                }
+            });
+        } else if (currentChild) {
             currentChild.show();
         }
     };
@@ -129,12 +137,11 @@ pager.Page.prototype.init = function () {
         element:element,
         page:page,
         show:_.bind(function () {
-
             this.show();
             childManager.showChild();
         }, this),
-        hide:_.bind(function () {
-            this.hideElement();
+        hide:_.bind(function (callback) {
+            this.hideElementWrapper(callback);
             //$(element).hide();
         }, this)
     });
@@ -269,42 +276,77 @@ pager.Page.prototype.loadSource = function (source) {
 /**
  * @method show
  */
-pager.Page.prototype.show = function () {
+pager.Page.prototype.show = function (callback) {
     var element = this.element;
     var value = this.getValue();
-    var $element = $(element);
-    if (!this.isVisible()) {
-        this.showElement();
-        if (value.withOnShow) {
-            if (!this.withOnShowLoaded) {
-                this.withOnShowLoaded = true;
-                value.withOnShow(_.bind(function (vm) {
-                    var childBindingContext = this.bindingContext.createChildContext(vm);
+    this.showElementWrapper(callback);
+    if(this.getValue().title) {
+        window.document.title = this.getValue().title;
+    }
+    if (value.withOnShow) {
+        if (!this.withOnShowLoaded) {
+            this.withOnShowLoaded = true;
+            value.withOnShow(_.bind(function (vm) {
+                var childBindingContext = this.bindingContext.createChildContext(vm);
 
-                    ko.utils.extend(childBindingContext, this.pagerValues);
-                    ko.applyBindingsToDescendants(childBindingContext, this.element);
-                }, this));
-            }
+                ko.utils.extend(childBindingContext, this.pagerValues);
+                ko.applyBindingsToDescendants(childBindingContext, this.element);
+            }, this));
         }
+    }
 
-        // Fetch source
-        if (value.sourceOnShow) {
-            if (!value.sourceCache ||
-                !element.__pagerLoaded__ ||
-                (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < Date.now())) {
-                element.__pagerLoaded__ = Date.now();
-                this.loadSource(value.sourceOnShow);
-            }
+    // Fetch source
+    if (value.sourceOnShow) {
+        if (!value.sourceCache ||
+            !element.__pagerLoaded__ ||
+            (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < Date.now())) {
+            element.__pagerLoaded__ = Date.now();
+            this.loadSource(value.sourceOnShow);
         }
     }
 };
 
-pager.Page.prototype.showElement = function () {
-    $(this.element).show();
+pager.Page.prototype.showElementWrapper = function (callback) {
+    if (this.getValue().beforeShow) {
+        this.getValue().beforeShow(this);
+    }
+    this.showElement(callback);
+    if (this.getValue().afterShow) {
+        this.getValue().afterShow(this);
+    }
 };
 
-pager.Page.prototype.hideElement = function () {
-    $(this.element).hide();
+pager.Page.prototype.showElement = function (callback) {
+    if (this.getValue().showElement) {
+        this.getValue().showElement.call(this, callback);
+    } else if(pager.showElement) {
+        pager.showElement.call(this, callback);
+    } else {
+        $(this.element).show(callback);
+    }
+};
+
+pager.Page.prototype.hideElementWrapper = function (callback) {
+    if (this.getValue().beforeHide) {
+        this.getValue().beforeHide(this);
+    }
+    this.hideElement(callback);
+    if (this.getValue().afterHide) {
+        this.getValue().afterHide(this);
+    }
+};
+
+pager.Page.prototype.hideElement = function (callback) {
+    if (this.getValue().hideElement) {
+        this.getValue().hideElement.call(this, callback);
+    } else if(pager.hideElement) {
+        pager.hideElement.call(this, callback);
+    } else {
+        $(this.element).hide();
+        if (callback) {
+            callback();
+        }
+    }
 };
 
 pager.Page.prototype.isVisible = function () {
@@ -376,21 +418,23 @@ pager.PageAccordionItem.prototype.getAccordionBody = function () {
     return $(this.element).children()[1];
 };
 
-pager.PageAccordionItem.prototype.hideElement = function () {
+pager.PageAccordionItem.prototype.hideElement = function (callback) {
     if (!this.pageAccordionItemHidden) {
         this.pageAccordionItemHidden = true;
         $(this.getAccordionBody()).hide();
     } else {
         $(this.getAccordionBody()).slideUp();
+        if(callback) {
+            callback();
+        }
     }
 };
 
-pager.PageAccordionItem.prototype.showElement = function () {
+pager.PageAccordionItem.prototype.showElement = function (callback) {
     $(this.getAccordionBody()).slideDown();
-};
-
-pager.PageAccordionItem.prototype.isVisible = function () {
-    return $(this.getAccordionBody()).is(':visible');
+    if(callback) {
+        callback();
+    }
 };
 
 ko.bindingHandlers['page-accordion-item'] = {
