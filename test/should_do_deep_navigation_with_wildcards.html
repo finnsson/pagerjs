@@ -45,17 +45,28 @@
 
     asyncTest("should match wildcard", function () {
 
-        $(window).one('hashchange', function () {
+
+        window.location.hash = '#user/pelle';
+
+        until(function () {
+            return $('#pelle').is(':visible');
+        }, function () {
+            console.error("1");
             equal($('#pelle').is(':visible'), true, 'pelle is visible');
             equal($('#start').is(':visible'), false, 'start is hidden');
 
-            $(window).one('hashchange', function () {
+
+            window.location.hash = '#user/other';
+
+            until(function () {
+                return $('#wild').is(':visible');
+            }, function () {
+                console.error("2");
                 equal($('#wild').is(':visible'), true, 'wild is visible');
                 start();
             });
-            window.location.hash = '#user/other';
+
         });
-        window.location.hash = '#user/pelle';
 
     });
 </script>

@@ -12,6 +12,7 @@ _ko.arrayValue = function (arr) {
 };
 
 pager.ChildManager = function (children, route, page) {
+    var me = this;
     this.route = route;
     this.page = page;
 
@@ -26,10 +27,6 @@ pager.ChildManager = function (children, route, page) {
      2. Make use of children
      */
     this.showChild = function () {
-        /*if (currentChild) {
-         currentChild.hide();
-         currentChild = null;
-         }*/
         var oldCurrentChild = currentChild;
         currentChild = null;
         var match = false;
@@ -49,17 +46,47 @@ pager.ChildManager = function (children, route, page) {
                 }
             }
         });
+        // find modals in parent - but only if this page is not a modal!
+        var isModal = false;
+        if (!currentChild && me.page.parentPage) {
+            var parentChildren = me.page.parentPage.children;
+            _.each(parentChildren(), function (child) {
+                if (!match) {
+                    var id = _ko.value(_ko.value(child.valueAccessor()).id);
+                    var modal = _ko.value(_ko.value(child.valueAccessor()).modal);
+                    if (modal) {
+                        if (id === currentRoute ||
+                            ((currentRoute === '' || currentRoute == null) && id === 'start')) {
+                            match = true;
+                            currentChild = child;
+                            isModal = true;
+                        }
+                        if (id === '?' && !wildcard) {
+                            wildcard = child;
+                        }
+                    }
+                }
+            });
+
+        }
         if (!currentChild) {
             currentChild = wildcard;
         }
+        if (oldCurrentChild === currentChild && oldCurrentChild) {
+            // TODO: solve the infinite recursion bug in some better way. This seems to solve it for now.
+            if (!isModal) {
+                oldCurrentChild.showPage();
+            }
+            return;
+        }
         if (oldCurrentChild) {
-            oldCurrentChild.hide(function () {
+            oldCurrentChild.hidePage(function () {
                 if (currentChild) {
-                    currentChild.show();
+                    currentChild.showPage();
                 }
             });
         } else if (currentChild) {
-            currentChild.show();
+            currentChild.showPage();
         }
     };
 };
@@ -117,6 +144,22 @@ pager.Page = function (element, valueAccessor, allBindingsAccessor, viewModel, b
     this.allBindingsAccessor = allBindingsAccessor;
     this.viewModel = viewModel;
     this.bindingContext = bindingContext;
+
+    this.childManager = null;
+    this.children = null;
+    this.parentRoute = null;
+    this.route = null;
+    this.parentPage = null;
+    this.__id__ = null;
+};
+
+pager.Page.prototype.showPage = function() {
+    this.show();
+    this.childManager.showChild();
+};
+
+pager.Page.prototype.hidePage = function(callback) {
+    this.hideElementWrapper(callback);
 };
 
 /**
@@ -131,19 +174,7 @@ pager.Page.prototype.init = function () {
     var parentRoute = ko.observableArray([]);
     var element = this.element;
 
-
-    page.children.push({
-        valueAccessor:this.valueAccessor,
-        element:element,
-        page:page,
-        show:_.bind(function () {
-            this.show();
-            childManager.showChild();
-        }, this),
-        hide:_.bind(function (callback) {
-            this.hideElementWrapper(callback);
-        }, this)
-    });
+    page.children.push(this);
 
     // computed observable that triggers on parent route changes
     // and might trigger changes down to child pages
@@ -159,29 +190,28 @@ pager.Page.prototype.init = function () {
             parentRoute([id]);
         }
     });
-    var childManager = null;
+
+    this.route = route;
+    this.parentPage = page;
+    this.parentRoute = parentRoute;
+    this.children = ko.observableArray([]);
+
     var pagerValues = {
-        "$page":{
-            children:ko.observableArray([]),
-            parentRoute:parentRoute,
-            route:route,
-            __id__:Math.random()
-        }
+        $page : this
     };
+
     this.pagerValues = pagerValues;
 
 
     this.hideElement();
-    //$(element).hide();
 
-    childManager = new pager.ChildManager(pagerValues.$page.children, route);
+    this.childManager = new pager.ChildManager(pagerValues.$page.children, route, pagerValues.$page);
 
     // Fetch source
     if (value.source) {
         this.loadSource(value.source);
     }
 
-    //var childBindingContext = this.bindingContext.createChildContext(value['with'] ? ko.utils.unwrapObservable(value['with']) : this.viewModel);
     var ctx = null;
     if (value['with']) {
         ctx = _ko.value(value['with']);
@@ -279,7 +309,7 @@ pager.Page.prototype.show = function (callback) {
     var element = this.element;
     var value = this.getValue();
     this.showElementWrapper(callback);
-    if(this.getValue().title) {
+    if (this.getValue().title) {
         window.document.title = this.getValue().title;
     }
     if (value.withOnShow) {
@@ -318,7 +348,7 @@ pager.Page.prototype.showElementWrapper = function (callback) {
 pager.Page.prototype.showElement = function (callback) {
     if (this.getValue().showElement) {
         this.getValue().showElement.call(this, callback);
-    } else if(pager.showElement) {
+    } else if (pager.showElement) {
         pager.showElement.call(this, callback);
     } else {
         $(this.element).show(callback);
@@ -338,7 +368,7 @@ pager.Page.prototype.hideElementWrapper = function (callback) {
 pager.Page.prototype.hideElement = function (callback) {
     if (this.getValue().hideElement) {
         this.getValue().hideElement.call(this, callback);
-    } else if(pager.hideElement) {
+    } else if (pager.hideElement) {
         pager.hideElement.call(this, callback);
     } else {
         $(this.element).hide();
@@ -423,7 +453,7 @@ pager.PageAccordionItem.prototype.hideElement = function (callback) {
         $(this.getAccordionBody()).hide();
     } else {
         $(this.getAccordionBody()).slideUp();
-        if(callback) {
+        if (callback) {
             callback();
         }
     }
@@ -431,7 +461,7 @@ pager.PageAccordionItem.prototype.hideElement = function (callback) {
 
 pager.PageAccordionItem.prototype.showElement = function (callback) {
     $(this.getAccordionBody()).slideDown();
-    if(callback) {
+    if (callback) {
         callback();
     }
 };
