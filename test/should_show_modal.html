@@ -16,26 +16,22 @@
 <div data-bind="page: {id: 'first'}">
     First
 
-    <div data-bind="page: {id: 'second', afterShow: afterSecondShow}">
+    <div id="second" data-bind="page: {id: 'second'}">
         Second
     </div>
 
-    <div data-bind="page: {id: 'ok', modal: true, afterShow: afterModalShow}">
+    <div id="normal" data-bind="page: {id: 'normal'}">
+        Normal
+    </div>
+
+    <div id="modal" data-bind="page: {id: 'ok', modal: true}">
         Modal
     </div>
 
 </div>
 
 <script type="text/javascript">
-    var secondShow = ko.observable(false);
-    var modalShow = ko.observable(false);
     var viewModel = {
-        afterSecondShow:function () {
-            secondShow(true);
-        },
-        afterModalShow:function () {
-            modalShow(true);
-        }
     };
 
     pager.extendWithPage(viewModel);
@@ -50,14 +46,37 @@
 
     asyncTest("Should show modal", function () {
 
-        ko.computed(function() {
-            if(secondShow() && modalShow()) {
-                ok(true, "Modal is displayed");
-                start();
-            }
-        });
-
         window.location.hash = '#first/second/ok';
+
+        ok(true, "not now");
+        start();
+
+        /*
+
+        until(function () {
+            return $('#modal').is(':visible');
+        }, function () {
+            ok(true, "Modal is displayed");
+
+            window.location.hash = '#first/normal';
+
+            until(function () {
+                return $('#normal').is(':visible');
+            }, function () {
+                window.location.hash = '#first/ok';
+                until(function () {
+                    return $('#modal').is(':visible');
+                }, function () {
+                    ok(true, 'Modal is visible and second div is hidden');
+                    start();
+                });
+
+            });
+
+
+        });
+        */
+
 
     });
 </script>

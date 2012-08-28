@@ -48,6 +48,7 @@ pager.ChildManager = function (children, route, page) {
         });
         // find modals in parent - but only if this page is not a modal!
         var isModal = false;
+        /*
         if (!currentChild && me.page.parentPage) {
             var parentChildren = me.page.parentPage.children;
             _.each(parentChildren(), function (child) {
@@ -67,18 +68,18 @@ pager.ChildManager = function (children, route, page) {
                     }
                 }
             });
-
         }
+        */
         if (!currentChild) {
             currentChild = wildcard;
         }
+        /*
         if (oldCurrentChild === currentChild && oldCurrentChild) {
-            // TODO: solve the infinite recursion bug in some better way. This seems to solve it for now.
-            if (!isModal) {
+            if(!$(oldCurrentChild.element).is(':visible')) {
                 oldCurrentChild.showPage();
             }
             return;
-        }
+        }*/
         if (oldCurrentChild) {
             oldCurrentChild.hidePage(function () {
                 if (currentChild) {
@@ -396,6 +397,7 @@ ko.bindingHandlers.page = {
 pager.useHTML5history = false;
 pager.rootURI = '/';
 
+// TODO: extract this into a separate class pager.PageHref
 ko.bindingHandlers['page-href'] = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         var $page = bindingContext.$page || bindingContext.$data.$page;
