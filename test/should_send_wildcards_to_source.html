@@ -50,7 +50,7 @@
             until(function () {
                 return isLoaded();
             }, function () {
-                equal($('.content').text().trim(), 'Lorem Ipsum', "lorem.html is loaded");
+                equal($('.content').text().trim(), 'Lorem Ipsum', "lorem.html should be loaded");
                 start();
             });
         });
