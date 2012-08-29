@@ -13,9 +13,21 @@ _ko.arrayValue = function (arr) {
 
 pager.ChildManager = function (children, page) {
 
-    var currentChild = null;
+    //this.currentChild = children[0];
+    this.currentChildO = ko.observable(null);
     var me = this;
     this.page = page;
+
+    this.hideChild = function () {
+        if (me.currentChild) {
+            if (me.currentChild.getId() !== 'start') {
+                me.currentChild.hidePage(function () {
+                });
+                me.currentChild = null;
+                me.currentChildO(null);
+            }
+        }
+    };
 
     /*
 
@@ -26,8 +38,8 @@ pager.ChildManager = function (children, page) {
      2. Make use of children
      */
     this.showChild = function (route) {
-        var oldCurrentChild = currentChild;
-        currentChild = null;
+        var oldCurrentChild = me.currentChild;
+        me.currentChild = null;
         var match = false;
         var currentRoute = route[0];
         var wildcard = null;
@@ -37,7 +49,7 @@ pager.ChildManager = function (children, page) {
                 if (id === currentRoute ||
                     ((currentRoute === '' || currentRoute == null) && id === 'start')) {
                     match = true;
-                    currentChild = child;
+                    me.currentChild = child;
                 }
                 if (id === '?') {
                     wildcard = child;
@@ -47,7 +59,37 @@ pager.ChildManager = function (children, page) {
         // find modals in parent - but only if 1) no match is found, 2) this page got a parent and 3) this page is not a modal!
         var isModal = false;
 
-        if (!currentChild && me.page.parentPage && !me.page.getValue().modal) {
+        var currentChildManager = me;
+
+        while(!me.currentChild && currentChildManager.page.parentPage && !currentChildManager.page.getValue().modal) {
+            var parentChildren = currentChildManager.page.parentPage.children;
+            _.each(parentChildren(), function (child) {
+                if (!match) {
+                    var id = child.getId();
+                    var modal = child.getValue().modal;
+                    if (modal) {
+                        if (id === currentRoute ||
+                            ((currentRoute === '' || currentRoute == null) && id === 'start')) {
+                            match = true;
+                            me.currentChild = child;
+                            isModal = true;
+                        }
+                        if (id === '?' && !wildcard) {
+                            wildcard = child;
+                            isModal = true;
+                        }
+                    }
+                }
+            });
+            if(!me.currentChild) {
+                currentChildManager = currentChildManager.page.parentPage.childManager;
+            }
+        }
+
+
+
+        /*
+        if (!me.currentChild && me.page.parentPage && !me.page.getValue().modal) {
             var parentChildren = me.page.parentPage.children;
             _.each(parentChildren(), function (child) {
                 if (!match) {
@@ -57,7 +99,7 @@ pager.ChildManager = function (children, page) {
                         if (id === currentRoute ||
                             ((currentRoute === '' || currentRoute == null) && id === 'start')) {
                             match = true;
-                            currentChild = child;
+                            me.currentChild = child;
                             isModal = true;
                         }
                         if (id === '?' && !wildcard) {
@@ -68,19 +110,33 @@ pager.ChildManager = function (children, page) {
                 }
             });
         }
+        */
 
-        if (!currentChild && wildcard) {
-            currentChild = wildcard;
-            currentChild.currentId = currentRoute;
+
+        if (!me.currentChild && wildcard) {
+            me.currentChild = wildcard;
+            me.currentChild.currentId = currentRoute;
         }
-        if (oldCurrentChild) {
+        if (me.currentChild) {
+            me.currentChildO(me.currentChild);
+
+            if(isModal) {
+                me.currentChild.currentParentPage(me.page);
+            } else {
+                me.currentChild.currentParentPage(null);
+            }
+
+        }
+        if (oldCurrentChild && oldCurrentChild === me.currentChild) {
+            me.currentChild.showPage(route.slice(1));
+        } else if (oldCurrentChild) {
             oldCurrentChild.hidePage(function () {
-                if (currentChild) {
-                    currentChild.showPage(route.slice(1));
+                if (me.currentChild) {
+                    me.currentChild.showPage(route.slice(1));
                 }
             });
-        } else if (currentChild) {
-            currentChild.showPage(route.slice(1));
+        } else if (me.currentChild) {
+            me.currentChild.showPage(route.slice(1));
         }
     };
 };
@@ -138,15 +194,18 @@ pager.Page = function (element, valueAccessor, allBindingsAccessor, viewModel, b
     this.childManager = new pager.ChildManager(this.children, this);
     this.parentPage = null;
     this.currentId = null;
+
+    this.currentParentPage = ko.observable(null);
 };
 
-pager.Page.prototype.showPage = function(route) {
+pager.Page.prototype.showPage = function (route) {
     this.show();
     this.childManager.showChild(route);
 };
 
-pager.Page.prototype.hidePage = function(callback) {
+pager.Page.prototype.hidePage = function (callback) {
     this.hideElementWrapper(callback);
+    this.childManager.hideChild();
 };
 
 /**
@@ -177,7 +236,7 @@ pager.Page.prototype.init = function () {
     }
     this.childBindingContext = this.bindingContext.createChildContext(ctx);
 
-    ko.utils.extend(this.childBindingContext, {$page: this});
+    ko.utils.extend(this.childBindingContext, {$page:this});
     if (!value['withOnShow']) {
         ko.applyBindingsToDescendants(this.childBindingContext, this.element);
     }
@@ -200,7 +259,7 @@ pager.Page.prototype.getParentPage = function () {
     return this.bindingContext.$page || this.bindingContext.$data.$page;
 };
 
-pager.Page.prototype.getId = function() {
+pager.Page.prototype.getId = function () {
     return _ko.value(this.getValue().id);
 };
 
@@ -276,7 +335,7 @@ pager.Page.prototype.show = function (callback) {
             value.withOnShow(_.bind(function (vm) {
                 var childBindingContext = this.bindingContext.createChildContext(vm);
 
-                ko.utils.extend(childBindingContext, {$page: this});
+                ko.utils.extend(childBindingContext, {$page:this});
                 ko.applyBindingsToDescendants(childBindingContext, this.element);
             }, this));
         }
@@ -340,14 +399,20 @@ pager.Page.prototype.isVisible = function () {
     return $(this.element).is(':visible');
 };
 
-pager.Page.prototype.getFullRoute = function() {
-    if(this.parentPage) {
-        var res = this.parentPage.getFullRoute();
-        res.push(this.getId());
-        return res;
-    } else { // is root page
-        return [];
-    }
+pager.Page.prototype.getFullRoute = function () {
+    return ko.computed(function () {
+        if (this.currentParentPage && this.currentParentPage()) {
+            var res = this.currentParentPage().getFullRoute()();
+            res.push(this.getId());
+            return res;
+        } else if (this.parentPage) {
+            var res = this.parentPage.getFullRoute()();
+            res.push(this.getId());
+            return res;
+        } else { // is root page
+            return [];
+        }
+    }, this);
 };
 
 ko.bindingHandlers.page = {
@@ -379,7 +444,7 @@ ko.bindingHandlers['page-href'] = {
                 value = value.slice(3);
             }
 
-            var fullRoute = page.getFullRoute();
+            var fullRoute = page.getFullRoute()();
             var parentPath = fullRoute.slice(0, fullRoute.length - parentsToTrim).join('/');
             var fullPath = (parentPath === '' ? '' : parentPath + '/') + value;
             var attr = {

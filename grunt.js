@@ -31,6 +31,10 @@ module.exports = function (grunt) {
             amd:{
                 src:['<banner:meta.banner>', '<banner:meta.amdStart>', '<file_strip_banner:pager.js>', '<banner:meta.amdEnd>'],
                 dest:'dist/pager.amd.concat.js'
+            },
+            amddemo:{
+                src:['<banner:meta.banner>', '<banner:meta.amdStart>', '<file_strip_banner:pager.js>', '<banner:meta.amdEnd>'],
+                dest:'demo/pager.amd.min.js'
             }
         },
         min:{

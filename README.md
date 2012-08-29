@@ -258,7 +258,46 @@ One custom widget (`page-accordion-item`) is already implemented.
 Since pager is not responsible for listening on the location it is possible to
 circumvent the routing using the router used. Just do not use `pager.start`.
 
+### Should be possible to navigate into a layer (modal dialog) without losing context
+
+    <div data-bind="page: {id: 'start'}">
+      <div data-bind="page: {id: 'admin'}>
+        <a href="#start/admin/ok">Show OK</a>
+      </div>
+      <div data-bind="page: {id: 'ok', modal: true, title: 'OK?'}">
+            <a href="#admin">OK?</a>
+      </div>
+    </div>
+
+If a `page` is set to `modal` is can match IDs deeper down the hierarchy. In this case
+start/ok also matches start/admin/ok making the page available as a modal dialog
+in other contexts.
+
+### Should be possible to navigate into a layer (modal dialog) and lose context
+
+    <div data-bind="page: {id: 'start'}">
+      <div data-bind="page: {id: 'admin'}>
+        <a href="#start/ok">Show OK</a>
+      </div>
+      <div data-bind="page: {id: 'ok', modal: true}">
+            <a href="#admin">OK?</a>
+      </div>
+    </div>
+
+Losing the context is nothing special. Just navigate away form the current page.
+
+### Should be possible to change the page title
+
+    <div data-bind="page: {id: 'fry', title: 'Fry'}">
+      Fry
+    </div>
+
+Setting the 'title' configuration property will update the document title when navigating to
+the page.
+
+
 ## In the pipeline
+
 
 ### Should be possible to run custom JS on "before/after navigate from/to"
 
@@ -333,15 +372,6 @@ to prevent the navigation from happening.
       $(this.element).fadeOut(500, callback);
     };
 
-### Should be possible to change the page title
-
-    <div data-bind="page: {id: 'fry', title: 'Fry'}">
-      Fry
-    </div>
-
-Setting the 'title' configuration property will update the document title when navigating to
-the page.
-
 ### Should be possible to specify loaders in pages
 
 ### Should be possible to specify global loaders
@@ -374,31 +404,3 @@ There are a lot of features waiting to be implemented. Here are some of them.
 
     <div data-bind="page: {id: 'fry', tpl: 'sourceTpl'}">
     </div>
-
-### Should be possible to navigate into a layer (modal dialog) without losing context
-
-    <div data-bind="page: {id: 'start'}">
-      <div data-bind="page: {id: 'admin'}>
-        <a href="#start/admin/ok">Show OK</a>
-      </div>
-      <div data-bind="page: {id: 'ok', modal: true, title: 'OK?'}">
-            <a href="#admin">OK?</a>
-      </div>
-    </div>
-
-If a `page` is set to `modal` is can match IDs deeper down the hierarchy. In this case
-start/ok also matches start/admin/ok making the page available as a modal dialog
-in other contexts.
-
-### Should be possible to navigate into a layer (modal dialog) and lose context
-
-    <div data-bind="page: {id: 'start'}">
-      <div data-bind="page: {id: 'admin'}>
-        <a href="#start/ok">Show OK</a>
-      </div>
-      <div data-bind="page: {id: 'ok', modal: true}">
-            <a href="#admin">OK?</a>
-      </div>
-    </div>
-
-Losing the context is nothing special. Just navigate away form the current page.

@@ -32,9 +32,11 @@
 
             <div class="dropdown">
                 <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
-                <ul data-bind="foreach: $page().children" class="dropdown-menu" role="menu"
+                <ul data-bind="foreach: $page.children" class="dropdown-menu" role="menu"
                     aria-labelledby="dropdownMenu">
-                    <li><a data-bind="text: valueAccessor().id, attr: {href: '#' + valueAccessor().id}"></a></li>
+                    <li>
+                        <a data-bind="text: (valueAccessor().title || valueAccessor().id), attr: {href: '#' + valueAccessor().id}"></a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -44,18 +46,19 @@
 <div class="container" style="padding-top: 60px;">
 
 
-<div data-bind="page: {id: 'start'}">
+<div data-bind="page: {id: 'start', title: 'Pager.js Demo Start'}">
     <header class="jumbotron subhead">
         <h1>Show start page by default</h1>
 
         <p class="lead"> This is the default start page. It is so because the page ID is set to 'start'.
             Every other element with a page binding (<code>data-bind="page: {id: ...}"</code>) will be hidden
-            by default.
+            by default. Set <code>title: 'Some Title'</code> if you want to update the page title as the user
+            navigates to the page (look up at the title as you navigate this tutorial).
         </p>
     </header>
 
         <pre class="prettyprint linenums">
-&lt;div data-bind="page: {id: 'start'}"&gt;
+&lt;div data-bind="page: {id: 'start', title: 'Pager.js Demo Start'}"&gt;
     ...&lt;a href="#structure"&gt;Read about the structure.&lt;/a&gt;...
 &lt;/div&gt;
         </pre>
@@ -64,7 +67,7 @@
 
 </div>
 
-<div data-bind="page: {id: 'structure'}">
+<div data-bind="page: {id: 'structure', title: 'Structure'}">
     <header class="jumbotron subhead">
         <h1>Structure</h1>
 
@@ -97,7 +100,7 @@
 
 </div>
 
-<div data-bind="page: {id: 'setup'}">
+<div data-bind="page: {id: 'setup', title: 'Setup'}">
 
     <header class="jumbotron subhead">
         <h1>Setup</h1>
@@ -122,7 +125,7 @@ pager.start(viewModel);
 
 </div>
 
-<div data-bind="page: {id: 'deep_navigation'}">
+<div data-bind="page: {id: 'deep_navigation', title: 'Deep Navigation'}">
     <header class="jumbotron subhead">
         <h1>Deep Navigation</h1>
 
@@ -163,17 +166,17 @@ pager.start(viewModel);
 
 </div>
 
-<div data-bind="page: {id: 'load_external_content', source: 'load_external_content.html .content'}">
+<div data-bind="page: {id: 'load_external_content', source: 'load_external_content.html .content', title: 'Load External Content'}">
 </div>
 
-<div data-bind="page: {id: 'lazy_load_external_content', sourceOnShow: 'lazy_load_external_content.html .content'}">
+<div data-bind="page: {id: 'lazy_load_external_content', sourceOnShow: 'lazy_load_external_content.html .content', title: 'Lazy-Load External Content'}">
 </div>
 
-<div data-bind="page: {id: 'cached_lazy', sourceOnShow: 'cached_lazy.html .content', sourceCache: true}">
+<div data-bind="page: {id: 'cached_lazy', sourceOnShow: 'cached_lazy.html .content', sourceCache: true, title: 'Cache Lazy-Loaded Content'}">
 </div>
 
 
-<div data-bind="page: {id: 'relative_path'}">
+<div data-bind="page: {id: 'relative_path', title: 'Relative Path'}">
     <header class="jumbotron subhead">
         <h1>Relative path</h1>
 
@@ -195,10 +198,10 @@ pager.start(viewModel);
 
     <div data-bind="page: {id: 'start'}">
         <ul class="nav nav-tabs">
-            <li data-bind="css: {active: ($page().route().slice(-1) == 'fry')}">
+            <li class="active">
                 <a data-bind="page-href: 'fry'">Fry</a>
             </li>
-            <li data-bind="css: {active: ($page().route().slice(-1) == 'interesting')}">
+            <li class="active">
                 <a data-bind="page-href: 'interesting'">Interesting</a>
             </li>
         </ul>
@@ -216,10 +219,10 @@ pager.start(viewModel);
         <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
     &lt;ul class="nav nav-tabs"&gt;
-        &lt;li data-bind="css: {active: ($page().route().slice(-1) == 'fry')}"&gt;
+        &lt;li class="active"&gt;
             &lt;a data-bind="page-href: 'fry'"&gt;Fry&lt;/a&gt;
         &lt;/li&gt;
-        &lt;li data-bind="css: {active: ($page().route().slice(-1) == 'interesting')}"&gt;
+        &lt;li class="active"&gt;
             &lt;a data-bind="page-href: 'interesting'"&gt;Interesting&lt;/a&gt;
         &lt;/li&gt;
     &lt;/ul&gt;
@@ -243,7 +246,7 @@ pager.start(viewModel);
 
 </div>
 
-<div data-bind="page: {id: 'html5_history'}">
+<div data-bind="page: {id: 'html5_history', title: 'HTML5 History'}">
     <header class="jumbotron subhead">
         <h1>HTML5 History API</h1>
 
@@ -268,8 +271,7 @@ pager.start(viewModel);
 
 // this method navigates to a path - use it from your own click handlers etc.
 var navigate = function(path) {
-    pager.childManager.route(path().split('/'));
-    pager.childManager.showChild();
+    pager.childManager.showChild(path().split('/'));
 };
 
         </pre>
@@ -280,7 +282,7 @@ var navigate = function(path) {
 
 </div>
 
-<div data-bind="page: {id: 'change_binding_context'}">
+<div data-bind="page: {id: 'change_binding_context', title: 'Change Binding Context'}">
     <header class="jumbotron subhead">
         <h1>Change Binding Context</h1>
 
@@ -306,7 +308,7 @@ var navigate = function(path) {
 
 </div>
 
-<div data-bind="page: {id: 'lazy_bind_view_model'}">
+<div data-bind="page: {id: 'lazy_bind_view_model', title: 'Lazy-Bind View-Model'}">
     <header class="jumbotron subhead">
         <h1>Change Binding Context on Show</h1>
 
@@ -359,7 +361,7 @@ var requireVM = function (module) {
 </div>
 
 
-<div data-bind="page: {id: 'matching_wildcards'}">
+<div data-bind="page: {id: 'matching_wildcards', title: 'Matching Wildcards'}">
     <header class="jumbotron subhead">
         <h1>Matching Wildcards</h1>
 
@@ -393,7 +395,7 @@ var requireVM = function (module) {
 
 </div>
 
-<div data-bind="page: {id: 'deep_navigation_with_wildcards'}">
+<div data-bind="page: {id: 'deep_navigation_with_wildcards', title: 'Deep Navigation with Wildcards'}">
     <header class="jumbotron subhead">
         <h1>Deep Navigation with Wildcards</h1>
 
@@ -435,7 +437,7 @@ var requireVM = function (module) {
 
 </div>
 
-<div data-bind="page: {id: 'send_wildcard_to_source'}">
+<div data-bind="page: {id: 'send_wildcard_to_source', title: 'Send Wildcards to Source'}">
     <header class="jumbotron subhead">
         <h1>Sending the Wildcard to Source</h1>
 
@@ -477,7 +479,7 @@ var requireVM = function (module) {
 
 </div>
 
-<div data-bind="page: {id: 'load_into_iframe'}">
+<div data-bind="page: {id: 'load_into_iframe', title: 'Load Content into iframe'}">
     <header class="jumbotron subhead">
         <h1>Loading Content into iframe</h1>
 
@@ -499,7 +501,7 @@ var requireVM = function (module) {
 
 </div>
 
-<div data-bind="page: {id: 'configure_iframe'}">
+<div data-bind="page: {id: 'configure_iframe', title: 'Configure iframe'}">
     <header class="jumbotron subhead">
         <h1>Configure an iframe</h1>
 
@@ -524,7 +526,7 @@ var requireVM = function (module) {
 
 </div>
 
-<div data-bind="page: {id: 'custom_widgets'}">
+<div data-bind="page: {id: 'custom_widgets', title: 'Custom Widgets'}">
     <header class="jumbotron subhead">
         <h1>Custom Widgets</h1>
 
@@ -642,7 +644,81 @@ ko.bindingHandlers['page-accordion-item'] = {
     update:function () {
     }
 };
-        </pre>
+   </pre>
+
+    <a href="#modals">Read about modals</a>
+
+</div>
+
+<div data-bind="page: {id: 'modals', title: 'Modals'}">
+    <header class="jumbotron subhead">
+        <h1>Modals</h1>
+
+        <p class="lead">
+            If is possible to navigate into pages that are further up but still give the impression
+            you are navigating deeper down.
+            This is useful for modal windows that you might want to show on multiple pages.
+            Just append <code>modal: true</code> and the page is accessible for sub-pages to sibling-pages.
+        </p>
+    </header>
+
+    <div data-bind="page: {id: 'start'}">
+        <a data-bind="page-href: 'first'" class="btn">Show first sub-page</a>
+        <a data-bind="page-href: 'second'" class="btn">Show second sub-page</a>
+
+        <div data-bind="page: {id: 'first'}" class="well">
+            First sub-page
+            <a class="btn" data-bind="page-href: 'alert'">Show an alert!</a>
+        </div>
+        <div data-bind="page: {id: 'second'}" class="well">
+            Second sub-page
+            <a class="btn" data-bind="page-href: 'alert'">Show an alert!</a>
+        </div>
+    </div>
+    <div data-bind="page: {id: 'alert', modal: true}" class="modal hide">
+        <div class="modal-header">
+            <a data-bind="page-href: '../'" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+
+            <h3>Alert</h3>
+        </div>
+        <div class="modal-body">
+            <p>This modal is actually under <code>#modals/alert</code> but show up here because <code>modal: true</code></p>
+        </div>
+        <div class="modal-footer">
+            <a data-bind="page-href: '../'" class="btn">This button get an auto-calculated href based on modals current location</a>
+        </div>
+    </div>
+    
+    <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;a data-bind="page-href: 'first'" class="btn"&gt;Show first sub-page&lt;/a&gt;
+    &lt;a data-bind="page-href: 'second'" class="btn"&gt;Show second sub-page&lt;/a&gt;
+
+    &lt;div data-bind="page: {id: 'first'}" class="well"&gt;
+        First sub-page
+        &lt;a class="btn" data-bind="page-href: 'alert'"&gt;Show an alert!&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div data-bind="page: {id: 'second'}" class="well"&gt;
+        Second sub-page
+        &lt;a class="btn" data-bind="page-href: 'alert'"&gt;Show an alert!&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div data-bind="page: {id: 'alert', modal: true}" class="modal hide"&gt;
+    &lt;div class="modal-header"&gt;
+        &lt;a data-bind="page-href: '../'" class="close" data-dismiss="modal" aria-hidden="true"&gt;&times;&lt;/a&gt;
+
+        &lt;h3&gt;Alert&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-body"&gt;
+        &lt;p&gt;Lorem Ipsum&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-footer"&gt;
+        &lt;a data-bind="page-href: '../'" class="btn"&gt;This button get an auto-calculated href based on modals current location&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+        
+    </pre>
 
 
 </div>
