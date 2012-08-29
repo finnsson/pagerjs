@@ -86,33 +86,6 @@ pager.ChildManager = function (children, page) {
             }
         }
 
-
-
-        /*
-        if (!me.currentChild && me.page.parentPage && !me.page.getValue().modal) {
-            var parentChildren = me.page.parentPage.children;
-            _.each(parentChildren(), function (child) {
-                if (!match) {
-                    var id = child.getId();
-                    var modal = child.getValue().modal;
-                    if (modal) {
-                        if (id === currentRoute ||
-                            ((currentRoute === '' || currentRoute == null) && id === 'start')) {
-                            match = true;
-                            me.currentChild = child;
-                            isModal = true;
-                        }
-                        if (id === '?' && !wildcard) {
-                            wildcard = child;
-                            isModal = true;
-                        }
-                    }
-                }
-            });
-        }
-        */
-
-
         if (!me.currentChild && wildcard) {
             me.currentChild = wildcard;
             me.currentChild.currentId = currentRoute;

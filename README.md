@@ -296,30 +296,28 @@ Setting the 'title' configuration property will update the document title when n
 the page.
 
 
-## In the pipeline
-
-
 ### Should be possible to run custom JS on "before/after navigate from/to"
 
 There are four alternatives:
 
-* global registration using `pager.route`
+* global registration using pager.childManager
 * global data binding on body using `click`
 * local data binding on anchor using `click`
 * local data binding on page using `beforeHide`, `afterHide`, `beforeShow`, and `afterShow`
 
 
-    // global registration using pager.route
-    var pager = viewModel.pager();
+    // global registration using pager.childManager
     ko.computed(function() {
-      // this method is triggered every time route is changed
-      console.error(pager.route());
+      var currentChild = pager.childManager.currentChildO();
+      if(currentChild) {
+        // do something
+      }
     });
 
     <body data-bind="click: globalClick">
 
         // local data binding on page
-        <div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden}
+        <div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden}"></div>
 
         // local data binding on anchor using click
         <a data-bind="page-href: 'fry' click: anchorClicked}">Go to Fry</a>
@@ -342,6 +340,9 @@ There are four alternatives:
 
 The click data-binding can be used to run validations before navigations. Just do not `return true`
 to prevent the navigation from happening.
+
+## In the pipeline
+
 
 ### Should be possible to supply custom showElement and hideElement-methods
 

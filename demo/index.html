@@ -682,10 +682,12 @@ ko.bindingHandlers['page-accordion-item'] = {
             <h3>Alert</h3>
         </div>
         <div class="modal-body">
-            <p>This modal is actually under <code>#modals/alert</code> but show up here because <code>modal: true</code></p>
+            <p>This modal is actually under <code>#modals/alert</code> but show up here because <code>modal: true</code>
+            </p>
         </div>
         <div class="modal-footer">
-            <a data-bind="page-href: '../'" class="btn">This button get an auto-calculated href based on modals current location</a>
+            <a data-bind="page-href: '../'" class="btn">This button get an auto-calculated href based on modals current
+                location</a>
         </div>
     </div>
     
@@ -720,6 +722,56 @@ ko.bindingHandlers['page-accordion-item'] = {
         
     </pre>
 
+    <a href="#custom_js_when_navigating">Read about how to run custom JS when navigating</a>
+
+</div>
+
+<div data-bind="page: {id: 'custom_js_when_navigating', title: 'Custom JS when Navigating'}">
+    <header class="jumbotron subhead">
+        <h1>Custom JS when Navigating</h1>
+
+        <p class="lead">
+            There are four main alternatives when it comes to running custom JS:
+        <ul class="">
+            <li>Listen to <code>pager.childManager</code> if you want to be notified whenever a navigation has happened.
+                It is not recommended to try to stop the navigation at this point since it would involve changing the
+                history.
+            </li>
+            <li>Bind to global <code>click</code> if you want to be notified when a navigation is about to happen and
+                you want a change to stop it. Just no not <code>return true;</code> in order to stop the navigation.
+            </li>
+            <li>Bind to local <code>click</code> if you want to control a certain navigation. This is probably what you
+                want to do it you want to inject validation.
+            </li>
+            <li>Bind to local before/after show/hide if you just want to be notified about a navigation.</li>
+        </ul>
+
+        <a href="#custom_js_when_navigating/fry">Show Fry</a>
+        <div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}">
+            Fry
+            <a class="btn" href="#custom_js_when_navigating">Hide Fry</a>
+        </div>
+
+        </p>
+    </header>
+
+    <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}"&gt;
+    Fry
+    &lt;a class="btn" href="#custom_js_when_navigating"&gt;Hide Fry&lt;/a&gt;
+&lt;/div&gt;
+
+    </pre>
+    <pre class="prettyprint linenums">
+
+afterFryIsDisplayed:function () {
+    $('body').css("background-color", "#FF9999");
+}
+beforeFryIsHidden:function () {
+    $('body').stop().css("background-color", "#FFFFFF");
+}
+
+    </pre>
 
 </div>
 
