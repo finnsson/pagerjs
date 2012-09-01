@@ -11,9 +11,18 @@ _ko.arrayValue = function (arr) {
     });
 };
 
+/**
+ * @class pager.ChildManager
+ */
+
+/**
+ *
+ * @param {pager.Page[]} children
+ * @param {pager.Page} page
+ * @constructor
+ */
 pager.ChildManager = function (children, page) {
 
-    //this.currentChild = children[0];
     this.currentChildO = ko.observable(null);
     var me = this;
     this.page = page;
@@ -29,13 +38,9 @@ pager.ChildManager = function (children, page) {
         }
     };
 
-    /*
-
-     Will show or hide child pages
-
-     Goals:
-     1. Get rid of parent
-     2. Make use of children
+    /**
+     *
+     * @param {String[]} route
      */
     this.showChild = function (route) {
         var oldCurrentChild = me.currentChild;
@@ -114,7 +119,9 @@ pager.ChildManager = function (children, page) {
     };
 };
 
-pager.start = function (viewModel) {
+/**
+ */
+pager.start = function () {
 
     var onHashChange = function () {
         pager.routeFromHashToPage(window.location.hash);
@@ -123,6 +130,10 @@ pager.start = function (viewModel) {
     onHashChange();
 };
 
+/**
+ *
+ * @param viewModel
+ */
 pager.extendWithPage = function (viewModel) {
     viewModel.$page = new pager.Page();
 
@@ -131,6 +142,10 @@ pager.extendWithPage = function (viewModel) {
 };
 
 
+/**
+ *
+ * @param {String} hash
+ */
 pager.routeFromHashToPage = function (hash) {
     // skip #
     if (hash[0] === '#') {
@@ -148,34 +163,83 @@ pager.routeFromHashToPage = function (hash) {
  */
 
 /**
- * @param element
- * @param valueAccessor
+ * @param {Node} element
+ * @param {Observable} valueAccessor
  * @param allBindingsAccessor
- * @param viewModel
+ * @param {Observable} viewModel
  * @param bindingContext
  * @constructor
  */
 pager.Page = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    /**
+     *
+     * @type {Node}
+     */
     this.element = element;
+    /**
+     *
+     * @type {Observable}
+     */
     this.valueAccessor = valueAccessor;
+    /**
+     *
+     * @type {*}
+     */
     this.allBindingsAccessor = allBindingsAccessor;
+    /**
+     *
+     * @type {Observable}
+     */
     this.viewModel = viewModel;
+    /**
+     *
+     * @type {*}
+     */
     this.bindingContext = bindingContext;
 
+    /**
+     *
+     * @type {ObservableArray}
+     */
     this.children = ko.observableArray([]);
 
+    /**
+     *
+     * @type {pager.ChildManager}
+     */
     this.childManager = new pager.ChildManager(this.children, this);
+    /**
+     *
+     * @type {pager.Page}
+     */
     this.parentPage = null;
+    /**
+     *
+     * @type {String}
+     */
     this.currentId = null;
 
+    /**
+     *
+     * @type {Observable/pager.Page}
+     */
     this.currentParentPage = ko.observable(null);
+
 };
 
+/**
+ * @method showPage
+ * @param route
+ */
 pager.Page.prototype.showPage = function (route) {
     this.show();
     this.childManager.showChild(route);
 };
 
+/**
+ * @method hidePage
+ * @param {Function} callback
+ */
 pager.Page.prototype.hidePage = function (callback) {
     this.hideElementWrapper(callback);
     this.childManager.hideChild();
@@ -218,28 +282,33 @@ pager.Page.prototype.init = function () {
 
 /**
  * @method getValue
- * @return {*}
+ * @returns {Object} value
  */
 pager.Page.prototype.getValue = function () {
     return _ko.value(this.valueAccessor());
 };
 
 /**
- * @method getParentPage
- * @return {*}
+ * @method pager.Page#getParentPage
+ * @return {pager.Page}
  */
 pager.Page.prototype.getParentPage = function () {
     return this.bindingContext.$page || this.bindingContext.$data.$page;
 };
 
+/**
+ * @method pager.Page#getId
+ * @return String
+ */
 pager.Page.prototype.getId = function () {
     return _ko.value(this.getValue().id);
 };
 
+
 /**
- * @method sourceUrl
- * @param source
- * @return {*}
+ *
+ * @param {Observable/String} source
+ * @return {Observable}
  */
 pager.Page.prototype.sourceUrl = function (source) {
     var me = this;
@@ -311,7 +380,8 @@ pager.Page.prototype.loadSource = function (source) {
 };
 
 /**
- * @method show
+ * @method pager.Page#show
+ * @param {Function} callback
  */
 pager.Page.prototype.show = function (callback) {
     var element = this.element;
@@ -343,6 +413,10 @@ pager.Page.prototype.show = function (callback) {
     }
 };
 
+/**
+ * @method pager.Page#showElementWrapper
+ * @param {Function} callback
+ */
 pager.Page.prototype.showElementWrapper = function (callback) {
     if (this.getValue().beforeShow) {
         this.getValue().beforeShow(this);
@@ -353,6 +427,10 @@ pager.Page.prototype.showElementWrapper = function (callback) {
     }
 };
 
+/**
+ * @method showElement
+ * @param {Function} callback
+ */
 pager.Page.prototype.showElement = function (callback) {
     if (this.getValue().showElement) {
         this.getValue().showElement(this, callback);
@@ -363,6 +441,10 @@ pager.Page.prototype.showElement = function (callback) {
     }
 };
 
+/**
+ *
+ * @param {Function} callback
+ */
 pager.Page.prototype.hideElementWrapper = function (callback) {
     if (this.getValue().beforeHide) {
         this.getValue().beforeHide(this);
@@ -373,6 +455,10 @@ pager.Page.prototype.hideElementWrapper = function (callback) {
     }
 };
 
+/**
+ *
+ * @param {Function} callback
+ */
 pager.Page.prototype.hideElement = function (callback) {
     if (this.getValue().hideElement) {
         this.getValue().hideElement(this, callback);
@@ -386,18 +472,20 @@ pager.Page.prototype.hideElement = function (callback) {
     }
 };
 
-pager.Page.prototype.isVisible = function () {
-    return $(this.element).is(':visible');
-};
 
+/**
+ *
+ * @return {Observable}
+ */
 pager.Page.prototype.getFullRoute = function () {
     return ko.computed(function () {
+        var res = null;
         if (this.currentParentPage && this.currentParentPage()) {
-            var res = this.currentParentPage().getFullRoute()();
+            res = this.currentParentPage().getFullRoute()();
             res.push(this.getId());
             return res;
         } else if (this.parentPage) {
-            var res = this.parentPage.getFullRoute()();
+            res = this.parentPage.getFullRoute()();
             res.push(this.getId());
             return res;
         } else { // is root page
@@ -417,7 +505,15 @@ ko.bindingHandlers.page = {
 
 // page-href
 
+/**
+ *
+ * @type {Boolean}
+ */
 pager.useHTML5history = false;
+/**
+ *
+ * @type {String}
+ */
 pager.rootURI = '/';
 
 // TODO: extract this into a separate class pager.PageHref
@@ -460,14 +556,30 @@ ko.bindingHandlers['page-href'] = {
     }
 };
 
-// page-accordion-item
+/**
+ * @class pager.PageAccordionItem
+ * @inherits pager.Page
+ */
 
+/**
+ *
+ * @param {Node} element
+ * @param {Observable} valueAccessor
+ * @param allBindingsAccessor
+ * @param {Observable} viewModel
+ * @param bindingContext
+ * @constructor
+ */
 pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
     pager.Page.apply(this, arguments);
 };
 
 pager.PageAccordionItem.prototype = new pager.Page();
 
+/**
+ *
+ * @return {Node}
+ */
 pager.PageAccordionItem.prototype.getAccordionBody = function () {
     return $(this.element).children()[1];
 };

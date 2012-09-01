@@ -394,6 +394,10 @@ where
     // see textLoader above
     pager.loader = textLoader;
 
+### Documented source code
+
+The source code is documented using JsDoc.
+
 ## In the pipeline
 
 ### Tab panel custom widget
@@ -441,10 +445,6 @@ if
     define(function() {
       return '<h1>Zoidberg</h1>;
     });
-
-### Document all the source code
-
-The source code should be documented using either JsDuck or Docco.
 
 ### Document architecture and guiding principles
 
