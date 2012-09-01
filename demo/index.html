@@ -747,6 +747,7 @@ ko.bindingHandlers['page-accordion-item'] = {
         </ul>
 
         <a href="#custom_js_when_navigating/fry">Show Fry</a>
+
         <div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}">
             Fry
             <a class="btn" href="#custom_js_when_navigating">Hide Fry</a>
@@ -771,6 +772,101 @@ beforeFryIsHidden:function () {
     $('body').stop().css("background-color", "#FFFFFF");
 }
 
+    </pre>
+
+    <a href="#custom_hide_show">Read about custom hide- and show-methods</a>
+
+</div>
+
+<div data-bind="page: {id: 'custom_hide_show', title: 'Custom Hide- and Show-methods'}">
+    <header class="jumbotron subhead">
+        <h1>Custom Hide- and Show-methods</h1>
+
+        <p class="lead">
+            You might want to use a custom animation or custom behaviour for a page.
+            This is easily done by using the <code>showElement</code> and <code>hideElement</code>-properties.
+
+            These properties should be supplied with a method that takes two arguments: the first if the page
+            and the second is a callback that should be executed.
+        </p>
+    </header>
+
+    <a href="#custom_hide_show/fry">Show Fry</a>
+    <div data-bind="page: {id: 'fry', showElement: showFry, hideElement: hideFry}">
+        <h2>Fry</h2>
+        <a class="btn" data-bind="page-href: '../'">Hide Fry</a>
+    </div>
+
+    <pre class="linenums prettyprint">
+&lt;div data-bind="page: {id: 'fry', showElement: showFry, hideElement: hideFry}"&gt;
+    &lt;h2&gt;Fry&lt;/h2&gt;
+    &lt;a class="btn" data-bind="page-href: '../'"&gt;Hide Fry&lt;/a&gt;
+&lt;/div&gt;
+    </pre>
+
+    <p>where</p>
+
+    <pre class="prettyprint linenums">
+showFry:function (page, callback) {
+    $(page.element).fadeIn(1000, callback);
+};
+hideFry:function (page, callback) {
+    $(page.element).fadeOut(1000, function () {
+        $(page.element).hide();
+        if (callback) {
+            callback();
+        }
+    });
+};
+    </pre>
+
+    <a href="#loader">Read about custom loaders</a>
+
+</div>
+
+<div data-bind="page: {id: 'loader', title: 'Loaders'}">
+    <header class="jumbotron subhead">
+        <h1>Loaders</h1>
+
+        <p class="lead">
+            It is possible to specify both locally an globally a loader to be used.
+
+            Use <code>loader: loader</code> for specifying a loader for a page
+            and <code>pager.loader = function(page, element) { ... }</code> for specifying
+            a default-loader for all pages.
+            The loader-method should return an object with two methods: <code>load</code>,
+            and <code>unload</code>.
+        </p>
+    </header>
+
+    <a href="#loader/Sabrepulse">Load Sabrepulse</a>
+
+    <div data-bind="page: {id: 'Sabrepulse', frame: 'iframe', title: 'Sabrepulse', loader: textLoader, sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3'}">
+        <iframe  width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+    </div>
+    
+    <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'Sabrepulse', title: 'Sabrepulse', loader: textLoader, sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3'}"&gt;
+    &lt;iframe  width="300" height="380" frameborder="0" allowtransparency="true"&gt;&lt;/iframe&gt;
+&lt;/div&gt;        
+    </pre>
+
+    <p>where</p>
+
+    <pre class="prettyprint linenums">
+textLoader: function(page, element) {
+    var loader = {};
+    var txt = $("&lt;div&gt;&lt;/div>",
+        {text: 'Loading ' + page.getValue().title}
+    );
+    loader.load = function() {
+        $(element).append(txt);
+    };
+    loader.unload = function() {
+        txt.remove();
+    };
+    return loader;
+}
     </pre>
 
 </div>

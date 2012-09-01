@@ -29,14 +29,14 @@
     var afterHideFirst = ko.observable(false);
 
     var viewModel = {
-        hideElement:function (callback) {
-            $(this.element).slideUp(600);
+        hideElement:function (page, callback) {
+            $(page.element).slideUp(600);
             if (callback) {
                 callback();
             }
         },
-        showElement:function (callback) {
-            $(this.element).slideDown(600, callback);
+        showElement:function (page, callback) {
+            $(page.element).slideDown(600, callback);
         },
         beforeShowFirst:function () {
             beforeShowFirst(true);

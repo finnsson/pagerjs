@@ -7,6 +7,28 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap'], function ($,
         },
         beforeFryIsHidden:function () {
             $('body').stop().css("background-color", "#FFFFFF");
+        },
+        showFry:function (page, callback) {
+            $(page.element).fadeIn(1000, callback);
+        },
+        hideFry:function (page, callback) {
+            $(page.element).fadeOut(1000, function () {
+                $(page.element).hide();
+                if (callback) {
+                    callback();
+                }
+            });
+        },
+        textLoader: function(page, element) {
+            var loader = {};
+            var txt = $('<div></div>', {text: 'Loading ' + page.getValue().title});
+            loader.load = function() {
+                $(element).append(txt);
+            };
+            loader.unload = function() {
+                txt.remove();
+            };
+            return loader;
         }
     };
 

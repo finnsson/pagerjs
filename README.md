@@ -341,8 +341,6 @@ There are four alternatives:
 The click data-binding can be used to run validations before navigations. Just do not `return true`
 to prevent the navigation from happening.
 
-## In the pipeline
-
 
 ### Should be possible to supply custom showElement and hideElement-methods
 
@@ -351,31 +349,52 @@ to prevent the navigation from happening.
     </div>
 
     // new default hide
-    pager.hideElement = function(callback) {
-      $(this.element).slideUp(600);
+    pager.hideElement = function(page, callback) {
+      $(page.element).slideUp(600);
       if(callback) {
         callback();
       }
     };
 
     // new default show
-    pager.showElement = function(callback) {
-      $(this.element).slideDown(600);
+    pager.showElement = function(page, callback) {
+      $(page.element).slideDown(600);
       if(callback) {
         callback();
       }
     };
 
-    var showFry = function(callback) {
-      $(this.element).fadeIn(500, callback);
+    var showFry = function(page, callback) {
+      $(page.element).fadeIn(500, callback);
     };
-    var hideFry = function(callback) {
-      $(this.element).fadeOut(500, callback);
+    var hideFry = function(page, callback) {
+      $(page.element).fadeOut(500, callback);
     };
 
 ### Should be possible to specify loaders in pages
 
+    <div data-bind="page: {id: 'zoidberg', title: 'Zoidberg', loader: loader, sourceOnShow: 'zoidberg.html'}" />
+
+where
+
+    textLoader: function(page, element) {
+        var loader = {};
+        var txt = $('<div></div>', {text: 'Loading ' + page.getValue().title});
+        loader.load = function() {
+            $(element).append(txt);
+        };
+        loader.unload = function() {
+            txt.remove();
+        };
+        return loader;
+    }
+
 ### Should be possible to specify global loaders
+
+    // see textLoader above
+    pager.loader = textLoader;
+
+## In the pipeline
 
 ### Tab panel custom widget
 
@@ -386,22 +405,59 @@ to prevent the navigation from happening.
     <div data-bind="page: {id: '?', deep: true, sourceOnShow: '{?}.html'}>
     </div>
 
+### Should be possible to react to a failed navigation
+
+Both Page-objects and pager should send events whenever a navigation failed (i.e. no matching page for the route).
+
 
 ## Backlog
 
 There are a lot of features waiting to be implemented. Here are some of them.
 
-### Custom Widgets
+### Should be possible to load view content using a custom method
 
-#### Site map custom widget
+In order to facilitate programming in the large it is useful to be able to extract views as separate components.
+These views should not be forced to be stored as html-fragments or be loaded with jQuery.
 
-### Should be possible to use a page as template for other pages
+Thus a way to inject custom views should be possible. This is done using the `sourcer`-property.
 
-    <div id="sourceTpl" data-tpl="page: {sourceCache: true, sourceOnShow: '{?}.html'}">
-      <div class="loader">
-        The page is loading...
-      </div>
-    </div>
+The `sourcer`-property takes a method that should take a `pager.Page` as first argument and return nothing.
 
-    <div data-bind="page: {id: 'fry', tpl: 'sourceTpl'}">
-    </div>
+    <div data-bind="page: {id: 'zoidberg', sourcer: view('character/zoidberg')}" />
+
+where
+
+    window.view = function(viewModule) {
+      return function(page) {
+        require(viewModule, function(viewString) {
+          $(page.element).html(viewString);
+        });
+      };
+    };
+
+if
+
+    // file: character/zoidberg.js
+    define(function() {
+      return '<h1>Zoidberg</h1>;
+    });
+
+### Document all the source code
+
+The source code should be documented using either JsDuck or Docco.
+
+### Document architecture and guiding principles
+
+The architecture - and guiding principles - should be documentet.
+
+
+* Dependencies (jQuery, KnockoutJS, Underscore.js)
+* how the tool-chain is used (grunt qunit > grunt min),
+* working process (README.md > GitHub Issues > QUnit-test > pager.js > demo-page),
+* code architecture (pager , Page, ChildManager).
+
+### Should be possible to listen to page-navigations and prevent them
+
+Using HTML5 and pushState it might be possible to correctly listen to page-navigations
+and prevent them without complications to the history-management. Listening to click-events
+is the recommended way at the moment.

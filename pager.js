@@ -263,14 +263,25 @@ pager.Page.prototype.loadSource = function (source) {
     var value = this.getValue();
     var me = this;
     var element = this.element;
+    var loader = null;
+    var loaderMethod = value.loader || pager.loader;
     if (value.frame === 'iframe') {
         var iframe = $('iframe', $(element));
         if (iframe.length === 0) {
             iframe = $('<iframe></iframe>');
             $(element).append(iframe);
         }
+        if(loaderMethod) {
+            loader = _ko.value(loaderMethod)(me, iframe);
+            loader.load();
+        }
         if (value.sourceLoaded) {
-            iframe.one('load', value.sourceLoaded);
+            iframe.one('load', function() {
+                if(loader) {
+                    loader.unload();
+                }
+                value.sourceLoaded();
+            });
         }
         // TODO: remove src binding and add this binding
         ko.applyBindingsToNode(iframe[0], {
@@ -279,10 +290,17 @@ pager.Page.prototype.loadSource = function (source) {
             }
         });
     } else {
+        if(loaderMethod) {
+            loader = _ko.value(loaderMethod)(me, me.element);
+            loader.load();
+        }
         // TODO: remove all children and add sourceUrl(source)
         ko.computed(function () {
             var s = _ko.value(this.sourceUrl(source));
             $(element).load(s, function () {
+                if(loader) {
+                    loader.unload();
+                }
                 ko.applyBindingsToDescendants(me.childBindingContext, me.element);
                 if (value.sourceLoaded) {
                     value.sourceLoaded.apply(me, arguments);
@@ -337,9 +355,9 @@ pager.Page.prototype.showElementWrapper = function (callback) {
 
 pager.Page.prototype.showElement = function (callback) {
     if (this.getValue().showElement) {
-        this.getValue().showElement.call(this, callback);
+        this.getValue().showElement(this, callback);
     } else if (pager.showElement) {
-        pager.showElement.call(this, callback);
+        pager.showElement(this, callback);
     } else {
         $(this.element).show(callback);
     }
@@ -357,9 +375,9 @@ pager.Page.prototype.hideElementWrapper = function (callback) {
 
 pager.Page.prototype.hideElement = function (callback) {
     if (this.getValue().hideElement) {
-        this.getValue().hideElement.call(this, callback);
+        this.getValue().hideElement(this, callback);
     } else if (pager.hideElement) {
-        pager.hideElement.call(this, callback);
+        pager.hideElement(this, callback);
     } else {
         $(this.element).hide();
         if (callback) {
