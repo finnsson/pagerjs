@@ -885,14 +885,17 @@ textLoader: function(page, element) {
 
     <div>
         <ul class="nav nav-tabs" data-bind="foreach: $page.children">
-            <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-href: getId()"></a></li>
+            <li data-bind="css: {active: isVisible}"><a
+                    data-bind="text: $data.getValue().title, page-href: getId()"></a></li>
         </ul>
 
-        <div data-bind="page: {id: 'Slagsmålsklubben', title: 'Slagsmålsklubben', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:66KBDVJnA6c0DjHeSZYaHb', frame: 'iframe'}" class="hero-unit">
+        <div data-bind="page: {id: 'Slagsmålsklubben', title: 'Slagsmålsklubben', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:66KBDVJnA6c0DjHeSZYaHb', frame: 'iframe'}"
+             class="hero-unit">
             <iframe width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
         </div>
 
-        <div data-bind="page: {id: 'Binärpilot', title: 'Binärpilot', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:67LKycg4jAoC06kZgjvbNd', frame: 'iframe'}" class="hero-unit">
+        <div data-bind="page: {id: 'Binärpilot', title: 'Binärpilot', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:67LKycg4jAoC06kZgjvbNd', frame: 'iframe'}"
+             class="hero-unit">
             <iframe width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
         </div>
     </div>
@@ -912,6 +915,70 @@ textLoader: function(page, element) {
     &lt;/div&gt;
 &lt;/div&gt;
     </pre>
+
+    <a href="#failed_navigation">Read about reacting to missing pages</a>
+
+</div>
+
+<div data-bind="page: {id: 'failed_navigation', title: 'Reacting to Failed Navigations'}">
+    <header class="jumbotron subhead">
+        <h1>Reacting to Failed Navigations</h1>
+
+        <p class="lead">
+            When pager or a page does not find a matching sub-page for a route
+            a callback is called.
+            Either set <code>pager.navigationFailed</code> or supply <code>navigationFailed</code>
+            to the page configuration with a function that takes two arguments: first the page and second the missing
+            route.
+            <br/>
+            This makes it easy to identify missing pages for routes and take actions.
+        </p>
+    </header>
+
+    <a data-bind="click: function() { window.location.hash = 'failed_navigation/random/' + (Math.random()*1000).toFixed() }">
+        Go to random sub-page
+    </a>
+
+    <div data-bind="page: {id: 'random', navigationFailed: randomFailed}">
+        <ul class="nav nav-tabs" data-bind="foreach: $page.children">
+            <li data-bind="css: {active: isVisible}"><a
+                    data-bind="text: getId(), page-href: getId()"></a></li>
+        </ul>
+
+        <div data-bind="foreach: newChildren">
+            <div data-bind="page: {id: childId}">
+                <span data-bind="text: childId"></span>
+            </div>
+        </div>
+    </div>
+
+    <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'random', navigationFailed: randomFailed}"&gt;
+    &lt;ul class="nav nav-tabs" data-bind="foreach: $page.children"&gt;
+        &lt;li data-bind="css: {active: isVisible}"&gt;&lt;a
+                data-bind="text: getId(), page-href: getId()"&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div data-bind="foreach: newChildren"&gt;
+        &lt;div data-bind="page: {id: childId}"&gt;
+            &lt;span data-bind="text: childId"&gt;&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;        
+    </pre>
+
+    where
+
+    <pre class="prettyprint linenums">
+randomFailed:function (page, route) {
+    viewModel.newChildren.push({
+        childId:route[0]
+    });
+    page.showPage(route);
+},
+newChildren:ko.observableArray([])
+    </pre>
+
 
 </div>
 

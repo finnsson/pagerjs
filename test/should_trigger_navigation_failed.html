@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should trigger navigation failed</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<a href="#first">First</a>
+<br/>
+<a href="#first/A">First A</a>
+<br/>
+<a href="#first/B">First B</a>
+<br/>
+<a href="#first/C">First C</a>
+<br/>
+<a href="#first/D">First D</a>
+<br/>
+<a href="#second">Second</a>
+<br/>
+<a href="#third">Third</a>
+<br/>
+<a href="#fourth">Fourth</a>
+<br/>
+<a href="#fry">Fry</a>
+<br/>
+<a href="#zoidberg">Zoidberg</a>
+
+<div data-bind="page: {id: 'first', navigationFailed: failedInFirst}">
+    First
+</div>
+
+<div data-bind="page: {id: 'second'}">
+    Second
+</div>
+
+<div data-bind="page: {id: 'third'}">
+    Third
+</div>
+
+<div data-bind="foreach: newChildren">
+    <div data-bind="page: {id: childId}">
+        <span data-bind="text: childId"></span>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    var notFoundA = ko.observable(false);
+    var notFoundB = ko.observable(false);
+
+    var viewModel = {
+        failedInFirst:function (page, route) {
+            $(page.element).text('Could not find ' + route[0]);
+            if (route[0] === 'A') {
+                notFoundA(true);
+            } else if (route[0] === 'B') {
+                notFoundB(true);
+            }
+        },
+        newChildren: ko.observableArray([])
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.start(viewModel);
+    pager.navigationFailed = function (page, route) {
+        if (page.getId() == null) {
+            viewModel.newChildren.push({childId: route[0]});
+            page.showPage(route);
+        }
+    };
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("should trigger navigation failed", function () {
+
+        window.location.hash = '#first/A';
+        until(function () {
+            return notFoundA();
+        }, function () {
+            ok(true, "first got error message about A");
+            window.location.hash = '#first/B';
+
+            until(function () {
+                return notFoundB();
+            }, function () {
+                ok(true, "first got error message about B");
+                window.location.hash = '#fourth';
+                until(function () {
+                    var children = viewModel.$__page__.children();
+                    var lastChild = children[children.length - 1];
+                    return lastChild.getId() === 'fourth' && lastChild.isVisible();
+                }, function () {
+                    ok(true, "fourth page is displayed");
+                    start();
+                });
+            });
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>

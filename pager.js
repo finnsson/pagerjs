@@ -66,7 +66,7 @@ pager.ChildManager = function (children, page) {
 
         var currentChildManager = me;
 
-        while(!me.currentChild && currentChildManager.page.parentPage && !currentChildManager.page.getValue().modal) {
+        while (!me.currentChild && currentChildManager.page.parentPage && !currentChildManager.page.getValue().modal) {
             var parentChildren = currentChildManager.page.parentPage.children;
             _.each(parentChildren(), function (child) {
                 if (!match) {
@@ -86,7 +86,7 @@ pager.ChildManager = function (children, page) {
                     }
                 }
             });
-            if(!me.currentChild) {
+            if (!me.currentChild) {
                 currentChildManager = currentChildManager.page.parentPage.childManager;
             }
         }
@@ -98,23 +98,37 @@ pager.ChildManager = function (children, page) {
         if (me.currentChild) {
             me.currentChildO(me.currentChild);
 
-            if(isModal) {
+            if (isModal) {
                 me.currentChild.currentParentPage(me.page);
             } else {
                 me.currentChild.currentParentPage(null);
             }
 
         }
+
+        var onFailed = function () {
+            if (pager.navigationFailed) {
+                pager.navigationFailed(me.page, route);
+            }
+            if (me.page.getValue().navigationFailed) {
+                _ko.value(me.page.getValue().navigationFailed)(me.page, route);
+            }
+        };
+
         if (oldCurrentChild && oldCurrentChild === me.currentChild) {
             me.currentChild.showPage(route.slice(1));
         } else if (oldCurrentChild) {
             oldCurrentChild.hidePage(function () {
                 if (me.currentChild) {
                     me.currentChild.showPage(route.slice(1));
+                } else {
+                    onFailed();
                 }
             });
         } else if (me.currentChild) {
             me.currentChild.showPage(route.slice(1));
+        } else {
+            onFailed();
         }
     };
 };
@@ -140,6 +154,14 @@ pager.extendWithPage = function (viewModel) {
     pager.childManager = new pager.ChildManager(viewModel.$__page__.children, viewModel.$__page__);
     viewModel.$__page__.childManager = pager.childManager;
 };
+
+/**
+ *
+ * Called when a route does not find a match.
+ *
+ * @type {Function}
+ */
+pager.navigationFailed = null;
 
 
 /**
@@ -292,7 +314,11 @@ pager.Page.prototype.init = function () {
  * @returns {Object} value
  */
 pager.Page.prototype.getValue = function () {
-    return _ko.value(this.valueAccessor());
+    if (this.valueAccessor) {
+        return _ko.value(this.valueAccessor());
+    } else {
+        return {};
+    }
 };
 
 /**
@@ -300,7 +326,17 @@ pager.Page.prototype.getValue = function () {
  * @return {pager.Page}
  */
 pager.Page.prototype.getParentPage = function () {
-    return this.bindingContext.$page || this.bindingContext.$data.$__page__;
+    // search this context/$data until either root is accessed or no page is found
+    var bindingContext = this.bindingContext;
+    while(bindingContext) {
+        if(bindingContext.$page) {
+            return bindingContext.$page;
+        } else if(bindingContext.$data && bindingContext.$data.$__page__) {
+            return bindingContext.$data.$__page__;
+        }
+        bindingContext = bindingContext.$parentContext;
+    }
+    return null;
 };
 
 /**
@@ -347,13 +383,13 @@ pager.Page.prototype.loadSource = function (source) {
             iframe = $('<iframe></iframe>');
             $(element).append(iframe);
         }
-        if(loaderMethod) {
+        if (loaderMethod) {
             loader = _ko.value(loaderMethod)(me, iframe);
             loader.load();
         }
         if (value.sourceLoaded) {
-            iframe.one('load', function() {
-                if(loader) {
+            iframe.one('load', function () {
+                if (loader) {
                     loader.unload();
                 }
                 value.sourceLoaded();
@@ -366,7 +402,7 @@ pager.Page.prototype.loadSource = function (source) {
             }
         });
     } else {
-        if(loaderMethod) {
+        if (loaderMethod) {
             loader = _ko.value(loaderMethod)(me, me.element);
             loader.load();
         }
@@ -374,7 +410,7 @@ pager.Page.prototype.loadSource = function (source) {
         ko.computed(function () {
             var s = _ko.value(this.sourceUrl(source));
             $(element).load(s, function () {
-                if(loader) {
+                if (loader) {
                     loader.unload();
                 }
                 ko.applyBindingsToDescendants(me.childBindingContext, me.element);

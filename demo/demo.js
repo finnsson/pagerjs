@@ -29,7 +29,14 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap'], function ($,
                 txt.remove();
             };
             return loader;
-        }
+        },
+        randomFailed:function (page, route) {
+            viewModel.newChildren.push({
+                childId:route[0]
+            });
+            page.showPage(route);
+        },
+        newChildren:ko.observableArray([])
     };
 
     window.requireVM = function (module) {

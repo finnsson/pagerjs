@@ -416,16 +416,10 @@ The source code is documented using JsDoc.
 ## In the pipeline
 
 
-### Wildcards should deep-load content if configured so
-
-    <a href="some/other/url">Go to some/other/url.html</a>
-
-    <div data-bind="page: {id: '?', deep: true, sourceOnShow: '{?}.html'}>
-    </div>
-
 ### Should be possible to react to a failed navigation
 
 Both Page-objects and pager should send events whenever a navigation failed (i.e. no matching page for the route).
+
 
 
 ## Backlog
@@ -499,3 +493,10 @@ The architecture - and guiding principles - should be documentet.
 Using HTML5 and pushState it might be possible to correctly listen to page-navigations
 and prevent them without complications to the history-management. Listening to click-events
 is the recommended way at the moment.
+
+### Wildcards should deep-load content if configured so
+
+    <a href="some/other/url">Go to some/other/url.html</a>
+
+    <div data-bind="page: {id: '?', deep: true, sourceOnShow: '{?}.html'}>
+    </div>
