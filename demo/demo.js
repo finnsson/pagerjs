@@ -47,6 +47,16 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap'], function ($,
         };
     };
 
+    window.requireView = function(viewModule) {
+        return function(page, callback) {
+            require([viewModule], function(viewString) {
+                $(page.element).html(viewString);
+                callback();
+            });
+        };
+    };
+
+
     $(function () {
 
         pager.extendWithPage(viewModel);

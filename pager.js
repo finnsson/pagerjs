@@ -180,6 +180,7 @@ pager.routeFromHashToPage = function (hash) {
 
 };
 
+
 /**
  * @class pager.Page
  */
@@ -328,10 +329,10 @@ pager.Page.prototype.getValue = function () {
 pager.Page.prototype.getParentPage = function () {
     // search this context/$data until either root is accessed or no page is found
     var bindingContext = this.bindingContext;
-    while(bindingContext) {
-        if(bindingContext.$page) {
+    while (bindingContext) {
+        if (bindingContext.$page) {
             return bindingContext.$page;
-        } else if(bindingContext.$data && bindingContext.$data.$__page__) {
+        } else if (bindingContext.$data && bindingContext.$data.$__page__) {
             return bindingContext.$data.$__page__;
         }
         bindingContext = bindingContext.$parentContext;
@@ -408,16 +409,24 @@ pager.Page.prototype.loadSource = function (source) {
         }
         // TODO: remove all children and add sourceUrl(source)
         ko.computed(function () {
-            var s = _ko.value(this.sourceUrl(source));
-            $(element).load(s, function () {
-                if (loader) {
-                    loader.unload();
-                }
-                ko.applyBindingsToDescendants(me.childBindingContext, me.element);
-                if (value.sourceLoaded) {
-                    value.sourceLoaded.apply(me, arguments);
-                }
-            });
+            if (typeof _ko.value(source) === 'string') {
+                var s = _ko.value(this.sourceUrl(source));
+                $(element).load(s, function () {
+                    if (loader) {
+                        loader.unload();
+                    }
+                    ko.applyBindingsToDescendants(me.childBindingContext, me.element);
+                    if (value.sourceLoaded) {
+                        value.sourceLoaded.apply(me, arguments);
+                    }
+                });
+            } else { // should be a method
+                _ko.value(source)(this, function() {
+                    if(value.sourceLoaded) {
+                        value.sourceLoaded();
+                    }
+                });
+            }
         }, this);
     }
 };

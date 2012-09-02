@@ -19,7 +19,8 @@
                 underscore:'lodash.min',
                 knockout:'knockout-2.1.0',
                 pager:'pager.amd.min',
-                bootstrap:'bootstrap/js/bootstrap.min'
+                bootstrap:'bootstrap/js/bootstrap.min',
+                "zoidberg":'character/zoidberg'
             }
         });
     </script>
@@ -979,6 +980,49 @@ randomFailed:function (page, route) {
 newChildren:ko.observableArray([])
     </pre>
 
+    <a href="#custom_view_loader">Read about loading a view using a custom method</a>
+
+</div>
+
+<div data-bind="page: {id: 'custom_view_loader', title: 'Load View using Custom Method'}">
+    <header class="jumbotron subhead">
+        <h1>Load View using Custom Method</h1>
+
+        <p class="lead">
+            In order to facilitate programming in the large it is useful to be able to extract views as separate
+            components.
+            These views should not be forced to be stored as html-fragments or be loaded with jQuery.
+            <br/>
+            Thus a way to inject custom views should be possible. This is done using the <code>source</code>- or
+            <code>sourceOnShow</code>-properties. Just supply a method instead of a string!
+            <br/>
+            These properties takes a method that should take a <code>pager.Page</code> as first argument, a callback,
+            and return nothing.
+        </p>
+    </header>
+
+    <a href="#custom_view_loader/zoidberg">Load custom view using requireView-method</a>
+
+    <div data-bind="page: {id: 'zoidberg', sourceOnShow: requireView('zoidberg')}">
+
+    </div>
+
+    <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'zoidberg', sourceOnShow: requireView('zoidberg')}"/&gt;        
+    </pre>
+
+    where
+
+    <pre class="prettyprint linenums">
+window.requireView = function(viewModule) {
+    return function(page, callback) {
+        require([viewModule], function(viewString) {
+            $(page.element).html(viewString);
+            callback();
+        });
+    };
+};
+    </pre>
 
 </div>
 

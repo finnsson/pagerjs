@@ -413,36 +413,60 @@ The source code is documented using JsDoc.
     </div>
 
 
-## In the pipeline
-
-
 ### Should be possible to react to a failed navigation
 
 Both Page-objects and pager should send events whenever a navigation failed (i.e. no matching page for the route).
 
+    <a data-bind="click: function() { window.location.hash = 'failed_navigation/random/' + (Math.random()*1000).toFixed() }">
+        Go to random sub-page
+    </a>
+
+    <div data-bind="page: {id: 'random', navigationFailed: randomFailed}">
+        <ul class="nav nav-tabs" data-bind="foreach: $page.children">
+            <li data-bind="css: {active: isVisible}"><a
+                    data-bind="text: getId(), page-href: getId()"></a></li>
+        </ul>
+
+        <div data-bind="foreach: newChildren">
+            <div data-bind="page: {id: childId}">
+                <span data-bind="text: childId"></span>
+            </div>
+        </div>
+    </div>
+
+where
+
+    randomFailed:function (page, route) {
+        viewModel.newChildren.push({
+            childId:route[0]
+        });
+        page.showPage(route);
+    },
+    newChildren:ko.observableArray([])
 
 
-## Backlog
+## In the pipeline
 
-There are a lot of features waiting to be implemented. Here are some of them.
 
 ### Should be possible to load view content using a custom method
 
 In order to facilitate programming in the large it is useful to be able to extract views as separate components.
 These views should not be forced to be stored as html-fragments or be loaded with jQuery.
 
-Thus a way to inject custom views should be possible. This is done using the `sourcer`-property.
+Thus a way to inject custom views should be possible. This is done using the `source`- or
+`sourceOnShow`-properties. Just supply a method instead of a string!
 
-The `sourcer`-property takes a method that should take a `pager.Page` as first argument and return nothing.
+These properties takes a method that should take a `pager.Page` as first argument, a callback, and return nothing.
 
-    <div data-bind="page: {id: 'zoidberg', sourcer: view('character/zoidberg')}" />
+    <div data-bind="page: {id: 'zoidberg', sourceOnShow: requireView('character/zoidberg')}" />
 
 where
 
-    window.view = function(viewModule) {
-      return function(page) {
-        require(viewModule, function(viewString) {
+    window.requireView = function(viewModule) {
+      return function(page, callback) {
+        require([viewModule], function(viewString) {
           $(page.element).html(viewString);
+          callback();
         });
       };
     };
@@ -451,8 +475,13 @@ if
 
     // file: character/zoidberg.js
     define(function() {
-      return '<h1>Zoidberg</h1>;
+      return '<h1>Zoidberg</h1>';
     });
+
+## Backlog
+
+There are a lot of features waiting to be implemented. Here are some of them.
+
 
 ### Should be possible to send URI (fragment identifier) parameters to a page
 
