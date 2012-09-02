@@ -135,10 +135,10 @@ pager.start = function () {
  * @param viewModel
  */
 pager.extendWithPage = function (viewModel) {
-    viewModel.$page = new pager.Page();
+    viewModel.$__page__ = new pager.Page();
 
-    pager.childManager = new pager.ChildManager(viewModel.$page.children, viewModel.$page);
-    viewModel.$page.childManager = pager.childManager;
+    pager.childManager = new pager.ChildManager(viewModel.$__page__.children, viewModel.$__page__);
+    viewModel.$__page__.childManager = pager.childManager;
 };
 
 
@@ -152,7 +152,7 @@ pager.routeFromHashToPage = function (hash) {
         hash = hash.slice(1);
     }
     // split on '/'
-    var hashRoute = hash.split('/');
+    var hashRoute = decodeURIComponent(hash).split('/');
 
     pager.childManager.showChild(hashRoute);
 
@@ -225,6 +225,12 @@ pager.Page = function (element, valueAccessor, allBindingsAccessor, viewModel, b
      */
     this.currentParentPage = ko.observable(null);
 
+
+    /**
+     *
+     * @type {Observable}
+     */
+    this.isVisible = ko.observable(false);
 };
 
 /**
@@ -232,6 +238,7 @@ pager.Page = function (element, valueAccessor, allBindingsAccessor, viewModel, b
  * @param route
  */
 pager.Page.prototype.showPage = function (route) {
+    this.isVisible(true);
     this.show();
     this.childManager.showChild(route);
 };
@@ -241,6 +248,7 @@ pager.Page.prototype.showPage = function (route) {
  * @param {Function} callback
  */
 pager.Page.prototype.hidePage = function (callback) {
+    this.isVisible(false);
     this.hideElementWrapper(callback);
     this.childManager.hideChild();
 };
@@ -272,7 +280,6 @@ pager.Page.prototype.init = function () {
         ctx = this.viewModel;
     }
     this.childBindingContext = this.bindingContext.createChildContext(ctx);
-
     ko.utils.extend(this.childBindingContext, {$page:this});
     if (!value['withOnShow']) {
         ko.applyBindingsToDescendants(this.childBindingContext, this.element);
@@ -293,7 +300,7 @@ pager.Page.prototype.getValue = function () {
  * @return {pager.Page}
  */
 pager.Page.prototype.getParentPage = function () {
-    return this.bindingContext.$page || this.bindingContext.$data.$page;
+    return this.bindingContext.$page || this.bindingContext.$data.$__page__;
 };
 
 /**

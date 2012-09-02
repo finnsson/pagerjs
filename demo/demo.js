@@ -19,13 +19,13 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap'], function ($,
                 }
             });
         },
-        textLoader: function(page, element) {
+        textLoader:function (page, element) {
             var loader = {};
-            var txt = $('<div></div>', {text: 'Loading ' + page.getValue().title});
-            loader.load = function() {
+            var txt = $('<div></div>', {text:'Loading ' + page.getValue().title});
+            loader.load = function () {
                 $(element).append(txt);
             };
-            loader.unload = function() {
+            loader.unload = function () {
                 txt.remove();
             };
             return loader;
@@ -40,11 +40,14 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap'], function ($,
         };
     };
 
-    pager.extendWithPage(viewModel);
-    ko.applyBindings(viewModel);
-    pager.start(viewModel);
+    $(function () {
 
-    $('.dropdown-toggle').dropdown();
+        pager.extendWithPage(viewModel);
+        ko.applyBindings(viewModel);
+        pager.start(viewModel);
+
+        $('.dropdown-toggle').dropdown();
+    });
 
 
 });

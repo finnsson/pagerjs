@@ -398,9 +398,23 @@ where
 
 The source code is documented using JsDoc.
 
+### Tab panel custom widget
+
+    <ul class="nav nav-tabs" data-bind="foreach: $page.children">
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-href: getId()"></a></li>
+    </ul>
+
+    <div data-bind="page: {id: 'Slagsmålsklubben', title: 'Slagsmålsklubben', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:66KBDVJnA6c0DjHeSZYaHb', frame: 'iframe'}" class="hero-unit">
+        <iframe width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+    </div>
+
+    <div data-bind="page: {id: 'Binärpilot', title: 'Binärpilot', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:67LKycg4jAoC06kZgjvbNd', frame: 'iframe'}" class="hero-unit">
+        <iframe width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+    </div>
+
+
 ## In the pipeline
 
-### Tab panel custom widget
 
 ### Wildcards should deep-load content if configured so
 
@@ -445,6 +459,30 @@ if
     define(function() {
       return '<h1>Zoidberg</h1>;
     });
+
+### Should be possible to send URI (fragment identifier) parameters to a page
+
+A page should be able to access the information in the current route - changing a view-model.
+
+Sending parts of the fragment identifier to variables in the view-model is possible using
+`params`.
+
+    <div data-bind="page: {id: 'search', params: {'name', dateFrom: 'fromdate', product: '{1}'}}">
+    </div>
+
+where `name` indicates that the variable `name` will be bound to the parameter `name`,
+`dateFrom: 'fromdate'` indicates that the variable `dateFrom` will be bound to the parameter `fromdate`,
+and `product: '{1}'` indicates that the variable `product` will be bound to the last part of the route.
+
+An example route for the example above could look like
+
+    example.com/#search/tv?name=samsung&fromdate=20121010
+
+or if HTML5 history is used
+
+    example.com/search/tv?name=samsung&fromdate=20121010
+
+
 
 ### Document architecture and guiding principles
 
