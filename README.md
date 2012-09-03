@@ -445,9 +445,6 @@ where
     newChildren:ko.observableArray([])
 
 
-## In the pipeline
-
-
 ### Should be possible to load view content using a custom method
 
 In order to facilitate programming in the large it is useful to be able to extract views as separate components.
@@ -478,9 +475,7 @@ if
       return '<h1>Zoidberg</h1>';
     });
 
-## Backlog
-
-There are a lot of features waiting to be implemented. Here are some of them.
+## In the pipeline
 
 
 ### Should be possible to send URI (fragment identifier) parameters to a page
@@ -505,17 +500,20 @@ or if HTML5 history is used
 
     example.com/search/tv?name=samsung&fromdate=20121010
 
+## Backlog
+
+There are a lot of features waiting to be implemented. Here are some of them.
 
 
 ### Document architecture and guiding principles
 
 The architecture - and guiding principles - should be documentet.
 
-
 * Dependencies (jQuery, KnockoutJS, Underscore.js)
 * how the tool-chain is used (grunt qunit > grunt min),
 * working process (README.md > GitHub Issues > QUnit-test > pager.js > demo-page),
 * code architecture (pager , Page, ChildManager).
+* Update doc in this readme.
 
 ### Should be possible to listen to page-navigations and prevent them
 

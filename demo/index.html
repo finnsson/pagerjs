@@ -13,7 +13,10 @@
     <script type="text/javascript" src="google-code-prettify/prettify.js"></script>
 
     <script type="text/javascript">
-        require({
+        requirejs.config({
+            shim: {
+                bootstrap: ['jquery']
+            },
             paths:{
                 jquery:'jquery-1.7.2.min',
                 underscore:'lodash.min',
