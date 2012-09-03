@@ -475,8 +475,6 @@ if
       return '<h1>Zoidberg</h1>';
     });
 
-## In the pipeline
-
 
 ### Should be possible to send URI (fragment identifier) parameters to a page
 
@@ -498,6 +496,9 @@ An example route for the example above could look like
 or if HTML5 history is used
 
     example.com/search/tv?name=samsung&fromdate=20121010
+
+## In the pipeline
+
 
 ## Backlog
 
