@@ -485,12 +485,11 @@ A page should be able to access the information in the current route - changing 
 Sending parts of the fragment identifier to variables in the view-model is possible using
 `params`.
 
-    <div data-bind="page: {id: 'search', params: {'name', dateFrom: 'fromdate', product: '{1}'}}">
+    <div data-bind="page: {id: 'search', params: {'name', 'fromdate'}}">
+      <span data-bind="text: name"></span> (<span data-bind="text: fromdate"></span>)
     </div>
 
-where `name` indicates that the variable `name` will be bound to the parameter `name`,
-`dateFrom: 'fromdate'` indicates that the variable `dateFrom` will be bound to the parameter `fromdate`,
-and `product: '{1}'` indicates that the variable `product` will be bound to the last part of the route.
+where `name` and `fromdate` with be bound by the parameters `name` and `fromdate`.
 
 An example route for the example above could look like
 
