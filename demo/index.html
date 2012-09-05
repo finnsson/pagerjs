@@ -69,7 +69,9 @@
 &lt;/div&gt;
         </pre>
 
-    <a href="#structure">Read about the structure.</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#structure">Read about the structure.</a>
+    </div>
 
 </div>
 
@@ -102,7 +104,9 @@
 &lt;/html&gt;
         </pre>
 
-    <a href="#setup">Read about how to setup pagerjs</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#setup">Read about how to setup pagerjs</a>
+    </div>
 
 </div>
 
@@ -112,7 +116,9 @@
         <h1>Setup</h1>
 
         <p class="lead">
-            Pager.js is depending on KnockoutJS, jQuery and Underscore.js (or lodash).
+            Pager.js is depending on <a href="http://knockoutjs.com/">KnockoutJS</a>,
+            <a href="http://jquery.com/">jQuery</a> and <a href="http://underscorejs.org/">Underscore.js</a>
+            (or <a href="http://lodash.com/">Lo-Dash</a>).
             Apply the lines below (where the 4th line should be familiar from KnockoutJS).
         </p>
     </header>
@@ -126,8 +132,11 @@ ko.applyBindings(viewModel);
 pager.start(viewModel);
     </pre>
 
-
-    You can <a href="#deep_navigation">jump</a> to another page using an absolute fragment identifier.
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#deep_navigation"> You can jump to another page using an absolute
+            fragment identifier.
+        </a>
+    </div>
 
 </div>
 
@@ -167,7 +176,9 @@ pager.start(viewModel);
 &lt;/div&gt;
         </pre>
 
-    <a href="#load_external_content">Read about loading content</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#load_external_content">Read about loading content</a>
+    </div>
 
 
 </div>
@@ -245,10 +256,10 @@ pager.start(viewModel);
 
         </pre>
 
-    <p>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#html5_history">What about HTML5 history?</a>
+    </div>
 
-        <a href="#html5_history">What about HTML5 history?</a>
-    </p>
 
 </div>
 
@@ -261,6 +272,9 @@ pager.start(viewModel);
             to get HTML5 history support (well, replace <code>'/demo/'</code> with your own root URI)!
             <br/>
             All <code>page-href</code> bindings will use the HTML5 history API.
+            <br/>
+            Do not use <code>pager.start()</code> if you plan to use HTML5 history since it <i>only</i>
+            listens to <code>hashchange</code>.
         </p>
     </header>
 
@@ -270,20 +284,23 @@ var viewModel = {
 };
 
 pager.useHTML5history = true;
-pager.rootURI = '/demo/';
+pager.rootURI = 'demo/';
 pager.extendWithPage(viewModel);
 ko.applyBindings(viewModel);
-pager.start(viewModel);
-
-// this method navigates to a path - use it from your own click handlers etc.
-var navigate = function(path) {
-    pager.childManager.showChild(path().split('/'));
+// These lines are instead of pager.start();
+// In this example <a href="https://github.com/balupton/History.js/">History.js</a> is used
+var historyChanged = function() {
+    var State = History.getState();
+    var url = State.url.replace(History.getRootUrl() + pager.rootURI,'');
+    pager.routeFromHashToPage(window.location.hash);
 };
-
+History.Adapter.bind(window,'statechange',historyChanged);
+historyChanged();
         </pre>
 
-
-    <a href="#change_binding_context">Read about changing binding context</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#change_binding_context">Read about changing binding context</a>
+    </div>
 
 
 </div>
@@ -310,7 +327,10 @@ var navigate = function(path) {
 &lt;/script&gt;
     </pre>
 
-    <a href="#lazy_bind_view_model">Read more about changing the binding context</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#lazy_bind_view_model">Read more about changing the binding context</a>
+    </div>
+
 
 </div>
 
@@ -362,7 +382,11 @@ var requireVM = function (module) {
 &lt;/script&gt;
     </pre>
 
-    <a href="#matching_wildcards">And now about wildcards</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#matching_wildcards">And now about wildcards</a>
+    </div>
+
+
 
 </div>
 
@@ -397,7 +421,10 @@ var requireVM = function (module) {
 &lt;/div&gt;
     </pre>
 
-    <a href="#deep_navigation_with_wildcards">Continue reading about wildcards</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#deep_navigation_with_wildcards">Continue reading about wildcards</a>
+    </div>
+
 
 </div>
 
@@ -439,7 +466,10 @@ var requireVM = function (module) {
 &lt;/div&gt;
     </pre>
 
-    <a href="#send_wildcard_to_source">Further features of wildcards</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#send_wildcard_to_source">Further features of wildcards</a>
+    </div>
+
 
 </div>
 
@@ -481,7 +511,10 @@ var requireVM = function (module) {
 &lt;/div&gt;
     </pre>
 
-    <a href="#load_into_iframe">Read about loading content into iframes</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#load_into_iframe">Read about loading content into iframes</a>
+    </div>
+
 
 </div>
 
@@ -503,7 +536,10 @@ var requireVM = function (module) {
 &lt;div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}"&gt;&lt;/div&gt;
     </pre>
 
-    <a href="#configure_iframe">Read more about how to configure the <code>iframe</code></a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#configure_iframe">Read more about how to configure the <code>iframe</code></a>
+    </div>
+
 
 </div>
 
@@ -528,7 +564,11 @@ var requireVM = function (module) {
 &lt;/div&gt;
     </pre>
 
-    <a href="#custom_widgets">Read about custom widgets</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#custom_widgets">Read about custom widgets</a>
+    </div>
+
+
 
 </div>
 
@@ -645,7 +685,10 @@ ko.bindingHandlers['page-accordion-item'] = {
 };
    </pre>
 
-    <a href="#modals">Read about modals</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#modals">Read about modals</a>
+    </div>
+
 
 </div>
 
@@ -721,8 +764,10 @@ ko.bindingHandlers['page-accordion-item'] = {
         
     </pre>
 
-    <a href="#custom_js_when_navigating">Read about how to run custom JS when navigating</a>
-
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#custom_js_when_navigating">Read about how to run custom JS when
+            navigating</a>
+    </div>
 </div>
 
 <div data-bind="page: {id: 'custom_js_when_navigating', title: 'Custom JS when Navigating'}">
@@ -773,7 +818,10 @@ beforeFryIsHidden:function () {
 
     </pre>
 
-    <a href="#custom_hide_show">Read about custom hide- and show-methods</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#custom_hide_show">Read about custom <code>hide</code>- and <code>show</code>-methods</a>
+    </div>
+
 
 </div>
 
@@ -820,7 +868,10 @@ hideFry:function (page, callback) {
 };
     </pre>
 
-    <a href="#loader">Read about custom loaders</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#loader">Read about custom loaders</a>
+    </div>
+
 
 </div>
 
@@ -869,8 +920,9 @@ textLoader: function(page, element) {
 }
     </pre>
 
-    <a href="#tabpanel">Read about developing a tab panel</a>
-
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#tabpanel">Read about developing a tab panel</a>
+    </div>
 
 </div>
 
@@ -920,7 +972,10 @@ textLoader: function(page, element) {
 &lt;/div&gt;
     </pre>
 
-    <a href="#failed_navigation">Read about reacting to missing pages</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#failed_navigation">Read about reacting to missing pages</a>
+    </div>
+
 
 </div>
 
@@ -983,7 +1038,10 @@ randomFailed:function (page, route) {
 newChildren:ko.observableArray([])
     </pre>
 
-    <a href="#custom_view_loader">Read about loading a view using a custom method</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#custom_view_loader">Read about loading a view using a custom method</a>
+    </div>
+
 
 </div>
 
@@ -1027,7 +1085,10 @@ window.requireView = function(viewModule) {
 };
     </pre>
 
-    <a href="#params">Read about binding URI parameters</a>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#params">Read about binding URI parameters</a>
+    </div>
+
 
 </div>
 
@@ -1039,7 +1100,8 @@ window.requireView = function(viewModule) {
             A page is able to access the information in the current route and change the view-model.
             <br/>
             Using <code>params: ['x','y']</code> it is possible to pick up pseudo parameters from the URL
-            and bind them as observable variables in the page.
+            and bind them as observable variables in the page. If the parameter already exists on the
+            viewModel it is bound to that observable instead.
             <br/>
             These parameters can even be nested!
         </p>
@@ -1079,6 +1141,82 @@ window.requireView = function(viewModule) {
     &lt;/div&gt;
 &lt;/div>
     </pre>
+
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#guards">Read about guards during page transitions</a>
+    </div>
+
+
+</div>
+
+<div data-bind="page: {id: 'guards', title: 'Guards'}">
+    <header class="jumbotron subhead">
+        <h1>Guards</h1>
+
+        <p class="lead">
+            Guards are methods that are run before the page navigation takes place and
+            that can stop the navigation from displaying a certain page.
+            <br/>
+            Use the property <code>guard: someMethod</code> do apply the guard. The method
+            takes three parameters: page, route and callback. If the callback is called
+            the navigation takes place - otherwise it is stopped.
+            <br/>
+            Use cases are login, validating steps in state machines, etc.
+            <br/>
+            The reason the guard takes a callback as third argument is simply because the guard might be async -
+            accessing
+            a webserver for login details or asking if a valid shopping card exists etc.
+        </p>
+    </header>
+
+
+    <a class="btn" data-bind="page-href: 'admin'">Go to admin panel</a><br/>
+
+    <div data-bind="page: {id: 'admin', guard: isLoggedIn}" class="well">
+        This page is only accessible if the user is logged in.
+        <a href="#guards" data-bind="click: logout">Logout</a>
+    </div>
+    <div data-bind="page: {id: 'login'}" class="well">
+        <p class="alert alert-error">You are not logged in. Check the checkbox and try again.</p>
+
+        <form>
+            <label class="checkbox">Login <input type="checkbox" data-bind="checked: loggedIn"/> </label>
+        </form>
+    </div>
+
+    <br/>
+
+    <pre class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'admin', guard: isLoggedIn}" class="well"&gt;
+    This page is only accessible if the user is logged in.
+    &lt;a href="#guards" data-bind="click: logout"&gt;Logout&lt;/a&gt;
+&lt;/div&gt;
+&lt;div data-bind="page: {id: 'login'}" class="well"&gt;
+    &lt;p class="alert alert-error"&gt;You are not logged in. Check the checkbox and try again.&lt;/p&gt;
+
+    &lt;form&gt;
+        &lt;label class="checkbox"&gt;Login &lt;input type="checkbox" data-bind="checked: loggedIn"/&gt; &lt;/label&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+    </pre>
+
+    where
+
+    <pre class="prettyprint linenums">
+loggedIn: ko.observable(false),
+isLoggedIn: function(page, route, callback) {
+    if(viewModel.loggedIn()) {
+        callback();
+    } else {
+        window.location.href = "login";
+    }
+},
+    </pre>
+
+    <div class="well well-large">
+        <h2>This is it for now!</h2>
+        <p>Check out the <a href="https://github.com/finnsson/pagerjs/">source code</a></p>
+    </div>
 
 
 </div>

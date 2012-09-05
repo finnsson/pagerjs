@@ -36,6 +36,18 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap'], function ($,
             });
             page.showPage(route);
         },
+        loggedIn: ko.observable(false),
+        isLoggedIn: function(page, route, callback) {
+            if(viewModel.loggedIn()) {
+                callback();
+            } else {
+                window.location.href = "#guards/login";
+            }
+        },
+        logout: function() {
+            viewModel.loggedIn(false);
+            return true;
+        },
         newChildren:ko.observableArray([])
     };
 

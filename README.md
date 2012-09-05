@@ -497,6 +497,34 @@ or if HTML5 history is used
 
     example.com/search/tv?name=samsung&fromdate=20121010
 
+### Should be possible to add guards
+
+Guards are methods that are run before the page navigation takes place and
+that can stop the navigation from displaying a certain page.
+
+Use the property `guard: someMethod` do apply the guard. The method
+takes three parameters: page, route and callback. If the callback is called
+the navigation takes place - otherwise it is stopped.
+
+    <div data-bind="page: {id: 'admin', guard: isLoggedIn}">
+      This page is only accessible if the user is logged in.
+    </div>
+
+where
+
+    isLoggedIn: function(page, route, callback) {
+        if(viewModel.loggedIn()) {
+            callback();
+        } else {
+            window.location.href = "login";
+        }
+    }
+
+Use cases are login, validating steps in state machines, etc.
+
+The reason the guard takes a callback as third argument is simply because the guard might be async - accessing
+a webserver for login details or asking if a valid shopping card exists etc.
+
 ## In the pipeline
 
 
@@ -513,13 +541,9 @@ The architecture - and guiding principles - should be documentet.
 * how the tool-chain is used (grunt qunit > grunt min),
 * working process (README.md > GitHub Issues > QUnit-test > pager.js > demo-page),
 * code architecture (pager , Page, ChildManager).
+* Document navigation/callback/event-order.
 * Update doc in this readme.
-
-### Should be possible to listen to page-navigations and prevent them
-
-Using HTML5 and pushState it might be possible to correctly listen to page-navigations
-and prevent them without complications to the history-management. Listening to click-events
-is the recommended way at the moment.
+* Update with History.js-example
 
 ### Wildcards should deep-load content if configured so
 
