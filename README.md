@@ -54,14 +54,28 @@ pager.js extends KnockoutJS with three custom bindings: `page`, `page-href` and 
 * `{Object} with` that can change the scope of elements descendants. The same behavior as the normal `with`-binding.
 * `{Function} withOnShow` sets the view model of elements descendants async after the page is shown. This is useful
   so you can extract sub pages view models to other `.js`-files.
-* `{String} source` to load into element using `jQuery#load`. The source will be loaded once the page is processed.
+* `{String/Function} source` to load into element using `jQuery#load`. The source will be loaded once the page is processed.
+  If it is a function it is invoken.
 * `{Function} sourceLoaded` is a method/event/callback to run once the `source` (or `sourceOnShow`) is loaded.
-* `{String} sourceOnShow` to load into element using `jQuery#load` when the element is displayed. Thus sub pages
-  can be extracted and loaded on demand.
+* `{String/Function} sourceOnShow` to load into element using `jQuery#load` when the element is displayed. Thus sub pages
+  can be extracted and loaded on demand. If it is a function it is invoken.
 * `{Boolean/Number} sourceCache` can be set to true in order for sourceOnShow to only load the source once.
   If a number is specified the cache is valid for that amount of time in seconds.
 * `{String} frame` can be set to `iframe` in order for the source to be loaded into an iframe. If the page contains
   an iframe that element is used.
+* `{Boolean} modal` can be set to `true` in order for the page to act as a modal. If a page is a modal it can be
+  found by child-pages to sibling-pages of the modal.
+* `{Function} beforeHide` is called before the page is hidden.
+* `{Function} beforeShow` is called before the page is shown.
+* `{Function} afterHide` is called after the page is hidden.
+* `{Function} afterShow` is called after the page is shown.
+* `{Function} hideElement` can be supplied as a custom hide-method instead of the default `$(element).hide()`;
+* `{Function} showElement` can be supplied as a custom show-method instead of the default `$(element).show()`;
+* `{Function} loader` to call once the page is loaded. Can e.g. create a spinner inside the element.
+* `{Function} navigationFailed` method to call if a navigation could not find any matching page.
+* `{Object} params` binds URL-parameters to local observables.
+* `{Function} guard` validates a page transition before it is happening.
+
 
 ### page-href
 
@@ -527,11 +541,11 @@ a webserver for login details or asking if a valid shopping card exists etc.
 
 ## In the pipeline
 
+Nothing is in the pipeline at the moment. I have to use pager.js some more.
 
 ## Backlog
 
 There are a lot of features waiting to be implemented. Here are some of them.
-
 
 ### Document architecture and guiding principles
 
@@ -542,8 +556,9 @@ The architecture - and guiding principles - should be documentet.
 * working process (README.md > GitHub Issues > QUnit-test > pager.js > demo-page),
 * code architecture (pager , Page, ChildManager).
 * Document navigation/callback/event-order.
-* Update doc in this readme.
+* Update doc.
 * Update with History.js-example
+
 
 ### Wildcards should deep-load content if configured so
 
@@ -551,3 +566,26 @@ The architecture - and guiding principles - should be documentet.
 
     <div data-bind="page: {id: '?', deep: true, sourceOnShow: '{?}.html'}>
     </div>
+
+### Scoped pure view observables using `vars`
+
+    <!-- x and y are now available as observables, but only in the view (not the view-model) -->
+    <div data-bind="page: {id: 'foo', vars: ['x','y']}">
+      <span data-bind="text: x"></span>
+      <span data-bind="text: x"></span>
+    </div>
+
+This is useful for effects that has nothing to do with the view-model.
+
+### Named binding of child elements using `bind-child`
+
+    <div data-bind="page: {id: 'foo'}">
+      <div>
+        <span data-bind="page-child: 'name'"/>
+        <span data-bind="page-child: 'age'"/>
+      </div>
+    </div>
+
+Now `name` and `age` are available in the `Page`-instance
+under the `elementChildren`-observable, e.g. `this.elementChildren().name()`
+and `this.elementChildren().age()`.
