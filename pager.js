@@ -569,7 +569,7 @@ p.show = function (callback) {
                 me.ctx = vm;
                 ko.utils.extend(childBindingContext, {$page:this});
                 ko.applyBindingsToDescendants(childBindingContext, this.element);
-            }, this));
+            }, this), this);
         }
     }
 
