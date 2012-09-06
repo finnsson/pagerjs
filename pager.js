@@ -562,7 +562,7 @@ p.show = function (callback) {
         window.document.title = this.getValue().title;
     }
     if (value.withOnShow) {
-        if (!this.withOnShowLoaded) {
+        if (!this.withOnShowLoaded || value.sourceCache !== true) {
             this.withOnShowLoaded = true;
             value.withOnShow(_.bind(function (vm) {
                 var childBindingContext = this.bindingContext.createChildContext(vm);
