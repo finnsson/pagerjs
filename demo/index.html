@@ -328,7 +328,8 @@ historyChanged();
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#lazy_bind_view_model">Read more about changing the binding context</a>
+        <a class="btn btn-large btn-primary" href="#lazy_bind_view_model">Read more about changing the binding
+            context</a>
     </div>
 
 
@@ -385,7 +386,6 @@ var requireVM = function (module) {
     <div class="form-actions">
         <a class="btn btn-large btn-primary" href="#matching_wildcards">And now about wildcards</a>
     </div>
-
 
 
 </div>
@@ -537,7 +537,8 @@ var requireVM = function (module) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#configure_iframe">Read more about how to configure the <code>iframe</code></a>
+        <a class="btn btn-large btn-primary" href="#configure_iframe">Read more about how to configure the
+            <code>iframe</code></a>
     </div>
 
 
@@ -567,7 +568,6 @@ var requireVM = function (module) {
     <div class="form-actions">
         <a class="btn btn-large btn-primary" href="#custom_widgets">Read about custom widgets</a>
     </div>
-
 
 
 </div>
@@ -1039,7 +1039,8 @@ newChildren:ko.observableArray([])
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#custom_view_loader">Read about loading a view using a custom method</a>
+        <a class="btn btn-large btn-primary" href="#custom_view_loader">Read about loading a view using a custom
+            method</a>
     </div>
 
 
@@ -1215,8 +1216,129 @@ isLoggedIn: function(page, route, callback) {
 
     <div class="well well-large">
         <h2>This is it for now!</h2>
+
         <p>Check out the <a href="https://github.com/finnsson/pagerjs/">source code</a></p>
     </div>
+
+
+</div>
+
+<div data-bind="page: {id: 'recapitulation', title: 'Recapitulation'}">
+    <header class="jumbotron subhead">
+        <h1>Recapitulation</h1>
+
+        <p class="lead">
+            Pager.js contains a lot of functionality and extension-points.
+            They can divided into three parts:
+            <code>pager</code>-object,
+            <code>page: {}</code>-configuration
+            and <code>pager.Page</code>-class.
+        </p>
+    </header>
+
+    <h2>pager</h2>
+
+    <p class="p">
+        The pager-object got the following methods and members of interest.
+    </p>
+
+    <h3><code class="code-large">start()</code></h3>
+
+    <p class="p">
+        Used if you want to listen to <code>hashchange</code>-event on window. For IE7/8-support you should not use this
+        method. Use <a href="https://github.com/balupton/History.js/">History.js</a> or similar library instead for
+        better
+        browser support and HTML5 history support.
+        <br/>
+        This method should be called after <code>ko.applyBindings(...)</code>
+    </p>
+
+    <pre class="prettyprint">
+// your view model
+var viewModel = {
+};
+// extend viewModel with a $__page__ that points to pager.page that points to a new Page
+pager.extendWithPage(viewModel);
+// apply your bindings
+ko.applyBindings(viewModel);
+// run this method - listening to hashchange
+pager.start();
+
+    </pre>
+
+
+    <h3><code class="code-large">extendWithPage(viewModel : Object)</code></h3>
+
+    <p class="p">
+        Create a new Page-object and set it on pager (<code>pager.page</code>) as well as the
+        viewModel (<code>viewModel.$__page__</code>). This page-object works as the root page.
+        <br/>
+        You must call this method (or do the identical thing yourself) before calling
+        <code>ko.applyBindings(...)</code>
+    </p>
+
+    <h3><code class="code-large">navigationFailed : Observable({page,route})</code></h3>
+
+    <p class="p">
+        A global observable that is triggered every time a navigation fails.
+        The observable got two members: route and page.
+    </p>
+
+    <pre class="prettyprint">
+ko.computed(function() {
+    var page = pager.navigationFailed().page;
+    var route = pager.navigationFailed().route;
+    if (page && page.getId() == null) {
+        viewModel.newChildren.push({childId: route[0]});
+        page.showPage(route);
+    }
+});
+    </pre>
+
+    <h3><code class="code-large">showChild(route : String[])</code></h3>
+
+    <p class="p">
+        Will trigger <code>pager.page.childManager.showChild</code>, i.e. route
+        to the correct pages. You should call this method if you are using your own
+        event listener for user navigation (e.g. History.js)
+        or in some other way need to call the routing.
+    </p>
+
+    <h3><code class="code-large">page : pager.Page</code></h3>
+
+    <p class="p">
+        The root page. Got no ID. Using this reference (or <code>$__page__</code> in the view model)
+        it is possible to e.g. get a hold of all the pages on the site using <code>pager.page.children()</code>
+    </p>
+
+    <h2>page: {}</h2>
+
+    <p>
+        A page-binding got a lot of configuration members. If you sub-class <code>pager.Page</code>
+        and add your own sub-class binding you can further expand this list as sees fit.
+    </p>
+
+    <h3><code class="code-large">id : String</code></h3>
+    <h3><code class="code-large">params : String[]</code></h3>
+    <h3><code class="code-large">with : </code></h3>
+    <h3><code class="code-large">withOnShow : Function(Function(Object))</code></h3>
+    <h3><code class="code-large">sourceOnShow</code></h3>
+    <h3><code class="code-large">sourceLoaded</code></h3>
+    <h3><code class="code-large">source</code></h3>
+    <h3><code class="code-large">frame : String</code></h3>
+    <h3><code class="code-large">modal : Boolean</code></h3>
+    <h3><code class="code-large">beforeHide : </code></h3>
+    <h3><code class="code-large">beforeShow : </code></h3>
+    <h3><code class="code-large">afterHide : </code></h3>
+    <h3><code class="code-large">afterShow : </code></h3>
+    <h3><code class="code-large">hideElement : </code></h3>
+    <h3><code class="code-large">showElement : </code></h3>
+    <h3><code class="code-large">loader : </code></h3>
+    <h3><code class="code-large">navigationFailed : </code></h3>
+    <h3><code class="code-large">guard : </code></h3>
+
+
+    <h2>pager.Page</h2>
 
 
 </div>

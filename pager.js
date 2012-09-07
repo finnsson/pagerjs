@@ -5,6 +5,8 @@
 
 var pager = {};
 
+pager.page = null;
+
 
 /**
  * This is the hash-based start-method.
@@ -36,15 +38,13 @@ pager.extendWithPage = function (viewModel) {
 };
 
 /**
- *
- *
  * Called when a route does not find a match.
  *
  * @var navigationFailed
- * @type {Function}
+ * @type {Observable}
  * @static
  */
-pager.navigationFailed = null;
+pager.navigationFailed = ko.observable();
 
 
 /**
@@ -61,8 +61,12 @@ pager.routeFromHashToPage = function (hash) {
     pager.showChild(hashRoute);
 };
 
-pager.showChild = function (hashRoute) {
-    pager.page.childManager.showChild(hashRoute);
+/**
+ *
+ * @param {String[]} route
+ */
+pager.showChild = function (route) {
+    pager.page.childManager.showChild(route);
 };
 
 // common KnockoutJS helpers
@@ -214,7 +218,7 @@ pager.ChildManager = function (children, page) {
 
         var onFailed = function () {
             if (pager.navigationFailed) {
-                pager.navigationFailed(me.page, route);
+                pager.navigationFailed({page:me.page, route:route});
             }
             if (me.page.getValue().navigationFailed) {
                 _ko.value(me.page.getValue().navigationFailed)(me.page, route);
@@ -338,6 +342,16 @@ pager.Page = function (element, valueAccessor, allBindingsAccessor, viewModel, b
 var p = pager.Page.prototype;
 
 /**
+ * @method pager.Page#val
+ *
+ * @param {String} key
+ * @return {Object} an un-boxed configuration property
+ */
+p.val = function(key) {
+    return _ko.value(this.getValue()[key]);
+};
+
+/**
  * @method pager.Page#showPage
  *
  * @param route
@@ -360,7 +374,7 @@ p.showPage = function (route, pageRoute, originalRoute) {
 p.setParams = function (params) {
     // get view model
     var vm = this.ctx;
-    var userParams = this.getValue().params || {};
+    var userParams = this.val('params') || {};
     // for each param for URL
     $.each(params, function (key, value) {
         if (_.indexOf(userParams, key) !== -1) { // make sure it's a valid param
