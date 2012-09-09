@@ -1,3 +1,4 @@
+"use strict";
 /**
  * @module pager
  * @readme README.md
@@ -232,7 +233,7 @@ pager.ChildManager = function (children, page) {
                     if (me.timeStamp === timeStamp) {
                         me.currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
                     }
-                });
+                }, oldCurrentChild);
             } else {
                 me.currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
             }
@@ -256,6 +257,10 @@ pager.ChildManager = function (children, page) {
     };
 };
 
+/*
+ * @typedef {{id:String,hideElment:Function,showElement:Function}}
+ */
+var PageConfig;
 
 /**
  *
@@ -337,6 +342,8 @@ pager.Page = function (element, valueAccessor, allBindingsAccessor, viewModel, b
     this.isVisible = ko.observable(false);
 
     this.originalRoute = ko.observable(null);
+
+    this.route = null;
 };
 
 var p = pager.Page.prototype;
@@ -347,8 +354,12 @@ var p = pager.Page.prototype;
  * @param {String} key
  * @return {Object} an un-boxed configuration property
  */
-p.val = function(key) {
+p.val = function (key) {
     return _ko.value(this.getValue()[key]);
+};
+
+p.currentChildPage = function () {
+    return this.childManager.currentChildO;
 };
 
 /**
@@ -359,6 +370,7 @@ p.val = function(key) {
 p.showPage = function (route, pageRoute, originalRoute) {
     this.isVisible(true);
     this.originalRoute(originalRoute);
+    this.route = route;
     if (pageRoute && pageRoute.params) {
         this.setParams(pageRoute.params);
     }
@@ -421,7 +433,7 @@ p.init = function () {
     this.ctx = null;
     if (value['with']) {
         this.ctx = _ko.value(value['with']);
-    } else if (value['withOnShow']) {
+    } else if (value.withOnShow) {
         this.ctx = {};
     } else {
         this.ctx = this.viewModel;
@@ -435,7 +447,7 @@ p.init = function () {
     }
     this.childBindingContext = this.bindingContext.createChildContext(this.ctx);
     ko.utils.extend(this.childBindingContext, {$page:this});
-    if (!value['withOnShow']) {
+    if (!value.withOnShow) {
         ko.applyBindingsToDescendants(this.childBindingContext, this.element);
     }
     return { controlsDescendantBindings:true};
@@ -525,7 +537,7 @@ p.loadSource = function (source) {
                 if (loader) {
                     loader.unload();
                 }
-                value.sourceLoaded();
+                value.sourceLoaded(me);
             });
         }
         // TODO: remove src binding and add this binding
@@ -541,22 +553,30 @@ p.loadSource = function (source) {
         }
         // TODO: remove all children and add sourceUrl(source)
         ko.computed(function () {
+            var onLoad = function () {
+                // remove load
+                if (loader) {
+                    loader.unload();
+                }
+                // apply bindings
+                ko.applyBindingsToDescendants(me.childBindingContext, me.element);
+                // trigger event
+                if (value.sourceLoaded) {
+                    value.sourceLoaded(me);
+                }
+                // possibly continue routing
+                if (me.route) {
+                    me.childManager.showChild(me.route);
+                }
+            };
             if (typeof _ko.value(source) === 'string') {
                 var s = _ko.value(this.sourceUrl(source));
                 $(element).load(s, function () {
-                    if (loader) {
-                        loader.unload();
-                    }
-                    ko.applyBindingsToDescendants(me.childBindingContext, me.element);
-                    if (value.sourceLoaded) {
-                        value.sourceLoaded.apply(me, arguments);
-                    }
+                    onLoad();
                 });
             } else { // should be a method
                 _ko.value(source)(this, function () {
-                    if (value.sourceLoaded) {
-                        value.sourceLoaded();
-                    }
+                    onLoad();
                 });
             }
         }, this);
@@ -619,6 +639,8 @@ p.showElementWrapper = function (callback) {
 pager.Page.prototype.showElement = function (callback) {
     if (this.getValue().showElement) {
         this.getValue().showElement(this, callback);
+    } else if(this.val('fx')) {
+        pager.fx[this.val('fx')].showElement(this,callback);
     } else if (pager.showElement) {
         pager.showElement(this, callback);
     } else {
@@ -648,6 +670,8 @@ pager.Page.prototype.hideElementWrapper = function (callback) {
 pager.Page.prototype.hideElement = function (callback) {
     if (this.getValue().hideElement) {
         this.getValue().hideElement(this, callback);
+    } else if(this.val('fx')) {
+        pager.fx[this.val('fx')].hideElement(this,callback);
     } else if (pager.hideElement) {
         pager.hideElement(this, callback);
     } else {
@@ -727,10 +751,10 @@ ko.bindingHandlers['page-href'] = {
             return fullPath;
         });
 
-        if (pager.useHTML5history && window.history && history.pushState) {
+        if (pager.useHTML5history && window.history && window.history.pushState) {
             $(element).click(function (e) {
                 e.preventDefault();
-                history.pushState(null, null, pager.rootURI + path());
+                window.history.pushState(null, null, pager.rootURI + path());
                 pager.showChild(path().split('/'));
 
             });
@@ -791,5 +815,98 @@ ko.bindingHandlers['page-accordion-item'] = {
         pageAccordionItem.init();
     },
     update:function () {
+    }
+};
+
+
+pager.fx = {};
+
+pager.fx.zoom = {
+    showElement:function (page, callback) {
+        $(page.element).show();
+        var i = setInterval(function () {
+            clearInterval(i);
+            $(page.element).addClass('pagerjs-fx-zoom-in');
+        }, 10);
+        var i2 = setInterval(function () {
+            clearInterval(i2);
+            if (callback) {
+                callback();
+            }
+        }, 300);
+    },
+    hideElement:function (page, callback) {
+        if (!page.pageHiddenOnce) {
+            page.pageHiddenOnce = true;
+            $(page.element).hide();
+        } else {
+            $(page.element).removeClass('pagerjs-fx-zoom-in');
+            var i = setInterval(function () {
+                clearInterval(i);
+                if (callback) {
+                    callback();
+                }
+                $(page.element).hide();
+            }, 300);
+        }
+    }
+};
+
+pager.fx.flip = {
+    showElement:function (page, callback) {
+        $(page.element).show();
+        var i = setInterval(function () {
+            clearInterval(i);
+            $(page.element).addClass('pagerjs-fx-flip-in');
+        }, 10);
+        var i2 = setInterval(function () {
+            clearInterval(i2);
+            if (callback) {
+                callback();
+            }
+        }, 300);
+    },
+    hideElement:function (page, callback) {
+        if (!page.pageHiddenOnce) {
+            page.pageHiddenOnce = true;
+            $(page.element).hide();
+        } else {
+            $(page.element).removeClass('pagerjs-fx-flip-in');
+            var i = setInterval(function () {
+                clearInterval(i);
+                if (callback) {
+                    callback();
+                }
+                $(page.element).hide();
+            }, 300);
+        }
+    }
+};
+
+pager.fx.slide = {
+    showElement:function (page, callback) {
+        $(page.element).slideDown(300, callback);
+    },
+    hideElement:function (page, callback) {
+        $(page.element).slideUp(300, function () {
+            $(page.element).hide();
+        });
+        if (callback) {
+            callback();
+        }
+    }
+};
+
+pager.fx.fade = {
+    showElement:function (page, callback) {
+        $(page.element).fadeIn(300, callback);
+    },
+    hideElement:function (page, callback) {
+        $(page.element).fadeOut(300, function () {
+            $(page.element).hide();
+            if (callback) {
+                callback();
+            }
+        });
     }
 };

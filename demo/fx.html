@@ -1,0 +1,81 @@
+<header class="jumbotron subhead">
+    <h1>FX</h1>
+
+    <p class="lead">
+        pager.js comes pre-packed with effects for fading, sliding, zooming and flipping between pages.
+        These effects can easily be added to your page using
+        <code>fx: 'zoom'</code>,
+        <code>fx: 'flip'</code>,
+        <code>fx: 'slide'</code> or
+        <code>fx: 'fade'</code>.
+        In order to use <i>zoom</i> or <i>flip</i> you'll need to include pager.css or pager.less.
+    </p>
+</header>
+
+
+<h2><a href="#fx/zoom">Zoom</a></h2>
+<div data-bind="page: {id: 'zoom'}">
+
+    <ul class="nav nav-tabs" data-bind="foreach: $page.children">
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-href: getId()"></a></li>
+    </ul>
+
+    <div data-bind="page: {id: 'bend_her', title: 'Bend Her', fx: 'zoom', source: 'bend_her.html'}"
+         class="pagerjs-fx-zoom"></div>
+    <div data-bind="page: {id: 'buggalo_zoom', title: 'Buggalo', fx: 'zoom', source: 'buggalo.html'}"
+         class="pagerjs-fx-zoom"></div>
+    <div data-bind="page: {id: 'lethal_zoom', title: 'Lethal', fx: 'zoom', source: 'lethal.html'}"
+         class="pagerjs-fx-zoom"></div>
+</div>
+
+<h2><a href="#fx/flip">Flip</a></h2>
+
+<div data-bind="page: {id: 'flip'}">
+    <ul class="nav nav-tabs" data-bind="foreach: $page.children">
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-href: getId()"></a></li>
+    </ul>
+
+
+    <div data-bind="page: {id: 'bend_her', title: 'Bend Her', fx: 'flip', source: 'bend_her.html'}"
+         class="pagerjs-fx-flip"></div>
+    <div data-bind="page: {id: 'buggalo_zoom', title: 'Buggalo', fx: 'flip', source: 'buggalo.html'}"
+         class="pagerjs-fx-flip"></div>
+    <div data-bind="page: {id: 'lethal_zoom', title: 'Lethal', fx: 'flip', source: 'lethal.html'}"
+         class="pagerjs-fx-flip"></div>
+</div>
+
+<h2><a href="#fx/slide">Slide</a></h2>
+
+<div data-bind="page: {id: 'slide'}">
+    <ul class="nav nav-tabs" data-bind="foreach: $page.children">
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-href: getId()"></a></li>
+    </ul>
+
+
+    <div data-bind="page: {id: 'bend_her', title: 'Bend Her', fx: 'slide', source: 'bend_her.html'}"
+            ></div>
+    <div data-bind="page: {id: 'buggalo_zoom', title: 'Buggalo', fx: 'slide', source: 'buggalo.html'}"
+            ></div>
+    <div data-bind="page: {id: 'lethal_zoom', title: 'Lethal', fx: 'slide', source: 'lethal.html'}"
+            ></div>
+</div>
+
+<h2><a href="#fx/fade">Fade</a></h2>
+
+<div data-bind="page: {id: 'fade'}">
+    <ul class="nav nav-tabs" data-bind="foreach: $page.children">
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-href: getId()"></a></li>
+    </ul>
+
+
+    <div data-bind="page: {id: 'bend_her', title: 'Bend Her', fx: 'fade', source: 'bend_her.html'}"
+            ></div>
+    <div data-bind="page: {id: 'buggalo_zoom', title: 'Buggalo', fx: 'fade', source: 'buggalo.html'}"
+            ></div>
+    <div data-bind="page: {id: 'lethal_zoom', title: 'Lethal', fx: 'fade', source: 'lethal.html'}"
+            ></div>
+</div>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#recapitulation">Read a recapitulation about the API</a>
+</div>

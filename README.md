@@ -541,25 +541,20 @@ a webserver for login details or asking if a valid shopping card exists etc.
 
 ## In the pipeline
 
-Nothing is in the pipeline at the moment. I have to use pager.js some more.
-
-## Backlog
-
-There are a lot of features waiting to be implemented. Here are some of them.
+### Should contain common effects
 
 ### Document architecture and guiding principles
 
 The architecture - and guiding principles - should be documentet.
 
-* Dependencies (jQuery, KnockoutJS, Underscore.js)
-* how the tool-chain is used (grunt qunit > grunt min),
-* working process (README.md > GitHub Issues > QUnit-test > pager.js > demo-page),
-* code architecture (pager , Page, ChildManager).
-* Document navigation/callback/event-order.
-* Update doc.
-* Demo-page with (1) recap, (2) displaying how to use the page-object hierarchy to construct
-  e.g. breadcrumbs, (3) usages of page-properties (isVisible, etc).
-* node.js demo-page for HTML5 + History.js
+* Template with requirejs, jQuery, Lo-Dash, KnockoutJS, Bootstrap, History.js, Pager.js,
+  Volo (https://github.com/volojs/volo),
+  Grunt,
+  and a Node.js-server
+
+## Backlog
+
+There are a lot of features waiting to be implemented. Here are some of them.
 
 ### Wildcards should deep-load content if configured so
 
@@ -590,12 +585,3 @@ This is useful for effects that has nothing to do with the view-model.
 Now `name` and `age` are available in the `Page`-instance
 under the `elementChildren`-observable, e.g. `this.elementChildren().name()`
 and `this.elementChildren().age()`.
-
-### Should contain common show/hide-alternatives
-
-`pager.fx.show` and `pager.fx.hide` should contain
-common show/hide effects that can be bound to using strings.
-
-Show-effects should be: fadeIn, slideDown
-
-Hide-effects should be: fadeOut, slideUp

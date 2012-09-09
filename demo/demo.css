@@ -3,9 +3,28 @@ body > .container > div {
 }
 
 .code-large {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: normal;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
 
 .p {
+}
+
+footer {
+    padding: 100px 0;
+    margin-top: 100px;
+    border-top: 1px solid #E5E5E5;
+    background-color: whiteSmoke;
+}
+
+footer .pagination ul {
+    background-color: #fff;
+}
+
+.dropdown-menu {
+    max-height: 300px;
+    overflow-y: scroll;
 }

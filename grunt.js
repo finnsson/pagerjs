@@ -1,6 +1,8 @@
 /*global module:false*/
 module.exports = function (grunt) {
 
+    grunt.loadNpmTasks('grunt-less');
+
     // Project configuration.
     grunt.initConfig({
         meta:{
@@ -76,6 +78,20 @@ module.exports = function (grunt) {
                 $:true,
                 define:true,
                 _:true
+            }
+        },
+        less: {
+            dist: {
+                src: 'pager.less',
+                dest: 'dist/pager.css'
+            },
+            test: {
+                src: 'pager.less',
+                dest: 'test/pager.css'
+            },
+            demo: {
+                src: 'pager.less',
+                dest: 'demo/pager.css'
             }
         },
         uglify:{}

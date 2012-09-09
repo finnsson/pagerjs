@@ -1,7 +1,10 @@
-require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap'], function ($, ko, _, pager, bootstrap) {
+require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'history'], function ($, ko, _, pager) {
     var viewModel = {
         name:ko.observable("Pelle"),
         description:ko.observable('pl'),
+        externalContentLoaded:function (page) {
+            prettyPrint();
+        },
         afterFryIsDisplayed:function () {
             $('body').css("background-color", "#FF9999");
         },
@@ -36,15 +39,15 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap'], function ($,
             });
             page.showPage(route);
         },
-        loggedIn: ko.observable(false),
-        isLoggedIn: function(page, route, callback) {
-            if(viewModel.loggedIn()) {
+        loggedIn:ko.observable(false),
+        isLoggedIn:function (page, route, callback) {
+            if (viewModel.loggedIn()) {
                 callback();
             } else {
                 window.location.href = "#guards/login";
             }
         },
-        logout: function() {
+        logout:function () {
             viewModel.loggedIn(false);
             return true;
         },
@@ -59,13 +62,37 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap'], function ($,
         };
     };
 
-    window.requireView = function(viewModule) {
-        return function(page, callback) {
-            require([viewModule], function(viewString) {
+    window.requireView = function (viewModule) {
+        return function (page, callback) {
+            require([viewModule], function (viewString) {
                 $(page.element).html(viewString);
                 callback();
             });
         };
+    };
+
+    window.recapLoaded = function (page) {
+        prettyPrint();
+        $('.tt').tooltip();
+
+        // for each h3
+        var h3s = $('h3', $(page.element));
+        $.each(h3s, function (h3Index, h3) {
+            var $h3 = $(h3);
+            // get all siblings until another h3 or h2
+            var siblings = $([]);
+            var sibling = $h3.next();
+            while (sibling && sibling.length > 0 && sibling[0].tagName.toLocaleLowerCase() !== 'h3' && sibling[0].tagName.toLocaleLowerCase() !== 'h2') {
+                siblings.push(sibling);
+                sibling = sibling.next();
+            }
+            // hide all siblings
+            siblings.toggle();
+            // on h3-click toggle all siblings
+            $h3.click(function () {
+                siblings.toggle();
+            });
+        });
     };
 
 
@@ -73,7 +100,19 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap'], function ($,
 
         pager.extendWithPage(viewModel);
         ko.applyBindings(viewModel);
-        pager.start(viewModel);
+
+        // using jquery hashchange-plugin instead of pager.start
+        $(window).hashchange(function () {
+            var hash = location.hash;
+            // strip #
+            if (hash[0] === '#') {
+                hash = hash.slice(1);
+            }
+            // split on '/'
+            var hashRoute = decodeURIComponent(hash).split('/');
+            pager.showChild(hashRoute);
+        });
+        $(window).hashchange();
 
         $('.dropdown-toggle').dropdown();
     });

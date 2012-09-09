@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should access URI parameters</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'parent', source: '../test-data/parent_to_ipsum.html'}"></div>
+
+
+<script type="text/javascript">
+
+
+    var viewModel = {
+        name:ko.observable('Fry')
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should access URI parameters", function () {
+
+        window.location.hash = '#parent/ipsum';
+        until(function () {
+            return $('#ipsum').text() === 'Fry';
+        }, function () {
+            ok(true, "The page name is set");
+            var parent = pager.page.currentChildPage()();
+            if (parent && parent.getId() === 'parent') {
+                var ipsum = parent.currentChildPage()();
+                if (ipsum && ipsum.getId() === 'ipsum') {
+                    ok(true, "Ipsum is visible");
+                } else {
+                    ok(false, "Ipsum is not visible");
+                }
+            } else {
+                ok(false, "Parent is not visible");
+            }
+            start();
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>
