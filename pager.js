@@ -636,11 +636,11 @@ p.showElementWrapper = function (callback) {
  * @method pager.Page#showElement
  * @param {Function} callback
  */
-pager.Page.prototype.showElement = function (callback) {
+p.showElement = function (callback) {
     if (this.getValue().showElement) {
         this.getValue().showElement(this, callback);
-    } else if(this.val('fx')) {
-        pager.fx[this.val('fx')].showElement(this,callback);
+    } else if (this.val('fx')) {
+        pager.fx[this.val('fx')].showElement(this, callback);
     } else if (pager.showElement) {
         pager.showElement(this, callback);
     } else {
@@ -667,11 +667,11 @@ pager.Page.prototype.hideElementWrapper = function (callback) {
  * @method pager.Page#hideElement
  * @param {Function} [callback]
  */
-pager.Page.prototype.hideElement = function (callback) {
+p.hideElement = function (callback) {
     if (this.getValue().hideElement) {
         this.getValue().hideElement(this, callback);
-    } else if(this.val('fx')) {
-        pager.fx[this.val('fx')].hideElement(this,callback);
+    } else if (this.val('fx')) {
+        pager.fx[this.val('fx')].hideElement(this, callback);
     } else if (pager.hideElement) {
         pager.hideElement(this, callback);
     } else {
@@ -687,7 +687,7 @@ pager.Page.prototype.hideElement = function (callback) {
  *
  * @return {Observable}
  */
-pager.Page.prototype.getFullRoute = function () {
+p.getFullRoute = function () {
     return ko.computed(function () {
         var res = null;
         if (this.currentParentPage && this.currentParentPage()) {
@@ -701,6 +701,17 @@ pager.Page.prototype.getFullRoute = function () {
         } else { // is root page
             return [];
         }
+    }, this);
+};
+
+p.nullObject = new pager.Page();
+
+p.child = function (key) {
+    return ko.computed(function () {
+        var child = _.find(this.children(), function (c) {
+            return c.getId() === c;
+        });
+        return child || this.nullObject;
     }, this);
 };
 
@@ -726,45 +737,148 @@ pager.useHTML5history = false;
  */
 pager.rootURI = '/';
 
-// TODO: extract this into a separate class pager.PageHref
-ko.bindingHandlers['page-href'] = {
-    init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        var $page = bindingContext.$page || bindingContext.$data.$page;
-        var page = $page;
+pager.Href = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    this.element = element;
+    this.valueAccessor = valueAccessor;
+    this.allBindingsAccessor = allBindingsAccessor;
+    this.viewModel = viewModel;
+    this.bindingContext = bindingContext;
+};
 
-        // The href reacts to changes in the value
-        var path = ko.computed(function () {
-            var value = _ko.value(valueAccessor());
-            var parentsToTrim = 0;
-            while (value.substring(0, 3) === '../') {
-                parentsToTrim++;
-                value = value.slice(3);
-            }
+var hp = pager.Href.prototype;
 
-            var fullRoute = page.getFullRoute()();
-            var parentPath = fullRoute.slice(0, fullRoute.length - parentsToTrim).join('/');
-            var fullPath = (parentPath === '' ? '' : parentPath + '/') + value;
-            var attr = {
-                'href':'#' + fullPath
-            };
-            $(element).attr(attr);
-            return fullPath;
-        });
+hp.getParentPage = p.getParentPage;
 
-        if (pager.useHTML5history && window.history && window.history.pushState) {
-            $(element).click(function (e) {
-                e.preventDefault();
-                window.history.pushState(null, null, pager.rootURI + path());
-                pager.showChild(path().split('/'));
+hp.init = function () {
+    var page = this.getParentPage();
 
-            });
+    this.path = ko.computed(function () {
+        var value = _ko.value(this.valueAccessor());
+        var parentsToTrim = 0;
+        while (value.substring(0, 3) === '../') {
+            parentsToTrim++;
+            value = value.slice(3);
         }
 
+        var fullRoute = page.getFullRoute()();
+        var parentPath = fullRoute.slice(0, fullRoute.length - parentsToTrim).join('/');
+        var fullPath = (parentPath === '' ? '' : parentPath + '/') + value;
+        return fullPath;
+    }, this);
+};
 
+hp.bind = function () {
+    var hash = ko.computed(function () {
+        return '#' + this.path();
+    }, this);
+
+    ko.applyBindingsToNode(this.element, {
+        attr:{
+            'href':hash
+        }
+    });
+};
+
+pager.Href5 = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    pager.Href.apply(this, arguments);
+};
+
+pager.Href5.prototype = new pager.Href();
+
+pager.Href5.history = window.history;
+
+pager.Href5.prototype.bind = function () {
+    ko.applyBindingsToNode(this.element, {
+        attr:{
+            'href':this.path
+        },
+        click:_.bind(function () {
+            pager.Href5.history.pushState(null, null, this.path());
+        }, this)
+    });
+};
+
+ko.bindingHandlers['page-hash'] = {
+    init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        var href = new pager.Href(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+        href.init();
+        href.bind();
     },
     update:function () {
+
     }
 };
+
+ko.bindingHandlers['page-href5'] = {
+    init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        var href = new pager.Href5(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+        href.init();
+        href.bind();
+    },
+    update:function () {
+
+    }
+};
+
+ko.bindingHandlers['page-href'] = {
+    init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        var cls = pager.useHTML5history ? pager.Href5 : pager.Href;
+        var href = new cls(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+        href.init();
+        href.bind();
+    },
+    update:function () {
+
+    }
+};
+
+/*
+ // TODO: extract this into a separate class pager.PageHref
+ ko.bindingHandlers['page-href'] = {
+ init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+ var $page = bindingContext.$page || bindingContext.$data.$page;
+ var page = $page;
+
+ // The href reacts to changes in the value
+ var path = ko.computed(function () {
+ var value = _ko.value(valueAccessor());
+ var parentsToTrim = 0;
+ while (value.substring(0, 3) === '../') {
+ parentsToTrim++;
+ value = value.slice(3);
+ }
+
+ var fullRoute = page.getFullRoute()();
+ var parentPath = fullRoute.slice(0, fullRoute.length - parentsToTrim).join('/');
+ var fullPath = (parentPath === '' ? '' : parentPath + '/') + value;
+ var attr = {
+ 'href':'#' + fullPath
+ };
+ $(element).attr(attr);
+ return fullPath;
+ });
+
+ if (pager.useHTML5history && window.history && window.history.pushState) {
+ $(element).click(function (e) {
+ e.preventDefault();
+ window.history.pushState(null, null, pager.rootURI + path());
+ pager.showChild(path().split('/'));
+ });
+ }
+ },
+ update:function () {
+ }
+ };*/
+
+// TODO: remove PageAccordionItem in favour of simple guide on handrolling one
+
+/*
+
+
+ <h2><a data-bind="text: child('foo').title, page-hash: child('foo').getId()" /></h2>
+ <div data-bind="page: {id: 'foo', fx: 'slide'}"/>
+
+ */
 
 /**
  * @class pager.PageAccordionItem
@@ -776,53 +890,51 @@ ko.bindingHandlers['page-href'] = {
  * @param {Observable} viewModel
  * @param bindingContext
  */
-pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-    pager.Page.apply(this, arguments);
-};
+/*
+ pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+ pager.Page.apply(this, arguments);
+ };
 
-pager.PageAccordionItem.prototype = new pager.Page();
+ pager.PageAccordionItem.prototype = new pager.Page();
 
-/**
- *
- * @return {Node}
+ pager.PageAccordionItem.prototype.getAccordionBody = function () {
+ return $(this.element).children()[1];
+ };
+
+ pager.PageAccordionItem.prototype.hideElement = function (callback) {
+ if (!this.pageAccordionItemHidden) {
+ this.pageAccordionItemHidden = true;
+ $(this.getAccordionBody()).hide();
+ } else {
+ $(this.getAccordionBody()).slideUp();
+ if (callback) {
+ callback();
+ }
+ }
+ };
+
+ pager.PageAccordionItem.prototype.showElement = function (callback) {
+ $(this.getAccordionBody()).slideDown();
+ if (callback) {
+ callback();
+ }
+ };
+
+ ko.bindingHandlers['page-accordion-item'] = {
+ init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+ var pageAccordionItem = new pager.PageAccordionItem(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+ pageAccordionItem.init();
+ },
+ update:function () {
+ }
+ };
  */
-pager.PageAccordionItem.prototype.getAccordionBody = function () {
-    return $(this.element).children()[1];
-};
-
-pager.PageAccordionItem.prototype.hideElement = function (callback) {
-    if (!this.pageAccordionItemHidden) {
-        this.pageAccordionItemHidden = true;
-        $(this.getAccordionBody()).hide();
-    } else {
-        $(this.getAccordionBody()).slideUp();
-        if (callback) {
-            callback();
-        }
-    }
-};
-
-pager.PageAccordionItem.prototype.showElement = function (callback) {
-    $(this.getAccordionBody()).slideDown();
-    if (callback) {
-        callback();
-    }
-};
-
-ko.bindingHandlers['page-accordion-item'] = {
-    init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        var pageAccordionItem = new pager.PageAccordionItem(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-        pageAccordionItem.init();
-    },
-    update:function () {
-    }
-};
-
 
 pager.fx = {};
 
 pager.fx.zoom = {
     showElement:function (page, callback) {
+        $(page.element).addClass('pagerjs-fx-zoom');
         $(page.element).show();
         var i = setInterval(function () {
             clearInterval(i);
@@ -854,6 +966,7 @@ pager.fx.zoom = {
 
 pager.fx.flip = {
     showElement:function (page, callback) {
+        $(page.element).addClass('pagerjs-fx-flip');
         $(page.element).show();
         var i = setInterval(function () {
             clearInterval(i);

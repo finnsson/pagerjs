@@ -52,6 +52,10 @@ module.exports = function (grunt) {
             amddemo:{
                 src:['<banner:meta.banner>', '<banner:meta.amdStart>', '<file_strip_banner:pager.js>', '<banner:meta.amdEnd>'],
                 dest:'demo/pager.amd.min.js'
+            },
+            boilerplate:{
+                src:['<banner:meta.banner>', '<banner:meta.amdStart>', '<file_strip_banner:pager.js>', '<banner:meta.amdEnd>'],
+                dest:'boilerplate/public/javascript/pager.amd.min.js'
             }
         },
         watch:{

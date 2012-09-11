@@ -526,7 +526,7 @@ the navigation takes place - otherwise it is stopped.
 
 where
 
-    isLoggedIn: function(page, route, callback) {
+    isLoggedIn: function(toPage, route, callback, fromPage) {
         if(viewModel.loggedIn()) {
             callback();
         } else {
@@ -539,18 +539,23 @@ Use cases are login, validating steps in state machines, etc.
 The reason the guard takes a callback as third argument is simply because the guard might be async - accessing
 a webserver for login details or asking if a valid shopping card exists etc.
 
-## In the pipeline
-
 ### Should contain common effects
+
+I need to add the css-classes automatically
+
+## In the pipeline
 
 ### Document architecture and guiding principles
 
-The architecture - and guiding principles - should be documentet.
+The architecture - and guiding principles - should be documented.
 
-* Template with requirejs, jQuery, Lo-Dash, KnockoutJS, Bootstrap, History.js, Pager.js,
-  Volo (https://github.com/volojs/volo),
-  Grunt,
-  and a Node.js-server
+### HTML5 History Boilerplate
+
+The boilerplate example application needs to be tested in Firefox 3.6 and IE7.
+
+### page-hash, page-href5 and page-href
+
+Two new bindings are developed and an old one i updated.
 
 ## Backlog
 

@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1 Pager.js
+
+  div('data-bind'="page: {id: 'start', fx: 'fade'}",class="page")
+    h2 Start
+    p Welcome to Pager.js Boilerplate
+
+    p See demo for documentation on how to use Pager.js
+
+
+    a('data-bind'="page-href5: '../character'") Character
+
+  div('data-bind'="page: {id: 'character', fx: 'fade'}",class="page")
+    h2 Character
+    a('data-bind'="page-href5: '../start'") Start

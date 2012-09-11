@@ -1,0 +1,13 @@
+requirejs.config({
+    shim:{
+        bootstrap:['jquery'],
+        history:['jquery']
+    },
+    paths:{
+        jquery:'jquery-1.7.2.min',
+        underscore:'lodash.min',
+        knockout:'knockout-2.1.0',
+        pager:'pager.amd.min',
+        history:'jquery.history'
+    }
+});
