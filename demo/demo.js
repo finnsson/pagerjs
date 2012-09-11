@@ -1,4 +1,50 @@
 require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'history'], function ($, ko, _, pager) {
+
+
+    pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        pager.Page.apply(this, arguments);
+    };
+    pager.PageAccordionItem.prototype = new pager.Page();
+
+    // get second child
+    pager.PageAccordionItem.prototype.getAccordionBody = function () {
+        return $(this.element).children()[1];
+    };
+
+    // hide second child
+    pager.PageAccordionItem.prototype.hideElement = function (callback) {
+        // use hide if it is the first time the page is hidden
+        if (!this.pageAccordionItemHidden) {
+            this.pageAccordionItemHidden = true;
+            $(this.getAccordionBody()).hide();
+            if(callback) {
+                callback();
+            }
+        } else { // else use a slideUp animation
+            $(this.getAccordionBody()).slideUp();
+            if(callback) {
+                callback();
+            }
+        }
+    };
+
+    // show the second child using a slideDown animation
+    pager.PageAccordionItem.prototype.showElement = function (callback) {
+        $(this.getAccordionBody()).slideDown();
+        if(callback) {
+            callback();
+        }
+    };
+
+    ko.bindingHandlers['page-accordion-item'] = {
+        init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var pageAccordionItem = new pager.PageAccordionItem(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+            pageAccordionItem.init();
+        },
+        update:function () {
+        }
+    };
+
     var viewModel = {
         name:ko.observable("Pelle"),
         description:ko.observable('pl'),

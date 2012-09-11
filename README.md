@@ -40,7 +40,8 @@ See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
 
 ## Custom Bindings
 
-pager.js extends KnockoutJS with three custom bindings: `page`, `page-href` and `page-accordion-item`.
+pager.js extends KnockoutJS with four custom bindings: `page`, `page-href`, `page-hash` and
+`page-href5`.
 
 ### page
 
@@ -82,21 +83,6 @@ pager.js extends KnockoutJS with three custom bindings: `page`, `page-href` and 
     <a data-bind="page-href: 'somePagePath'"></a>
 
 Calculates absolute href based on the location of the element.
-
-### page-accordion-item
-
-    <!-- First item in accordion -->
-    <div data-bind="page-accordion-item: {id: 'dog'}">
-        <a href="#animals/dog">Dog</a>
-        <div>Dog Information</div>
-    </div>
-    <!-- Second item in accordion -->
-    <div data-bind="page-accordion-item: {id: 'cat'}">
-        <a href="#animals/cat">Cat</a>
-        <div>Cat Information</div>
-    </div>
-
-`page-accordion-item` is a subclass / subbinding of `page` enabling deep linking and navigation of accordions.
 
 
 ## Dependencies
@@ -253,19 +239,6 @@ E.g.
 
 It is possible to create custom widgets that jack into the pager-system.
 The `page`-binding (`pager.Page`-class) is possible to extend at multiple points.
-
-One custom widget (`page-accordion-item`) is already implemented.
-
-    <div data-bind="page: {id: 'employee'}">
-        <div data-bind="page-accordion-item: {id: 'zoidberg'}">
-            <a href="#employee/zoidberg">Dog</a>
-            <div>Zoidberg Information</div>
-        </div>
-        <div data-bind="page-accordion-item: {id: 'hermes'}">
-            <a href="#employee/hermes">Cat</a>
-            <div>Hermes Information</div>
-        </div>
-    </div>
 
 ### Should be possible to circumvent the routing
 
@@ -539,23 +512,26 @@ Use cases are login, validating steps in state machines, etc.
 The reason the guard takes a callback as third argument is simply because the guard might be async - accessing
 a webserver for login details or asking if a valid shopping card exists etc.
 
+## 0.6
+
 ### Should contain common effects
 
 I need to add the css-classes automatically
+
+### HTML5 History Boilerplate
+
+An example application of using pager.js together with History.js can be found in `boilerplate`.
+
+### page-hash, page-href5 and page-href
+
+Two new bindings are created: `page-hash` and `page-href5`.
+
 
 ## In the pipeline
 
 ### Document architecture and guiding principles
 
 The architecture - and guiding principles - should be documented.
-
-### HTML5 History Boilerplate
-
-The boilerplate example application needs to be tested in Firefox 3.6 and IE7.
-
-### page-hash, page-href5 and page-href
-
-Two new bindings are developed and an old one i updated.
 
 ## Backlog
 
