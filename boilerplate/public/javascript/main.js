@@ -2,31 +2,17 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'history'], function ($, k
     var viewModel = {
     };
 
-    viewModel.requireVM = function (module) {
-        return function (callback) {
-            require([module], function (mod) {
-                callback(mod.getVM());
-            });
-        };
-    };
-
-    viewModel.requireView = function (viewModule) {
-        return function (page, callback) {
-            require([viewModule], function (viewString) {
-                $(page.element).html(viewString);
-                callback();
-            });
-        };
-    };
-
     $(function () {
 
-        //pager.useHTML5history = true;
+        // use page-href5 when specifying page-href
+        pager.useHTML5history = true;
+        // use History.js instead of normal histor
+        pager.Href5.history = History;
         pager.extendWithPage(viewModel);
+
         ko.applyBindings(viewModel);
 
         var hashChange = function (hash) {
-            console.error("hashChange");
             // strip #
             if (hash[0] === '#') {
                 hash = hash.slice(1);
@@ -37,21 +23,16 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'history'], function ($, k
         };
 
         // Bind to StateChange Event
-        History.Adapter.bind(window,'statechange',function(){
-            console.error("statechange");
-            var relativeUrl = History.getState().url.replace(History.getRootUrl(), '');
+        History.Adapter.bind(window, 'statechange', function () {
+            var baseUrl = $('base').attr('href');
+            var relativeUrl = History.getState().url.replace(baseUrl, '');
             hashChange(relativeUrl);
         });
-        History.Adapter.bind(window,'anchorchange',function(){
-            console.error("anchorchange");
+        History.Adapter.bind(window, 'anchorchange', function () {
             hashChange(location.hash);
         });
 
         hashChange(History.getState().url.replace(History.getRootUrl(), ''));
-
-        window.Hist = History;
-        window.P = pager;
-
     });
 
 

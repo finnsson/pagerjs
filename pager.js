@@ -709,7 +709,7 @@ p.nullObject = new pager.Page();
 p.child = function (key) {
     return ko.computed(function () {
         var child = _.find(this.children(), function (c) {
-            return c.getId() === c;
+            return c.getId() === key;
         });
         return child || this.nullObject;
     }, this);
@@ -832,103 +832,6 @@ ko.bindingHandlers['page-href'] = {
     }
 };
 
-/*
- // TODO: extract this into a separate class pager.PageHref
- ko.bindingHandlers['page-href'] = {
- init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
- var $page = bindingContext.$page || bindingContext.$data.$page;
- var page = $page;
-
- // The href reacts to changes in the value
- var path = ko.computed(function () {
- var value = _ko.value(valueAccessor());
- var parentsToTrim = 0;
- while (value.substring(0, 3) === '../') {
- parentsToTrim++;
- value = value.slice(3);
- }
-
- var fullRoute = page.getFullRoute()();
- var parentPath = fullRoute.slice(0, fullRoute.length - parentsToTrim).join('/');
- var fullPath = (parentPath === '' ? '' : parentPath + '/') + value;
- var attr = {
- 'href':'#' + fullPath
- };
- $(element).attr(attr);
- return fullPath;
- });
-
- if (pager.useHTML5history && window.history && window.history.pushState) {
- $(element).click(function (e) {
- e.preventDefault();
- window.history.pushState(null, null, pager.rootURI + path());
- pager.showChild(path().split('/'));
- });
- }
- },
- update:function () {
- }
- };*/
-
-// TODO: remove PageAccordionItem in favour of simple guide on handrolling one
-
-/*
-
-
- <h2><a data-bind="text: child('foo').title, page-hash: child('foo').getId()" /></h2>
- <div data-bind="page: {id: 'foo', fx: 'slide'}"/>
-
- */
-
-/**
- * @class pager.PageAccordionItem
- * @inherits pager.Page
- *
- * @param {Node} element
- * @param {Observable} valueAccessor
- * @param allBindingsAccessor
- * @param {Observable} viewModel
- * @param bindingContext
- */
-/*
- pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
- pager.Page.apply(this, arguments);
- };
-
- pager.PageAccordionItem.prototype = new pager.Page();
-
- pager.PageAccordionItem.prototype.getAccordionBody = function () {
- return $(this.element).children()[1];
- };
-
- pager.PageAccordionItem.prototype.hideElement = function (callback) {
- if (!this.pageAccordionItemHidden) {
- this.pageAccordionItemHidden = true;
- $(this.getAccordionBody()).hide();
- } else {
- $(this.getAccordionBody()).slideUp();
- if (callback) {
- callback();
- }
- }
- };
-
- pager.PageAccordionItem.prototype.showElement = function (callback) {
- $(this.getAccordionBody()).slideDown();
- if (callback) {
- callback();
- }
- };
-
- ko.bindingHandlers['page-accordion-item'] = {
- init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
- var pageAccordionItem = new pager.PageAccordionItem(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
- pageAccordionItem.init();
- },
- update:function () {
- }
- };
- */
 
 pager.fx = {};
 
