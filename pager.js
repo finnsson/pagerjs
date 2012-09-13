@@ -8,6 +8,14 @@ var pager = {};
 
 pager.page = null;
 
+pager.now = function() {
+    if (!Date.now) {
+        return (new Date()).valueOf();
+    } else {
+        return Date.now();
+    }
+};
+
 
 /**
  * This is the hash-based start-method.
@@ -126,7 +134,7 @@ pager.ChildManager = function (children, page) {
     this.page = page;
     // Used by showChild to find out if the navigation is still current.
     // In needed since the navigation is asynchronous and another navigation might happen in between.
-    this.timeStamp = Date.now();
+    this.timeStamp = pager.now();
 
     /**
      * @method pager.ChildManager#hideChild
@@ -149,7 +157,7 @@ pager.ChildManager = function (children, page) {
      * @param {String[]} route route to match a sub-page to. Can be on the form `['foo','bar?x=22&y=11']`.
      */
     this.showChild = function (route) {
-        this.timeStamp = Date.now();
+        this.timeStamp = pager.now();
         var timeStamp = this.timeStamp;
         var oldCurrentChild = me.currentChild;
         me.currentChild = null;
@@ -611,8 +619,8 @@ p.show = function (callback) {
     if (value.sourceOnShow) {
         if (!value.sourceCache ||
             !element.__pagerLoaded__ ||
-            (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < Date.now())) {
-            element.__pagerLoaded__ = Date.now();
+            (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < pager.now())) {
+            element.__pagerLoaded__ = pager.now();
             this.loadSource(value.sourceOnShow);
         }
     }
