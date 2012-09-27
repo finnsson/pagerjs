@@ -7,7 +7,7 @@ requirejs.config({
         jquery:'jquery-1.7.2.min',
         underscore:'lodash.min',
         knockout:'knockout-2.1.0',
-        pager:'pager.amd.min',
+        pager:'pager.amd.history.min',
         history:'jquery.history'
     }
 });

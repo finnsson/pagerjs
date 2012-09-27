@@ -8,15 +8,46 @@ See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
 
 ## Getting Started
 
-* Download the [developer version](https://raw.github.com/finnsson/pagerjs/master/pager.js)
-   or the [minified version](https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js)
+1. Download the [developer](https://raw.github.com/finnsson/pagerjs/master/pager.js) version,
+   the [minified](https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js) version,
+   the [AMD](https://raw.github.com/finnsson/pagerjs/master/dist/pager.amd.min.js) version,
+   the [AMD jQuery hashchange](https://raw.github.com/finnsson/pagerjs/master/dist/pager.amd.hash.min.js) version,
+   or the [AMD History.js](https://raw.github.com/finnsson/pagerjs/master/dist/pager.amd.history.min.js) version
    of pager.js
-* Include all dependencies (jQuery, Underscore.js, KnockoutJS) as well as pager.js in your site
-* Start using the bindings `page`, `page-href`, and `page-accordion-item`. Consult the
-  [web page](http://oscar.finnsson.nu/pagerjs/) or
-  [test cases](https://github.com/finnsson/pagerjs/tree/master/test) for how to use the bindings.
-* Insert the lines `pager.extendWithPage(viewModel); ko.applyBindings(viewModel); pager.start(viewModel);`
-* Rock 'n' Roll!
+2. Include all dependencies (jQuery, Underscore.js/Lo-Dash, KnockoutJS) as well as pager.js in your site
+   using either AMD or non-AMD:
+
+        // AMD
+        requirejs.config({
+            paths:{
+                jquery:'jquery-1.8.2.min',
+                underscore:'lodash.min',
+                knockout:'knockout-2.1.0',
+                pager:'pager.amd.min',
+                // iff using jquery hashchange
+                hashchange:'jquery.ba-hashchange.min',
+                // iff using History.js
+                history: 'jquery.history'
+            }
+        });
+
+        // non-AMD
+        <script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="underscore-min.js"></script>
+        <script type="text/javascript" src="knockout-2.1.0.js"></script>
+        <script type="text/javascript" src="pager.js"></script>
+
+3. Insert the lines:
+
+        pager.extendWithPage(viewModel);
+        ko.applyBindings(viewModel);
+        pager.start(viewModel);
+
+4. Start using the bindings `page` and `page-href`. Consult the
+   [web page](http://oscar.finnsson.nu/pagerjs/),
+   [demo](http://oscar.finnsson.nu/pagerjs/demo/)
+   or [test cases](https://github.com/finnsson/pagerjs/tree/master/test) for how to use the bindings.
+5. Rock 'n' Roll!
 
 ## Helpers
 

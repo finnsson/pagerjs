@@ -23,9 +23,9 @@
                 jquery:'jquery-1.7.2.min',
                 underscore:'lodash.min',
                 knockout:'knockout-2.1.0',
-                pager:'pager.amd.min',
+                pager:'pager.amd.hash.min',
                 bootstrap:'bootstrap/js/bootstrap.min',
-                history:'jquery.ba-hashchange.min',
+                hashchange:'jquery.ba-hashchange.min',
                 "zoidberg":'character/zoidberg'
             }
         });
@@ -122,6 +122,10 @@
             Pager.js is depending on <a href="http://knockoutjs.com/">KnockoutJS</a>,
             <a href="http://jquery.com/">jQuery</a> and <a href="http://underscorejs.org/">Underscore.js</a>
             (or <a href="http://lodash.com/">Lo-Dash</a>).
+            Choose between a naïve history manger (<code>pager.js</code> or <code>pager.amd.js</code>),
+            a history manager based on jQuery hashchange (<code>pager.amd.hash.js</code>),
+            a history manager based on History.js (<code>pager.amd.history.js</code>)
+            or write your own.
             Apply the lines below (where the 4th line should be familiar from KnockoutJS).
         </p>
     </header>
@@ -131,7 +135,7 @@
 pager.extendWithPage(viewModel);
 // apply the view-model using KnockoutJS as normal
 ko.applyBindings(viewModel);
-// start pager.js - this method will listen to hashchange
+// start pager.js - this method will be different depending on file loaded
 pager.start(viewModel);
     </pre>
 
@@ -271,40 +275,16 @@ pager.start(viewModel);
         <h1>HTML5 History API</h1>
 
         <p class="lead">
-            Just add the lines <code>pager.useHTML5history = true; pager.rootURI = '/demo/';</code>
-            to get HTML5 history support (well, replace <code>'/demo/'</code> with your own root URI)!
-            <br/>
-            All <code>page-href</code> bindings will use the HTML5 history API.
-            <br/>
-            Do not use <code>pager.start()</code> if you plan to use HTML5 history since it <i>only</i>
-            listens to <code>hashchange</code>.
+            The easies way to use the HTML5 History API is to include
+            <code>pager.amd.history.js</code> instead of <code>pager.amd.js</code>.
+            Everything will just work out of the box then.
+            <code>pager.amd.history.js</code> contains another <code>start()</code>-method.
         </p>
     </header>
-
-        <pre class="prettyprint">
-var viewModel = {
-    // your view model
-};
-
-pager.useHTML5history = true;
-pager.rootURI = 'demo/';
-pager.extendWithPage(viewModel);
-ko.applyBindings(viewModel);
-// These lines are instead of pager.start();
-// In this example <a href="https://github.com/balupton/History.js/">History.js</a> is used
-var historyChanged = function() {
-    var State = History.getState();
-    var url = State.url.replace(History.getRootUrl() + pager.rootURI,'');
-    pager.routeFromHashToPage(window.location.hash);
-};
-History.Adapter.bind(window,'statechange',historyChanged);
-historyChanged();
-        </pre>
 
     <div class="form-actions">
         <a class="btn btn-large btn-primary" href="#change_binding_context">Read about changing binding context</a>
     </div>
-
 
 </div>
 

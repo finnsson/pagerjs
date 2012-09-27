@@ -15,10 +15,12 @@
 <h3><code class="code-large">start()</code></h3>
 
 <p class="p">
-    Used if you want to listen to <code>hashchange</code>-event on window. For IE7/8-support you should not use this
-    method. Use <a href="https://github.com/balupton/History.js/">History.js</a> or similar library instead for
-    better
-    browser support and HTML5 history support.
+    This method will start to listen to hashchange-event or History API events.
+    <br/>
+    The exact implementation will depend on which file you choose: <code>pager.js</code> (naïve),
+    <code>pager.amd.js</code> (naïve),
+    <code>pager.amd.hash.js</code> (hashchange-event with fallback)
+    or <code>pager.amd.history.js</code> (History API with fallback).
     <br/>
     This method should be called after <code>ko.applyBindings(...)</code>
 </p>
@@ -34,27 +36,6 @@ ko.applyBindings(viewModel);
 // run this method - listening to hashchange
 pager.start();
     </pre>
-
-<p>
-    Using <a href="https://github.com/cowboy/jquery-hashchange">jquery hashchange-plugin</a>:
-</p>
-<pre class="prettyprint">
-pager.extendWithPage(viewModel);
-ko.applyBindings(viewModel);
-
-// using jquery hashchange-plugin instead of pager.start
-$(window).hashchange(function () {
-    var hash = location.hash;
-    // strip #
-    if (hash[0] === '#') {
-        hash = hash.slice(1);
-    }
-    // split on '/'
-    var hashRoute = decodeURIComponent(hash).split('/');
-    pager.showChild(hashRoute);
-});
-$(window).hashchange();
-</pre>
 
 <h3><code class="code-large">extendWithPage(viewModel : Object)</code></h3>
 

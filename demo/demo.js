@@ -1,4 +1,4 @@
-require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'history'], function ($, ko, _, pager) {
+require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange'], function ($, ko, _, pager) {
 
 
     pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -17,12 +17,12 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'history'], f
         if (!this.pageAccordionItemHidden) {
             this.pageAccordionItemHidden = true;
             $(this.getAccordionBody()).hide();
-            if(callback) {
+            if (callback) {
                 callback();
             }
         } else { // else use a slideUp animation
             $(this.getAccordionBody()).slideUp();
-            if(callback) {
+            if (callback) {
                 callback();
             }
         }
@@ -31,7 +31,7 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'history'], f
     // show the second child using a slideDown animation
     pager.PageAccordionItem.prototype.showElement = function (callback) {
         $(this.getAccordionBody()).slideDown();
-        if(callback) {
+        if (callback) {
             callback();
         }
     };
@@ -146,19 +146,7 @@ require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'history'], f
 
         pager.extendWithPage(viewModel);
         ko.applyBindings(viewModel);
-
-        // using jquery hashchange-plugin instead of pager.start
-        $(window).hashchange(function () {
-            var hash = location.hash;
-            // strip #
-            if (hash[0] === '#') {
-                hash = hash.slice(1);
-            }
-            // split on '/'
-            var hashRoute = decodeURIComponent(hash).split('/');
-            pager.showChild(hashRoute);
-        });
-        $(window).hashchange();
+        pager.start();
 
         $('.dropdown-toggle').dropdown();
     });
