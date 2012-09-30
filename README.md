@@ -1,12 +1,15 @@
-# pager.js
+# [pager.js](http://oscar.finnsson.nu/pagerjs/)
 
-pager.js provides the possibility of creating single page applications in a declarative fashion.
+pager.js is a JavaScript library based on KnockoutJS, jQuery and Underscore.js that provides the possibility of
+creating single page applications in a declarative fashion
+- nesting subpages inside subpages where each subpage can be developed standalone but still communicate between
+each other.
 
-This makes it easier to design large scale single page web sites.
+This makes it easier to design very large scale single page web sites.
 
 See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
 
-## Getting Started
+# Getting Started
 
 1. Download the [developer](https://raw.github.com/finnsson/pagerjs/master/pager.js) version,
    the [minified](https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js) version,
@@ -41,7 +44,7 @@ See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
 
         pager.extendWithPage(viewModel);
         ko.applyBindings(viewModel);
-        pager.start(viewModel);
+        pager.start();
 
 4. Start using the bindings `page` and `page-href`. Consult the
    [web page](http://oscar.finnsson.nu/pagerjs/),
@@ -49,11 +52,48 @@ See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
    or [test cases](https://github.com/finnsson/pagerjs/tree/master/test) for how to use the bindings.
 5. Rock 'n' Roll!
 
-## Helpers
+# Dependencies
 
-* `pager.route`
-* `pager.start`
-* `pager.extendWithPage`
+- [KnockoutJS](http://knockoutjs.com/)
+- [jQuery](http://jquery.com/)
+- [Underscore.js](http://underscorejs.org/) or [Lo-Dash](http://lodash.com/)
+
+You will usually use pager.js in combination with either
+[jQuery hashchange](https://github.com/cowboy/jquery-hashchange)
+or [History.js](https://github.com/balupton/History.js/).
+
+pager.js is not depending on any CSS framework!
+
+For developing pager.js you'll also need
+
+- [Node.js](http://nodejs.org/)
+- [Grunt](https://github.com/cowboy/grunt)
+- [QUnit](http://qunitjs.com/)
+- [PhantomJS](http://phantomjs.org/)
+- [RequireJS](http://requirejs.org/)
+
+# Philosophy
+
+Developing a huge single page application should be like developing multiple small pages. That is the only way
+you'll be able to scale up and out the development. In order to ease development in the large pager.js got
+
+* views (pages) that can be loaded on-demand
+* view-models that can be loaded on-demand
+
+These MVVM-triads can be developed in isolation and later on connected.
+
+# Reference Manual
+
+pager.js got three static methods and
+extends KnockoutJS with four custom bindings: `page`, `page-href`, `page-hash` and
+`page-href5`.
+
+
+## `pager.route`
+
+## `pager.start`
+
+## `pager.extendWithPage`
 
 ### Example
 
@@ -66,75 +106,164 @@ See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
     ko.applyBindings(viewModel);
     // start the pager. Will listen to hashchange and
     // show/hide pages depending on their page IDs
-    pager.start(viewModel);
+    pager.start();
 
 
-## Custom Bindings
-
-pager.js extends KnockoutJS with four custom bindings: `page`, `page-href`, `page-hash` and
-`page-href5`.
-
-### page
-
-    <div data-bind="page: {}">
-    </div>
-
-#### Configurations
-
-* `{String} id` of scoped page that a router should react to. E.g. `start` or `user/me`.
-  If the id is `?` (wildcard) it will match anything if no other page in the same parent match.
-* `{Object} with` that can change the scope of elements descendants. The same behavior as the normal `with`-binding.
-* `{Function} withOnShow` sets the view model of elements descendants async after the page is shown. This is useful
-  so you can extract sub pages view models to other `.js`-files.
-* `{String/Function} source` to load into element using `jQuery#load`. The source will be loaded once the page is processed.
-  If it is a function it is invoken.
-* `{Function} sourceLoaded` is a method/event/callback to run once the `source` (or `sourceOnShow`) is loaded.
-* `{String/Function} sourceOnShow` to load into element using `jQuery#load` when the element is displayed. Thus sub pages
-  can be extracted and loaded on demand. If it is a function it is invoken.
-* `{Boolean/Number} sourceCache` can be set to true in order for sourceOnShow to only load the source once.
-  If a number is specified the cache is valid for that amount of time in seconds.
-* `{String} frame` can be set to `iframe` in order for the source to be loaded into an iframe. If the page contains
-  an iframe that element is used.
-* `{Boolean} modal` can be set to `true` in order for the page to act as a modal. If a page is a modal it can be
-  found by child-pages to sibling-pages of the modal.
-* `{Function} beforeHide` is called before the page is hidden.
-* `{Function} beforeShow` is called before the page is shown.
-* `{Function} afterHide` is called after the page is hidden.
-* `{Function} afterShow` is called after the page is shown.
-* `{Function} hideElement` can be supplied as a custom hide-method instead of the default `$(element).hide()`;
-* `{Function} showElement` can be supplied as a custom show-method instead of the default `$(element).show()`;
-* `{Function} loader` to call once the page is loaded. Can e.g. create a spinner inside the element.
-* `{Function} navigationFailed` method to call if a navigation could not find any matching page.
-* `{Object} params` binds URL-parameters to local observables.
-* `{Function} guard` validates a page transition before it is happening.
-
-
-### page-href
+## page-href
 
     <a data-bind="page-href: 'somePagePath'"></a>
 
 Calculates absolute href based on the location of the element.
 
+## page
 
-## Dependencies
+    <div data-bind="page: {}">
+    </div>
 
-- [KnockoutJS](http://knockoutjs.com/)
-- [jQuery](http://jquery.com/)
-- [Underscore.js](http://underscorejs.org/)
+The page-binding. See configuration.
 
-For developing pager.js you'll need
+# Configurations
 
-- [Node.js](http://nodejs.org/)
-- [Grunt](https://github.com/cowboy/grunt)
-- [QUnit](http://qunitjs.com/)
-- [PhantomJS](http://phantomjs.org/)
-- [RequireJS](http://requirejs.org/)
+The configuration options for the page-binding.
 
-## Behaviors
+
+## `{String} id`
+
+ID of scoped page that a router should react to. E.g. `start` or `user/me`.
+If the id is `?` (wildcard) it will match anything if no other page in the same parent match.
+
+* [Setup](http://oscar.finnsson.nu/pagerjs/demo/#setup)
+* [Deep Navigation](http://oscar.finnsson.nu/pagerjs/demo/#deep_navigation)
+* [Matching Wildcards](http://oscar.finnsson.nu/pagerjs/demo/#matching_wildcards)
+* [Deep Navigation with Wildcards](http://oscar.finnsson.nu/pagerjs/demo/#deep_navigation_with_wildcards)
+
+## `{Object} with`
+
+That can change the scope of elements descendants. The same behavior as the normal `with`-binding.
+
+* [Change Binding Context](http://oscar.finnsson.nu/pagerjs/demo/#change_binding_context)
+
+## `{Function} withOnShow`
+
+Sets the view model of elements descendants async after the page is shown. This is useful
+so you can extract sub pages view models to other `.js`-files.
+
+* [Lazy-Bind View-Model](http://oscar.finnsson.nu/pagerjs/demo/#lazy_bind_view_model)
+
+## `{String/Function} source`
+
+Source to load into element using `jQuery#load`. The source will be loaded once the page is processed.
+If it is a function it is invoken.
+
+* [Load External Content](http://oscar.finnsson.nu/pagerjs/demo/#load_external_content)
+* [Load View using Custom Method](http://oscar.finnsson.nu/pagerjs/demo/#custom_view_loader)
+
+## `{Function} sourceLoaded`
+
+Is a method/event/callback to run once the `source` (or `sourceOnShow`) is loaded.
+
+* [Load External Content](http://oscar.finnsson.nu/pagerjs/demo/#load_external_content)
+
+## `{String/Function} sourceOnShow`
+
+Source to load into element using `jQuery#load` when the element is displayed. Thus sub pages
+can be extracted and loaded on demand. If it is a function it is invoken.
+
+* [Lazy-Load External Content](http://oscar.finnsson.nu/pagerjs/demo/#lazy_load_external_content)
+* [Load View using Custom Method](http://oscar.finnsson.nu/pagerjs/demo/#custom_view_loader)
+
+
+## `{Boolean/Number} sourceCache`
+
+Can be set to true in order for sourceOnShow to only load the source once.
+If a number is specified the cache is valid for that amount of time in seconds.
+
+* [Cached Lazy-Loaded Content](http://oscar.finnsson.nu/pagerjs/demo/#cached_lazy)
+
+## `{String} frame`
+
+Can be set to `iframe` in order for the source to be loaded into an iframe. If the page contains
+an iframe that element is used.
+
+* [Load Content into iframe](http://oscar.finnsson.nu/pagerjs/demo/#load_into_iframe)
+* [Configure an iframe](http://oscar.finnsson.nu/pagerjs/demo/#configure_iframe)
+
+## `{Boolean} modal`
+
+Can be set to `true` in order for the page to act as a modal. If a page is a modal it can be
+found by child-pages to sibling-pages of the modal.
+
+* [Modals](http://oscar.finnsson.nu/pagerjs/demo/#modals)
+
+## `{Function} beforeHide`
+
+Is called before the page is hidden.
+
+* [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
+
+## `{Function} beforeShow`
+
+Is called before the page is shown.
+
+* [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
+
+## `{Function} afterHide`
+
+Is called after the page is hidden.
+
+* [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
+
+## `{Function} afterShow`
+
+Is called after the page is shown.
+
+* [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
+
+## `{Function} hideElement`
+
+Custom hide-method instead of the default `$(element).hide()`;
+
+* [Custom Hide- and Show-Methods](http://oscar.finnsson.nu/pagerjs/demo/#custom_hide_show)
+
+## `{Function} showElement`
+
+Custom show-method instead of the default `$(element).show()`;
+
+* [Custom Hide- and Show-Methods](http://oscar.finnsson.nu/pagerjs/demo/#custom_hide_show)
+
+## `{Function} loader`
+
+Loader to call once the page is loaded. Can e.g. create a spinner inside the element.
+
+* [Loader](http://oscar.finnsson.nu/pagerjs/demo/#loader)
+
+## `{Function} navigationFailed`
+
+Method to call if a navigation could not find any matching page.
+
+* [Reacting to Failed Navigation](http://oscar.finnsson.nu/pagerjs/demo/#failed_navigation)
+
+## `{Object} params`
+
+Binds URL-parameters to local observables.
+
+* [Binding URI parameters](http://oscar.finnsson.nu/pagerjs/demo/#params)
+
+## `{Function} guard`
+
+Validates a page transition before it is happening.
+
+* [Guards](http://oscar.finnsson.nu/pagerjs/demo/#guards)
+
+## `{String} fx`
+
+* [FX](http://oscar.finnsson.nu/pagerjs/demo/#fx)
+
+# Cookbook
 
 The following behaviors specify and exemplify what pager.js is capable of.
 
-### Should display page with id start by default
+## Display page with id start by default
 
     <div>
       <div data-bind="page: {id: 'bar'}">Bar</div>
@@ -142,7 +271,7 @@ The following behaviors specify and exemplify what pager.js is capable of.
       <div data-bind="page: {id: 'start'}">Foo</div>
     </div>
 
-### Should navigate to page using scoped IDs.
+## Navigate to page using scoped IDs.
 
     <div data-bind="page: {id:'start'}">
       <a href="#foo">Go to foo</a>
@@ -151,7 +280,7 @@ The following behaviors specify and exemplify what pager.js is capable of.
       Foo. Go to <a href="#start">start</a>
     </div>
 
-### Should be possible to do deep navigation
+## Deep navigation
 
     <div id="start" data-bind="page: {id: 'start'}">
         <a href="#user/fry">Go to Fry</a>
@@ -161,30 +290,30 @@ The following behaviors specify and exemplify what pager.js is capable of.
         <div id="fry" data-bind="page: {id: 'fry'}">Fry</div>
     </div>
 
-### Should load external content into a page using `source` and trigger `sourceLoaded` event
+## Load external content into a page using `source` and trigger `sourceLoaded` event
 
     <div data-bind="page: {id: 'lorem', source: 'lorem.html .content', sourceLoaded: loremIsLoaded}"></div>
 
 The source can contain a selector (see `.content` above) in order to extract a fragment on the site.
 In the example above `loremIsLoaded` is a function that is triggered after `lorem.html` is loaded.
 
-### Should lazy load an external content into a page if `sourceOnShow` is declared
+## Lazy load an external content into a page if `sourceOnShow` is declared
 
     <div data-bind="page: {id: 'lazyLorem', sourceOnShow: 'lorem.html .content'}"></div>
 
 `sourceOnShow` tells the page to load the content when the page is displayed.
 
-### Should cache lazy loaded content when `sourceCache: true`
+## Cache lazy loaded content when `sourceCache: true`
 
     <div data-bind="page: {id: 'lazyLoremCached', sourceOnShow: 'lorem.html .content', sourceCache: true}"></div>
 
-### Should cache lazy loaded content the number of seconds specified by `sourceCache`
+## Cache lazy loaded content the number of seconds specified by `sourceCache`
 
     <div data-bind="page: {id: 'lazyLoremCached5seconds', sourceOnShow: 'lorem.html .content', sourceCache: 5}"></div>
 
 `sourceCache` can specify the amount of seconds the external content should be cached.
 
-### Should specify relative page paths using `page-href`
+## Specify relative page paths using `page-href`
 
     <div data-bind="page: {id: 'start'}">
       <!-- This will update href to #start/bender -->
@@ -201,14 +330,14 @@ In the example above `loremIsLoaded` is a function that is triggered after `lore
 
 Based on the total path of the page the binding calculates an absolute href.
 
-### Should change binding context using `with`
+## Change binding context using `with`
 
     <div data-bind="page: {id: 'user', with: user}">
       <!-- Here name is user.name -->
       <div data-bind="text: name"></div>
     </div>
 
-### `withOnShow` should lazy bind a new view model to the page
+## `withOnShow` will lazy bind a new view model to the page
 
     <div data-bind="page: {id: 'user', withOnShow: someMethod('someMethod')}"></div>
 
@@ -224,13 +353,13 @@ E.g.
       };
     }
 
-### Should match wildcard IDs if no other ID can match exactly
+## Match wildcard IDs if no other ID can match exactly
 
     <div data-bind="page: {id: 'admin'}"></div>
     <!-- The page below match anything except 'admin' -->
     <div data-bind="page: {id: '?'}"></div>
 
-### Should do deep navigation with wildcards
+## Deep navigation with wildcards
 
     <div data-bind="page: {id: 'start'}">
           <a href="#user/leela">Go to Leela</a>
@@ -243,7 +372,7 @@ E.g.
         </div>
     </div>
 
-### Should send wildcards to source
+## Send wildcards as parameter to source-method
 
     <div data-bind="page: {id: 'start'}">
         <a href="#user/fry">Go to Fry</a>
@@ -256,7 +385,7 @@ E.g.
         </div>
     </div>
 
-### Should be possible to load content into iframes
+## Load content into iframes
 
     <!-- An iframe will be created inside the div -->
     <div data-bind="page: {id: 'user', frame: 'iframe', source: 'user.html'}"></div>
@@ -266,17 +395,17 @@ E.g.
         <iframe sandbox=""></iframe>
     </div>
 
-### Should be possible to route to custom widgets (dialogs, carousels, accordions)
+## Route to custom widgets (dialogs, carousels, accordions)
 
 It is possible to create custom widgets that jack into the pager-system.
 The `page`-binding (`pager.Page`-class) is possible to extend at multiple points.
 
-### Should be possible to circumvent the routing
+## Circumvent the routing
 
 Since pager is not responsible for listening on the location it is possible to
 circumvent the routing using the router used. Just do not use `pager.start`.
 
-### Should be possible to navigate into a layer (modal dialog) without losing context
+## Navigate into a layer (modal dialog) without losing context
 
     <div data-bind="page: {id: 'start'}">
       <div data-bind="page: {id: 'admin'}>
@@ -291,7 +420,7 @@ If a `page` is set to `modal` is can match IDs deeper down the hierarchy. In thi
 start/ok also matches start/admin/ok making the page available as a modal dialog
 in other contexts.
 
-### Should be possible to navigate into a layer (modal dialog) and lose context
+## Navigate into a layer (modal dialog) and lose context
 
     <div data-bind="page: {id: 'start'}">
       <div data-bind="page: {id: 'admin'}>
@@ -304,7 +433,7 @@ in other contexts.
 
 Losing the context is nothing special. Just navigate away form the current page.
 
-### Should be possible to change the page title
+## Change the page title
 
     <div data-bind="page: {id: 'fry', title: 'Fry'}">
       Fry
@@ -314,7 +443,7 @@ Setting the 'title' configuration property will update the document title when n
 the page.
 
 
-### Should be possible to run custom JS on "before/after navigate from/to"
+## Run custom JS on "before/after navigate from/to"
 
 There are four alternatives:
 
@@ -360,7 +489,7 @@ The click data-binding can be used to run validations before navigations. Just d
 to prevent the navigation from happening.
 
 
-### Should be possible to supply custom showElement and hideElement-methods
+## Supply custom showElement and hideElement-methods
 
     <div data-bind="page: {id: 'fry', showElement: showFry, hideElement: hideFry}">
       Fry
@@ -389,7 +518,7 @@ to prevent the navigation from happening.
       $(page.element).fadeOut(500, callback);
     };
 
-### Should be possible to specify loaders in pages
+## Specify loaders in pages
 
     <div data-bind="page: {id: 'zoidberg', title: 'Zoidberg', loader: loader, sourceOnShow: 'zoidberg.html'}" />
 
@@ -407,31 +536,29 @@ where
         return loader;
     }
 
-### Should be possible to specify global loaders
+## Specify global loaders
 
     // see textLoader above
     pager.loader = textLoader;
 
-### Documented source code
-
-The source code is documented using JsDoc.
-
-### Tab panel custom widget
+## Tab panel custom widget
 
     <ul class="nav nav-tabs" data-bind="foreach: $page.children">
         <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-href: getId()"></a></li>
     </ul>
 
-    <div data-bind="page: {id: 'Slagsmålsklubben', title: 'Slagsmålsklubben', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:66KBDVJnA6c0DjHeSZYaHb', frame: 'iframe'}" class="hero-unit">
+    <div data-bind="page: {id: 'Slagsmålsklubben', title: 'Slagsmålsklubben',
+      sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:66KBDVJnA6c0DjHeSZYaHb', frame: 'iframe'}" class="hero-unit">
         <iframe width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
     </div>
 
-    <div data-bind="page: {id: 'Binärpilot', title: 'Binärpilot', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:67LKycg4jAoC06kZgjvbNd', frame: 'iframe'}" class="hero-unit">
+    <div data-bind="page: {id: 'Binärpilot', title: 'Binärpilot',
+      sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:67LKycg4jAoC06kZgjvbNd', frame: 'iframe'}" class="hero-unit">
         <iframe width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
     </div>
 
 
-### Should be possible to react to a failed navigation
+## React to a failed navigation
 
 Both Page-objects and pager should send events whenever a navigation failed (i.e. no matching page for the route).
 
@@ -463,7 +590,7 @@ where
     newChildren:ko.observableArray([])
 
 
-### Should be possible to load view content using a custom method
+## Load view content using a custom method
 
 In order to facilitate programming in the large it is useful to be able to extract views as separate components.
 These views should not be forced to be stored as html-fragments or be loaded with jQuery.
@@ -494,7 +621,7 @@ if
     });
 
 
-### Should be possible to send URI (fragment identifier) parameters to a page
+## Send URI (fragment identifier) parameters to a page
 
 A page should be able to access the information in the current route - changing a view-model.
 
@@ -515,7 +642,7 @@ or if HTML5 history is used
 
     example.com/search/tv?name=samsung&fromdate=20121010
 
-### Should be possible to add guards
+## Add guards
 
 Guards are methods that are run before the page navigation takes place and
 that can stop the navigation from displaying a certain page.
@@ -543,57 +670,82 @@ Use cases are login, validating steps in state machines, etc.
 The reason the guard takes a callback as third argument is simply because the guard might be async - accessing
 a webserver for login details or asking if a valid shopping card exists etc.
 
-## 0.6
+# FAQ
 
-### Should contain common effects
+## Can I use it together with...
 
-I need to add the css-classes automatically
+pager.js is not depending on anything but jQuery, KnockoutJS and Underscore.js/Lo-Dash. You can use it together with
+any CSS framework. If you don't like Underscore.js you can use it together with Lo-Dash instead.
 
-### HTML5 History Boilerplate
+## Can I use true URLs instead?
 
-An example application of using pager.js together with History.js can be found in `boilerplate`.
+Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 
-### page-hash, page-href5 and page-href
+# Release Notes
 
-Two new bindings are created: `page-hash` and `page-href5`.
+## 0.2
 
+- [Should be possible to circumvent the routing](https://github.com/finnsson/pagerjs/issues/17)
+- [Should be possible to route to custom widgets (accordions)](https://github.com/finnsson/pagerjs/issues/16)
+- [Should be possible to load content into iframes](https://github.com/finnsson/pagerjs/issues/15)
+- [Should send wildcards to source](https://github.com/finnsson/pagerjs/issues/14)
+- [Should do deep navigation with wildcards](https://github.com/finnsson/pagerjs/issues/13)
+- [Should match wildcard IDs if no other ID can match exactly](https://github.com/finnsson/pagerjs/issues/12)
+- [`withOnShow` should lazy bind a new view model to the page](https://github.com/finnsson/pagerjs/issues/11)
+- [Should change binding context using `with`](https://github.com/finnsson/pagerjs/issues/10)
+- [Should specify relative page paths using `page-href`](https://github.com/finnsson/pagerjs/issues/9)
+- [Should cache lazy loaded content the number of seconds specified by `sourceCache`](https://github.com/finnsson/pagerjs/issues/8)
+- [Should cache lazy loaded content when `sourceCache: true`](https://github.com/finnsson/pagerjs/issues/7)
+- [Should lazy load an external content into a page if `sourceOnShow` is declared](https://github.com/finnsson/pagerjs/issues/6)
+- [Should load external content into a page using `source` and trigger `sourceLoaded` event](https://github.com/finnsson/pagerjs/issues/5)
+- [Should be possible to do deep navigation](https://github.com/finnsson/pagerjs/issues/4)
+- [Should navigate to page using scoped IDs.](https://github.com/finnsson/pagerjs/issues/3)
+- [Should display page with id start by default](https://github.com/finnsson/pagerjs/issues/2)
 
-## In the pipeline
+## 0.4
 
-### Document architecture and guiding principles
+- [Should be possible to add guards](https://github.com/finnsson/pagerjs/issues/26)
+- [Should be possible to send URI (fragment identifier) parameters to a page](https://github.com/finnsson/pagerjs/issues/25)
+- [Should be possible to load view content using a custom method](https://github.com/finnsson/pagerjs/issues/24)
+- [Should be possible to navigate into modals](https://github.com/finnsson/pagerjs/issues/23)
+- [Should be possible to specify loaders on pages](https://github.com/finnsson/pagerjs/issues/22)
+- [Should be possible to change the page title](https://github.com/finnsson/pagerjs/issues/21)
+- [Should be possible to run custom JS on "navigate failed"](https://github.com/finnsson/pagerjs/issues/20)
+- [Tab panel custom widget](https://github.com/finnsson/pagerjs/issues/19)
+- [Should be possible to run custom JS on "navigate to"](https://github.com/finnsson/pagerjs/issues/18)
 
-The architecture - and guiding principles - should be documented.
+## 0.6 (Current)
 
-## Backlog
+- [Should contain common effects](https://github.com/finnsson/pagerjs/issues/28)
+- [HTML5 History Boilerplate](https://github.com/finnsson/pagerjs/issues/34)
+- [page-hash and page-href5 bindings for hash or html5 history](https://github.com/finnsson/pagerjs/issues/29)
+- [Access to Page in withOnShow handler](https://github.com/finnsson/pagerjs/issues/27)
+- [Add BeforeNavigate Event handler to allow user to stop transition](https://github.com/finnsson/pagerjs/issues/1)
 
-There are a lot of features waiting to be implemented. Here are some of them.
+# Roadmap
 
-### Wildcards should deep-load content if configured so
+See [Milestones](https://github.com/finnsson/pagerjs/issues/milestones).
 
-    <a href="some/other/url">Go to some/other/url.html</a>
+# How to Contribute
 
-    <div data-bind="page: {id: '?', deep: true, sourceOnShow: '{?}.html'}>
-    </div>
+Fork this repo. Install all dependencies (node.js, grunt, phnatomjs). Run all tests
+(`grunt qunit`). Run jslint (`grunt lint`). Make your changes. Run all tests and the linter again. Send a pull request.
 
-### Scoped pure view observables using `vars`
+# Licence
 
-    <!-- x and y are now available as observables, but only in the view (not the view-model) -->
-    <div data-bind="page: {id: 'foo', vars: ['x','y']}">
-      <span data-bind="text: x"></span>
-      <span data-bind="text: x"></span>
-    </div>
+pager.js is under MIT licence.
 
-This is useful for effects that has nothing to do with the view-model.
+Copyright (c) 2012 Oscar Finnsson
 
-### Named binding of child elements using `bind-child`
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+ persons to whom the Software is furnished to do so, subject to the following conditions:
 
-    <div data-bind="page: {id: 'foo'}">
-      <div>
-        <span data-bind="page-child: 'name'"/>
-        <span data-bind="page-child: 'age'"/>
-      </div>
-    </div>
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+Software.
 
-Now `name` and `age` are available in the `Page`-instance
-under the `elementChildren`-observable, e.g. `this.elementChildren().name()`
-and `this.elementChildren().age()`.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

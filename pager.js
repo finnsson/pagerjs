@@ -1,3 +1,5 @@
+(function() {
+
 "use strict";
 /**
  * @module pager
@@ -812,8 +814,8 @@ ko.bindingHandlers['page-href5'] = {
 
 ko.bindingHandlers['page-href'] = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        var cls = pager.useHTML5history ? pager.Href5 : pager.Href;
-        var href = new cls(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+        var Cls = pager.useHTML5history ? pager.Href5 : pager.Href;
+        var href = new Cls(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
         href.init();
         href.bind();
     },
@@ -916,3 +918,4 @@ pager.fx.fade = {
         });
     }
 };
+}());
