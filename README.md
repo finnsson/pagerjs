@@ -127,7 +127,7 @@ The page-binding. See configuration.
 The configuration options for the page-binding.
 
 
-## `{String} id`
+## {String} id
 
 ID of scoped page that a router should react to. E.g. `start` or `user/me`.
 If the id is `?` (wildcard) it will match anything if no other page in the same parent match.
@@ -137,50 +137,50 @@ If the id is `?` (wildcard) it will match anything if no other page in the same 
 * [Matching Wildcards](http://oscar.finnsson.nu/pagerjs/demo/#matching_wildcards)
 * [Deep Navigation with Wildcards](http://oscar.finnsson.nu/pagerjs/demo/#deep_navigation_with_wildcards)
 
-## `{Object} with`
+## {Object} with
 
 That can change the scope of elements descendants. The same behavior as the normal `with`-binding.
 
 * [Change Binding Context](http://oscar.finnsson.nu/pagerjs/demo/#change_binding_context)
 
-## `{Function} withOnShow`
+## {Function} withOnShow
 
 Sets the view model of elements descendants async after the page is shown. This is useful
 so you can extract sub pages view models to other `.js`-files.
 
 * [Lazy-Bind View-Model](http://oscar.finnsson.nu/pagerjs/demo/#lazy_bind_view_model)
 
-## `{String/Function} source`
+## {String/Function} source
 
 Source to load into element using `jQuery#load`. The source will be loaded once the page is processed.
-If it is a function it is invoken.
+If it is a function it is invoked.
 
 * [Load External Content](http://oscar.finnsson.nu/pagerjs/demo/#load_external_content)
 * [Load View using Custom Method](http://oscar.finnsson.nu/pagerjs/demo/#custom_view_loader)
 
-## `{Function} sourceLoaded`
+## {Function} sourceLoaded
 
 Is a method/event/callback to run once the `source` (or `sourceOnShow`) is loaded.
 
 * [Load External Content](http://oscar.finnsson.nu/pagerjs/demo/#load_external_content)
 
-## `{String/Function} sourceOnShow`
+## {String/Function} sourceOnShow
 
 Source to load into element using `jQuery#load` when the element is displayed. Thus sub pages
-can be extracted and loaded on demand. If it is a function it is invoken.
+can be extracted and loaded on demand. If it is a function it is invoked.
 
 * [Lazy-Load External Content](http://oscar.finnsson.nu/pagerjs/demo/#lazy_load_external_content)
 * [Load View using Custom Method](http://oscar.finnsson.nu/pagerjs/demo/#custom_view_loader)
 
 
-## `{Boolean/Number} sourceCache`
+## {Boolean/Number} sourceCache
 
 Can be set to true in order for sourceOnShow to only load the source once.
 If a number is specified the cache is valid for that amount of time in seconds.
 
 * [Cached Lazy-Loaded Content](http://oscar.finnsson.nu/pagerjs/demo/#cached_lazy)
 
-## `{String} frame`
+## {String} frame
 
 Can be set to `iframe` in order for the source to be loaded into an iframe. If the page contains
 an iframe that element is used.
@@ -188,74 +188,74 @@ an iframe that element is used.
 * [Load Content into iframe](http://oscar.finnsson.nu/pagerjs/demo/#load_into_iframe)
 * [Configure an iframe](http://oscar.finnsson.nu/pagerjs/demo/#configure_iframe)
 
-## `{Boolean} modal`
+## {Boolean} modal
 
 Can be set to `true` in order for the page to act as a modal. If a page is a modal it can be
 found by child-pages to sibling-pages of the modal.
 
 * [Modals](http://oscar.finnsson.nu/pagerjs/demo/#modals)
 
-## `{Function} beforeHide`
+## {Function} beforeHide
 
 Is called before the page is hidden.
 
 * [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
 
-## `{Function} beforeShow`
+## {Function} beforeShow
 
 Is called before the page is shown.
 
 * [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
 
-## `{Function} afterHide`
+## {Function} afterHide
 
 Is called after the page is hidden.
 
 * [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
 
-## `{Function} afterShow`
+## {Function} afterShow
 
 Is called after the page is shown.
 
 * [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
 
-## `{Function} hideElement`
+## {Function} hideElement
 
 Custom hide-method instead of the default `$(element).hide()`;
 
 * [Custom Hide- and Show-Methods](http://oscar.finnsson.nu/pagerjs/demo/#custom_hide_show)
 
-## `{Function} showElement`
+## {Function} showElement
 
 Custom show-method instead of the default `$(element).show()`;
 
 * [Custom Hide- and Show-Methods](http://oscar.finnsson.nu/pagerjs/demo/#custom_hide_show)
 
-## `{Function} loader`
+## {Function} loader
 
 Loader to call once the page is loaded. Can e.g. create a spinner inside the element.
 
 * [Loader](http://oscar.finnsson.nu/pagerjs/demo/#loader)
 
-## `{Function} navigationFailed`
+## {Function} navigationFailed
 
 Method to call if a navigation could not find any matching page.
 
 * [Reacting to Failed Navigation](http://oscar.finnsson.nu/pagerjs/demo/#failed_navigation)
 
-## `{Object} params`
+## {Object} params
 
 Binds URL-parameters to local observables.
 
 * [Binding URI parameters](http://oscar.finnsson.nu/pagerjs/demo/#params)
 
-## `{Function} guard`
+## {Function} guard
 
 Validates a page transition before it is happening.
 
 * [Guards](http://oscar.finnsson.nu/pagerjs/demo/#guards)
 
-## `{String} fx`
+## {String} fx
 
 * [FX](http://oscar.finnsson.nu/pagerjs/demo/#fx)
 
@@ -691,13 +691,13 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 - [Should send wildcards to source](https://github.com/finnsson/pagerjs/issues/14)
 - [Should do deep navigation with wildcards](https://github.com/finnsson/pagerjs/issues/13)
 - [Should match wildcard IDs if no other ID can match exactly](https://github.com/finnsson/pagerjs/issues/12)
-- [`withOnShow` should lazy bind a new view model to the page](https://github.com/finnsson/pagerjs/issues/11)
-- [Should change binding context using `with`](https://github.com/finnsson/pagerjs/issues/10)
-- [Should specify relative page paths using `page-href`](https://github.com/finnsson/pagerjs/issues/9)
-- [Should cache lazy loaded content the number of seconds specified by `sourceCache`](https://github.com/finnsson/pagerjs/issues/8)
-- [Should cache lazy loaded content when `sourceCache: true`](https://github.com/finnsson/pagerjs/issues/7)
-- [Should lazy load an external content into a page if `sourceOnShow` is declared](https://github.com/finnsson/pagerjs/issues/6)
-- [Should load external content into a page using `source` and trigger `sourceLoaded` event](https://github.com/finnsson/pagerjs/issues/5)
+- [withOnShow should lazy bind a new view model to the page](https://github.com/finnsson/pagerjs/issues/11)
+- [Should change binding context using with](https://github.com/finnsson/pagerjs/issues/10)
+- [Should specify relative page paths using page-href](https://github.com/finnsson/pagerjs/issues/9)
+- [Should cache lazy loaded content the number of seconds specified by sourceCache](https://github.com/finnsson/pagerjs/issues/8)
+- [Should cache lazy loaded content when sourceCache: true](https://github.com/finnsson/pagerjs/issues/7)
+- [Should lazy load an external content into a page if sourceOnShow is declared](https://github.com/finnsson/pagerjs/issues/6)
+- [Should load external content into a page using source and trigger sourceLoaded event](https://github.com/finnsson/pagerjs/issues/5)
 - [Should be possible to do deep navigation](https://github.com/finnsson/pagerjs/issues/4)
 - [Should navigate to page using scoped IDs.](https://github.com/finnsson/pagerjs/issues/3)
 - [Should display page with id start by default](https://github.com/finnsson/pagerjs/issues/2)
@@ -731,9 +731,9 @@ See [Milestones](https://github.com/finnsson/pagerjs/issues/milestones).
 Fork this repo. Install all dependencies (node.js, grunt, phnatomjs). Run all tests
 (`grunt qunit`). Run jslint (`grunt lint`). Make your changes. Run all tests and the linter again. Send a pull request.
 
-# Licence
+# License
 
-pager.js is under MIT licence.
+pager.js is under MIT license.
 
 Copyright (c) 2012 Oscar Finnsson
 
