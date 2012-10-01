@@ -1,4 +1,20 @@
-require(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange'], function ($, ko, _, pager) {
+requirejs.config({
+    shim:{
+        bootstrap:['jquery'],
+        hashchange:['jquery']
+    },
+    paths:{
+        jquery:'jquery-1.7.2.min',
+        underscore:'lodash.min',
+        knockout:'knockout-2.1.0',
+        pager:'pager.amd.hash.min',
+        bootstrap:'bootstrap/js/bootstrap.min',
+        hashchange:'jquery.ba-hashchange.min',
+        "zoidberg":'character/zoidberg'
+    }
+});
+
+requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange'], function ($, ko, _, pager) {
 
 
     pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
