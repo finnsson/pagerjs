@@ -32,7 +32,7 @@
     </script>
 
 </head>
-<body onload="prettyPrint()">
+<body>
 
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
@@ -59,14 +59,14 @@
     <header class="jumbotron subhead">
         <h1>Show start page by default</h1>
 
-        <p class="lead"> This is the default start page. It is so because the page ID is set to 'start'.
+        <p class="lead"> This is the default start page. It is so because the page ID is set to <code>'start'</code>.
             Every other element with a page binding (<code>data-bind="page: {id: ...}"</code>) will be hidden
             by default. Set <code>title: 'Some Title'</code> if you want to update the page title as the user
             navigates to the page (look up at the title as you navigate this tutorial).
         </p>
     </header>
 
-        <pre class="prettyprint">
+        <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start', title: 'Pager.js Demo Start'}"&gt;
     ...&lt;a href="#structure"&gt;Read about the structure.&lt;/a&gt;...
 &lt;/div&gt;
@@ -91,7 +91,7 @@
         </p>
     </header>
 
-        <pre class="prettyprint">
+        <pre class="prettyprint linenums">
 &lt;html&gt;
 &lt;body&gt;
 &lt;div class="container" style="padding-top: 30px;"&gt;
@@ -119,18 +119,18 @@
         <h1>Setup</h1>
 
         <p class="lead">
-            Pager.js is depending on <a href="http://knockoutjs.com/">KnockoutJS</a>,
+            Pager.js depends on <a href="http://knockoutjs.com/">KnockoutJS</a>,
             <a href="http://jquery.com/">jQuery</a> and <a href="http://underscorejs.org/">Underscore.js</a>
             (or <a href="http://lodash.com/">Lo-Dash</a>).
             Choose between a naïve history manger (<code>pager.js</code> or <code>pager.amd.js</code>),
             a history manager based on jQuery hashchange (<code>pager.amd.hash.js</code>),
             a history manager based on History.js (<code>pager.amd.history.js</code>)
             or write your own.
-            Apply the lines below (where the 4th line should be familiar from KnockoutJS).
+            Apply the lines below (where line 4 should be familiar from KnockoutJS).
         </p>
     </header>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 // extend your view-model with pager.js specific data
 pager.extendWithPage(viewModel);
 // apply the view-model using KnockoutJS as normal
@@ -168,7 +168,7 @@ pager.start(viewModel);
         <a href="#deep_navigation">Go back to the first sub page</a>.
     </div>
 
-        <pre class="prettyprint">
+        <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'deep_navigation'}"&gt;
     ...
     &lt;div data-bind="page: {id: 'start'}"&gt;
@@ -214,8 +214,7 @@ pager.start(viewModel);
             The <code>page-href</code> link will be relative to the page where the
             element is. So if an anchor tag is in the page "user" a value <code>pelle</code>
             will be resolved to <code>user/pelle</code>. The binding also understands <code>../</code>
-            if you need to track back the page hierarchy!
-            .
+            if you need to track back up the page hierarchy!
         </p>
     </header>
 
@@ -240,7 +239,7 @@ pager.start(viewModel);
         </div>
     </div>
 
-        <pre class="prettyprint">
+        <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
     &lt;ul class="nav nav-tabs"&gt;
         &lt;li class="active"&gt;
@@ -275,7 +274,7 @@ pager.start(viewModel);
         <h1>HTML5 History API</h1>
 
         <p class="lead">
-            The easies way to use the HTML5 History API is to include
+            The easiest way to use the HTML5 History API is to include
             <code>pager.amd.history.js</code> instead of <code>pager.amd.js</code>.
             Everything will just work out of the box then.
             <code>pager.amd.history.js</code> contains another <code>start()</code>-method.
@@ -293,11 +292,11 @@ pager.start(viewModel);
         <h1>Change Binding Context</h1>
 
         <p class="lead">
-            Use <code>with:</code> to change the binding context - similar to the <code>with</code> binding.
+            Use <code>with:</code> to change the binding context - similar to the standard KnockoutJS <code>with</code> binding.
         </p>
     </header>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'user', with: user}"&gt;
     &lt;span data-bind="text: name"&gt;&lt;/span&gt;
 &lt;/div&gt;
@@ -323,9 +322,9 @@ pager.start(viewModel);
         <h1>Change Binding Context on Show</h1>
 
         <p class="lead">
-            If you construct an application with multiple pages you might want to data binding
-            the pages first when the pages are displayed.
-            Use <code>withOnShow:</code> to to an asynchronous data binding when the page is displayed.
+            When constructing an application with multiple pages, you might want to delay data binding
+            the pages until they are first displayed.
+            Use <code>withOnShow:</code> to asynchronously data bind a page when it is first displayed.
         </p>
     </header>
 
@@ -342,7 +341,7 @@ pager.start(viewModel);
         <a data-bind="page-href: '../'">Hide this page</a>
     </div>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
     &lt;p&gt;
         &lt;a class="btn" data-bind="page-href: '../invention'"&gt;Show page and lazy load view model&lt;/a&gt;
@@ -380,13 +379,13 @@ var requireVM = function (module) {
 
         <p class="lead">
             Setting the <code>id:</code> property to <code>'?'</code> will make it
-            match anything. This is useful for a catch-anything and error handling.
+            match anything. This is a useful catch-all with uses like error handling.
         </p>
     </header>
 
     <div data-bind="page: {id: 'start'}">
         <p>
-            <a data-bind="page-href: ('../' + (Math.random()*100).toFixed(0))">Go do some random site</a>
+            <a data-bind="page-href: ('../' + (Math.random()*100).toFixed(0))">Go to some random site</a>
         </p>
     </div>
     <div data-bind="page: {id: '?'}">
@@ -397,7 +396,7 @@ var requireVM = function (module) {
         <p><a href="#matching_wildcards">Go back</a></p>
     </div>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: '?'}"&gt;
     &lt;h3&gt;Error&lt;/h3&gt;
     &lt;p&gt;The page you requested does not exist.&lt;/p&gt;
@@ -435,7 +434,7 @@ var requireVM = function (module) {
     </div>
 
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
     &lt;a class="btn" href="#deep_navigation_with_wildcards/wild/leela"&gt;Go to Leela&lt;/a&gt;
 &lt;/div&gt;
@@ -463,7 +462,7 @@ var requireVM = function (module) {
         <p class="lead">
             The page ID that matched the wildcard can be sent to the <code>source:</code> or
             <code>sourceOnShow:</code>.
-            Just att <code>{1}</code> inside the <code>source:</code> or <code>sourceOnShow:</code>
+            Just add <code>{1}</code> inside the <code>source:</code> or <code>sourceOnShow:</code>
             and <code>{1}</code> will be replaced by the page ID.
         </p>
     </header>
@@ -481,7 +480,7 @@ var requireVM = function (module) {
         </div>
     </div>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
     &lt;a href="#send_wildcard_to_source/character/fry"&gt;Go to Fry&lt;/a&gt;
 &lt;/div&gt;
@@ -515,7 +514,7 @@ var requireVM = function (module) {
 
     <div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}"></div>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}"&gt;&lt;/div&gt;
     </pre>
 
@@ -542,7 +541,7 @@ var requireVM = function (module) {
         <iframe sandbox="" height="100" width="920"></iframe>
     </div>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}"&gt;
     &lt;iframe sandbox="" height="100" width="920"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
@@ -584,7 +583,7 @@ var requireVM = function (module) {
 
     and is constructed with the markup
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page-accordion-item: {id: 'zoidberg'}"&gt;
     &lt;a href="#custom_widgets/start/zoidberg"&gt;Zoidberg&lt;/a&gt;
 
@@ -602,7 +601,7 @@ var requireVM = function (module) {
         First we need to create a class that inherits from <code>pager.Page</code>.
     </p>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
     pager.Page.apply(this, arguments);
 };
@@ -610,9 +609,9 @@ pager.PageAccordionItem.prototype = new pager.Page();
     </pre>
 
     <p>
-        The <code>Page</code> class got these methods to override:
+        The <code>Page</code> class has these methods to override:
     </p>
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 init : void
 getValue : void
 getPage : void
@@ -630,7 +629,7 @@ hideElement : void
     </p>
 
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 // get second child
 pager.PageAccordionItem.prototype.getAccordionBody = function () {
     return $(this.element).children()[1];
@@ -657,7 +656,7 @@ pager.PageAccordionItem.prototype.showElement = function () {
         Finally you need to add the new class as a new custom binding.
     </p>
 
-        <pre class="prettyprint">
+        <pre class="prettyprint linenums">
 ko.bindingHandlers['page-accordion-item'] = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         var pageAccordionItem = new pager.PageAccordionItem(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
@@ -680,7 +679,7 @@ ko.bindingHandlers['page-accordion-item'] = {
         <h1>Modals</h1>
 
         <p class="lead">
-            If is possible to navigate into pages that are further up but still give the impression
+            It is possible to navigate into pages that are further up but still give the impression
             you are navigating deeper down.
             This is useful for modal windows that you might want to show on multiple pages.
             Just append <code>modal: true</code> and the page is accessible for sub-pages to sibling-pages.
@@ -716,7 +715,7 @@ ko.bindingHandlers['page-accordion-item'] = {
         </div>
     </div>
     
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
     &lt;a data-bind="page-href: 'first'" class="btn"&gt;Show first sub-page&lt;/a&gt;
     &lt;a data-bind="page-href: 'second'" class="btn"&gt;Show second sub-page&lt;/a&gt;
@@ -758,20 +757,20 @@ ko.bindingHandlers['page-accordion-item'] = {
         <h1>Custom JS when Navigating</h1>
 
         <p class="lead">
-            There are four main alternatives when it comes to running custom JS:
-        <ul class="">
+            There are 4 main alternatives when it comes to running custom JS:
+        <ol class="">
             <li>Listen to <code>pager.childManager</code> if you want to be notified whenever a navigation has happened.
                 It is not recommended to try to stop the navigation at this point since it would involve changing the
                 history.
             </li>
             <li>Bind to global <code>click</code> if you want to be notified when a navigation is about to happen and
-                you want a change to stop it. Just no not <code>return true;</code> in order to stop the navigation.
+                you want a chance to stop it. Just do not <code>return true;</code> in order to stop the navigation.
             </li>
             <li>Bind to local <code>click</code> if you want to control a certain navigation. This is probably what you
-                want to do it you want to inject validation.
+                want to do if you want to inject validation.
             </li>
             <li>Bind to local before/after show/hide if you just want to be notified about a navigation.</li>
-        </ul>
+        </ol>
 
         <a href="#custom_js_when_navigating/fry">Show Fry</a>
 
@@ -783,22 +782,19 @@ ko.bindingHandlers['page-accordion-item'] = {
         </p>
     </header>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}"&gt;
     Fry
     &lt;a class="btn" href="#custom_js_when_navigating"&gt;Hide Fry&lt;/a&gt;
 &lt;/div&gt;
-
     </pre>
-    <pre class="prettyprint">
-
+    <pre class="prettyprint linenums">
 afterFryIsDisplayed:function () {
     $('body').css("background-color", "#FF9999");
 }
 beforeFryIsHidden:function () {
     $('body').stop().css("background-color", "#FFFFFF");
 }
-
     </pre>
 
     <div class="form-actions">
@@ -816,7 +812,7 @@ beforeFryIsHidden:function () {
             You might want to use a custom animation or custom behaviour for a page.
             This is easily done by using the <code>showElement</code> and <code>hideElement</code>-properties.
 
-            These properties should be supplied with a method that takes two arguments: the first if the page
+            These properties should be supplied with a method that takes 2 arguments: the first is the page
             and the second is a callback that should be executed.
         </p>
     </header>
@@ -828,7 +824,7 @@ beforeFryIsHidden:function () {
         <a class="btn" data-bind="page-href: '../'">Hide Fry</a>
     </div>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'fry', showElement: showFry, hideElement: hideFry}"&gt;
     &lt;h2&gt;Fry&lt;/h2&gt;
     &lt;a class="btn" data-bind="page-href: '../'"&gt;Hide Fry&lt;/a&gt;
@@ -837,7 +833,7 @@ beforeFryIsHidden:function () {
 
     <p>where</p>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 showFry:function (page, callback) {
     $(page.element).fadeIn(1000, callback);
 };
@@ -863,12 +859,12 @@ hideFry:function (page, callback) {
         <h1>Loaders</h1>
 
         <p class="lead">
-            It is possible to specify both locally an globally a loader to be used.
+            It is possible to specify both locally and globally a loader to be used.
 
             Use <code>loader: loader</code> for specifying a loader for a page
             and <code>pager.loader = function(page, element) { ... }</code> for specifying
             a default-loader for all pages.
-            The loader-method should return an object with two methods: <code>load</code>,
+            The loader-method should return an object with 2 methods: <code>load</code>
             and <code>unload</code>.
         </p>
     </header>
@@ -879,7 +875,7 @@ hideFry:function (page, callback) {
         <iframe width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
     </div>
     
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'Sabrepulse', title: 'Sabrepulse', loader: textLoader, sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3'}"&gt;
     &lt;iframe  width="300" height="380" frameborder="0" allowtransparency="true"&gt;&lt;/iframe&gt;
 &lt;/div&gt;        
@@ -887,7 +883,7 @@ hideFry:function (page, callback) {
 
     <p>where</p>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 textLoader: function(page, element) {
     var loader = {};
     var txt = $("&lt;div&gt;&lt;/div>",
@@ -939,7 +935,7 @@ textLoader: function(page, element) {
         </div>
     </div>
     
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div&gt;
     &lt;ul class="nav nav-tabs" data-bind="foreach: $page.children"&gt;
         &lt;li data-bind="css: {active: isVisible}"&gt;&lt;a data-bind="text: $data.getValue().title, page-href: getId()"&gt;&lt;/a&gt;&lt;/li&gt;
@@ -970,7 +966,7 @@ textLoader: function(page, element) {
             When pager or a page does not find a matching sub-page for a route
             a callback is called.
             Either set <code>pager.navigationFailed</code> or supply <code>navigationFailed</code>
-            to the page configuration with a function that takes two arguments: first the page and second the missing
+            to the page configuration with a function that takes 2 arguments: first the page and second the missing
             route.
             <br/>
             This makes it easy to identify missing pages for routes and take actions.
@@ -994,7 +990,7 @@ textLoader: function(page, element) {
         </div>
     </div>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'random', navigationFailed: randomFailed}"&gt;
     &lt;ul class="nav nav-tabs" data-bind="foreach: $page.children"&gt;
         &lt;li data-bind="css: {active: isVisible}"&gt;&lt;a
@@ -1011,7 +1007,7 @@ textLoader: function(page, element) {
 
     where
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 randomFailed:function (page, route) {
     viewModel.newChildren.push({
         childId:route[0]
@@ -1036,12 +1032,12 @@ newChildren:ko.observableArray([])
         <p class="lead">
             In order to facilitate programming in the large it is useful to be able to extract views as separate
             components.
-            These views should not be forced to be stored as html-fragments or be loaded with jQuery.
+            These views should not be forced to be stored as HTML fragments or be loaded with jQuery.
             <br/>
             Thus a way to inject custom views should be possible. This is done using the <code>source</code>- or
             <code>sourceOnShow</code>-properties. Just supply a method instead of a string!
             <br/>
-            These properties takes a method that should take a <code>pager.Page</code> as first argument, a callback,
+            These properties take a method that should take a <code>pager.Page</code> as first argument, a callback,
             and return nothing.
         </p>
     </header>
@@ -1052,13 +1048,13 @@ newChildren:ko.observableArray([])
 
     </div>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'zoidberg', sourceOnShow: requireView('zoidberg')}"/&gt;        
     </pre>
 
     where
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 window.requireView = function(viewModule) {
     return function(page, callback) {
         require([viewModule], function(viewString) {
@@ -1109,7 +1105,7 @@ window.requireView = function(viewModule) {
     </div>
 
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'search', params: ['product','price']}" class="well"&gt;
     &lt;span data-bind="text: product"&gt;&lt;/span&gt; @ $ &lt;span data-bind="text: price"&gt;&lt;/span&gt;
     &lt;br/&gt;
@@ -1141,15 +1137,14 @@ window.requireView = function(viewModule) {
             Guards are methods that are run before the page navigation takes place and
             that can stop the navigation from displaying a certain page.
             <br/>
-            Use the property <code>guard: someMethod</code> do apply the guard. The method
-            takes three parameters: page, route and callback. If the callback is called
+            Use the property <code>guard: someMethod</code> to apply the guard. The method
+            takes 3 parameters: page, route, and callback. If the callback is called
             the navigation takes place - otherwise it is stopped.
             <br/>
             Use cases are login, validating steps in state machines, etc.
             <br/>
-            The reason the guard takes a callback as third argument is simply because the guard might be async -
-            accessing
-            a webserver for login details or asking if a valid shopping card exists etc.
+            The reason the guard takes a callback as the third argument is simply because the guard might be asynchronous, 
+            e.g., accessing a webserver for login details or asking if a valid shopping cart exists, etc.
         </p>
     </header>
 
@@ -1170,7 +1165,7 @@ window.requireView = function(viewModule) {
 
     <br/>
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'admin', guard: isLoggedIn}" class="well"&gt;
     This page is only accessible if the user is logged in.
     &lt;a href="#guards" data-bind="click: logout"&gt;Logout&lt;/a&gt;
@@ -1186,7 +1181,7 @@ window.requireView = function(viewModule) {
 
     where
 
-    <pre class="prettyprint">
+    <pre class="prettyprint linenums">
 loggedIn: ko.observable(false),
 isLoggedIn: function(page, route, callback) {
     if(viewModel.loggedIn()) {
