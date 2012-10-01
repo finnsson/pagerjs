@@ -3,9 +3,9 @@
 
     <p class="lead">
         Pager.js contains a lot of functionality and extension-points.
-        They can divided into three parts:
+        They can be divided into 3 parts:
         <code>pager</code>-object,
-        <code>page: {}</code>-configuration
+        <code>page: {}</code>-configuration,
         and <code>pager.Page</code>-class.
     </p>
 </header>
@@ -51,7 +51,7 @@ pager.start();
 
 <p class="p">
     A global observable that is triggered every time a navigation fails.
-    The observable got two members: route and page.
+    The observable has 2 members: route and page.
 </p>
 
 <pre class="prettyprint">
@@ -160,7 +160,7 @@ var viewModel = {
 
 <div class="alert">
     This member should also be possible to supply a method as <code>withOnShow</code>, i.e. should be possible
-    to be either an object on a method.
+    to be either an object or a method.
 </div>
 
 <div class="form-actions">
@@ -174,7 +174,7 @@ var viewModel = {
 
 <p>
     This member makes it possible to lazy-bind a view-model once the page is first displayed. <code>withOnShow</code>
-    takes a method that should take two arguments: a callback (that should be feeded the view-model)
+    takes a method that should take 2 arguments: a callback (that should be feeded the view-model)
     and the current Page-object.
 </p>
 <p>
@@ -202,7 +202,7 @@ Cool.loadUser = function(callback, page) {
 
 <div class="alert">
     This member should also be possible to supply an object as <code>with</code>, i.e. should be possible
-    to be either an object on a method.
+    to be either an object or a method.
 </div>
 
 <div class="form-actions">
