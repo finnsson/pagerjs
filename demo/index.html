@@ -47,7 +47,7 @@
         </p>
     </header>
 
-        <pre class="prettyprint linenums">
+        <pre data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start', title: 'Pager.js Demo Start'}"&gt;
     ...&lt;a href="#structure"&gt;Read about the structure.&lt;/a&gt;...
 &lt;/div&gt;
@@ -72,7 +72,7 @@
         </p>
     </header>
 
-        <pre class="prettyprint linenums">
+        <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;html&gt;
 &lt;body&gt;
 &lt;div class="container" style="padding-top: 30px;"&gt;
@@ -111,7 +111,7 @@
         </p>
     </header>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 // extend your view-model with pager.js specific data
 pager.extendWithPage(viewModel);
 // apply the view-model using KnockoutJS as normal
@@ -149,7 +149,7 @@ pager.start(viewModel);
         <a href="#deep_navigation">Go back to the first sub page</a>.
     </div>
 
-        <pre class="prettyprint linenums">
+        <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'deep_navigation'}"&gt;
     ...
     &lt;div data-bind="page: {id: 'start'}"&gt;
@@ -174,10 +174,10 @@ pager.start(viewModel);
 <div data-bind="page: {id: 'load_external_content', sourceLoaded: externalContentLoaded, source: 'load_external_content.html .content', title: 'Load External Content'}">
 </div>
 
-<div data-bind="page: {id: 'lazy_load_external_content', sourceOnShow: 'lazy_load_external_content.html .content', title: 'Lazy-Load External Content'}">
+<div data-bind="page: {id: 'lazy_load_external_content', sourceLoaded: externalContentLazyLoaded, sourceOnShow: 'lazy_load_external_content.html .content', title: 'Lazy-Load External Content'}">
 </div>
 
-<div data-bind="page: {id: 'cached_lazy', sourceOnShow: 'cached_lazy.html .content', sourceCache: true, title: 'Cache Lazy-Loaded Content'}">
+<div data-bind="page: {id: 'cached_lazy', sourceLoaded: externalContentLazyLoaded, sourceOnShow: 'cached_lazy.html .content', sourceCache: true, title: 'Cache Lazy-Loaded Content'}">
 </div>
 
 
@@ -220,7 +220,7 @@ pager.start(viewModel);
         </div>
     </div>
 
-        <pre class="prettyprint linenums">
+        <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
     &lt;ul class="nav nav-tabs"&gt;
         &lt;li class="active"&gt;
@@ -277,7 +277,7 @@ pager.start(viewModel);
         </p>
     </header>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'user', with: user}"&gt;
     &lt;span data-bind="text: name"&gt;&lt;/span&gt;
 &lt;/div&gt;
@@ -322,7 +322,7 @@ pager.start(viewModel);
         <a data-bind="page-href: '../'">Hide this page</a>
     </div>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
     &lt;p&gt;
         &lt;a class="btn" data-bind="page-href: '../invention'"&gt;Show page and lazy load view model&lt;/a&gt;
@@ -377,7 +377,7 @@ var requireVM = function (module) {
         <p><a href="#matching_wildcards">Go back</a></p>
     </div>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: '?'}"&gt;
     &lt;h3&gt;Error&lt;/h3&gt;
     &lt;p&gt;The page you requested does not exist.&lt;/p&gt;
@@ -415,7 +415,7 @@ var requireVM = function (module) {
     </div>
 
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
     &lt;a class="btn" href="#deep_navigation_with_wildcards/wild/leela"&gt;Go to Leela&lt;/a&gt;
 &lt;/div&gt;
@@ -461,7 +461,7 @@ var requireVM = function (module) {
         </div>
     </div>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
     &lt;a href="#send_wildcard_to_source/character/fry"&gt;Go to Fry&lt;/a&gt;
 &lt;/div&gt;
@@ -495,7 +495,7 @@ var requireVM = function (module) {
 
     <div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}"></div>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}"&gt;&lt;/div&gt;
     </pre>
 
@@ -522,7 +522,7 @@ var requireVM = function (module) {
         <iframe sandbox="" height="100" width="920"></iframe>
     </div>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}"&gt;
     &lt;iframe sandbox="" height="100" width="920"&gt;&lt;/iframe&gt;
 &lt;/div&gt;
@@ -564,7 +564,7 @@ var requireVM = function (module) {
 
     and is constructed with the markup
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page-accordion-item: {id: 'zoidberg'}"&gt;
     &lt;a href="#custom_widgets/start/zoidberg"&gt;Zoidberg&lt;/a&gt;
 
@@ -582,7 +582,7 @@ var requireVM = function (module) {
         First we need to create a class that inherits from <code>pager.Page</code>.
     </p>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
     pager.Page.apply(this, arguments);
 };
@@ -592,7 +592,7 @@ pager.PageAccordionItem.prototype = new pager.Page();
     <p>
         The <code>Page</code> class has these methods to override:
     </p>
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 init : void
 getValue : void
 getPage : void
@@ -610,7 +610,7 @@ hideElement : void
     </p>
 
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 // get second child
 pager.PageAccordionItem.prototype.getAccordionBody = function () {
     return $(this.element).children()[1];
@@ -637,7 +637,7 @@ pager.PageAccordionItem.prototype.showElement = function () {
         Finally you need to add the new class as a new custom binding.
     </p>
 
-        <pre class="prettyprint linenums">
+        <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 ko.bindingHandlers['page-accordion-item'] = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         var pageAccordionItem = new pager.PageAccordionItem(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
@@ -696,7 +696,7 @@ ko.bindingHandlers['page-accordion-item'] = {
         </div>
     </div>
     
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
     &lt;a data-bind="page-href: 'first'" class="btn"&gt;Show first sub-page&lt;/a&gt;
     &lt;a data-bind="page-href: 'second'" class="btn"&gt;Show second sub-page&lt;/a&gt;
@@ -763,13 +763,13 @@ ko.bindingHandlers['page-accordion-item'] = {
         </p>
     </header>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}"&gt;
     Fry
     &lt;a class="btn" href="#custom_js_when_navigating"&gt;Hide Fry&lt;/a&gt;
 &lt;/div&gt;
     </pre>
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 afterFryIsDisplayed:function () {
     $('body').css("background-color", "#FF9999");
 }
@@ -805,7 +805,7 @@ beforeFryIsHidden:function () {
         <a class="btn" data-bind="page-href: '../'">Hide Fry</a>
     </div>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'fry', showElement: showFry, hideElement: hideFry}"&gt;
     &lt;h2&gt;Fry&lt;/h2&gt;
     &lt;a class="btn" data-bind="page-href: '../'"&gt;Hide Fry&lt;/a&gt;
@@ -814,7 +814,7 @@ beforeFryIsHidden:function () {
 
     <p>where</p>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 showFry:function (page, callback) {
     $(page.element).fadeIn(1000, callback);
 };
@@ -856,7 +856,7 @@ hideFry:function (page, callback) {
         <iframe width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
     </div>
     
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'Sabrepulse', title: 'Sabrepulse', loader: textLoader, sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3'}"&gt;
     &lt;iframe  width="300" height="380" frameborder="0" allowtransparency="true"&gt;&lt;/iframe&gt;
 &lt;/div&gt;        
@@ -864,7 +864,7 @@ hideFry:function (page, callback) {
 
     <p>where</p>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 textLoader: function(page, element) {
     var loader = {};
     var txt = $("&lt;div&gt;&lt;/div>",
@@ -916,7 +916,7 @@ textLoader: function(page, element) {
         </div>
     </div>
     
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div&gt;
     &lt;ul class="nav nav-tabs" data-bind="foreach: $page.children"&gt;
         &lt;li data-bind="css: {active: isVisible}"&gt;&lt;a data-bind="text: $data.getValue().title, page-href: getId()"&gt;&lt;/a&gt;&lt;/li&gt;
@@ -971,7 +971,7 @@ textLoader: function(page, element) {
         </div>
     </div>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'random', navigationFailed: randomFailed}"&gt;
     &lt;ul class="nav nav-tabs" data-bind="foreach: $page.children"&gt;
         &lt;li data-bind="css: {active: isVisible}"&gt;&lt;a
@@ -988,7 +988,7 @@ textLoader: function(page, element) {
 
     where
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 randomFailed:function (page, route) {
     viewModel.newChildren.push({
         childId:route[0]
@@ -1029,13 +1029,13 @@ newChildren:ko.observableArray([])
 
     </div>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'zoidberg', sourceOnShow: requireView('zoidberg')}"/&gt;        
     </pre>
 
     where
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 window.requireView = function(viewModule) {
     return function(page, callback) {
         require([viewModule], function(viewString) {
@@ -1086,7 +1086,7 @@ window.requireView = function(viewModule) {
     </div>
 
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'search', params: ['product','price']}" class="well"&gt;
     &lt;span data-bind="text: product"&gt;&lt;/span&gt; @ $ &lt;span data-bind="text: price"&gt;&lt;/span&gt;
     &lt;br/&gt;
@@ -1146,7 +1146,7 @@ window.requireView = function(viewModule) {
 
     <br/>
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'admin', guard: isLoggedIn}" class="well"&gt;
     This page is only accessible if the user is logged in.
     &lt;a href="#guards" data-bind="click: logout"&gt;Logout&lt;/a&gt;
@@ -1162,7 +1162,7 @@ window.requireView = function(viewModule) {
 
     where
 
-    <pre class="prettyprint linenums">
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 loggedIn: ko.observable(false),
 isLoggedIn: function(page, route, callback) {
     if(viewModel.loggedIn()) {

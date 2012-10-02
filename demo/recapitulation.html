@@ -54,7 +54,7 @@ pager.start();
     The observable has 2 members: route and page.
 </p>
 
-<pre class="prettyprint">
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
 ko.computed(function() {
     var page = pager.navigationFailed().page;
     var route = pager.navigationFailed().route;
@@ -91,7 +91,7 @@ ko.computed(function() {
     structured values.
 </p>
 
-<pre class="prettyprint">
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'search'}"&gt;
     &lt;!-- Search for product here. Will only match #search --&gt;
 &lt;/div&gt;
@@ -120,7 +120,7 @@ ko.computed(function() {
     will appear inside the view-model.
 </p>
 
-<pre class="prettyprint">
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'search', params: ['name', 'price']}"&gt;
     &lt;label&gt;Name &lt;input type="text" data-bind="value: name"&gt;&lt;/span&gt;&lt;/label&gt;
     &lt;label&gt;Price &lt;input type="text" data-bind="value: price"&gt;&lt;/span&gt;&lt;/label&gt;
@@ -146,13 +146,13 @@ ko.computed(function() {
     Works as the normal <code>with</code>-binding.
 </p>
 
-<pre class="prettyprint">
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'fry', with: fry}"&gt;
     The age of Fry is &lt;span data-bind="text: age"&gt;&lt;/span&gt;
 &lt;/div&gt;
 </pre>
 <p>where</p>
-<pre class="prettyprint">
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
 var viewModel = {
     fry: ko.observable({age: ko.observable(27)})
 }
@@ -186,13 +186,13 @@ var viewModel = {
     If you set <code>sourceCache: true</code> the view-model will not reload every time you revisit the page.
 </p>
 
-<pre class="prettyprint">
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: '?', withOnShow: Cool.loadUser}"&gt;
     &lt;h1 data-bind="text: userName"&gt;&lt;/h1&gt;
 &lt;/div&gt;
 </pre>
 
-<pre class="prettyprint">
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
 Cool.loadUser = function(callback, page) {
     $.get('service/users/' + page.currentId, function(data) {
         callback(ko.mapping.fromJSON(data));

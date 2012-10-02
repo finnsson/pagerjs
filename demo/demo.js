@@ -61,11 +61,19 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
         }
     };
 
+    ko.bindingHandlers['prettyprint'] = {
+        init:function(element) {
+            var $element = $(element);
+            $element.html(prettyPrintOne($element.html(), undefined, true));
+        }
+    };
+
     var viewModel = {
         name:ko.observable("Pelle"),
         description:ko.observable('pl'),
         externalContentLoaded:function (page) {
-            prettyPrint();
+        },
+        externalContentLazyLoaded: function(page) {
         },
         afterFryIsDisplayed:function () {
             $('body').css("background-color", "#FF9999");
@@ -134,7 +142,6 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
     };
 
     window.recapLoaded = function (page) {
-        prettyPrint();
         $('.tt').tooltip();
 
         // for each h3
