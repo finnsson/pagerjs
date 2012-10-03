@@ -52,7 +52,6 @@
         until(function () {
             return $('#pelle').is(':visible');
         }, function () {
-            console.error("1");
             equal($('#pelle').is(':visible'), true, 'pelle is visible');
             equal($('#start').is(':visible'), false, 'start is hidden');
 
@@ -62,7 +61,6 @@
             until(function () {
                 return $('#wild').is(':visible');
             }, function () {
-                console.error("2");
                 equal($('#wild').is(':visible'), true, 'wild is visible');
                 start();
             });

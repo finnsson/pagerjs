@@ -4,7 +4,7 @@
  */
 pager.routeFromHashToPage = function (hash) {
     // skip # (or #!/)
-    if (hash[0] === pager.Href.hash) {
+    if (hash.substring(0, pager.Href.hash.length) === pager.Href.hash) {
         hash = hash.slice(pager.Href.hash.length);
     }
     // split on '/'

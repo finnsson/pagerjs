@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should introduce view observables using var</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+    <script type="text/javascript" src="../start-naive.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'start', vars: {x: null, y: 'test'}}">
+    In Start!
+
+    <input id="a" data-bind="value: x" type="text"/>
+    <input id="b" data-bind="value: x" type="text"/>
+    <input id="c" data-bind="value: y" type="text"/>
+    <input id="d" data-bind="value: y" type="text"/>
+</div>
+
+<div data-bind="page: {id: 'lazy', vars: {x: null, y: 'test'}, params: ['z'], withOnShow: loadVM}">
+    In Lazy!
+
+    <input id="e" data-bind="value: x" type="text"/>
+    <input id="f" data-bind="value: x" type="text"/>
+    <input id="g" data-bind="value: y" type="text"/>
+    <input id="h" data-bind="value: y" type="text"/>
+    <div id="z" data-bind="text: z"></div>
+
+    <div id="name" data-bind="text: name"></div>
+</div>
+
+
+<script type="text/javascript">
+
+    pager.Href.hash = '#!/';
+
+
+    var viewModel = {
+        loadVM:function (callback, page) {
+            callback({
+                name: "Pelle"
+            });
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+
+    asyncTest("Should introduce view observables using var", function () {
+
+        ok($('#a').val() === $('#b').val());
+        ok($('#c').val() === $('#d').val());
+
+        window.location.hash = '#!/lazy?z=hej';
+
+        until(function() {
+           return $('#name').text() === 'Pelle';
+        }, function() {
+            ok($('#e').val() === $('#f').val());
+            ok($('#g').val() === $('#h').val());
+            ok($('#z').text() === 'hej');
+            start();
+
+        });
+
+
+
+    });
+</script>
+
+
+</body>
+</html>

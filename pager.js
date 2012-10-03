@@ -345,9 +345,8 @@ p.showPage = function (route, pageRoute, originalRoute) {
     this.isVisible(true);
     this.originalRoute(originalRoute);
     this.route = route;
-    if (pageRoute && pageRoute.params) {
-        this.setParams(pageRoute.params);
-    }
+    this.pageRoute = pageRoute;
+    this.setParams();
     this.show();
     this.childManager.showChild(route);
 };
@@ -357,20 +356,24 @@ p.showPage = function (route, pageRoute, originalRoute) {
  *
  * @param params
  */
-p.setParams = function (params) {
-    // get view model
-    var vm = this.ctx;
-    var userParams = this.val('params') || {};
-    // for each param for URL
-    $.each(params, function (key, value) {
-        if (_.indexOf(userParams, key) !== -1) { // make sure it's a valid param
-            if (vm[key]) { // set observable ...
-                vm[key](value);
-            } else { // ... or create observable
-                vm[key] = ko.observable(value);
+p.setParams = function () {
+    if (this.pageRoute && this.pageRoute.params) {
+        var params = this.pageRoute.params;
+
+        // get view model
+        var vm = this.ctx;
+        var userParams = this.val('params') || {};
+        // for each param for URL
+        $.each(params, function (key, value) {
+            if (_.indexOf(userParams, key) !== -1) { // make sure it's a valid param
+                if (vm[key]) { // set observable ...
+                    vm[key](value);
+                } else { // ... or create observable
+                    vm[key] = ko.observable(value);
+                }
             }
-        }
-    });
+        });
+    }
 };
 
 /**
@@ -391,38 +394,50 @@ p.hidePage = function (callback) {
  */
 p.init = function () {
     var m = this;
-    var value = this.getValue();
-    this.parentPage = this.getParentPage();
-    this.parentPage.children.push(this);
+    var value = m.getValue();
+    m.parentPage = m.getParentPage();
+    m.parentPage.children.push(this);
 
-    this.hideElement();
+    m.hideElement();
 
     // Fetch source
-    if (this.val('source')) {
-        this.loadSource(this.val('source'));
+    if (m.val('source')) {
+        m.loadSource(m.val('source'));
     }
 
-    this.ctx = null;
+    m.ctx = null;
     if (value['with']) {
-        this.ctx = _ko.value(value['with']);
+        m.ctx = _ko.value(value['with']);
+        m.augmentContext();
     } else if (value.withOnShow) {
-        this.ctx = {};
+        m.ctx = {};
     } else {
-        this.ctx = this.viewModel;
+        m.ctx = m.viewModel;
+        m.augmentContext();
     }
-    if (this.val('params')) {
+    m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
+    ko.utils.extend(m.childBindingContext, {$page:this});
+    if (!m.val('withOnShow')) {
+        ko.applyBindingsToDescendants(m.childBindingContext, m.element);
+    }
+    return { controlsDescendantBindings:true};
+};
+
+p.augmentContext = function() {
+    var m = this;
+    if (m.val('params')) {
         $.each(this.val('params'), function (index, param) {
             if (!m.ctx[param]) {
                 m.ctx[param] = ko.observable();
             }
         });
     }
-    this.childBindingContext = this.bindingContext.createChildContext(this.ctx);
-    ko.utils.extend(this.childBindingContext, {$page:this});
-    if (!this.val('withOnShow')) {
-        ko.applyBindingsToDescendants(this.childBindingContext, this.element);
+    if(this.val('vars')) {
+        $.each(this.val('vars'), function(key, value) {
+            m.ctx[key] = ko.observable(value);
+        });
     }
-    return { controlsDescendantBindings:true};
+    this.setParams();
 };
 
 /**
@@ -573,6 +588,7 @@ p.show = function (callback) {
             me.val('withOnShow')(_.bind(function (vm) {
                 var childBindingContext = me.bindingContext.createChildContext(vm);
                 me.ctx = vm;
+                me.augmentContext();
                 ko.utils.extend(childBindingContext, {$page:this});
                 ko.applyBindingsToDescendants(childBindingContext, me.element);
             }, this), this);
