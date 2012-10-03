@@ -7,7 +7,7 @@ var pager = {};
 
 pager.page = null;
 
-pager.now = function() {
+pager.now = function () {
     if (!Date.now) {
         return (new Date()).valueOf();
     } else {
@@ -677,6 +677,7 @@ p.getFullRoute = function () {
 };
 
 p.nullObject = new pager.Page();
+p.nullObject.children = ko.observableArray([]);
 
 p.child = function (key) {
     return ko.computed(function () {
@@ -715,6 +716,8 @@ pager.Href = function (element, valueAccessor, allBindingsAccessor, viewModel, b
     this.allBindingsAccessor = allBindingsAccessor;
     this.viewModel = viewModel;
     this.bindingContext = bindingContext;
+    this.path = ko.observable();
+    this.val = ko.observable(valueAccessor);
 };
 
 var hp = pager.Href.prototype;
@@ -725,18 +728,25 @@ hp.init = function () {
     var page = this.getParentPage();
 
     this.path = ko.computed(function () {
-        var value = _ko.value(this.valueAccessor());
-        var parentsToTrim = 0;
-        while (value.substring(0, 3) === '../') {
-            parentsToTrim++;
-            value = value.slice(3);
-        }
+        var value = _ko.value(this.val()());
+        if (typeof(value) === 'String') {
+            var parentsToTrim = 0;
+            while (value.substring(0, 3) === '../') {
+                parentsToTrim++;
+                value = value.slice(3);
+            }
 
-        var fullRoute = page.getFullRoute()();
-        var parentPath = fullRoute.slice(0, fullRoute.length - parentsToTrim).join('/');
-        var fullPath = (parentPath === '' ? '' : parentPath + '/') + value;
-        return fullPath;
+            var fullRoute = page.getFullRoute()();
+            var parentPath = fullRoute.slice(0, fullRoute.length - parentsToTrim).join('/');
+            var fullPath = (parentPath === '' ? '' : parentPath + '/') + value;
+            return fullPath;
+        } else if (value.getFullRoute) {
+            return value.getFullRoute()().join('/');
+        }
+        return "";
     }, this);
+
+    //this.path(this.getPath());
 };
 
 pager.Href.hash = '#';
@@ -751,6 +761,10 @@ hp.bind = function () {
             'href':hash
         }
     });
+};
+
+hp.update = function(valueAccessor) {
+    this.val(valueAccessor);
 };
 
 pager.Href5 = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -777,9 +791,10 @@ ko.bindingHandlers['page-hash'] = {
         var href = new pager.Href(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
         href.init();
         href.bind();
+        element.__ko__page = href;
     },
-    update:function () {
-
+    update:function (element, valueAccessor) {
+        element.__ko__page.update();
     }
 };
 
@@ -800,9 +815,10 @@ ko.bindingHandlers['page-href'] = {
         var href = new Cls(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
         href.init();
         href.bind();
+        element.__ko__page = href;
     },
-    update:function () {
-
+    update:function (element, valueAccessor) {
+        element.__ko__page.update(valueAccessor);
     }
 };
 
