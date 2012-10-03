@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should introduce view observables using var</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+    <script type="text/javascript" src="../start-naive.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'start'}">
+</div>
+
+<div id="wild" data-bind="page: {id: '?', sourceLoaded: wildLoaded, deep: true, sourceOnShow: '../test-data/{1}.html'}">
+</div>
+
+
+<script type="text/javascript">
+
+    pager.Href.hash = '#!/';
+
+
+    var isLoaded = false;
+    var viewModel = {
+        wildLoaded:function () {
+            isLoaded = true;
+        },
+        name: ko.observable("Pelle"),
+        loadVM:function (callback, page) {
+            callback({
+                name:"Pelle"
+            });
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+
+    asyncTest("Should introduce view observables using var", function () {
+
+        ok($('#a').val() === $('#b').val());
+        ok($('#c').val() === $('#d').val());
+
+        window.location.hash = '#!/some_dir/ipsum';
+
+        until(function () {
+            return isLoaded;
+        }, function () {
+            ok(true);
+            start();
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>

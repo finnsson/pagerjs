@@ -490,7 +490,13 @@ p.sourceUrl = function (source) {
     if (this.getId() === '?') {
         return ko.computed(function () {
             // TODO: maybe make currentId an ko.observable?
-            return _ko.value(source).replace('{1}', me.currentId);
+            var path;
+            if(me.val('deep')) {
+                path = (me.getFullRoute()().concat(me.route)).join('/');
+            } else {
+                path = me.currentId;
+            }
+            return _ko.value(source).replace('{1}', path);
         });
     } else {
         return ko.computed(function () {
@@ -761,8 +767,6 @@ hp.init = function () {
         }
         return "";
     }, this);
-
-    //this.path(this.getPath());
 };
 
 pager.Href.hash = '#';
