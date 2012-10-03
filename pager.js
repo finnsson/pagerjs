@@ -729,7 +729,7 @@ hp.init = function () {
 
     this.path = ko.computed(function () {
         var value = _ko.value(this.val()());
-        if (typeof(value) === 'String') {
+        if (typeof(value) === 'string') {
             var parentsToTrim = 0;
             while (value.substring(0, 3) === '../') {
                 parentsToTrim++;
@@ -794,7 +794,7 @@ ko.bindingHandlers['page-hash'] = {
         element.__ko__page = href;
     },
     update:function (element, valueAccessor) {
-        element.__ko__page.update();
+        element.__ko__page.update(valueAccessor);
     }
 };
 
@@ -803,9 +803,10 @@ ko.bindingHandlers['page-href5'] = {
         var href = new pager.Href5(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
         href.init();
         href.bind();
+        element.__ko__page = href;
     },
-    update:function () {
-
+    update:function (element, valueAccessor) {
+        element.__ko__page.update(valueAccessor);
     }
 };
 
