@@ -12,9 +12,9 @@ module.exports = function (grunt) {
                 '* http://oscar.finnsson.nu/pagerjs/\n' +
                 '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
                 'Oscar Finnsson; Licensed MIT */',
-            amdStart:"define(['jquery','underscore','knockout'], function($,_,ko) {",
-            amd_start_jquery_hashchange:"define(['jquery','underscore','knockout', 'hashchange'], function($,_,ko) {",
-            amd_start_historyjs:"define(['jquery','underscore','knockout', 'history'], function($,_,ko) {",
+            amdStart:"define(['jquery','underscore','knockout'], function($,_,ko) { ",
+            amd_start_jquery_hashchange:"define(['jquery','underscore','knockout', 'hashchange'], function($,_,ko) { ",
+            amd_start_historyjs:"define(['jquery','underscore','knockout', 'history'], function($,_,ko) { ",
             amdEnd:'return pager;});'
         },
         server:{
@@ -37,8 +37,9 @@ module.exports = function (grunt) {
                 dest:'dist/pager.amd.concat.js'
             },
             amddemo:{
-                src:['<banner:meta.banner>', '<banner:meta.amdStart>', '<file_strip_banner:pager.js>', '<banner:meta.amdEnd>'],
-                dest:'demo/pager.amd.min.js'
+                src:['<banner:meta.banner>', '<banner:meta.amd_start_jquery_hashchange>', '<file_strip_banner:pager.js>',
+                    '<file_strip_banner:start-jquery-hashchange.js>','<banner:meta.amdEnd>'],
+                dest:'demo/pager.amd.hash.min.js'
             }
         },
         min:{
@@ -116,6 +117,6 @@ module.exports = function (grunt) {
     });
 
     // Default task.
-    grunt.registerTask('default', 'lint qunit concat min');
+    grunt.registerTask('default', 'lint less qunit concat min');
 
 };

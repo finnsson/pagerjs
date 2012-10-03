@@ -1,6 +1,3 @@
-(function() {
-
-"use strict";
 /**
  * @module pager
  * @readme README.md
@@ -38,21 +35,6 @@ pager.extendWithPage = function (viewModel) {
  * @static
  */
 pager.navigationFailed = ko.observable();
-
-
-/**
- *
- * @param {String} hash
- */
-pager.routeFromHashToPage = function (hash) {
-    // skip #
-    if (hash[0] === '#') {
-        hash = hash.slice(1);
-    }
-    // split on '/'
-    var hashRoute = decodeURIComponent(hash).split('/');
-    pager.showChild(hashRoute);
-};
 
 /**
  *
@@ -409,17 +391,15 @@ p.hidePage = function (callback) {
  */
 p.init = function () {
     var m = this;
-
     var value = this.getValue();
     this.parentPage = this.getParentPage();
     this.parentPage.children.push(this);
 
-
     this.hideElement();
 
     // Fetch source
-    if (value.source) {
-        this.loadSource(value.source);
+    if (this.val('source')) {
+        this.loadSource(this.val('source'));
     }
 
     this.ctx = null;
@@ -430,8 +410,8 @@ p.init = function () {
     } else {
         this.ctx = this.viewModel;
     }
-    if (value.params) {
-        $.each(value.params, function (index, param) {
+    if (this.val('params')) {
+        $.each(this.val('params'), function (index, param) {
             if (!m.ctx[param]) {
                 m.ctx[param] = ko.observable();
             }
@@ -439,7 +419,7 @@ p.init = function () {
     }
     this.childBindingContext = this.bindingContext.createChildContext(this.ctx);
     ko.utils.extend(this.childBindingContext, {$page:this});
-    if (!value.withOnShow) {
+    if (!this.val('withOnShow')) {
         ko.applyBindingsToDescendants(this.childBindingContext, this.element);
     }
     return { controlsDescendantBindings:true};
@@ -480,7 +460,7 @@ p.getParentPage = function () {
  * @return String
  */
 p.getId = function () {
-    return _ko.value(this.getValue().id);
+    return this.val('id');
 };
 
 
@@ -582,30 +562,30 @@ p.loadSource = function (source) {
 p.show = function (callback) {
     var element = this.element;
     var me = this;
-    var value = this.getValue();
-    this.showElementWrapper(callback);
-    if (this.getValue().title) {
-        window.document.title = this.getValue().title;
+    //var value = me.getValue();
+    me.showElementWrapper(callback);
+    if (me.val('title')) {
+        window.document.title = me.val('title');
     }
-    if (value.withOnShow) {
-        if (!this.withOnShowLoaded || value.sourceCache !== true) {
-            this.withOnShowLoaded = true;
-            value.withOnShow(_.bind(function (vm) {
-                var childBindingContext = this.bindingContext.createChildContext(vm);
+    if (me.val('withOnShow')) {
+        if (!me.withOnShowLoaded || me.val('sourceCache') !== true) {
+            me.withOnShowLoaded = true;
+            me.val('withOnShow')(_.bind(function (vm) {
+                var childBindingContext = me.bindingContext.createChildContext(vm);
                 me.ctx = vm;
                 ko.utils.extend(childBindingContext, {$page:this});
-                ko.applyBindingsToDescendants(childBindingContext, this.element);
+                ko.applyBindingsToDescendants(childBindingContext, me.element);
             }, this), this);
         }
     }
 
     // Fetch source
-    if (value.sourceOnShow) {
-        if (!value.sourceCache ||
+    if (me.val('sourceOnShow')) {
+        if (!me.val('sourceCache') ||
             !element.__pagerLoaded__ ||
-            (typeof(value.sourceCache) === 'number' && element.__pagerLoaded__ + value.sourceCache * 1000 < pager.now())) {
+            (typeof(me.val('sourceCache')) === 'number' && element.__pagerLoaded__ + me.val('sourceCache') * 1000 < pager.now())) {
             element.__pagerLoaded__ = pager.now();
-            this.loadSource(value.sourceOnShow);
+            me.loadSource(me.val('sourceOnShow'));
         }
     }
 };
@@ -615,12 +595,12 @@ p.show = function (callback) {
  * @param {Function} callback
  */
 p.showElementWrapper = function (callback) {
-    if (this.getValue().beforeShow) {
-        this.getValue().beforeShow(this);
+    if (this.val('beforeShow')) {
+        this.val('beforeShow')(this);
     }
     this.showElement(callback);
-    if (this.getValue().afterShow) {
-        this.getValue().afterShow(this);
+    if (this.val('afterShow')) {
+        this.val('afterShow')(this);
     }
 };
 
@@ -629,8 +609,8 @@ p.showElementWrapper = function (callback) {
  * @param {Function} callback
  */
 p.showElement = function (callback) {
-    if (this.getValue().showElement) {
-        this.getValue().showElement(this, callback);
+    if (this.val('showElement')) {
+        this.val('showElement')(this, callback);
     } else if (this.val('fx')) {
         pager.fx[this.val('fx')].showElement(this, callback);
     } else if (pager.showElement) {
@@ -646,12 +626,12 @@ p.showElement = function (callback) {
  * @param {Function} callback
  */
 pager.Page.prototype.hideElementWrapper = function (callback) {
-    if (this.getValue().beforeHide) {
-        this.getValue().beforeHide(this);
+    if (this.val('beforeHide')) {
+        this.val('beforeHide')(this);
     }
     this.hideElement(callback);
-    if (this.getValue().afterHide) {
-        this.getValue().afterHide(this);
+    if (this.val('afterHide')) {
+        this.val('afterHide')(this);
     }
 };
 
@@ -660,8 +640,8 @@ pager.Page.prototype.hideElementWrapper = function (callback) {
  * @param {Function} [callback]
  */
 p.hideElement = function (callback) {
-    if (this.getValue().hideElement) {
-        this.getValue().hideElement(this, callback);
+    if (this.val('hideElement')) {
+        this.val('hideElement')(this, callback);
     } else if (this.val('fx')) {
         pager.fx[this.val('fx')].hideElement(this, callback);
     } else if (pager.hideElement) {
@@ -759,9 +739,11 @@ hp.init = function () {
     }, this);
 };
 
+pager.Href.hash = '#';
+
 hp.bind = function () {
     var hash = ko.computed(function () {
-        return '#' + this.path();
+        return pager.Href.hash + this.path();
     }, this);
 
     ko.applyBindingsToNode(this.element, {
@@ -918,4 +900,3 @@ pager.fx.fade = {
         });
     }
 };
-}());
