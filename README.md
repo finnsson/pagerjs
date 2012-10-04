@@ -1,5 +1,7 @@
 # [pager.js](http://oscar.finnsson.nu/pagerjs/)
 
+[![Build Status](https://travis-ci.org/finnsson/pagerjs.png)](https://travis-ci.org/finnsson/pagerjs)
+
 pager.js is a JavaScript library based on KnockoutJS, jQuery and Underscore.js that provides the possibility of
 creating single page applications in a declarative fashion
 - nesting subpages inside subpages where each subpage can be developed standalone but still communicate between
