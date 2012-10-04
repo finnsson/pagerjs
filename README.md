@@ -1,5 +1,7 @@
 # [pager.js](http://oscar.finnsson.nu/pagerjs/)
 
+[![Build Status](https://travis-ci.org/finnsson/pagerjs.png)](https://travis-ci.org/finnsson/pagerjs)
+
 pager.js is a JavaScript library based on KnockoutJS, jQuery and Underscore.js that provides the possibility of
 creating single page applications in a declarative fashion
 - nesting subpages inside subpages where each subpage can be developed standalone but still communicate between
@@ -777,6 +779,8 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 - [Wildcards should deep-load content if configured so](https://github.com/finnsson/pagerjs/issues/31)
 
 ## Roadmap
+
+Currently working towards 0.6
 
 See [Milestones](https://github.com/finnsson/pagerjs/issues/milestones).
 
