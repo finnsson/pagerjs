@@ -28,3 +28,7 @@ footer .pagination ul {
     max-height: 300px;
     overflow-y: scroll;
 }
+
+a .atv {
+    text-decoration: underline;
+}

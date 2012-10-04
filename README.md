@@ -126,6 +126,10 @@ History.js can be used by setting `pager.Href5.history = History` (default to th
 
 It the page-href is supplied a Page-instance the absolute href to the Page-instance is calculated.
 
+* [Relative path](http://oscar.finnsson.nu/pagerjs/demo/#relative_path)
+* [Absolute Path](http://oscar.finnsson.nu/pagerjs/demo/#absolute_path)
+* [HTML5 History](http://oscar.finnsson.nu/pagerjs/demo/#html5_history)
+
 ### page
 
     <div data-bind="page: {}">
@@ -182,7 +186,6 @@ can be extracted and loaded on demand. If it is a function it is invoked.
 
 * [Lazy-Load External Content](http://oscar.finnsson.nu/pagerjs/demo/#lazy_load_external_content)
 * [Load View using Custom Method](http://oscar.finnsson.nu/pagerjs/demo/#custom_view_loader)
-
 
 ### {Boolean/Number} sourceCache
 
@@ -275,9 +278,13 @@ Validates a page transition before it is happening.
 Created scoped observables for the view. Useful for when observables are needed purely for the view
 and has no connection to the view-model.
 
+* [Custom observables in the view](http://oscar.finnsson.nu/pagerjs/demo/#vars)
+
 ### {Boolean} deep
 
 By setting `deep: true` a wildcard page will deep-load supplied sources.
+
+* [Deep Load Content into Wildcard](http://oscar.finnsson.nu/pagerjs/demo/#deep_load_content_into_wildcard)
 
 ## Cookbook
 
@@ -712,7 +719,6 @@ Using a combination of wildcard pages and sourceOnShow it is possible to deep lo
 In the above example `some/cool/page` will match the wildcard (`?`) and since `deep: true` is specified
 the entire route (`some/cool/page`) will be used when loading content into the page. If `deep` hadn't been
 specified the source should have been `some.html` instead of `some/cool/page.html`.
-
 
 ## FAQ
 

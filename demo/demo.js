@@ -68,6 +68,12 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
         }
     };
 
+    ko.bindingHandlers['tooltip'] = {
+        init:function(element) {
+            $(element).tooltip();
+        }
+    };
+
     var viewModel = {
         name:ko.observable("Pelle"),
         description:ko.observable('pl'),

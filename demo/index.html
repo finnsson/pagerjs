@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Pager.js Demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -48,7 +48,7 @@
     </header>
 
         <pre data-bind="prettyprint: {}" class="prettyprint linenums">
-&lt;div data-bind="page: {id: 'start', title: 'Pager.js Demo Start'}"&gt;
+&lt;div data-bind="page: {<a data-bind="tooltip: {}" title="start it will be displayed by default">id: 'start'</a>, <a data-bind="tooltip: {}" title="change document title to this">title: 'Pager.js Demo Start'</a>}"&gt;
     ...&lt;a href="#structure"&gt;Read about the structure.&lt;/a&gt;...
 &lt;/div&gt;
         </pre>
@@ -80,7 +80,7 @@
     &lt;div data-bind="page: {id: 'start'}"&gt;
         &lt;!-- the previous page --&gt;
     &lt;/div&gt;
-    &lt;div data-bind="page: {id: 'structure'}"&gt;
+    &lt;div data-bind="page: {<a data-bind="tooltip: {}" title="look at the document location. it will match this id">id: 'structure'</a>}"&gt;
         &lt;!-- this page --&gt;
     &lt;/div&gt;
 &lt;/div&gt;
@@ -196,6 +196,9 @@ pager.start(viewModel);
             element is. So if an anchor tag is in the page "user" a value <code>pelle</code>
             will be resolved to <code>user/pelle</code>. The binding also understands <code>../</code>
             if you need to track back up the page hierarchy!
+            <br/>
+            <code>pager.Href.hash</code> is by default <code>#</code> but can be changed to <code>#!/</code>
+            (or any other string). All <code>page-href</code> bindings will use the prefix from <code>pager.Href.hash</code>.
         </p>
     </header>
 
@@ -244,10 +247,13 @@ pager.start(viewModel);
         </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#html5_history">What about HTML5 history?</a>
+        <a class="btn btn-large btn-primary" href="#absolute_path">What about binding to pages?</a>
     </div>
 
 
+</div>
+
+<div data-bind="page: {id: 'absolute_path', title: 'Absolute Path', sourceOnShow: 'page/absolute_path.html', sourceCache: true}">
 </div>
 
 <div data-bind="page: {id: 'html5_history', title: 'HTML5 History'}">
@@ -256,9 +262,12 @@ pager.start(viewModel);
 
         <p class="lead">
             The easiest way to use the HTML5 History API is to include
-            <code>pager.amd.history.js</code> instead of <code>pager.amd.js</code>.
+            <code>pager.amd.history.js</code> and <code>History.js</code> instead of <code>pager.amd.js</code>.
+            <br/>
             Everything will just work out of the box then.
-            <code>pager.amd.history.js</code> contains another <code>start()</code>-method.
+            <code>pager.amd.history.js</code> contains another <code>start()</code>-method, will reconfigure
+            <code>page-href</code> to use true URLs, and reconfigure <code>page-href</code> and <code>page-href5</code>
+            to use <code>History</code> instead of <code>history</code>.
         </p>
     </header>
 
@@ -475,10 +484,54 @@ var requireVM = function (module) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#load_into_iframe">Read about loading content into iframes</a>
+        <a class="btn btn-large btn-primary" href="#deep_load_content_into_wildcard">Read about loading deep content</a>
     </div>
 
 
+</div>
+
+<div data-bind="page: {id: 'deep_load_content_into_wildcard', title: 'Deep Load Content into Wildcard'}">
+    <header class="jumbotron subhead">
+        <h1>Deep Load Content into Wildcard</h1>
+
+        <p class="lead">
+            Normally a <code>sourceOnShow</code> will only use the first page of the route as its
+            URL, but by specifying <code>deep: true</code> the entire route will be used to
+            identify the content to load. This makes it possible to load arbitrarily nested content
+            into the same page-element.
+        </p>
+    </header>
+
+    <div class="well">
+        <div data-bind="page: {id: 'start'}">
+            <a href="#deep_load_content_into_wildcard/deep/character/fry">Go to Fry</a>
+        </div>
+
+        <div data-bind="page: {id: 'deep'}">
+            <h3>Character</h3>
+
+            <div data-bind="page: {id: '?', deep: true, sourceOnShow: '{1}.html'}">
+                <div data-bind="text: $page.currentId"></div>
+            </div>
+        </div>
+    </div>
+
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;a href="#deep_load_content_into_wildcard/deep/character/fry"&gt;Go to Fry&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div data-bind="page: {id: 'deep'}"&gt;
+    &lt;h3&gt;Character&lt;/h3&gt;
+
+    &lt;div data-bind="page: {id: '?', <a data-bind="tooltip: {}" title="now the wildcard will deep load">deep: true</a>, sourceOnShow: '{1}.html'}"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+    </pre>
+
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#load_into_iframe">Read about loading content into iframes</a>
+    </div>
 </div>
 
 <div data-bind="page: {id: 'load_into_iframe', title: 'Load Content into iframe'}">
@@ -902,7 +955,7 @@ textLoader: function(page, element) {
     <div>
         <ul class="nav nav-tabs" data-bind="foreach: $page.children">
             <li data-bind="css: {active: isVisible}"><a
-                    data-bind="text: $data.getValue().title, page-href: getId()"></a></li>
+                    data-bind="text: $data.val('title'), page-href: $data"></a></li>
         </ul>
 
         <div data-bind="page: {id: 'Slagsmålsklubben', title: 'Slagsmålsklubben', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:66KBDVJnA6c0DjHeSZYaHb', frame: 'iframe'}"
@@ -919,7 +972,7 @@ textLoader: function(page, element) {
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div&gt;
     &lt;ul class="nav nav-tabs" data-bind="foreach: $page.children"&gt;
-        &lt;li data-bind="css: {active: isVisible}"&gt;&lt;a data-bind="text: $data.getValue().title, page-href: getId()"&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li data-bind="css: {active: isVisible}"&gt;&lt;a data-bind="text: $data.val('title'), page-href: $data"&gt;&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
 
     &lt;div data-bind="page: {id: 'Slagsmålsklubben', title: 'Slagsmålsklubben', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:66KBDVJnA6c0DjHeSZYaHb', frame: 'iframe'}" class="hero-unit"&gt;
@@ -1104,10 +1157,13 @@ window.requireView = function(viewModule) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#guards">Read about guards during page transitions</a>
+        <a class="btn btn-large btn-primary" href="#vars">Read about custom observables in the view</a>
     </div>
 
 
+</div>
+
+<div data-bind="page: {id: 'vars', title: 'Custom observables in the view', sourceOnShow: 'page/vars.html', sourceCache: true}">
 </div>
 
 <div data-bind="page: {id: 'guards', title: 'Guards'}">

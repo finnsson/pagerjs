@@ -492,7 +492,7 @@ p.sourceUrl = function (source) {
             // TODO: maybe make currentId an ko.observable?
             var path;
             if (me.val('deep')) {
-                path = (me.getFullRoute()().concat(me.route)).join('/');
+                path = [me.currentId].concat(me.route).join('/');
             } else {
                 path = me.currentId;
             }
