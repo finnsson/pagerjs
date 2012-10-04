@@ -1,18 +1,30 @@
+@import 'prefixer.less';
+
 .pagerjs-fx-zoom {
-  -webkit-transition: all 0.3s ease-in-out;
-  -webkit-transform: rotate(0deg) scale(0.1);
+  .transition(all 0.3s ease-in-out);
+  .transform(rotate(0deg) scale(0.1));
 }
 
 .pagerjs-fx-zoom-in {
-  -webkit-transform: rotate(0deg) scale(1);
+  .transform(rotate(0deg) scale(1));
 }
 
 
 .pagerjs-fx-flip {
-  -webkit-transition: all 0.3s ease-in-out;
-  -webkit-transform: rotateY(90deg) scale(1);
+  .transition(all 0.3s ease-in-out);
+  .transform(rotateY(90deg) scale(1));
 }
 
 .pagerjs-fx-flip-in {
-  -webkit-transform: rotateY(0deg) scale(1);
+  .transform(rotateY(0deg) scale(1));
+}
+
+.pagerjs-fx-popout-modal {
+  .transition(all 0.3s ease-in-out);
+  opacity: 0;
+}
+
+.pagerjs-fx-popout-modal-in {
+  .transform(scale( 1.2 ));
+  opacity: 1;
 }

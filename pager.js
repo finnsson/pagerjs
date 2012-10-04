@@ -423,7 +423,7 @@ p.init = function () {
     return { controlsDescendantBindings:true};
 };
 
-p.augmentContext = function() {
+p.augmentContext = function () {
     var m = this;
     if (m.val('params')) {
         $.each(this.val('params'), function (index, param) {
@@ -432,8 +432,8 @@ p.augmentContext = function() {
             }
         });
     }
-    if(this.val('vars')) {
-        $.each(this.val('vars'), function(key, value) {
+    if (this.val('vars')) {
+        $.each(this.val('vars'), function (key, value) {
             m.ctx[key] = ko.observable(value);
         });
     }
@@ -491,7 +491,7 @@ p.sourceUrl = function (source) {
         return ko.computed(function () {
             // TODO: maybe make currentId an ko.observable?
             var path;
-            if(me.val('deep')) {
+            if (me.val('deep')) {
                 path = (me.getFullRoute()().concat(me.route)).join('/');
             } else {
                 path = me.currentId;
@@ -734,9 +734,6 @@ pager.rootURI = '/';
 
 pager.Href = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
     this.element = element;
-    this.valueAccessor = valueAccessor;
-    this.allBindingsAccessor = allBindingsAccessor;
-    this.viewModel = viewModel;
     this.bindingContext = bindingContext;
     this.path = ko.observable();
     this.val = ko.observable(valueAccessor);
@@ -783,7 +780,7 @@ hp.bind = function () {
     });
 };
 
-hp.update = function(valueAccessor) {
+hp.update = function (valueAccessor) {
     this.val(valueAccessor);
 };
 
@@ -843,97 +840,63 @@ ko.bindingHandlers['page-href'] = {
     }
 };
 
-
 pager.fx = {};
 
-pager.fx.zoom = {
-    showElement:function (page, callback) {
-        $(page.element).addClass('pagerjs-fx-zoom');
-        $(page.element).show();
-        var i = setInterval(function () {
-            clearInterval(i);
-            $(page.element).addClass('pagerjs-fx-zoom-in');
-        }, 10);
-        var i2 = setInterval(function () {
-            clearInterval(i2);
-            if (callback) {
-                callback();
-            }
-        }, 300);
-    },
-    hideElement:function (page, callback) {
-        if (!page.pageHiddenOnce) {
-            page.pageHiddenOnce = true;
-            $(page.element).hide();
-        } else {
-            $(page.element).removeClass('pagerjs-fx-zoom-in');
+pager.fx.cssAsync = function (css) {
+    return {
+        showElement:function (page, callback) {
+            var $e = $(page.element);
+            $e.addClass(css);
+            $e.show();
             var i = setInterval(function () {
                 clearInterval(i);
+                $e.addClass(css + '-in');
+            }, 10);
+            var i2 = setInterval(function () {
+                clearInterval(i2);
                 if (callback) {
                     callback();
                 }
-                $(page.element).hide();
             }, 300);
+        },
+        hideElement:function (page, callback) {
+            var $e = $(page.element);
+            if (!page.pageHiddenOnce) {
+                page.pageHiddenOnce = true;
+                $e.hide();
+            } else {
+                $e.removeClass(css + '-in');
+                var i = setInterval(function () {
+                    clearInterval(i);
+                    if (callback) {
+                        callback();
+                    }
+                    $e.hide();
+                }, 300);
+            }
         }
-    }
+    };
 };
 
-pager.fx.flip = {
-    showElement:function (page, callback) {
-        $(page.element).addClass('pagerjs-fx-flip');
-        $(page.element).show();
-        var i = setInterval(function () {
-            clearInterval(i);
-            $(page.element).addClass('pagerjs-fx-flip-in');
-        }, 10);
-        var i2 = setInterval(function () {
-            clearInterval(i2);
+pager.fx.zoom = pager.fx.cssAsync('pagerjs-fx-zoom');
+pager.fx.flip = pager.fx.cssAsync('pagerjs-fx-flip');
+pager.fx.popout = pager.fx.cssAsync('pagerjs-fx-popout-modal');
+
+pager.fx.jQuerySync = function (show, hide) {
+    return {
+        showElement:function (page, callback) {
+            show.call($(page.element), 300, callback);
+        },
+        hideElement:function (page, callback) {
+            hide.call($(page.element), 300, function () {
+                $(page.element).hide();
+            });
             if (callback) {
                 callback();
             }
-        }, 300);
-    },
-    hideElement:function (page, callback) {
-        if (!page.pageHiddenOnce) {
-            page.pageHiddenOnce = true;
-            $(page.element).hide();
-        } else {
-            $(page.element).removeClass('pagerjs-fx-flip-in');
-            var i = setInterval(function () {
-                clearInterval(i);
-                if (callback) {
-                    callback();
-                }
-                $(page.element).hide();
-            }, 300);
         }
-    }
+    };
 };
 
-pager.fx.slide = {
-    showElement:function (page, callback) {
-        $(page.element).slideDown(300, callback);
-    },
-    hideElement:function (page, callback) {
-        $(page.element).slideUp(300, function () {
-            $(page.element).hide();
-        });
-        if (callback) {
-            callback();
-        }
-    }
-};
-
-pager.fx.fade = {
-    showElement:function (page, callback) {
-        $(page.element).fadeIn(300, callback);
-    },
-    hideElement:function (page, callback) {
-        $(page.element).fadeOut(300, function () {
-            $(page.element).hide();
-            if (callback) {
-                callback();
-            }
-        });
-    }
-};
+pager.fx.slide = pager.fx.jQuerySync($.fn.slideDown, $.fn.slideUp);
+pager.fx.fade = pager.fx.jQuerySync($.fn.fadeIn, $.fn.fadeOut);

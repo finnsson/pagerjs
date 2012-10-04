@@ -113,7 +113,18 @@ extends KnockoutJS with four custom bindings: `page`, `page-href`, `page-hash` a
 
     <a data-bind="page-href: 'somePagePath'"></a>
 
+    <a data-bind="page-href: somePageInstance"></a>
+
 Calculates absolute href based on the location of the element.
+
+If hashes are used it will be prefixed with `#` by default. You can change the default prefix
+to e.g. `#!/` by setting `pager.Href.hash = '#!/';`
+
+True URLs can use used by either using the `page-href5` binding or setting `pager.useHTML5history = true`.
+
+History.js can be used by setting `pager.Href5.history = History` (default to the normal `history`).
+
+It the page-href is supplied a Page-instance the absolute href to the Page-instance is calculated.
 
 ### page
 
@@ -258,6 +269,15 @@ Validates a page transition before it is happening.
 ### {String} fx
 
 * [FX](http://oscar.finnsson.nu/pagerjs/demo/#fx)
+
+### {Object} vars
+
+Created scoped observables for the view. Useful for when observables are needed purely for the view
+and has no connection to the view-model.
+
+### {Boolean} deep
+
+By setting `deep: true` a wildcard page will deep-load supplied sources.
 
 ## Cookbook
 
@@ -669,6 +689,30 @@ Use cases are login, validating steps in state machines, etc.
 
 The reason the guard takes a callback as third argument is simply because the guard might be async - accessing
 a webserver for login details or asking if a valid shopping card exists etc.
+
+### Add observables without connection to the view model
+
+Sometimes you need observables purely for the visual and they got no connection to the view-model.
+
+Using the `vars` property new observables can be added to the page context.
+
+    <div data-bind="page: {id: 'user', vars: {lorem: 'ipsum'}}">
+      <input type="text" data-bind="value: lorem"/>
+      <div data-bind="text: lorem"/>
+    </div>
+
+### Deep loading content into wildcards
+
+Using a combination of wildcard pages and sourceOnShow it is possible to deep load content.
+
+    <div data-bind="page: {id: '?', deep: true, sourceOnShow: '{1}.html'}></div>
+
+    <a href="#!/some/cool/page">Load some cool page</a>
+
+In the above example `some/cool/page` will match the wildcard (`?`) and since `deep: true` is specified
+the entire route (`some/cool/page`) will be used when loading content into the page. If `deep` hadn't been
+specified the source should have been `some.html` instead of `some/cool/page.html`.
+
 
 ## FAQ
 

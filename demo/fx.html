@@ -8,7 +8,8 @@
         <code>fx: 'flip'</code>,
         <code>fx: 'slide'</code> or
         <code>fx: 'fade'</code>.
-        In order to use <i>zoom</i> or <i>flip</i> you'll need to include <code>pager.css</code> or <code>pager.less</code>.
+        In order to use <i>zoom</i> or <i>flip</i> you'll need to include <code>pager.css</code> or
+        <code>pager.less</code>.
     </p>
 </header>
 
@@ -17,7 +18,8 @@
 <div data-bind="page: {id: 'zoom'}">
 
     <ul class="nav nav-tabs" data-bind="foreach: $page.children">
-        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a></li>
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a>
+        </li>
     </ul>
 
     <div data-bind="page: {id: 'bend_her', title: 'Bend Her', fx: 'zoom', source: 'bend_her.html'}"></div>
@@ -29,7 +31,8 @@
 
 <div data-bind="page: {id: 'flip'}">
     <ul class="nav nav-tabs" data-bind="foreach: $page.children">
-        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a></li>
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a>
+        </li>
     </ul>
 
 
@@ -42,7 +45,8 @@
 
 <div data-bind="page: {id: 'slide'}">
     <ul class="nav nav-tabs" data-bind="foreach: $page.children">
-        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a></li>
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a>
+        </li>
     </ul>
 
 
@@ -58,7 +62,8 @@
 
 <div data-bind="page: {id: 'fade'}">
     <ul class="nav nav-tabs" data-bind="foreach: $page.children">
-        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a></li>
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a>
+        </li>
     </ul>
 
 
@@ -70,6 +75,31 @@
             ></div>
 </div>
 
+<h2><a href="#fx/pop">Popout</a></h2>
+
+<div data-bind="page: {id: 'pop'}">
+    <a href="#fx/pop/popout">Show popout</a>
+</div>
+
+
 <div class="form-actions">
     <a class="btn btn-large btn-primary" href="#recapitulation">Read a recapitulation about the API</a>
+</div>
+
+<div data-bind="page: {id: 'popout', modal: true, fx: 'popout'}" style="background-color: rgba(200,200,200,0.5); position: absolute; left: 0; right: 0; top: 0; bottom: 0;">
+
+<div class="modal">
+    <div class="modal-header">
+        <a data-bind="page-href: '../'" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+
+        <h3>Alert</h3>
+    </div>
+    <div class="modal-body">
+        <p>This modal is stickout out!
+        </p>
+    </div>
+    <div class="modal-footer">
+        <a data-bind="page-href: '../'" class="btn">Close</a>
+    </div>
+</div>
 </div>

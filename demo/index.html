@@ -24,8 +24,8 @@
                 <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
                 <ul data-bind="foreach: $__page__.children" class="dropdown-menu" role="menu"
                     aria-labelledby="dropdownMenu">
-                    <li>
-                        <a data-bind="text: (valueAccessor().title || valueAccessor().id), attr: {href: '#' + valueAccessor().id}"></a>
+                    <li data-bind="css: {active: isVisible}">
+                        <a data-bind="text: val('title'), page-href: $data"></a>
                     </li>
                 </ul>
             </div>

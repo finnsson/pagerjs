@@ -1,7 +1,7 @@
 /*global module:false*/
 module.exports = function (grunt) {
 
-    grunt.loadNpmTasks('grunt-less');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     // Project configuration.
     grunt.initConfig({
@@ -38,7 +38,7 @@ module.exports = function (grunt) {
             },
             amddemo:{
                 src:['<banner:meta.banner>', '<banner:meta.amd_start_jquery_hashchange>', '<file_strip_banner:pager.js>',
-                    '<file_strip_banner:start-jquery-hashchange.js>','<banner:meta.amdEnd>'],
+                    '<file_strip_banner:start-jquery-hashchange.js>', '<banner:meta.amdEnd>'],
                 dest:'demo/pager.amd.hash.min.js'
             }
         },
@@ -49,22 +49,22 @@ module.exports = function (grunt) {
             },
             amd:{
                 src:['<banner:meta.banner>', '<banner:meta.amdStart>',
-                    '<file_strip_banner:pager.js>', '<file_strip_banner:start-naive.js>','<banner:meta.amdEnd>'],
+                    '<file_strip_banner:pager.js>', '<file_strip_banner:start-naive.js>', '<banner:meta.amdEnd>'],
                 dest:'dist/pager.amd.min.js'
             },
-            amd_jquery_hashchange: {
-                src:['<banner:meta.banner>', '<banner:meta.amd_start_jquery_hashchange>','<file_strip_banner:pager.js>',
+            amd_jquery_hashchange:{
+                src:['<banner:meta.banner>', '<banner:meta.amd_start_jquery_hashchange>', '<file_strip_banner:pager.js>',
                     '<file_strip_banner:start-jquery-hashchange.js>', '<banner:meta.amdEnd>'],
                 dest:'dist/pager.amd.hash.min.js'
             },
-            amd_historyjs: {
-                src:['<banner:meta.banner>', '<banner:meta.amd_start_historyjs>','<file_strip_banner:pager.js>',
+            amd_historyjs:{
+                src:['<banner:meta.banner>', '<banner:meta.amd_start_historyjs>', '<file_strip_banner:pager.js>',
                     '<file_strip_banner:start-historyjs.js>', '<banner:meta.amdEnd>'],
                 dest:'dist/pager.amd.history.min.js'
             },
             amddemo:{
                 src:['<banner:meta.banner>', '<banner:meta.amd_start_jquery_hashchange>', '<file_strip_banner:pager.js>',
-                    '<file_strip_banner:start-jquery-hashchange.js>','<banner:meta.amdEnd>'],
+                    '<file_strip_banner:start-jquery-hashchange.js>', '<banner:meta.amdEnd>'],
                 dest:'demo/pager.amd.hash.min.js'
             },
             boilerplate:{
@@ -99,18 +99,21 @@ module.exports = function (grunt) {
                 _:true
             }
         },
-        less: {
-            dist: {
-                src: 'pager.less',
-                dest: 'dist/pager.css'
+        less:{
+            dist:{
+                files:{
+                    'dist/pager.css':'pager.less'
+                }
             },
-            test: {
-                src: 'pager.less',
-                dest: 'test/pager.css'
+            test:{
+                files:{
+                    'test/pager.css':'pager.less'
+                }
             },
-            demo: {
-                src: 'pager.less',
-                dest: 'demo/pager.css'
+            demo:{
+                files:{
+                    'demo/pager.css':'pager.less'
+                }
             }
         },
         uglify:{}
