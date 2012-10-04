@@ -764,13 +764,17 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 - [Tab panel custom widget](https://github.com/finnsson/pagerjs/issues/19)
 - [Should be possible to run custom JS on "navigate to"](https://github.com/finnsson/pagerjs/issues/18)
 
-### 0.6 (Current)
+### 0.6 (Current target)
 
 - [Should contain common effects](https://github.com/finnsson/pagerjs/issues/28)
 - [HTML5 History Boilerplate](https://github.com/finnsson/pagerjs/issues/34)
 - [page-hash and page-href5 bindings for hash or html5 history](https://github.com/finnsson/pagerjs/issues/29)
 - [Access to Page in withOnShow handler](https://github.com/finnsson/pagerjs/issues/27)
 - [Add BeforeNavigate Event handler to allow user to stop transition](https://github.com/finnsson/pagerjs/issues/1)
+- [page-href should be possible to feed with a page-instance](https://github.com/finnsson/pagerjs/issues/39)
+- [Should be possible to use hash bang #!/ instead of hash](https://github.com/finnsson/pagerjs/issues/38)
+- [Scoped pure view observables using vars](https://github.com/finnsson/pagerjs/issues/32)
+- [Wildcards should deep-load content if configured so](https://github.com/finnsson/pagerjs/issues/31)
 
 ## Roadmap
 
