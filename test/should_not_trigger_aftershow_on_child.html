@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should not trigger aftershow on child</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+    <script type="text/javascript" src="../start-naive.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'start', afterShow: startAfterShow}">
+    <div id="a" data-bind="page: {id: 'a', afterShow: aAfterShow}">
+
+    </div>
+    <div id="b" data-bind="page: {id: 'b', afterShow: bAfterShow}">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var startCount = 0;
+    var a = 0;
+    var b = 0;
+
+    var pageA = $('#a');
+    var pageB = $('#b');
+
+    var viewModel = {
+        startAfterShow:function () {
+            startCount++;
+        },
+        aAfterShow:function () {
+            a++;
+        },
+        bAfterShow:function () {
+            b++;
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+
+    asyncTest("Should not trigger aftershow on child", function () {
+
+        //assert.equal(start, 0, "start should be 0");
+        assert.equal(a, 0, "a should be 0 on start");
+        assert.equal(b, 0, "b should be 0 on start");
+
+
+        location.hash = '#start/a';
+
+
+        until(function () {
+            return pageA.is(':visible');
+        }, function () {
+            assert.equal(startCount, 1, "start should be 1");
+            assert.equal(a, 1, "a should be 1 on a");
+            assert.equal(b, 0, "b should be 0 on a");
+
+            location.hash = '#start/b';
+            until(function () {
+                return pageB.is(':visible');
+            }, function () {
+                assert.equal(startCount, 1, "start should be 1");
+                assert.equal(a, 1, "a should be 1 on b");
+                assert.equal(b, 1, "b should be 1 on b");
+
+                location.hash = '#start/a';
+                until(function () {
+                    return pageA.is(':visible');
+                }, function () {
+                    assert.equal(startCount, 1, "start should be 1");
+                    assert.equal(a, 2, "a should be 2 on a");
+                    assert.equal(b, 1, "b should be 1 on a");
+
+                    location.hash = '#start';
+
+                    start();
+
+                });
+
+            });
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>

@@ -342,12 +342,15 @@ p.currentChildPage = function () {
  * @param route
  */
 p.showPage = function (route, pageRoute, originalRoute) {
+    var isVisible = this.isVisible();
     this.isVisible(true);
     this.originalRoute(originalRoute);
     this.route = route;
     this.pageRoute = pageRoute;
-    this.setParams();
-    this.show();
+    if(!isVisible) {
+        this.setParams();
+        this.show();
+    }
     this.childManager.showChild(route);
 };
 
