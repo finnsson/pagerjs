@@ -430,6 +430,12 @@ p.init = function () {
     if (!m.val('withOnShow')) {
         ko.applyBindingsToDescendants(m.childBindingContext, m.element);
     }
+
+    // check if this page should trigger showChild at parent
+    if(m.parentPage.route && m.parentPage.route[0] === m.getId()) {
+        m.parentPage.childManager.showChild(m.parentPage.route);
+    }
+
     return { controlsDescendantBindings:true};
 };
 
