@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should remove children</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+    <script type="text/javascript" src="../start-naive.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="foreach: users" id="users">
+    <div data-bind="page: {id: name}"></div>
+</div>
+
+<script type="text/javascript">
+
+
+    var viewModel = {
+        users:ko.observableArray([])
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.start(viewModel);
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should remove children", function () {
+
+        viewModel.users([
+            {
+                name:"Pelle"
+            },
+            {
+                name:"Arne"
+            }
+        ]);
+
+        var $users = $('#users');
+        var page = viewModel.$__page__ ;
+        until(function () {
+            return $users.children().length === 2 && page.children().length === 2;
+        }, function () {
+            ok(true, "2 children");
+
+            viewModel.users([
+                {
+                    name:"Malcolm"
+                }
+            ]);
+
+            until(function () {
+                return $users.children().length === 1  && page.children().length === 1;
+            }, function () {
+                ok(true, "1 child");
+                start();
+            });
+
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>

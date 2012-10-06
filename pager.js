@@ -394,6 +394,13 @@ p.hidePage = function (callback) {
  */
 p.init = function () {
     var m = this;
+
+    // listen to when the element is removed
+    ko.utils.domNodeDisposal.addDisposeCallback(m.element, function() {
+        // then remove this Page-instance
+        m.parentPage.children.remove(m);
+    });
+
     var value = m.getValue();
     m.parentPage = m.getParentPage();
     m.parentPage.children.push(this);
@@ -714,8 +721,6 @@ ko.bindingHandlers.page = {
     init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         var page = new pager.Page(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
         return page.init();
-    },
-    update:function () {
     }
 };
 
