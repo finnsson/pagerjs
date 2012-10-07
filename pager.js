@@ -178,7 +178,7 @@ pager.ChildManager = function (children, page) {
 
         if (!me.currentChild && wildcard) {
             me.currentChild = wildcard;
-            me.currentChild.currentId = currentRoute;
+            //me.currentChild.currentId = currentRoute;
         }
         if (me.currentChild) {
             me.currentChildO(me.currentChild);
@@ -342,16 +342,31 @@ p.currentChildPage = function () {
  * @param route
  */
 p.showPage = function (route, pageRoute, originalRoute) {
-    var isVisible = this.isVisible();
-    this.isVisible(true);
-    this.originalRoute(originalRoute);
-    this.route = route;
-    this.pageRoute = pageRoute;
-    if(!isVisible) {
-        this.setParams();
-        this.show();
+    var m = this,
+        currentId = m.currentId,
+        params = m.pageRoute ? m.pageRoute.params : null,
+        isVisible = m.isVisible();
+    m.currentId = pageRoute ? pageRoute.name : null;
+    m.isVisible(true);
+    m.originalRoute(originalRoute);
+    m.route = route;
+    m.pageRoute = pageRoute;
+    // show if not already visible
+    if (!isVisible) {
+        m.setParams();
+        m.show();
+    } else {
+        // show if wildcard got new ID
+        if (m.getId() === '?' && currentId !== m.currentId) {
+            m.show();
+        }
+        // update params if they are updated
+        if (pageRoute && params !== pageRoute.params) {
+            m.setParams();
+        }
     }
-    this.childManager.showChild(route);
+    // TODO: move this to ChildManager?
+    m.childManager.showChild(route);
 };
 
 /**
@@ -399,7 +414,7 @@ p.init = function () {
     var m = this;
 
     // listen to when the element is removed
-    ko.utils.domNodeDisposal.addDisposeCallback(m.element, function() {
+    ko.utils.domNodeDisposal.addDisposeCallback(m.element, function () {
         // then remove this Page-instance
         m.parentPage.children.remove(m);
     });
@@ -432,7 +447,7 @@ p.init = function () {
     }
 
     // check if this page should trigger showChild at parent
-    if(m.parentPage.route && m.parentPage.route[0] === m.getId()) {
+    if (m.parentPage.route && m.parentPage.route[0] === m.getId()) {
         m.parentPage.childManager.showChild(m.parentPage.route);
     }
 
