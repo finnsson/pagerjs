@@ -15,14 +15,14 @@
 <div id="qunit"></div>
 
 <div data-bind="page: {id: '?', sourceOnShow: '../test-data/{1}.html'}">
-
 </div>
 
 <script type="text/javascript">
 
-    location.hash = '#ipsum';
+    location.hash = '#parent_to_ipsum/ipsum';
 
     var viewModel = {
+        name: "Pelle"
     };
 
     pager.extendWithPage(viewModel);
@@ -42,6 +42,7 @@
             return $('#ipsum').length === 1;
         }, function () {
             assert.equal($('#ipsum').length, 1, "ipsum text should be loaded");
+            assert.equal($('#ipsum').text(), "Pelle", "ipsum text should be Pelle");
             start();
         });
 
