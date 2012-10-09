@@ -2,12 +2,11 @@
 <html>
 <head>
     <title>withOnShow should lazy bind a new view model to the page</title>
-    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <!-- script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="../lib/underscore-min.js"></script>
     <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script -->
     <script type="text/javascript" src="../lib/require.js"></script>
-    <script type="text/javascript" src="../pager.js"></script>
-    <script type="text/javascript" src="../start-naive.js"></script>
 
     <link rel="stylesheet" href="../lib/qunit.css"/>
 </head>
@@ -22,19 +21,34 @@
 
 <script type="text/javascript">
 
-    function requireVM(module) {
-        return function (callback) {
-            require([module], function (mod) {
-                callback(mod.getVM());
-            });
+    requirejs.config({
+        paths: {
+            knockout: '../lib/knockout-2.1.0',
+            underscore: '../lib/lodash.min',
+            jquery: '../lib/jquery-1.7.2.min',
+            'pager': '../pager'
+        }
+    });
+
+    requirejs(['knockout', 'pager', 'jquery'], function(ko, pager, $) {
+
+        window.requireVM = function(module) {
+            return function (callback) {
+                require([module], function (mod) {
+                    callback(mod.getVM());
+                });
+            };
         };
-    }
 
-    var viewModel = {};
+        var viewModel = {};
 
-    pager.extendWithPage(viewModel);
-    ko.applyBindings(viewModel);
-    pager.start(viewModel);
+        window.$ = $;
+
+        pager.extendWithPage(viewModel);
+        ko.applyBindings(viewModel);
+        pager.start(viewModel);
+    });
+
 </script>
 
 <script type="text/javascript" src="../lib/qunit-until.js"></script>

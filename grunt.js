@@ -28,6 +28,7 @@ module.exports = function (grunt) {
             files:['test/**/*.html']
         },
         concat:{
+            /*
             dist:{
                 src:['<banner:meta.banner>', '<file_strip_banner:pager.js>'],
                 dest:'dist/pager.concat.js'
@@ -40,10 +41,14 @@ module.exports = function (grunt) {
                 src:['<banner:meta.banner>', '<banner:meta.amd_start_jquery_hashchange>', '<file_strip_banner:pager.js>',
                     '<file_strip_banner:start-jquery-hashchange.js>', '<banner:meta.amdEnd>'],
                 dest:'demo/pager.amd.hash.min.js'
+            },*/
+            demo: {
+                src:['<banner:meta.banner>', '<file_strip_banner:pager.js>'],
+                dest: 'demo/pager.amd.hash.min.js'
             }
         },
         min:{
-            dist:{
+            /*dist:{
                 src:['<banner:meta.banner>', '<file_strip_banner:pager.js>', '<file_strip_banner:start-naive.js>'],
                 dest:'dist/pager.min.js'
             },
@@ -71,6 +76,10 @@ module.exports = function (grunt) {
                 src:['<banner:meta.banner>', '<banner:meta.amd_start_historyjs>', '<file_strip_banner:pager.js>',
                     '<file_strip_banner:start-historyjs.js>', '<banner:meta.amdEnd>'],
                 dest:'boilerplate/public/javascript/pager.amd.history.min.js'
+            }*/
+            demo: {
+                src:['<banner:meta.banner>', '<file_strip_banner:pager.js>'],
+                dest: 'demo/pager.amd.hash.min.js'
             }
         },
         watch:{
@@ -122,6 +131,6 @@ module.exports = function (grunt) {
     // Default task.
     grunt.registerTask('default', 'lint less qunit concat min');
 
-    grunt.registerTask('travis', 'lint qunit');
+    grunt.registerTask('travis', 'qunit');
 
 };
