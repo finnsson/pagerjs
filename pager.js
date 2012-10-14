@@ -47,7 +47,8 @@
          * @param {String[]} route
          */
         pager.showChild = function (route) {
-            pager.page.childManager.showChild(route);
+            pager.page.showPage(route);
+            //pager.page.childManager.showChild(route);
         };
 
 // common KnockoutJS helpers
@@ -371,14 +372,12 @@
                     m.setParams();
                 }
             }
-            // TODO: move this to ChildManager?
             m.childManager.showChild(route);
         };
 
         /**
          * @method pager.Page#setParams
          *
-         * @param params
          */
         p.setParams = function () {
             if (this.pageRoute && this.pageRoute.params) {
@@ -454,7 +453,10 @@
 
             // check if this page should trigger showChild at parent
             if (m.parentPage.route && m.parentPage.route[0] === m.getId()) {
-                m.parentPage.childManager.showChild(m.parentPage.route);
+                // call once the current event loop is finished.
+                setTimeout(function() {
+                    m.parentPage.showPage(m.parentPage.route);
+                }, 0);
             }
 
             return { controlsDescendantBindings:true};

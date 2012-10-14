@@ -32,3 +32,8 @@ footer .pagination ul {
 a .atv {
     text-decoration: underline;
 }
+
+h1 {
+    font-family: 'PT Sans', sans-serif;
+    font-weight: normal;
+}
