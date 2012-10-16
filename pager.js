@@ -980,21 +980,6 @@
 
         };
 
-
-        /**
-         *
-         * @param {String} hash
-         */
-        pager.routeFromHashToPage = function (hash) {
-            // skip # (or #!/)
-            if (hash.substring(0, pager.Href.hash.length) === pager.Href.hash) {
-                hash = hash.slice(pager.Href.hash.length);
-            }
-            // split on '/'
-            var hashRoute = decodeURIComponent(hash).split('/');
-            pager.showChild(hashRoute);
-        };
-
         /**
          * This is the hash-based start-method.
          *
@@ -1006,8 +991,18 @@
          */
         pager.start = function () {
 
+            var routeFromHashToPage = function (hash) {
+                // skip # (or #!/)
+                if (hash.substring(0, pager.Href.hash.length) === pager.Href.hash) {
+                    hash = hash.slice(pager.Href.hash.length);
+                }
+                // split on '/'
+                var hashRoute = decodeURIComponent(hash).split('/');
+                pager.showChild(hashRoute);
+            };
+
             var onHashChange = function () {
-                pager.routeFromHashToPage(window.location.hash);
+                routeFromHashToPage(window.location.hash);
             };
             $(window).bind('hashchange', onHashChange);
             onHashChange();

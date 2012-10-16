@@ -12,17 +12,18 @@ See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
 
 ## Getting Started
 
-1. Download the [developer](https://raw.github.com/finnsson/pagerjs/master/pager.js) version,
-   the [minified](https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js) version,
-   the [AMD](https://raw.github.com/finnsson/pagerjs/master/dist/pager.amd.min.js) version,
-   the [AMD jQuery hashchange](https://raw.github.com/finnsson/pagerjs/master/dist/pager.amd.hash.min.js) version,
-   or the [AMD History.js](https://raw.github.com/finnsson/pagerjs/master/dist/pager.amd.history.min.js) version
+1. Download the [developer](https://raw.github.com/finnsson/pagerjs/master/pager.js) version
+   or the [minified](https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js) version
    of pager.js
 2. Include all dependencies (jQuery, Underscore.js/Lo-Dash, KnockoutJS) as well as pager.js in your site
    using either AMD or non-AMD:
 
         // AMD
         requirejs.config({
+            shim: {
+                history: ['jquery'], // iff using History.js
+                hashchange: ['jquery'] // iff using jquery hashchange
+            },
             paths:{
                 jquery:'jquery-1.8.2.min',
                 underscore:'lodash.min',
@@ -41,11 +42,35 @@ See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
         <script type="text/javascript" src="knockout-2.1.0.js"></script>
         <script type="text/javascript" src="pager.js"></script>
 
+        // iff using jQuery Hashchange
+        <script type="text/javascript" src="jquery.ba-hashchange.min"></script>
+
+        // iff using History.js
+        <script type="text/javascript" src="jquery.history.js"></script>
+        <base href="absolute-URI-to-index.html/"/>
+        <!-- where absolute-URI-to-index.html can be e.g. www.examepl.com/foo/ -->
+
+
 3. Insert the lines:
 
+        // iff using History.js
+        pager.useHTML5history = true;
+        pager.Href5.history = History;
+
+        // always
         pager.extendWithPage(viewModel);
         ko.applyBindings(viewModel);
+
+        // pick one of these three alternatives or develop your own start-method
+
+        // 1. iff using naïve hashchange - wont work with IE7
         pager.start();
+
+        // 2. iff using jQuery Hashchange
+        pager.startHashChange();
+
+        // 3. iff using History.js
+        pager.startHistoryJs();
 
 4. Start using the bindings `page` and `page-href`. Consult the
    [web page](http://oscar.finnsson.nu/pagerjs/),

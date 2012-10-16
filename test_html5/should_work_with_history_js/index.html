@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should work with history.js</title>
+    <script type="text/javascript" src="../../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../../lib/jquery.history.js"></script>
+    <script type="text/javascript" src="../../pager.js"></script>
+
+    <link rel="stylesheet" href="../../lib/qunit.css"/>
+    <base href="http://localhost:3000/test_html5/should_work_with_history_js/"/>
+
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'pelle'}">
+    <span id="pelle">Pelle</span>
+</div>
+
+<div data-bind="page: {id: 'arne'}">
+    <span id="arne">Arne</span>
+</div>
+
+<script type="text/javascript">
+
+
+    pager.useHTML5history = true;
+    pager.Href5.history = History;
+
+
+    var viewModel = {
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.startHistoryJs();
+</script>
+
+<script type="text/javascript" src="../../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should work with history.js", function () {
+
+        History.pushState(null, null, "pelle");
+
+        until(function () {
+            return $('#pelle').is(':visible')
+        }, function () {
+            ok(true, "Pelle is visible");
+
+            History.pushState(null, null, "arne");
+
+            until(function () {
+                return $('#arne').is(':visible');
+            }, function () {
+                ok(true, "Arne is visible");
+                start();
+            });
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>
