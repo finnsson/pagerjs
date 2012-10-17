@@ -939,8 +939,10 @@
         pager.fx.fade = pager.fx.jQuerySync($.fn.fadeIn, $.fn.fadeOut);
 
 
-        pager.startHistoryJs = function () {
-
+        pager.startHistoryJs = function (id) {
+            if(id) {
+                History.pushState(null, null, id);
+            }
             var hashChange = function (hash) {
                 // strip #
                 if (hash[0] === '#') {
@@ -962,10 +964,12 @@
             });
 
             hashChange(History.getState().url.replace(History.getRootUrl(), ''));
-
         };
 
-        pager.startHashChange = function () {
+        pager.startHashChange = function (id) {
+            if(id) {
+                location.hash = id;
+            }
             $(window).hashchange(function () {
                 var hash = location.hash;
                 // strip #
@@ -977,7 +981,6 @@
                 pager.showChild(hashRoute);
             });
             $(window).hashchange();
-
         };
 
         /**
@@ -989,8 +992,10 @@
          * @method start
          * @static
          */
-        pager.start = function () {
-
+        pager.start = function (id) {
+            if(id) {
+                location.hash = id;
+            }
             var routeFromHashToPage = function (hash) {
                 // skip # (or #!/)
                 if (hash.substring(0, pager.Href.hash.length) === pager.Href.hash) {
@@ -1005,6 +1010,7 @@
                 routeFromHashToPage(window.location.hash);
             };
             $(window).bind('hashchange', onHashChange);
+
             onHashChange();
         };
         return pager;

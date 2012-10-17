@@ -7,7 +7,7 @@ requirejs.config({
         jquery:'jquery-1.7.2.min',
         underscore:'lodash.min',
         knockout:'knockout-2.1.0',
-        pager:'pager.amd.hash.min',
+        pager:'pager.min',
         bootstrap:'bootstrap/js/bootstrap.min',
         hashchange:'jquery.ba-hashchange.min',
         "zoidberg":'character/zoidberg'
@@ -174,6 +174,7 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
     $(function () {
 
         pager.extendWithPage(viewModel);
+        window.VM = viewModel;
         ko.applyBindings(viewModel);
         pager.startHashChange();
 
