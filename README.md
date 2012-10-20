@@ -826,7 +826,7 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 
 ## Roadmap
 
-Currently working towards 0.6
+Currently working towards 0.8
 
 See [Milestones](https://github.com/finnsson/pagerjs/issues/milestones).
 
