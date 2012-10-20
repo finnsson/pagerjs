@@ -22,15 +22,19 @@
 <script type="text/javascript">
 
     requirejs.config({
+        shims: {
+            hashchange: ['jquery']
+        },
         paths: {
             knockout: '../lib/knockout-2.1.0',
             underscore: '../lib/lodash.min',
+            hashchange: '../lib/jquery.ba-hashchange.min',
             jquery: '../lib/jquery-1.7.2.min',
             'pager': '../pager'
         }
     });
 
-    requirejs(['knockout', 'pager', 'jquery'], function(ko, pager, $) {
+    requirejs(['knockout', 'pager', 'jquery', 'hashchange'], function(ko, pager, $) {
 
         window.requireVM = function(module) {
             return function (callback) {

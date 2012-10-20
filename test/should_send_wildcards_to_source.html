@@ -45,16 +45,22 @@
 <script type="text/javascript">
 
     asyncTest("should match wildcard", function () {
-
-        $(window).one('hashchange', function () {
-
-            until(function () {
-                return isLoaded();
-            }, function () {
-                equal($('.content').text().trim(), 'Lorem Ipsum', "lorem.html should be loaded");
-                start();
-            });
+        var one = false;
+        
+        $(window).hashchange(function() {
+                if(!one) {
+                        one = true;
+                            until(function () {
+                                return isLoaded();
+                            }, function () {
+                                var txt = $('.content').text();
+                                ok(txt.indexOf('Lorem Ipsum') !== -1, "lorem.html should be loaded");
+                                location.hash = '#';
+                                start();
+                            });
+                }
         });
+
         window.location.hash = '#user/lorem';
 
     });

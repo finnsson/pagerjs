@@ -47,8 +47,9 @@
             if (isLoaded()) {
                 ok(true, "lorem.html is loaded");
                 if (source2isLoaded()) {
-                    equal($('.content', $('#lorem2')).text().trim(), 'Lorem Ipsum', "lorem2 should contain Lorem Ipsum");
+                    ok($('.content', $('#lorem2')).text().indexOf('Lorem Ipsum') !== -1, "lorem2 should contain Lorem Ipsum");
                     start();
+                    location.hash = '#';
                 }
             }
         });
