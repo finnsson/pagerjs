@@ -821,7 +821,8 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 - [Should be possible to use hash bang #!/ instead of hash](https://github.com/finnsson/pagerjs/issues/38)
 - [Scoped pure view observables using vars](https://github.com/finnsson/pagerjs/issues/32)
 - [Wildcards should deep-load content if configured so](https://github.com/finnsson/pagerjs/issues/31)
-- [Should be able to change initial page]()https://github.com/finnsson/pagerjs/issues/44)
+- [Should be able to change initial page](https://github.com/finnsson/pagerjs/issues/44)
+- [Demo as is does not work in IE7](https://github.com/finnsson/pagerjs/issues/43)
 
 ## Roadmap
 
