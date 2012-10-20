@@ -945,8 +945,8 @@
             }
             var hashChange = function (hash) {
                 // strip #
-                if (hash[0] === '#') {
-                    hash = hash.slice(1);
+                if (hash.substring(0, pager.Href.hash.length) === pager.Href.hash) {
+                    hash = hash.slice(pager.Href.hash.length);
                 }
                 // split on '/'
                 var hashRoute = decodeURIComponent(hash).split('/');
@@ -973,8 +973,8 @@
             $(window).hashchange(function () {
                 var hash = location.hash;
                 // strip #
-                if (hash[0] === '#') {
-                    hash = hash.slice(1);
+                if (hash.substring(0, pager.Href.hash.length) === pager.Href.hash) {
+                    hash = hash.slice(pager.Href.hash.length);
                 }
                 // split on '/'
                 var hashRoute = decodeURIComponent(hash).split('/');

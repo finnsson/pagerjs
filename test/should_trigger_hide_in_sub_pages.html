@@ -6,6 +6,7 @@
     <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="../lib/underscore-min.js"></script>
     <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
     <script type="text/javascript" src="../pager.js"></script>
 
     <link rel="stylesheet" href="../lib/qunit.css"/>
@@ -47,7 +48,7 @@
         pager.extendWithPage(viewModel);
         ko.applyBindings(viewModel);
 
-        pager.start(viewModel);
+        pager.startHashChange();
 
         asyncTest("Should trigger hide in sub pages", function () {
 

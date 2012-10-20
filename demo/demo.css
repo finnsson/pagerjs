@@ -10,6 +10,10 @@ body > .container > div {
     cursor: pointer;
 }
 
+.code-large:hover {
+    text-decoration: underline;
+}
+
 .p {
 }
 
@@ -33,7 +37,11 @@ a .atv {
     text-decoration: underline;
 }
 
-h1 {
+.prettyprint a {
+    text-decoration: underline;
+}
+
+h1, h2, h3 {
     font-family: 'PT Sans', sans-serif;
     font-weight: normal;
 }

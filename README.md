@@ -54,7 +54,9 @@ See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
 3. Insert the lines:
 
         // iff using History.js
+        // tell page-href to use page-href5
         pager.useHTML5history = true;
+         // tell page-href5 to use History.js instead of history
         pager.Href5.history = History;
 
         // always
@@ -110,7 +112,7 @@ These MVVM-triads can be developed in isolation and later on connected.
 
 ## Reference Manual
 
-pager.js got three static methods and
+pager.js got some static methods and
 extends KnockoutJS with four custom bindings: `page`, `page-href`, `page-hash` and
 `page-href5`.
 
@@ -118,6 +120,10 @@ extends KnockoutJS with four custom bindings: `page`, `page-href`, `page-hash` a
 ### `pager.route`
 
 ### `pager.start`
+
+### `pager.startHashChange`
+
+### `pager.startHistoryJs`
 
 ### `pager.extendWithPage`
 
@@ -746,6 +752,20 @@ In the above example `some/cool/page` will match the wildcard (`?`) and since `d
 the entire route (`some/cool/page`) will be used when loading content into the page. If `deep` hadn't been
 specified the source should have been `some.html` instead of `some/cool/page.html`.
 
+### Specify a start page
+
+There are two main alternatives to specify a start page, depending on the desired result.
+
+Either you can pass an ID (e.g. `foo/bar`) to your start-method or you can call `pager.showChild` with a route (
+array of strings).
+
+    // send user to login-page
+    pager.start('login');
+
+    // send user to login-page without updating the location
+    pager.showChild(['login']);
+
+
 ## FAQ
 
 ### Can I use it together with...
@@ -801,6 +821,7 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 - [Should be possible to use hash bang #!/ instead of hash](https://github.com/finnsson/pagerjs/issues/38)
 - [Scoped pure view observables using vars](https://github.com/finnsson/pagerjs/issues/32)
 - [Wildcards should deep-load content if configured so](https://github.com/finnsson/pagerjs/issues/31)
+- [Should be able to change initial page]()https://github.com/finnsson/pagerjs/issues/44)
 
 ## Roadmap
 

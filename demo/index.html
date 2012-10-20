@@ -103,23 +103,56 @@
         <p class="lead">
             Pager.js depends on <a href="http://knockoutjs.com/">KnockoutJS</a>,
             <a href="http://jquery.com/">jQuery</a> and <a href="http://underscorejs.org/">Underscore.js</a>
-            (or <a href="http://lodash.com/">Lo-Dash</a>).
-            Choose between a naïve history manger (<code>pager.js</code> or <code>pager.amd.js</code>),
-            a history manager based on jQuery hashchange (<code>pager.amd.hash.js</code>),
-            a history manager based on History.js (<code>pager.amd.history.js</code>)
+            (or <a href="http://lodash.com/">Lo-Dash</a>). Include either
+            <a href="https://raw.github.com/finnsson/pagerjs/master/pager.js">pager.js</a>
+            or <a href="https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js">pager.min.js</a>.
+            Choose between a naïve history manager (<code>pager.start([id: String])</code>),
+            a history manager based on jQuery hashchange (<code>pager.startHashChange([id: String])</code>),
+            a history manager based on History.js (<code>pager.startHistoryJs([id: String])</code>)
             or write your own.
-            Apply the lines below (where line 4 should be familiar from KnockoutJS).
         </p>
     </header>
+
+    <h2>Naïve history manager</h2>
 
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 // extend your view-model with pager.js specific data
 pager.extendWithPage(viewModel);
 // apply the view-model using KnockoutJS as normal
 ko.applyBindings(viewModel);
-// start pager.js - this method will be different depending on file loaded
-pager.start(viewModel);
+// start pager.js
+pager.start();
     </pre>
+
+    <h2>jQuery Hashchange as history manager</h2>
+
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+// use #!/ instead of the default #
+pager.Href.hash = '#!/';
+// extend your view-model with pager.js specific data
+pager.extendWithPage(viewModel);
+// apply the view-model using KnockoutJS as normal
+ko.applyBindings(viewModel);
+// start pager.js
+pager.startHashChange();
+    </pre>
+
+
+    <h2>History.js as history manager</h2>
+
+    <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+// use HTML5 history
+pager.useHTML5history = true;
+// use History instead of history
+pager.Href5.history = History;
+// extend your view-model with pager.js specific data
+pager.extendWithPage(viewModel);
+// apply the view-model using KnockoutJS as normal
+ko.applyBindings(viewModel);
+// start pager.js
+pager.startHistoryJs();
+    </pre>
+
 
     <div class="form-actions">
         <a class="btn btn-large btn-primary" href="#deep_navigation"> You can jump to another page using an absolute
@@ -262,15 +295,25 @@ pager.start(viewModel);
         <h1>HTML5 History API</h1>
 
         <p class="lead">
-            The easiest way to use the HTML5 History API is to include
-            <code>pager.amd.history.js</code> and <code>History.js</code> instead of <code>pager.amd.js</code>.
+            The easiest way to use the HTML5 History API is to include History.js.
+            Five lines of code is all it takes after that!
             <br/>
-            Everything will just work out of the box then.
-            <code>pager.amd.history.js</code> contains another <code>start()</code>-method, will reconfigure
-            <code>page-href</code> to use true URLs, and reconfigure <code>page-href</code> and <code>page-href5</code>
-            to use <code>History</code> instead of <code>history</code>.
         </p>
     </header>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+// use HTML5 history
+pager.<a data-bind="tooltip: {}" title="tell page-href to use the binding page-href5">useHTML5history</a> = true;
+// use History instead of history
+pager.Href5.<a data-bind="tooltip: {}" title="tell page-href5 to use History (from History.js) instead of window.history">history</a> = History;
+
+// these two lines are as normal
+pager.extendWithPage(viewModel);
+ko.applyBindings(viewModel);
+
+// start pager.js
+<a data-bind="tooltip: {}" title="call pager.startHistoryJs() in order to listen to statechange and anchorchange">pager.startHistoryJs();</a>
+</pre>
 
     <div class="form-actions">
         <a class="btn btn-large btn-primary" href="#change_binding_context">Read about changing binding context</a>
