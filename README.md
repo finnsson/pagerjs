@@ -2,13 +2,19 @@
 
 [![Build Status](https://travis-ci.org/finnsson/pagerjs.png)](https://travis-ci.org/finnsson/pagerjs)
 
+    one having or covering a specified number or kind of pages
+      - Merriam-Webster
+
+See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
+
 pager.js is a JavaScript library based on KnockoutJS, jQuery and Underscore.js that provides the possibility of
 creating single page applications in a declarative fashion - nesting subpages inside subpages where each subpage can be
 developed standalone but still communicate between each other.
 
 This makes it easier to design very large scale single page web sites.
 
-See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
+This readme is for version 0.7 (development version towards 0.8 milestone). See the r0.6-branch for the latest
+stable milestone.
 
 ## Getting Started
 
@@ -116,34 +122,51 @@ pager.js got some static methods and
 extends KnockoutJS with four custom bindings: `page`, `page-href`, `page-hash` and
 `page-href5`.
 
+### `pager.page : pager.Page`
 
-### `pager.route`
+A reference to the root page, of type `pager.Page`. This page instance is the same as
+`$__page__` (or `$root.$__page__`) in your data binding.
 
-### `pager.start`
+### `pager.showChild(String[])`
 
-### `pager.startHashChange`
+Display the pages matching the route (String-array) without changing the location.
 
-### `pager.startHistoryJs`
+This method is called by `pager.start`, `pager.startHashChange` and `pager.startHistoryJS`. If you plan to implement
+your own start-method you'll need to call this method with the calculated route.
 
-### `pager.extendWithPage`
+### `pager.start([String])`
 
-#### Example
+Used if you are using neither `jQuery hashchange` nor `History.js`. This method does not work for IE7 and
+can give unexpected results for IE8!
 
-    // viewModel is your KnockoutJS view model
-    var viewModel = {};
-    // pager.extendWithPage extends your
-    // view model with some pager-specific data
-    pager.extendWithPage(viewModel);
-    // apply your view model as normal
-    ko.applyBindings(viewModel);
-    // start the pager. Will listen to hashchange and
-    // show/hide pages depending on their page IDs
-    pager.start();
+* [Setup](http://oscar.finnsson.nu/pagerjs/demo/#setup)
 
+
+### `pager.startHashChange([String])`
+
+Used if you are using `jQuery hashchange`.
+
+* [Setup](http://oscar.finnsson.nu/pagerjs/demo/#setup)
+
+
+### `pager.startHistoryJs([String])`
+
+Used if you are using `History.js`.
+
+* [HTML5 History API](http://oscar.finnsson.nu/pagerjs/demo/#html5_history)
+* [Setup](http://oscar.finnsson.nu/pagerjs/demo/#setup)
+
+### `pager.extendWithPage(Object)`
+
+Extends your root view model with a root page-instance.
+
+* [Setup](http://oscar.finnsson.nu/pagerjs/demo/#setup)
 
 ### page-href
 
     <a data-bind="page-href: 'somePagePath'"></a>
+
+    <a data-bind="page-href: '../some/relative/page/path'"></a>
 
     <a data-bind="page-href: somePageInstance"></a>
 
@@ -759,10 +782,11 @@ There are two main alternatives to specify a start page, depending on the desire
 Either you can pass an ID (e.g. `foo/bar`) to your start-method or you can call `pager.showChild` with a route (
 array of strings).
 
-    // send user to login-page
+    // send user to login-page and updating the location
     pager.start('login');
 
     // send user to login-page without updating the location
+    paget.start();
     pager.showChild(['login']);
 
 
@@ -810,7 +834,7 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 - [Tab panel custom widget](https://github.com/finnsson/pagerjs/issues/19)
 - [Should be possible to run custom JS on "navigate to"](https://github.com/finnsson/pagerjs/issues/18)
 
-### 0.6 (Current target)
+### 0.6
 
 - [Should contain common effects](https://github.com/finnsson/pagerjs/issues/28)
 - [HTML5 History Boilerplate](https://github.com/finnsson/pagerjs/issues/34)
@@ -826,7 +850,7 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 
 ## Roadmap
 
-Currently working towards 0.8
+Currently working on development version 0.7, towards stable version 0.8.
 
 See [Milestones](https://github.com/finnsson/pagerjs/issues/milestones).
 
