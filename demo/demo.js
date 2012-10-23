@@ -120,7 +120,7 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
             if (viewModel.loggedIn()) {
                 callback();
             } else {
-                window.location.href = "#guards/login";
+                window.location.href = "#!/guards/login";
             }
         },
         logout:function () {
@@ -172,6 +172,8 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
 
 
     $(function () {
+
+        pager.Href.hash = '#!/';
 
         pager.extendWithPage(viewModel);
         window.VM = viewModel;

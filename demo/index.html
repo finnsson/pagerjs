@@ -19,7 +19,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="#start">pager.js</a>
+            <a class="brand" href="#!/start">pager.js</a>
 
             <div class="dropdown">
                 <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
@@ -50,12 +50,12 @@
 
         <pre data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {<a data-bind="tooltip: {}" title="start it will be displayed by default">id: 'start'</a>, <a data-bind="tooltip: {}" title="change document title to this">title: 'Pager.js Demo Start'</a>}"&gt;
-    ...&lt;a href="#structure"&gt;Read about the structure.&lt;/a&gt;...
+    ...&lt;a href="#!/structure"&gt;Read about the structure.&lt;/a&gt;...
 &lt;/div&gt;
         </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#structure">Read about the structure.</a>
+        <a class="btn btn-large btn-primary" href="#!/structure">Read about the structure.</a>
     </div>
 
 </div>
@@ -67,7 +67,7 @@
         <p class="lead">
             A page is an element with a <code>page</code> custom binding. They can be placed anywhere in your site
             and will work as pages that you can jump between. The ID of the page corresponds to the fragment
-            identifier in the URL (the thingy after #).
+            identifier in the URL (the thingy after #!/).
             <br/>
             All the main pages in this demo are placed inside a main container div.
         </p>
@@ -90,7 +90,7 @@
         </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#setup">Read about how to setup pagerjs</a>
+        <a class="btn btn-large btn-primary" href="#!/setup">Read about how to setup pagerjs</a>
     </div>
 
 </div>
@@ -155,7 +155,7 @@ pager.startHistoryJs();
 
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#deep_navigation"> You can jump to another page using an absolute
+        <a class="btn btn-large btn-primary" href="#!/deep_navigation"> You can jump to another page using an absolute
             fragment identifier.
         </a>
     </div>
@@ -175,12 +175,12 @@ pager.startHistoryJs();
 
     <div class="well" data-bind="page: {id: 'start'}">
         This is the default sub page.
-        <a href="#deep_navigation/second">Show the second page</a>.
+        <a href="#!/deep_navigation/second">Show the second page</a>.
     </div>
     <div class="well" data-bind="page: {id: 'second'}">
         This is the second sub page.
 
-        <a href="#deep_navigation">Go back to the first sub page</a>.
+        <a href="#!/deep_navigation">Go back to the first sub page</a>.
     </div>
 
         <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
@@ -188,18 +188,18 @@ pager.startHistoryJs();
     ...
     &lt;div data-bind="page: {id: 'start'}"&gt;
         ...
-        &lt;a href="#deep_navigation/second"&gt;Show the second page&lt;/a&gt;.
+        &lt;a href="#!/deep_navigation/second"&gt;Show the second page&lt;/a&gt;.
     &lt;/div&gt;
     &lt;div data-bind="page: {id: 'second'}"&gt;
         ...
-        &lt;a href="#deep_navigation"&gt;Go back to the first sub page&lt;/a&gt;.
+        &lt;a href="#!/deep_navigation"&gt;Go back to the first sub page&lt;/a&gt;.
     &lt;/div&gt;
-    ...&lt;a href="#load_external_content"&gt;Go on&lt;/a&gt;...
+    ...&lt;a href="#!/load_external_content"&gt;Go on&lt;/a&gt;...
 &lt;/div&gt;
         </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#load_external_content">Read about loading content</a>
+        <a class="btn btn-large btn-primary" href="#!/load_external_content">Read about loading content</a>
     </div>
 
 
@@ -281,7 +281,7 @@ pager.startHistoryJs();
         </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#absolute_path">What about binding to pages?</a>
+        <a class="btn btn-large btn-primary" href="#!/absolute_path">What about binding to pages?</a>
     </div>
 
 
@@ -316,7 +316,7 @@ ko.applyBindings(viewModel);
 </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#change_binding_context">Read about changing binding context</a>
+        <a class="btn btn-large btn-primary" href="#!/change_binding_context">Read about changing binding context</a>
     </div>
 
 </div>
@@ -344,7 +344,7 @@ ko.applyBindings(viewModel);
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#lazy_bind_view_model">Read more about changing the binding
+        <a class="btn btn-large btn-primary" href="#!/lazy_bind_view_model">Read more about changing the binding
             context</a>
     </div>
 
@@ -400,7 +400,7 @@ var requireVM = function (module) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#matching_wildcards">And now about wildcards</a>
+        <a class="btn btn-large btn-primary" href="#!/matching_wildcards">And now about wildcards</a>
     </div>
 
 
@@ -427,7 +427,7 @@ var requireVM = function (module) {
 
         <p>The page you requested does not exist.</p>
 
-        <p><a href="#matching_wildcards">Go back</a></p>
+        <p><a href="#!/matching_wildcards">Go back</a></p>
     </div>
 
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
@@ -438,7 +438,7 @@ var requireVM = function (module) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#deep_navigation_with_wildcards">Continue reading about wildcards</a>
+        <a class="btn btn-large btn-primary" href="#!/deep_navigation_with_wildcards">Continue reading about wildcards</a>
     </div>
 
 
@@ -455,7 +455,7 @@ var requireVM = function (module) {
 
     <div class="well">
         <div data-bind="page: {id: 'start'}">
-            <a class="btn" href="#deep_navigation_with_wildcards/wild/leela">Go to Leela</a>
+            <a class="btn" href="#!/deep_navigation_with_wildcards/wild/leela">Go to Leela</a>
         </div>
 
         <div data-bind="page: {id: '?'}">
@@ -470,7 +470,7 @@ var requireVM = function (module) {
 
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
-    &lt;a class="btn" href="#deep_navigation_with_wildcards/wild/leela"&gt;Go to Leela&lt;/a&gt;
+    &lt;a class="btn" href="#!/deep_navigation_with_wildcards/wild/leela"&gt;Go to Leela&lt;/a&gt;
 &lt;/div&gt;
 
 &lt;div data-bind="page: {id: '?'}"&gt;
@@ -483,7 +483,7 @@ var requireVM = function (module) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#send_wildcard_to_source">Further features of wildcards</a>
+        <a class="btn btn-large btn-primary" href="#!/send_wildcard_to_source">Further features of wildcards</a>
     </div>
 
 
@@ -503,7 +503,7 @@ var requireVM = function (module) {
 
     <div class="well">
         <div data-bind="page: {id: 'start'}">
-            <a href="#send_wildcard_to_source/character/fry">Go to Fry</a>
+            <a href="#!/send_wildcard_to_source/character/fry">Go to Fry</a>
         </div>
 
         <div data-bind="page: {id: 'character'}">
@@ -516,7 +516,7 @@ var requireVM = function (module) {
 
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
-    &lt;a href="#send_wildcard_to_source/character/fry"&gt;Go to Fry&lt;/a&gt;
+    &lt;a href="#!/send_wildcard_to_source/character/fry"&gt;Go to Fry&lt;/a&gt;
 &lt;/div&gt;
 
 &lt;div data-bind="page: {id: 'character'}"&gt;
@@ -528,7 +528,7 @@ var requireVM = function (module) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#deep_load_content_into_wildcard">Read about loading deep content</a>
+        <a class="btn btn-large btn-primary" href="#!/deep_load_content_into_wildcard">Read about loading deep content</a>
     </div>
 
 
@@ -548,7 +548,7 @@ var requireVM = function (module) {
 
     <div class="well">
         <div data-bind="page: {id: 'start'}">
-            <a href="#deep_load_content_into_wildcard/deep/character/fry">Go to Fry</a>
+            <a href="#!/deep_load_content_into_wildcard/deep/character/fry">Go to Fry</a>
         </div>
 
         <div data-bind="page: {id: 'deep'}">
@@ -562,7 +562,7 @@ var requireVM = function (module) {
 
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
-    &lt;a href="#deep_load_content_into_wildcard/deep/character/fry"&gt;Go to Fry&lt;/a&gt;
+    &lt;a href="#!/deep_load_content_into_wildcard/deep/character/fry"&gt;Go to Fry&lt;/a&gt;
 &lt;/div&gt;
 
 &lt;div data-bind="page: {id: 'deep'}"&gt;
@@ -574,7 +574,7 @@ var requireVM = function (module) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#load_into_iframe">Read about loading content into iframes</a>
+        <a class="btn btn-large btn-primary" href="#!/load_into_iframe">Read about loading content into iframes</a>
     </div>
 </div>
 
@@ -597,7 +597,7 @@ var requireVM = function (module) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#configure_iframe">Read more about how to configure the
+        <a class="btn btn-large btn-primary" href="#!/configure_iframe">Read more about how to configure the
             <code>iframe</code></a>
     </div>
 
@@ -626,7 +626,7 @@ var requireVM = function (module) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#custom_widgets">Read about custom widgets</a>
+        <a class="btn btn-large btn-primary" href="#!/custom_widgets">Read about custom widgets</a>
     </div>
 
 
@@ -648,12 +648,12 @@ var requireVM = function (module) {
 
     <div data-bind="page: {id: 'start'}" class="well">
         <div data-bind="page-accordion-item: {id: 'zoidberg'}">
-            <a href="#custom_widgets/start/zoidberg">Zoidberg</a>
+            <a href="#!/custom_widgets/start/zoidberg">Zoidberg</a>
 
             <div>Zoidberg Information</div>
         </div>
         <div data-bind="page-accordion-item: {id: 'hermes'}">
-            <a href="#custom_widgets/start/hermes">Hermes</a>
+            <a href="#!/custom_widgets/start/hermes">Hermes</a>
 
             <div>Hermes Information</div>
         </div>
@@ -663,12 +663,12 @@ var requireVM = function (module) {
 
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page-accordion-item: {id: 'zoidberg'}"&gt;
-    &lt;a href="#custom_widgets/start/zoidberg"&gt;Zoidberg&lt;/a&gt;
+    &lt;a href="#!/custom_widgets/start/zoidberg"&gt;Zoidberg&lt;/a&gt;
 
     &lt;div&gt;Zoidberg Information&lt;/div&gt;
 &lt;/div&gt;
 &lt;div data-bind="page-accordion-item: {id: 'hermes'}"&gt;
-    &lt;a href="#custom_widgets/start/hermes"&gt;Hermes&lt;/a&gt;
+    &lt;a href="#!/custom_widgets/start/hermes"&gt;Hermes&lt;/a&gt;
 
     &lt;div&gt;Hermes Information&lt;/div&gt;
 &lt;/div&gt;
@@ -746,7 +746,7 @@ ko.bindingHandlers['page-accordion-item'] = {
    </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#modals">Read about modals</a>
+        <a class="btn btn-large btn-primary" href="#!/modals">Read about modals</a>
     </div>
 
 
@@ -784,7 +784,7 @@ ko.bindingHandlers['page-accordion-item'] = {
             <h3>Alert</h3>
         </div>
         <div class="modal-body">
-            <p>This modal is actually under <code>#modals/alert</code> but show up here because <code>modal: true</code>
+            <p>This modal is actually under <code>#!/modals/alert</code> but show up here because <code>modal: true</code>
             </p>
         </div>
         <div class="modal-footer">
@@ -825,7 +825,7 @@ ko.bindingHandlers['page-accordion-item'] = {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#custom_js_when_navigating">Read about how to run custom JS when
+        <a class="btn btn-large btn-primary" href="#!/custom_js_when_navigating">Read about how to run custom JS when
             navigating</a>
     </div>
 </div>
@@ -850,11 +850,11 @@ ko.bindingHandlers['page-accordion-item'] = {
             <li>Bind to local before/after show/hide if you just want to be notified about a navigation.</li>
         </ol>
 
-        <a href="#custom_js_when_navigating/fry">Show Fry</a>
+        <a href="#!/custom_js_when_navigating/fry">Show Fry</a>
 
         <div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}">
             Fry
-            <a class="btn" href="#custom_js_when_navigating">Hide Fry</a>
+            <a class="btn" href="#!/custom_js_when_navigating">Hide Fry</a>
         </div>
 
         </p>
@@ -863,7 +863,7 @@ ko.bindingHandlers['page-accordion-item'] = {
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}"&gt;
     Fry
-    &lt;a class="btn" href="#custom_js_when_navigating"&gt;Hide Fry&lt;/a&gt;
+    &lt;a class="btn" href="#!/custom_js_when_navigating"&gt;Hide Fry&lt;/a&gt;
 &lt;/div&gt;
     </pre>
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
@@ -876,7 +876,7 @@ beforeFryIsHidden:function () {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#custom_hide_show">Read about custom <code>hide</code>- and <code>show</code>-methods</a>
+        <a class="btn btn-large btn-primary" href="#!/custom_hide_show">Read about custom <code>hide</code>- and <code>show</code>-methods</a>
     </div>
 
 
@@ -895,7 +895,7 @@ beforeFryIsHidden:function () {
         </p>
     </header>
 
-    <a href="#custom_hide_show/fry">Show Fry</a>
+    <a href="#!/custom_hide_show/fry">Show Fry</a>
 
     <div data-bind="page:{id: 'fry', showElement: showFry, hideElement: hideFry}">
         <h2>Fry</h2>
@@ -926,7 +926,7 @@ hideFry:function (page, callback) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#loader">Read about custom loaders</a>
+        <a class="btn btn-large btn-primary" href="#!/loader">Read about custom loaders</a>
     </div>
 
 
@@ -947,7 +947,7 @@ hideFry:function (page, callback) {
         </p>
     </header>
 
-    <a href="#loader/Sabrepulse">Load Sabrepulse</a>
+    <a href="#!/loader/Sabrepulse">Load Sabrepulse</a>
 
     <div data-bind="page: {id: 'Sabrepulse', frame: 'iframe', title: 'Sabrepulse', loader: textLoader, sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3'}">
         <iframe width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
@@ -978,7 +978,7 @@ textLoader: function(page, element) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#tabpanel">Read about developing a tab panel</a>
+        <a class="btn btn-large btn-primary" href="#!/tabpanel">Read about developing a tab panel</a>
     </div>
 
 </div>
@@ -1030,7 +1030,7 @@ textLoader: function(page, element) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#failed_navigation">Read about reacting to missing pages</a>
+        <a class="btn btn-large btn-primary" href="#!/failed_navigation">Read about reacting to missing pages</a>
     </div>
 
 
@@ -1051,7 +1051,7 @@ textLoader: function(page, element) {
         </p>
     </header>
 
-    <a data-bind="click: function() { window.location.hash = 'failed_navigation/random/' + (Math.random()*1000).toFixed() }">
+    <a data-bind="click: function() { window.location.hash = '#!/failed_navigation/random/' + (Math.random()*1000).toFixed() }">
         Go to random sub-page
     </a>
 
@@ -1096,7 +1096,7 @@ newChildren:ko.observableArray([])
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#custom_view_loader">Read about loading a view using a custom
+        <a class="btn btn-large btn-primary" href="#!/custom_view_loader">Read about loading a view using a custom
             method</a>
     </div>
 
@@ -1120,7 +1120,7 @@ newChildren:ko.observableArray([])
         </p>
     </header>
 
-    <a href="#custom_view_loader/zoidberg">Load custom view using requireView-method</a>
+    <a href="#!/custom_view_loader/zoidberg">Load custom view using requireView-method</a>
 
     <div data-bind="page: {id: 'zoidberg', sourceOnShow: requireView('zoidberg')}">
 
@@ -1144,7 +1144,7 @@ window.requireView = function(viewModule) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#params">Read about binding URI parameters</a>
+        <a class="btn btn-large btn-primary" href="#!/params">Read about binding URI parameters</a>
     </div>
 
 
@@ -1165,7 +1165,7 @@ window.requireView = function(viewModule) {
         </p>
     </header>
 
-    <a href="#params/search?product=tv&price=200">Search for a $200 TV</a>
+    <a href="#!/params/search?product=tv&price=200">Search for a $200 TV</a>
 
     <div data-bind="page: {id: 'search', params: ['product','price']}" class="well">
         <span data-bind="text: product"></span> @ $ <span data-bind="text: price"></span>
@@ -1201,7 +1201,7 @@ window.requireView = function(viewModule) {
     </pre>
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#vars">Read about custom observables in the view</a>
+        <a class="btn btn-large btn-primary" href="#!/vars">Read about custom observables in the view</a>
     </div>
 
 
@@ -1234,7 +1234,7 @@ window.requireView = function(viewModule) {
 
     <div data-bind="page: {id: 'admin', guard: isLoggedIn}" class="well">
         This page is only accessible if the user is logged in.
-        <a href="#guards" data-bind="click: logout">Logout</a>
+        <a href="#!/guards" data-bind="click: logout">Logout</a>
     </div>
     <div data-bind="page: {id: 'login'}" class="well">
         <p class="alert alert-error">You are not logged in. Check the checkbox and try again.</p>
@@ -1249,7 +1249,7 @@ window.requireView = function(viewModule) {
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'admin', guard: isLoggedIn}" class="well"&gt;
     This page is only accessible if the user is logged in.
-    &lt;a href="#guards" data-bind="click: logout"&gt;Logout&lt;/a&gt;
+    &lt;a href="#!/guards" data-bind="click: logout"&gt;Logout&lt;/a&gt;
 &lt;/div&gt;
 &lt;div data-bind="page: {id: 'login'}" class="well"&gt;
     &lt;p class="alert alert-error"&gt;You are not logged in. Check the checkbox and try again.&lt;/p&gt;
@@ -1275,7 +1275,7 @@ isLoggedIn: function(page, route, callback) {
 
 
     <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#fx">Read about FX</a>
+        <a class="btn btn-large btn-primary" href="#!/fx">Read about FX</a>
     </div>
 
 </div>

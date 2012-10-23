@@ -176,10 +176,10 @@ ko.computed(function() {
 </pre>
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#setup">Setup</a>
-    <a class="btn btn-primary" href="#deep_navigation">Deep Navigation</a>
-    <a class="btn btn-primary" href="#matching_wildcards">Matching Wildcards</a>
-    <a class="btn btn-primary" href="#deep_navigation_with_wildcards">Deep Navigation with Wildcards</a>
+    <a class="btn btn-primary" href="#!/setup">Setup</a>
+    <a class="btn btn-primary" href="#!/deep_navigation">Deep Navigation</a>
+    <a class="btn btn-primary" href="#!/matching_wildcards">Matching Wildcards</a>
+    <a class="btn btn-primary" href="#!/deep_navigation_with_wildcards">Deep Navigation with Wildcards</a>
 </div>
 
 <h3><code class="code-large">params : String[]</code></h3>
@@ -208,7 +208,7 @@ ko.computed(function() {
 </form>
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#params">Binding URI parameters</a>
+    <a class="btn btn-primary" href="#!/params">Binding URI parameters</a>
 </div>
 
 <h3><code class="code-large">with : Object</code></h3>
@@ -235,7 +235,7 @@ var viewModel = {
 </div>
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#change_binding_context">Change Binding Context</a>
+    <a class="btn btn-primary" href="#!/change_binding_context">Change Binding Context</a>
 </div>
 
 
@@ -277,7 +277,7 @@ Cool.loadUser = function(callback, page) {
 </div>
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#lazy_bind_view_model">Lazy-Bind View-Model</a>
+    <a class="btn btn-primary" href="#!/lazy_bind_view_model">Lazy-Bind View-Model</a>
 </div>
 
 
@@ -287,8 +287,8 @@ Cool.loadUser = function(callback, page) {
     Load content into the page from an external source.
 </p>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#load_external_content">Load External Content</a>
-    <a class="btn btn-primary" href="#custom_view_loader">Load View using Custom Method</a>
+    <a class="btn btn-primary" href="#!/load_external_content">Load External Content</a>
+    <a class="btn btn-primary" href="#!/custom_view_loader">Load View using Custom Method</a>
 </div>
 
 <h3><code class="code-large">sourceOnShow : Function(Page, Function())</code></h3>
@@ -299,8 +299,8 @@ Cool.loadUser = function(callback, page) {
 </p>
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#lazy_load_external_content">Lazy-Load External Content</a>
-    <a class="btn btn-primary" href="#custom_view_loader">Load View using Custom Method</a>
+    <a class="btn btn-primary" href="#!/lazy_load_external_content">Lazy-Load External Content</a>
+    <a class="btn btn-primary" href="#!/custom_view_loader">Load View using Custom Method</a>
 </div>
 
 <h3><code class="code-large">sourceLoaded : Function(Page)</code></h3>
@@ -309,7 +309,7 @@ Cool.loadUser = function(callback, page) {
     is loaded into the page. Useful for e.g. post-processing.
 </p>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#load_external_content">Load External Content</a>
+    <a class="btn btn-primary" href="#!/load_external_content">Load External Content</a>
 </div>
 
 
@@ -329,7 +329,7 @@ Cool.loadUser = function(callback, page) {
     If set to a number the lazy-loaded view is cached that amount of time in seconds.
 </p>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#cached_lazy">Cached Lazy-Loaded Content</a>
+    <a class="btn btn-primary" href="#!/cached_lazy">Cached Lazy-Loaded Content</a>
 </div>
 
 <h3><code class="code-large">frame : String</code></h3>
@@ -337,8 +337,8 @@ Cool.loadUser = function(callback, page) {
     By specifying <code>frame: 'iframe'</code> the external source is loaded into an iframe instead.
 </p>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#load_into_iframe">Load Content into iframe</a>
-    <a class="btn btn-primary" href="#configure_iframe">Configure an iframe</a>
+    <a class="btn btn-primary" href="#!/load_into_iframe">Load Content into iframe</a>
+    <a class="btn btn-primary" href="#!/configure_iframe">Configure an iframe</a>
 </div>
 
 <h3><code class="code-large">modal : Boolean</code></h3>
@@ -349,56 +349,56 @@ Cool.loadUser = function(callback, page) {
 </p>
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#modals">Modals</a>
+    <a class="btn btn-primary" href="#!/modals">Modals</a>
 </div>
 
 
 <h3><code class="code-large">beforeHide : Function(Page)</code></h3>
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#custom_js_when_navigating">Custom JS when Navigating</a>
+    <a class="btn btn-primary" href="#!/custom_js_when_navigating">Custom JS when Navigating</a>
 </div>
 
 
 <h3><code class="code-large">beforeShow : Function(Page)</code></h3>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#custom_js_when_navigating">Custom JS when Navigating</a>
+    <a class="btn btn-primary" href="#!/custom_js_when_navigating">Custom JS when Navigating</a>
 </div>
 
 <h3><code class="code-large">afterHide : Function(Page)</code></h3>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#custom_js_when_navigating">Custom JS when Navigating</a>
+    <a class="btn btn-primary" href="#!/custom_js_when_navigating">Custom JS when Navigating</a>
 </div>
 
 <h3><code class="code-large">afterShow : Function(Page)</code></h3>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#custom_js_when_navigating">Custom JS when Navigating</a>
+    <a class="btn btn-primary" href="#!/custom_js_when_navigating">Custom JS when Navigating</a>
 </div>
 
 <h3><code class="code-large">hideElement : Function(Page,Function())</code></h3>
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#custom_hide_show">Custom Hide- and Show-Methods</a>
+    <a class="btn btn-primary" href="#!/custom_hide_show">Custom Hide- and Show-Methods</a>
 </div>
 
 
 <h3><code class="code-large">showElement : Function(Page)</code></h3>
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#custom_hide_show">Custom Hide- and Show-Methods</a>
+    <a class="btn btn-primary" href="#!/custom_hide_show">Custom Hide- and Show-Methods</a>
 </div>
 
 <h3><code class="code-large">fx : String</code></h3>
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#fx">FX</a>
+    <a class="btn btn-primary" href="#!/fx">FX</a>
 </div>
 
 
 <h3><code class="code-large">loader : Function(Page,Node)</code></h3>
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#loader">Loader</a>
+    <a class="btn btn-primary" href="#!/loader">Loader</a>
 </div>
 
 
@@ -406,7 +406,7 @@ Cool.loadUser = function(callback, page) {
 
 
 <div class="form-actions">
-    <a class="btn btn-primary" href="#failed_navigation">Reacting to Failed Navigation</a>
+    <a class="btn btn-primary" href="#!/failed_navigation">Reacting to Failed Navigation</a>
 </div>
 
 <h3><code class="code-large">guard : Function(Page,String[],Function(),Page)</code></h3>
@@ -417,7 +417,7 @@ Cool.loadUser = function(callback, page) {
     and the fourth argument is the page being navigated from.
 </p>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#guards">Guards</a>
+    <a class="btn btn-primary" href="#!/guards">Guards</a>
 </div>
 
 
@@ -425,9 +425,9 @@ Cool.loadUser = function(callback, page) {
 
 <h3><code class="code-large">element : Node</code></h3>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#custom_widgets">Custom Widgets</a>
-    <a class="btn btn-primary" href="#custom_hide_show">Custom Show- and Hide-Methods</a>
-    <a class="btn btn-primary" href="#loader">Loaders</a>
+    <a class="btn btn-primary" href="#!/custom_widgets">Custom Widgets</a>
+    <a class="btn btn-primary" href="#!/custom_hide_show">Custom Show- and Hide-Methods</a>
+    <a class="btn btn-primary" href="#!/loader">Loaders</a>
 </div>
 
 <h3><code class="code-large">viewModel : Observable/Object</code></h3>
@@ -437,7 +437,7 @@ Cool.loadUser = function(callback, page) {
 
 <h3><code class="code-large">children : ObservableArray(Page[])</code></h3>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#tabpanel">Tab Panel</a>
+    <a class="btn btn-primary" href="#!/tabpanel">Tab Panel</a>
 </div>
 
 <h3><code class="code-large">parentPage : Page</code></h3>
@@ -467,7 +467,7 @@ Cool.loadUser = function(callback, page) {
 
 <h3><code class="code-large">isVisible : Observable(Boolean)</code></h3>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#tabpanel">Tab Panel</a>
+    <a class="btn btn-primary" href="#!/tabpanel">Tab Panel</a>
 </div>
 
 <h3><code class="code-large">val(String) : Object</code></h3>
@@ -488,5 +488,5 @@ Cool.loadUser = function(callback, page) {
 
 <h3><code class="code-large">init() : {controlsDescendantBindings:true}</code></h3>
 <div class="form-actions">
-    <a class="btn btn-primary" href="#custom_widgets">Custom Widgets</a>
+    <a class="btn btn-primary" href="#!/custom_widgets">Custom Widgets</a>
 </div>
