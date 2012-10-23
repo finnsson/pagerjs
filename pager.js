@@ -1,6 +1,6 @@
 (function (window) {
 
-    var pagerJsModule = function ($, _, ko) {
+    var pagerJsModule = function ($, ko) {
 
         "use strict";
 
@@ -57,7 +57,7 @@
         _ko.value = ko.utils.unwrapObservable;
 
         _ko.arrayValue = function (arr) {
-            return _.map(arr, function (e) {
+            return $.map(arr, function (e) {
                 return _ko.value(e);
             });
         };
@@ -138,7 +138,7 @@
                 var currentRoutePair = splitRoutePartIntoNameAndParameters(route[0]);
                 var currentRoute = currentRoutePair.name;
                 var wildcard = null;
-                _.each(children(), function (child) {
+                $.each(children(), function (childIndex, child) {
                     if (!match) {
                         var id = child.getId();
                         if (id === currentRoute ||
@@ -156,7 +156,7 @@
 
                 var currentChildManager = me;
 
-                var findMatchModalOrWildCard = function (child) {
+                var findMatchModalOrWildCard = function (childIndex, child) {
                     if (!match) {
                         var id = child.getId();
                         var modal = child.getValue().modal;
@@ -177,7 +177,7 @@
 
                 while (!me.currentChild && currentChildManager.page.parentPage && !currentChildManager.page.getValue().modal) {
                     var parentChildren = currentChildManager.page.parentPage.children;
-                    _.each(parentChildren(), findMatchModalOrWildCard);
+                    $.each(parentChildren(), findMatchModalOrWildCard);
                     if (!me.currentChild) {
                         currentChildManager = currentChildManager.page.parentPage.childManager;
                     }
@@ -388,7 +388,7 @@
                 var userParams = this.val('params') || {};
                 // for each param for URL
                 $.each(params, function (key, value) {
-                    if (_.indexOf(userParams, key) !== -1) { // make sure it's a valid param
+                    if ($.inArray(key, userParams) !== -1) { // make sure it's a valid param
                         if (vm[key]) { // set observable ...
                             vm[key](value);
                         } else { // ... or create observable
@@ -630,13 +630,13 @@
             if (me.val('withOnShow')) {
                 if (!me.withOnShowLoaded || me.val('sourceCache') !== true) {
                     me.withOnShowLoaded = true;
-                    me.val('withOnShow')(_.bind(function (vm) {
+                    me.val('withOnShow')(function (vm) {
                         var childBindingContext = me.bindingContext.createChildContext(vm);
                         me.ctx = vm;
                         me.augmentContext();
-                        ko.utils.extend(childBindingContext, {$page:this});
+                        ko.utils.extend(childBindingContext, {$page:me});
                         ko.applyBindingsToDescendants(childBindingContext, me.element);
-                    }, this), this);
+                    }, me);
                 }
             }
 
@@ -742,9 +742,9 @@
 
         p.child = function (key) {
             return ko.computed(function () {
-                var child = _.find(this.children(), function (c) {
+                var child = $.grep(this.children(), function (c) {
                     return c.getId() === key;
-                });
+                })[0];
                 return child || this.nullObject;
             }, this);
         };
@@ -830,13 +830,14 @@
         pager.Href5.history = window.history;
 
         pager.Href5.prototype.bind = function () {
-            ko.applyBindingsToNode(this.element, {
+            var self = this;
+            ko.applyBindingsToNode(self.element, {
                 attr:{
-                    'href':this.path
+                    'href':self.path
                 },
-                click:_.bind(function () {
-                    pager.Href5.history.pushState(null, null, this.path());
-                }, this)
+                click:function () {
+                    pager.Href5.history.pushState(null, null, self.path());
+                }
             });
         };
 
@@ -1036,8 +1037,8 @@
 
         // define as an anonymous module so, through path mapping, it can be
         // referenced as any module
-        define(['jquery', 'underscore', 'knockout'], function (jquery, _, ko) {
-            return pagerJsModule($, _, ko);
+        define(['knockout', 'jquery'], function (ko) {
+            return pagerJsModule($, ko);
         });
     }
     // check for `exports` after `define` in case a build optimizer adds an `exports` object
@@ -1053,7 +1054,7 @@
     }
     else {
         // in a browser or Rhino
-        window.pager = pagerJsModule($, _, ko);
+        window.pager = pagerJsModule($, ko);
     }
 
 

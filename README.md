@@ -7,7 +7,7 @@
 
 See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
 
-pager.js is a JavaScript library based on KnockoutJS, jQuery and Underscore.js that provides the possibility of
+pager.js is a JavaScript library based on KnockoutJS and jQuery that provides the possibility of
 creating single page applications in a declarative fashion - nesting subpages inside subpages where each subpage can be
 developed standalone but still communicate between each other.
 
@@ -21,7 +21,7 @@ stable milestone.
 1. Download the [developer](https://raw.github.com/finnsson/pagerjs/master/pager.js) version
    or the [minified](https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js) version
    of pager.js
-2. Include all dependencies (jQuery, Underscore.js/Lo-Dash, KnockoutJS) as well as pager.js in your site
+2. Include all dependencies (jQuery, KnockoutJS) as well as pager.js in your site
    using either AMD or non-AMD:
 
         // AMD
@@ -32,7 +32,6 @@ stable milestone.
             },
             paths:{
                 jquery:'jquery-1.8.2.min',
-                underscore:'lodash.min',
                 knockout:'knockout-2.1.0',
                 pager:'pager.amd.min',
                 // iff using jquery hashchange
@@ -44,7 +43,6 @@ stable milestone.
 
         // non-AMD
         <script type="text/javascript" src="jquery-1.8.2.min.js"></script>
-        <script type="text/javascript" src="underscore-min.js"></script>
         <script type="text/javascript" src="knockout-2.1.0.js"></script>
         <script type="text/javascript" src="pager.js"></script>
 
@@ -90,7 +88,6 @@ stable milestone.
 
 - [KnockoutJS](http://knockoutjs.com/)
 - [jQuery](http://jquery.com/)
-- [Underscore.js](http://underscorejs.org/) or [Lo-Dash](http://lodash.com/)
 
 You will usually use pager.js in combination with either
 [jQuery hashchange](https://github.com/cowboy/jquery-hashchange)
@@ -794,8 +791,8 @@ array of strings).
 
 ### Can I use it together with...
 
-pager.js is not depending on anything but jQuery, KnockoutJS and Underscore.js/Lo-Dash. You can use it together with
-any CSS framework. If you don't like Underscore.js you can use it together with Lo-Dash instead.
+pager.js is not depending on anything but jQuery and KnockoutJS. You can use it together with
+any CSS framework.
 
 ### Can I use true URLs instead?
 
