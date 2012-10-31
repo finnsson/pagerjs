@@ -1,0 +1,65 @@
+<head>
+    <title>Custom JS when Navigating</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    
+    
+    
+    
+    
+    <meta name="fragment" content="!">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#!/start">pager.js</a>
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 60px;">
+<div data-bind="page: {id: 'custom_js_when_navigating', title: 'Custom JS when Navigating'}" style="display: block; ">
+    <header class="jumbotron subhead">
+        <h1>Custom JS when Navigating</h1>
+        <p class="lead">
+            There are 4 main alternatives when it comes to running custom JS:
+        </p><ol class="">
+            <li>Listen to <code>pager.childManager</code> if you want to be notified whenever a navigation has happened.
+                It is not recommended to try to stop the navigation at this point since it would involve changing the
+                history.
+            </li>
+            <li>Bind to global <code>click</code> if you want to be notified when a navigation is about to happen and
+                you want a chance to stop it. Just do not <code>return true;</code> in order to stop the navigation.
+            </li>
+            <li>Bind to local <code>click</code> if you want to control a certain navigation. This is probably what you
+                want to do if you want to inject validation.
+            </li>
+            <li>Bind to local before/after show/hide if you just want to be notified about a navigation.</li>
+        </ol>
+        <a href="#!/custom_js_when_navigating/fry">Show Fry</a>
+        
+        <p></p>
+    </header>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}"</span><span class="tag">&gt;</span></li><li class="L1"><span class="pln">    Fry</span></li><li class="L2"><span class="pln">    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"btn"</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#!/custom_js_when_navigating"</span><span class="tag">&gt;</span><span class="pln">Hide Fry</span><span class="tag">&lt;/a&gt;</span></li><li class="L3"><span class="tag">&lt;/div&gt;</span></li><li class="L4"><span class="pln">    </span></li></ol></pre>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">afterFryIsDisplayed</span><span class="pun">:</span><span class="kwd">function</span><span class="pln"> </span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></li><li class="L1"><span class="pln">    $</span><span class="pun">(</span><span class="str">'body'</span><span class="pun">).</span><span class="pln">css</span><span class="pun">(</span><span class="str">"background-color"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"#FF9999"</span><span class="pun">);</span></li><li class="L2"><span class="pun">}</span></li><li class="L3"><span class="pln">beforeFryIsHidden</span><span class="pun">:</span><span class="kwd">function</span><span class="pln"> </span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></li><li class="L4"><span class="pln">    $</span><span class="pun">(</span><span class="str">'body'</span><span class="pun">).</span><span class="pln">stop</span><span class="pun">().</span><span class="pln">css</span><span class="pun">(</span><span class="str">"background-color"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"#FFFFFF"</span><span class="pun">);</span></li><li class="L5"><span class="pun">}</span></li><li class="L6"><span class="pln">    </span></li></ol></pre>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#!/custom_hide_show">Read about custom <code>hide</code>- and <code>show</code>-methods</a>
+    </div>
+</div>
+</div>
+<footer>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="http://oscar.finnsson.nu/pagerjs/">Homepage</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs">Source code</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/new">Submit issues</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/milestones">Roadmap</a></li>
+        </ul>
+    </div>
+</footer>
+</body>

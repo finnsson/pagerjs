@@ -1,0 +1,7 @@
+RewriteEngine On
+
+RewriteCond %{QUERY_STRING} ^_escaped_fragment_=$
+RewriteRule ^(.*)$ _escaped_fragment_$1/index.html? [L]
+
+RewriteCond %{QUERY_STRING} ^_escaped_fragment_=(.*)$
+RewriteRule ^(.*)$ _escaped_fragment_$1/%1/index.html? [L]

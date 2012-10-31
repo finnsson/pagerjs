@@ -1,0 +1,66 @@
+<head>
+    <title>Binding URI Parameters</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    
+    
+    
+    
+    
+    <meta name="fragment" content="!">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#!/start">pager.js</a>
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 60px;">
+<div data-bind="page: {id: 'params', title: 'Binding URI Parameters'}" style="display: block; ">
+    <header class="jumbotron subhead">
+        <h1>Binding URI Parameters</h1>
+        <p class="lead">
+            A page is able to access the information in the current route and change the view-model.
+            <br>
+            Using <code>params: ['x','y']</code> it is possible to pick up pseudo parameters from the URL
+            and bind them as observable variables in the page. If the parameter already exists on the
+            viewModel it is bound to that observable instead.
+            <br>
+            These parameters can even be nested!
+        </p>
+    </header>
+    <a href="#!/params/search?product=tv&amp;price=200">Search for a $200 TV</a>
+    <div data-bind="page: {id: 'search', params: ['product','price']}" class="well" style="display: block; ">
+        <span data-bind="text: product">tv</span> @ $ <span data-bind="text: price">200</span>
+        <br>
+        <a class="btn" data-bind="page-href: 'details'" href="#!/params/search?product=tv&amp;price=200/details">See Details</a>
+        <a class="btn" data-bind="page-href: 'lorem'" href="#!/params/search?product=tv&amp;price=200/lorem">See Lorem Ipsum</a>
+        <div data-bind="page: {id: 'details'}" style="display: block; ">
+            Details about the search
+        </div>
+        
+    </div>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'search', params: ['product','price']}"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"well"</span><span class="tag">&gt;</span></li><li class="L1"><span class="pln">    </span><span class="tag">&lt;span</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"text: product"</span><span class="tag">&gt;&lt;/span&gt;</span><span class="pln"> @ $ </span><span class="tag">&lt;span</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"text: price"</span><span class="tag">&gt;&lt;/span&gt;</span></li><li class="L2"><span class="pln">    </span><span class="tag">&lt;br/&gt;</span></li><li class="L3"><span class="pln">&nbsp;</span></li><li class="L4"><span class="pln">    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"btn"</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page-href: 'details'"</span><span class="tag">&gt;</span><span class="pln">See Details</span><span class="tag">&lt;/a&gt;</span></li><li class="L5"><span class="pln">    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"btn"</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page-href: 'lorem'"</span><span class="tag">&gt;</span><span class="pln">See Lorem Ipsum</span><span class="tag">&lt;/a&gt;</span></li><li class="L6"><span class="pln">&nbsp;</span></li><li class="L7"><span class="pln">    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'details'}"</span><span class="tag">&gt;</span></li><li class="L8"><span class="pln">        Details about the search</span></li><li class="L9"><span class="pln">    </span><span class="tag">&lt;/div&gt;</span></li><li class="L0"><span class="pln">    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'lorem'}"</span><span class="tag">&gt;</span></li><li class="L1"><span class="pln">        Lorem Ipsum</span></li><li class="L2"><span class="pln">    </span><span class="tag">&lt;/div&gt;</span></li><li class="L3"><span class="tag">&lt;/div&gt;</span></li><li class="L4"><span class="pln">    </span></li></ol></pre>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#!/vars">Read about custom observables in the view</a>
+    </div>
+</div>
+</div>
+<footer>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="http://oscar.finnsson.nu/pagerjs/">Homepage</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs">Source code</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/new">Submit issues</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/milestones">Roadmap</a></li>
+        </ul>
+    </div>
+</footer>
+</body>

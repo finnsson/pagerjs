@@ -1,0 +1,55 @@
+<head>
+    <title>Deep Navigation with Wildcards</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    
+    
+    
+    
+    
+    <meta name="fragment" content="!">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#!/start">pager.js</a>
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 60px;">
+<div data-bind="page: {id: 'deep_navigation_with_wildcards', title: 'Deep Navigation with Wildcards'}" style="display: block; ">
+    <header class="jumbotron subhead">
+        <h1>Deep Navigation with Wildcards</h1>
+        <p class="lead">
+            The wildcard does not need to be at the end. It can be in a sub-page with sub-pages.
+        </p>
+    </header>
+    <div class="well">
+        <div data-bind="page: {id: 'start'}" style="display: block; ">
+            <a class="btn" href="#!/deep_navigation_with_wildcards/wild/leela">Go to Leela</a>
+        </div>
+        
+    </div>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'start'}"</span><span class="tag">&gt;</span></li><li class="L1"><span class="pln">    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"btn"</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#!/deep_navigation_with_wildcards/wild/leela"</span><span class="tag">&gt;</span><span class="pln">Go to Leela</span><span class="tag">&lt;/a&gt;</span></li><li class="L2"><span class="tag">&lt;/div&gt;</span></li><li class="L3"><span class="pln">&nbsp;</span></li><li class="L4"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: '?'}"</span><span class="tag">&gt;</span></li><li class="L5"><span class="pln">    </span><span class="tag">&lt;h3&gt;</span><span class="pln">Character</span><span class="tag">&lt;/h3&gt;</span></li><li class="L6"><span class="pln">&nbsp;</span></li><li class="L7"><span class="pln">    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'leela'}"</span><span class="tag">&gt;</span></li><li class="L8"><span class="pln">        Leela</span></li><li class="L9"><span class="pln">    </span><span class="tag">&lt;/div&gt;</span></li><li class="L0"><span class="tag">&lt;/div&gt;</span></li><li class="L1"><span class="pln">    </span></li></ol></pre>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#!/send_wildcard_to_source">Further features of wildcards</a>
+    </div>
+</div>
+</div>
+<footer>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="http://oscar.finnsson.nu/pagerjs/">Homepage</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs">Source code</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/new">Submit issues</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/milestones">Roadmap</a></li>
+        </ul>
+    </div>
+</footer>
+</body>

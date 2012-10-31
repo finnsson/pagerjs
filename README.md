@@ -5,7 +5,7 @@
     one having or covering a specified number or kind of pages
       - Merriam-Webster
 
-See the [demo](http://oscar.finnsson.nu/pagerjs/demo/).
+See the [demo](http://pagerjs.com/demo/).
 
 pager.js is a JavaScript library based on KnockoutJS and jQuery that provides the possibility of
 creating single page applications in a declarative fashion - nesting subpages inside subpages where each subpage can be
@@ -80,7 +80,7 @@ stable milestone.
 
 4. Start using the bindings `page` and `page-href`. Consult the
    [web page](http://oscar.finnsson.nu/pagerjs/),
-   [demo](http://oscar.finnsson.nu/pagerjs/demo/)
+   [demo](http://pagerjs.com/demo/)
    or [test cases](https://github.com/finnsson/pagerjs/tree/master/test) for how to use the bindings.
 5. Rock 'n' Roll!
 
@@ -136,28 +136,28 @@ your own start-method you'll need to call this method with the calculated route.
 Used if you are using neither `jQuery hashchange` nor `History.js`. This method does not work for IE7 and
 can give unexpected results for IE8!
 
-* [Setup](http://oscar.finnsson.nu/pagerjs/demo/#setup)
+* [Setup](http://pagerjs.com/demo/#setup)
 
 
 ### `pager.startHashChange([String])`
 
 Used if you are using `jQuery hashchange`.
 
-* [Setup](http://oscar.finnsson.nu/pagerjs/demo/#setup)
+* [Setup](http://pagerjs.com/demo/#setup)
 
 
 ### `pager.startHistoryJs([String])`
 
 Used if you are using `History.js`.
 
-* [HTML5 History API](http://oscar.finnsson.nu/pagerjs/demo/#html5_history)
-* [Setup](http://oscar.finnsson.nu/pagerjs/demo/#setup)
+* [HTML5 History API](http://pagerjs.com/demo/#html5_history)
+* [Setup](http://pagerjs.com/demo/#setup)
 
 ### `pager.extendWithPage(Object)`
 
 Extends your root view model with a root page-instance.
 
-* [Setup](http://oscar.finnsson.nu/pagerjs/demo/#setup)
+* [Setup](http://pagerjs.com/demo/#setup)
 
 ### page-href
 
@@ -178,9 +178,9 @@ History.js can be used by setting `pager.Href5.history = History` (default to th
 
 It the page-href is supplied a Page-instance the absolute href to the Page-instance is calculated.
 
-* [Relative path](http://oscar.finnsson.nu/pagerjs/demo/#relative_path)
-* [Absolute Path](http://oscar.finnsson.nu/pagerjs/demo/#absolute_path)
-* [HTML5 History](http://oscar.finnsson.nu/pagerjs/demo/#html5_history)
+* [Relative path](http://pagerjs.com/demo/#relative_path)
+* [Absolute Path](http://pagerjs.com/demo/#absolute_path)
+* [HTML5 History](http://pagerjs.com/demo/#html5_history)
 
 ### page
 
@@ -199,144 +199,144 @@ The configuration options for the page-binding.
 ID of scoped page that a router should react to. E.g. `start` or `user/me`.
 If the id is `?` (wildcard) it will match anything if no other page in the same parent match.
 
-* [Setup](http://oscar.finnsson.nu/pagerjs/demo/#setup)
-* [Deep Navigation](http://oscar.finnsson.nu/pagerjs/demo/#deep_navigation)
-* [Matching Wildcards](http://oscar.finnsson.nu/pagerjs/demo/#matching_wildcards)
-* [Deep Navigation with Wildcards](http://oscar.finnsson.nu/pagerjs/demo/#deep_navigation_with_wildcards)
+* [Setup](http://pagerjs.com/demo/#setup)
+* [Deep Navigation](http://pagerjs.com/demo/#deep_navigation)
+* [Matching Wildcards](http://pagerjs.com/demo/#matching_wildcards)
+* [Deep Navigation with Wildcards](http://pagerjs.com/demo/#deep_navigation_with_wildcards)
 
 ### {Object} with
 
 That can change the scope of elements descendants. The same behavior as the normal `with`-binding.
 
-* [Change Binding Context](http://oscar.finnsson.nu/pagerjs/demo/#change_binding_context)
+* [Change Binding Context](http://pagerjs.com/demo/#change_binding_context)
 
 ### {Function} withOnShow
 
 Sets the view model of elements descendants async after the page is shown. This is useful
 so you can extract sub pages view models to other `.js`-files.
 
-* [Lazy-Bind View-Model](http://oscar.finnsson.nu/pagerjs/demo/#lazy_bind_view_model)
+* [Lazy-Bind View-Model](http://pagerjs.com/demo/#lazy_bind_view_model)
 
 ### {String/Function} source
 
 Source to load into element using `jQuery#load`. The source will be loaded once the page is processed.
 If it is a function it is invoked.
 
-* [Load External Content](http://oscar.finnsson.nu/pagerjs/demo/#load_external_content)
-* [Load View using Custom Method](http://oscar.finnsson.nu/pagerjs/demo/#custom_view_loader)
+* [Load External Content](http://pagerjs.com/demo/#load_external_content)
+* [Load View using Custom Method](http://pagerjs.com/demo/#custom_view_loader)
 
 ### {Function} sourceLoaded
 
 Is a method/event/callback to run once the `source` (or `sourceOnShow`) is loaded.
 
-* [Load External Content](http://oscar.finnsson.nu/pagerjs/demo/#load_external_content)
+* [Load External Content](http://pagerjs.com/demo/#load_external_content)
 
 ### {String/Function} sourceOnShow
 
 Source to load into element using `jQuery#load` when the element is displayed. Thus sub pages
 can be extracted and loaded on demand. If it is a function it is invoked.
 
-* [Lazy-Load External Content](http://oscar.finnsson.nu/pagerjs/demo/#lazy_load_external_content)
-* [Load View using Custom Method](http://oscar.finnsson.nu/pagerjs/demo/#custom_view_loader)
+* [Lazy-Load External Content](http://pagerjs.com/demo/#lazy_load_external_content)
+* [Load View using Custom Method](http://pagerjs.com/demo/#custom_view_loader)
 
 ### {Boolean/Number} sourceCache
 
 Can be set to true in order for sourceOnShow to only load the source once.
 If a number is specified the cache is valid for that amount of time in seconds.
 
-* [Cached Lazy-Loaded Content](http://oscar.finnsson.nu/pagerjs/demo/#cached_lazy)
+* [Cached Lazy-Loaded Content](http://pagerjs.com/demo/#cached_lazy)
 
 ### {String} frame
 
 Can be set to `iframe` in order for the source to be loaded into an iframe. If the page contains
 an iframe that element is used.
 
-* [Load Content into iframe](http://oscar.finnsson.nu/pagerjs/demo/#load_into_iframe)
-* [Configure an iframe](http://oscar.finnsson.nu/pagerjs/demo/#configure_iframe)
+* [Load Content into iframe](http://pagerjs.com/demo/#load_into_iframe)
+* [Configure an iframe](http://pagerjs.com/demo/#configure_iframe)
 
 ### {Boolean} modal
 
 Can be set to `true` in order for the page to act as a modal. If a page is a modal it can be
 found by child-pages to sibling-pages of the modal.
 
-* [Modals](http://oscar.finnsson.nu/pagerjs/demo/#modals)
+* [Modals](http://pagerjs.com/demo/#modals)
 
 ### {Function} beforeHide
 
 Is called before the page is hidden.
 
-* [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
+* [Custom JS when Navigating](http://pagerjs.com/demo/#custom_js_when_navigating)
 
 ### {Function} beforeShow
 
 Is called before the page is shown.
 
-* [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
+* [Custom JS when Navigating](http://pagerjs.com/demo/#custom_js_when_navigating)
 
 ### {Function} afterHide
 
 Is called after the page is hidden.
 
-* [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
+* [Custom JS when Navigating](http://pagerjs.com/demo/#custom_js_when_navigating)
 
 ### {Function} afterShow
 
 Is called after the page is shown.
 
-* [Custom JS when Navigating](http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating)
+* [Custom JS when Navigating](http://pagerjs.com/demo/#custom_js_when_navigating)
 
 ### {Function} hideElement
 
 Custom hide-method instead of the default `$(element).hide()`;
 
-* [Custom Hide- and Show-Methods](http://oscar.finnsson.nu/pagerjs/demo/#custom_hide_show)
+* [Custom Hide- and Show-Methods](http://pagerjs.com/demo/#custom_hide_show)
 
 ### {Function} showElement
 
 Custom show-method instead of the default `$(element).show()`;
 
-* [Custom Hide- and Show-Methods](http://oscar.finnsson.nu/pagerjs/demo/#custom_hide_show)
+* [Custom Hide- and Show-Methods](http://pagerjs.com/demo/#custom_hide_show)
 
 ### {Function} loader
 
 Loader to call once the page is loaded. Can e.g. create a spinner inside the element.
 
-* [Loader](http://oscar.finnsson.nu/pagerjs/demo/#loader)
+* [Loader](http://pagerjs.com/demo/#loader)
 
 ### {Function} navigationFailed
 
 Method to call if a navigation could not find any matching page.
 
-* [Reacting to Failed Navigation](http://oscar.finnsson.nu/pagerjs/demo/#failed_navigation)
+* [Reacting to Failed Navigation](http://pagerjs.com/demo/#failed_navigation)
 
 ### {Object} params
 
 Binds URL-parameters to local observables.
 
-* [Binding URI parameters](http://oscar.finnsson.nu/pagerjs/demo/#params)
+* [Binding URI parameters](http://pagerjs.com/demo/#params)
 
 ### {Function} guard
 
 Validates a page transition before it is happening.
 
-* [Guards](http://oscar.finnsson.nu/pagerjs/demo/#guards)
+* [Guards](http://pagerjs.com/demo/#guards)
 
 ### {String} fx
 
-* [FX](http://oscar.finnsson.nu/pagerjs/demo/#fx)
+* [FX](http://pagerjs.com/demo/#fx)
 
 ### {Object} vars
 
 Created scoped observables for the view. Useful for when observables are needed purely for the view
 and has no connection to the view-model.
 
-* [Custom observables in the view](http://oscar.finnsson.nu/pagerjs/demo/#vars)
+* [Custom observables in the view](http://pagerjs.com/demo/#vars)
 
 ### {Boolean} deep
 
 By setting `deep: true` a wildcard page will deep-load supplied sources.
 
-* [Deep Load Content into Wildcard](http://oscar.finnsson.nu/pagerjs/demo/#deep_load_content_into_wildcard)
+* [Deep Load Content into Wildcard](http://pagerjs.com/demo/#deep_load_content_into_wildcard)
 
 ## Cookbook
 

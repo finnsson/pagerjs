@@ -1,0 +1,51 @@
+<head>
+    <title>Pager.js Demo Start</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    
+    
+    
+    
+    
+    <meta name="fragment" content="!">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#!/start">pager.js</a>
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 60px;">
+<div data-bind="page: {id: 'start', title: 'Pager.js Demo Start'}" style="display: block; ">
+    <header class="jumbotron subhead">
+        <h1>Show start page by default</h1>
+        <p class="lead"> This is the default start page. It is so because the page ID is set to <code>'start'</code>.
+            Every other element with a page binding (<code>data-bind="page: {id: ...}"</code>) will be hidden
+            by default. Set <code>title: 'Some Title'</code> if you want to update the page title as the user
+            navigates to the page (look up at the title as you navigate this tutorial).
+        </p>
+    </header>
+        <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {</span><a data-bind="tooltip: {}" data-original-title="start it will be displayed by default"><span class="atv">id: 'start'</span></a><span class="atv">, </span><a data-bind="tooltip: {}" data-original-title="change document title to this"><span class="atv">title: 'Pager.js Demo Start'</span></a><span class="atv">}"</span><span class="tag">&gt;</span></li><li class="L1"><span class="pln">    ...</span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#!/structure"</span><span class="tag">&gt;</span><span class="pln">Read about the structure.</span><span class="tag">&lt;/a&gt;</span><span class="pln">...</span></li><li class="L2"><span class="tag">&lt;/div&gt;</span></li><li class="L3"><span class="pln">        </span></li></ol></pre>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#!/structure">Read about the structure.</a>
+    </div>
+</div>
+</div>
+<footer>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="http://oscar.finnsson.nu/pagerjs/">Homepage</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs">Source code</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/new">Submit issues</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/milestones">Roadmap</a></li>
+        </ul>
+    </div>
+</footer>
+</body>

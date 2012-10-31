@@ -1,0 +1,64 @@
+<head>
+    <title>Setup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    
+    
+    
+    
+    
+    <meta name="fragment" content="!">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#!/start">pager.js</a>
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 60px;">
+<div data-bind="page: {id: 'setup', title: 'Setup'}" style="display: block; ">
+    <header class="jumbotron subhead">
+        <h1>Setup</h1>
+        <p class="lead">
+            Pager.js depends on <a href="http://knockoutjs.com/">KnockoutJS</a>,
+            <a href="http://jquery.com/">jQuery</a> and <a href="http://underscorejs.org/">Underscore.js</a>
+            (or <a href="http://lodash.com/">Lo-Dash</a>). Include either
+            <a href="https://raw.github.com/finnsson/pagerjs/master/pager.js">pager.js</a>
+            or <a href="https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js">pager.min.js</a>.
+            Choose between a naïve history manager (<code>pager.start([id: String])</code>),
+            a history manager based on jQuery hashchange (<code>pager.startHashChange([id: String])</code>),
+            a history manager based on History.js (<code>pager.startHistoryJs([id: String])</code>)
+            or write your own.
+        </p>
+    </header>
+    <h2>Naïve history manager</h2>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="com">// extend your view-model with pager.js specific data</span></li><li class="L1"><span class="pln">pager</span><span class="pun">.</span><span class="pln">extendWithPage</span><span class="pun">(</span><span class="pln">viewModel</span><span class="pun">);</span></li><li class="L2"><span class="com">// apply the view-model using KnockoutJS as normal</span></li><li class="L3"><span class="pln">ko</span><span class="pun">.</span><span class="pln">applyBindings</span><span class="pun">(</span><span class="pln">viewModel</span><span class="pun">);</span></li><li class="L4"><span class="com">// start pager.js</span></li><li class="L5"><span class="pln">pager</span><span class="pun">.</span><span class="pln">start</span><span class="pun">();</span></li><li class="L6"><span class="pln">    </span></li></ol></pre>
+    <h2>jQuery Hashchange as history manager</h2>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="com">// use #!/ instead of the default #</span></li><li class="L1"><span class="pln">pager</span><span class="pun">.</span><span class="typ">Href</span><span class="pun">.</span><span class="pln">hash </span><span class="pun">=</span><span class="pln"> </span><span class="str">'#!/'</span><span class="pun">;</span></li><li class="L2"><span class="com">// extend your view-model with pager.js specific data</span></li><li class="L3"><span class="pln">pager</span><span class="pun">.</span><span class="pln">extendWithPage</span><span class="pun">(</span><span class="pln">viewModel</span><span class="pun">);</span></li><li class="L4"><span class="com">// apply the view-model using KnockoutJS as normal</span></li><li class="L5"><span class="pln">ko</span><span class="pun">.</span><span class="pln">applyBindings</span><span class="pun">(</span><span class="pln">viewModel</span><span class="pun">);</span></li><li class="L6"><span class="com">// start pager.js</span></li><li class="L7"><span class="pln">pager</span><span class="pun">.</span><span class="pln">startHashChange</span><span class="pun">();</span></li><li class="L8"><span class="pln">    </span></li></ol></pre>
+    <h2>History.js as history manager</h2>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="com">// use HTML5 history</span></li><li class="L1"><span class="pln">pager</span><span class="pun">.</span><span class="pln">useHTML5history </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">;</span></li><li class="L2"><span class="com">// use History instead of history</span></li><li class="L3"><span class="pln">pager</span><span class="pun">.</span><span class="typ">Href5</span><span class="pun">.</span><span class="pln">history </span><span class="pun">=</span><span class="pln"> </span><span class="typ">History</span><span class="pun">;</span></li><li class="L4"><span class="com">// extend your view-model with pager.js specific data</span></li><li class="L5"><span class="pln">pager</span><span class="pun">.</span><span class="pln">extendWithPage</span><span class="pun">(</span><span class="pln">viewModel</span><span class="pun">);</span></li><li class="L6"><span class="com">// apply the view-model using KnockoutJS as normal</span></li><li class="L7"><span class="pln">ko</span><span class="pun">.</span><span class="pln">applyBindings</span><span class="pun">(</span><span class="pln">viewModel</span><span class="pun">);</span></li><li class="L8"><span class="com">// start pager.js</span></li><li class="L9"><span class="pln">pager</span><span class="pun">.</span><span class="pln">startHistoryJs</span><span class="pun">();</span></li><li class="L0"><span class="pln">    </span></li></ol></pre>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#!/deep_navigation"> You can jump to another page using an absolute
+            fragment identifier.
+        </a>
+    </div>
+</div>
+</div>
+<footer>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="http://oscar.finnsson.nu/pagerjs/">Homepage</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs">Source code</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/new">Submit issues</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/milestones">Roadmap</a></li>
+        </ul>
+    </div>
+</footer>
+</body>

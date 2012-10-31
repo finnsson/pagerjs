@@ -1,0 +1,64 @@
+<head>
+    <title>Deep Load Content into Wildcard</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    
+    
+    
+    
+    
+    <meta name="fragment" content="!">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#!/start">pager.js</a>
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 60px;">
+<div data-bind="page: {id: 'deep_load_content_into_wildcard', title: 'Deep Load Content into Wildcard'}" style="display: block; ">
+    <header class="jumbotron subhead">
+        <h1>Deep Load Content into Wildcard</h1>
+        <p class="lead">
+            Normally a <code>sourceOnShow</code> will only use the first page of the route as its
+            URL, but by specifying <code>deep: true</code> the entire route will be used to
+            identify the content to load. This makes it possible to load arbitrarily nested content
+            into the same page-element.
+        </p>
+    </header>
+    <div class="well">
+        
+        <div data-bind="page: {id: 'deep'}" style="display: block; ">
+            <h3>Character</h3>
+            <div data-bind="page: {id: '?', deep: true, sourceOnShow: '{1}.html'}" style="display: block; "><p>
+    Fry
+    </p><blockquote>
+        I'm going to continue never washing this cheek again.
+    </blockquote>
+<p></p></div>
+        </div>
+    </div>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'start'}"</span><span class="tag">&gt;</span></li><li class="L1"><span class="pln">    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#!/deep_load_content_into_wildcard/deep/character/fry"</span><span class="tag">&gt;</span><span class="pln">Go to Fry</span><span class="tag">&lt;/a&gt;</span></li><li class="L2"><span class="tag">&lt;/div&gt;</span></li><li class="L3"><span class="pln">&nbsp;</span></li><li class="L4"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'deep'}"</span><span class="tag">&gt;</span></li><li class="L5"><span class="pln">    </span><span class="tag">&lt;h3&gt;</span><span class="pln">Character</span><span class="tag">&lt;/h3&gt;</span></li><li class="L6"><span class="pln">&nbsp;</span></li><li class="L7"><span class="pln">    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: '?', </span><a data-bind="tooltip: {}" data-original-title="now the wildcard will deep load"><span class="atv">deep: true</span></a><span class="atv">, sourceOnShow: '{1}.html'}"</span><span class="tag">&gt;</span></li><li class="L8"><span class="pln">    </span><span class="tag">&lt;/div&gt;</span></li><li class="L9"><span class="tag">&lt;/div&gt;</span></li><li class="L0"><span class="pln">    </span></li></ol></pre>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#!/load_into_iframe">Read about loading content into iframes</a>
+    </div>
+</div>
+</div>
+<footer>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="http://oscar.finnsson.nu/pagerjs/">Homepage</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs">Source code</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/new">Submit issues</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/milestones">Roadmap</a></li>
+        </ul>
+    </div>
+</footer>
+</body>

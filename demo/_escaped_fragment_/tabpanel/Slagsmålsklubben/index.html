@@ -1,0 +1,63 @@
+<head>
+    <title>Slagsmålsklubben</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    
+    
+    
+    
+    
+    <meta name="fragment" content="!">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#!/start">pager.js</a>
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 60px;">
+<div data-bind="page: {id: 'tabpanel', title: 'Tab Panel'}" style="display: block; ">
+    <header class="jumbotron subhead">
+        <h1>Tab Panel</h1>
+        <p class="lead">
+            There is no special tab panel widget shipping with pager.js.
+            It is however very easy to construct one using the <code>children</code>
+            observableArray and <code>isVisible</code> observable property.
+        </p>
+    </header>
+    <div>
+        <ul class="nav nav-tabs" data-bind="foreach: $page.children">
+            <li data-bind="css: {active: isVisible}" class="active"><a data-bind="text: $data.val('title'), page-href: $data" href="#!/tabpanel/Slagsmålsklubben">Slagsmålsklubben</a></li>
+        
+            <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.val('title'), page-href: $data" href="#!/tabpanel/Binärpilot">Binärpilot</a></li>
+        </ul>
+        <div data-bind="page: {id: 'Slagsmålsklubben', title: 'Slagsmålsklubben', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:66KBDVJnA6c0DjHeSZYaHb', frame: 'iframe'}" class="hero-unit" style="display: block; ">
+            <iframe width="300" height="380" frameborder="0" allowtransparency="true" src="https://embed.spotify.com/?uri=spotify:album:66KBDVJnA6c0DjHeSZYaHb"></iframe>
+        </div>
+        
+    </div>
+    
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;div&gt;</span></li><li class="L1"><span class="pln">    </span><span class="tag">&lt;ul</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"nav nav-tabs"</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"foreach: $page.children"</span><span class="tag">&gt;</span></li><li class="L2"><span class="pln">        </span><span class="tag">&lt;li</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"css: {active: isVisible}"</span><span class="tag">&gt;&lt;a</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"text: $data.val('title'), page-href: $data"</span><span class="tag">&gt;&lt;/a&gt;&lt;/li&gt;</span></li><li class="L3"><span class="pln">    </span><span class="tag">&lt;/ul&gt;</span></li><li class="L4"><span class="pln">&nbsp;</span></li><li class="L5"><span class="pln">    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'Slagsmålsklubben', title: 'Slagsmålsklubben', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:66KBDVJnA6c0DjHeSZYaHb', frame: 'iframe'}"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"hero-unit"</span><span class="tag">&gt;</span></li><li class="L6"><span class="pln">        </span><span class="tag">&lt;iframe</span><span class="pln"> </span><span class="atn">width</span><span class="pun">=</span><span class="atv">"300"</span><span class="pln"> </span><span class="atn">height</span><span class="pun">=</span><span class="atv">"380"</span><span class="pln"> </span><span class="atn">frameborder</span><span class="pun">=</span><span class="atv">"0"</span><span class="pln"> </span><span class="atn">allowtransparency</span><span class="pun">=</span><span class="atv">"true"</span><span class="tag">&gt;&lt;/iframe&gt;</span></li><li class="L7"><span class="pln">    </span><span class="tag">&lt;/div&gt;</span></li><li class="L8"><span class="pln">&nbsp;</span></li><li class="L9"><span class="pln">    </span><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'Binärpilot', title: 'Binärpilot', sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:67LKycg4jAoC06kZgjvbNd', frame: 'iframe'}"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"hero-unit"</span><span class="tag">&gt;</span></li><li class="L0"><span class="pln">        </span><span class="tag">&lt;iframe</span><span class="pln"> </span><span class="atn">width</span><span class="pun">=</span><span class="atv">"300"</span><span class="pln"> </span><span class="atn">height</span><span class="pun">=</span><span class="atv">"380"</span><span class="pln"> </span><span class="atn">frameborder</span><span class="pun">=</span><span class="atv">"0"</span><span class="pln"> </span><span class="atn">allowtransparency</span><span class="pun">=</span><span class="atv">"true"</span><span class="tag">&gt;&lt;/iframe&gt;</span></li><li class="L1"><span class="pln">    </span><span class="tag">&lt;/div&gt;</span></li><li class="L2"><span class="tag">&lt;/div&gt;</span></li><li class="L3"><span class="pln">    </span></li></ol></pre>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#!/failed_navigation">Read about reacting to missing pages</a>
+    </div>
+</div>
+</div>
+<footer>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="http://oscar.finnsson.nu/pagerjs/">Homepage</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs">Source code</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/new">Submit issues</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/milestones">Roadmap</a></li>
+        </ul>
+    </div>
+</footer>
+</body>

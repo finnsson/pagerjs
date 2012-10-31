@@ -1,0 +1,65 @@
+<head>
+    <title>Guards</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    
+    
+    
+    
+    
+    <meta name="fragment" content="!">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#!/start">pager.js</a>
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 60px;">
+<div data-bind="page: {id: 'guards', title: 'Guards'}" style="display: block; ">
+    <header class="jumbotron subhead">
+        <h1>Guards</h1>
+        <p class="lead">
+            Guards are methods that are run before the page navigation takes place and
+            that can stop the navigation from displaying a certain page.
+            <br>
+            Use the property <code>guard: someMethod</code> to apply the guard. The method
+            takes 3 parameters: page, route, and callback. If the callback is called
+            the navigation takes place - otherwise it is stopped.
+            <br>
+            Use cases are login, validating steps in state machines, etc.
+            <br>
+            The reason the guard takes a callback as the third argument is simply because the guard might be asynchronous, 
+            e.g., accessing a webserver for login details or asking if a valid shopping cart exists, etc.
+        </p>
+    </header>
+    <a class="btn" data-bind="page-href: 'admin'" href="#!/guards/admin">Go to admin panel</a><br>
+    
+    
+    <br>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'admin', guard: isLoggedIn}"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"well"</span><span class="tag">&gt;</span></li><li class="L1"><span class="pln">    This page is only accessible if the user is logged in.</span></li><li class="L2"><span class="pln">    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#!/guards"</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"click: logout"</span><span class="tag">&gt;</span><span class="pln">Logout</span><span class="tag">&lt;/a&gt;</span></li><li class="L3"><span class="tag">&lt;/div&gt;</span></li><li class="L4"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page: {id: 'login'}"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"well"</span><span class="tag">&gt;</span></li><li class="L5"><span class="pln">    </span><span class="tag">&lt;p</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"alert alert-error"</span><span class="tag">&gt;</span><span class="pln">You are not logged in. Check the checkbox and try again.</span><span class="tag">&lt;/p&gt;</span></li><li class="L6"><span class="pln">&nbsp;</span></li><li class="L7"><span class="pln">    </span><span class="tag">&lt;form&gt;</span></li><li class="L8"><span class="pln">        </span><span class="tag">&lt;label</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"checkbox"</span><span class="tag">&gt;</span><span class="pln">Login </span><span class="tag">&lt;input</span><span class="pln"> </span><span class="atn">type</span><span class="pun">=</span><span class="atv">"checkbox"</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"checked: loggedIn"</span><span class="tag">/&gt;</span><span class="pln"> </span><span class="tag">&lt;/label&gt;</span></li><li class="L9"><span class="pln">    </span><span class="tag">&lt;/form&gt;</span></li><li class="L0"><span class="tag">&lt;/div&gt;</span></li><li class="L1"><span class="pln">    </span></li></ol></pre>
+    where
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">loggedIn</span><span class="pun">:</span><span class="pln"> ko</span><span class="pun">.</span><span class="pln">observable</span><span class="pun">(</span><span class="kwd">false</span><span class="pun">),</span></li><li class="L1"><span class="pln">isLoggedIn</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">function</span><span class="pun">(</span><span class="pln">page</span><span class="pun">,</span><span class="pln"> route</span><span class="pun">,</span><span class="pln"> callback</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></li><li class="L2"><span class="pln">    </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">viewModel</span><span class="pun">.</span><span class="pln">loggedIn</span><span class="pun">())</span><span class="pln"> </span><span class="pun">{</span></li><li class="L3"><span class="pln">        callback</span><span class="pun">();</span></li><li class="L4"><span class="pln">    </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span></li><li class="L5"><span class="pln">        window</span><span class="pun">.</span><span class="pln">location</span><span class="pun">.</span><span class="pln">href </span><span class="pun">=</span><span class="pln"> </span><span class="str">"login"</span><span class="pun">;</span></li><li class="L6"><span class="pln">    </span><span class="pun">}</span></li><li class="L7"><span class="pun">},</span></li><li class="L8"><span class="pln">    </span></li></ol></pre>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#!/fx">Read about FX</a>
+    </div>
+</div>
+</div>
+<footer>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="http://oscar.finnsson.nu/pagerjs/">Homepage</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs">Source code</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/new">Submit issues</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/milestones">Roadmap</a></li>
+        </ul>
+    </div>
+</footer>
+</body>

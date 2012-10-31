@@ -1,0 +1,82 @@
+<head>
+    <title>Custom Widgets</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    
+    
+    
+    
+    
+    <meta name="fragment" content="!">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#!/start">pager.js</a>
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 60px;">
+<div data-bind="page: {id: 'custom_widgets', title: 'Custom Widgets'}" style="display: block; ">
+    <header class="jumbotron subhead">
+        <h1>Custom Widgets</h1>
+        <p class="lead">
+            pager.js is based on sound object oriented principles, making it easy to extend
+            with new custom widgets.
+            <br>
+            In this tutorial the custom binding <code>page-accordion-item</code> is demonstrated.
+        </p>
+    </header>
+    <p>The page-accordion-item works like</p>
+    <div data-bind="page: {id: 'start'}" class="well" style="display: block; ">
+        <div data-bind="page-accordion-item: {id: 'zoidberg'}">
+            <a href="#!/custom_widgets/start/zoidberg">Zoidberg</a>
+            
+        </div>
+        <div data-bind="page-accordion-item: {id: 'hermes'}">
+            <a href="#!/custom_widgets/start/hermes">Hermes</a>
+            
+        </div>
+    </div>
+    and is constructed with the markup
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page-accordion-item: {id: 'zoidberg'}"</span><span class="tag">&gt;</span></li><li class="L1"><span class="pln">    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#!/custom_widgets/start/zoidberg"</span><span class="tag">&gt;</span><span class="pln">Zoidberg</span><span class="tag">&lt;/a&gt;</span></li><li class="L2"><span class="pln">&nbsp;</span></li><li class="L3"><span class="pln">    </span><span class="tag">&lt;div&gt;</span><span class="pln">Zoidberg Information</span><span class="tag">&lt;/div&gt;</span></li><li class="L4"><span class="tag">&lt;/div&gt;</span></li><li class="L5"><span class="tag">&lt;div</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"page-accordion-item: {id: 'hermes'}"</span><span class="tag">&gt;</span></li><li class="L6"><span class="pln">    </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">href</span><span class="pun">=</span><span class="atv">"#!/custom_widgets/start/hermes"</span><span class="tag">&gt;</span><span class="pln">Hermes</span><span class="tag">&lt;/a&gt;</span></li><li class="L7"><span class="pln">&nbsp;</span></li><li class="L8"><span class="pln">    </span><span class="tag">&lt;div&gt;</span><span class="pln">Hermes Information</span><span class="tag">&lt;/div&gt;</span></li><li class="L9"><span class="tag">&lt;/div&gt;</span></li><li class="L0"><span class="pln">    </span></li></ol></pre>
+    <p>
+        First we need to create a class that inherits from <code>pager.Page</code>.
+    </p>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">pager</span><span class="pun">.</span><span class="typ">PageAccordionItem</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pln"> </span><span class="pun">(</span><span class="pln">element</span><span class="pun">,</span><span class="pln"> valueAccessor</span><span class="pun">,</span><span class="pln"> allBindingsAccessor</span><span class="pun">,</span><span class="pln"> viewModel</span><span class="pun">,</span><span class="pln"> bindingContext</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></li><li class="L1"><span class="pln">    pager</span><span class="pun">.</span><span class="typ">Page</span><span class="pun">.</span><span class="pln">apply</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">,</span><span class="pln"> arguments</span><span class="pun">);</span></li><li class="L2"><span class="pun">};</span></li><li class="L3"><span class="pln">pager</span><span class="pun">.</span><span class="typ">PageAccordionItem</span><span class="pun">.</span><span class="pln">prototype </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> pager</span><span class="pun">.</span><span class="typ">Page</span><span class="pun">();</span></li><li class="L4"><span class="pln">    </span></li></ol></pre>
+    <p>
+        The <code>Page</code> class has these methods to override:
+    </p>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">init </span><span class="pun">:</span><span class="pln"> </span><span class="kwd">void</span></li><li class="L1"><span class="pln">getValue </span><span class="pun">:</span><span class="pln"> </span><span class="kwd">void</span></li><li class="L2"><span class="pln">getPage </span><span class="pun">:</span><span class="pln"> </span><span class="kwd">void</span></li><li class="L3"><span class="pln">sourceUrl </span><span class="pun">:</span><span class="pln"> </span><span class="typ">String</span></li><li class="L4"><span class="pln">loadSource </span><span class="pun">:</span><span class="pln"> </span><span class="typ">String</span></li><li class="L5"><span class="pln">show</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">void</span></li><li class="L6"><span class="pln">showElement</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">void</span></li><li class="L7"><span class="pln">hideElement </span><span class="pun">:</span><span class="pln"> </span><span class="kwd">void</span></li><li class="L8"><span class="pln">    </span></li></ol></pre>
+    <p>
+        We want our custom binding to always show the first child element and only hide the second child element.
+        Thus we need to override <code>showElement</code> and <code>hideElement</code>.
+        <code>showElement</code> should show the second child and <code>hideElement</code> should hide the second child.
+    </p>
+    <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="com">// get second child</span></li><li class="L1"><span class="pln">pager</span><span class="pun">.</span><span class="typ">PageAccordionItem</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">getAccordionBody </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pln"> </span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></li><li class="L2"><span class="pln">    </span><span class="kwd">return</span><span class="pln"> $</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">element</span><span class="pun">).</span><span class="pln">children</span><span class="pun">()[</span><span class="lit">1</span><span class="pun">];</span></li><li class="L3"><span class="pun">};</span></li><li class="L4"><span class="pln">&nbsp;</span></li><li class="L5"><span class="com">// hide second child</span></li><li class="L6"><span class="pln">pager</span><span class="pun">.</span><span class="typ">PageAccordionItem</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">hideElement </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pln"> </span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></li><li class="L7"><span class="pln">    </span><span class="com">// use hide if it is the first time the page is hidden</span></li><li class="L8"><span class="pln">    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(!</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">pageAccordionItemHidden</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></li><li class="L9"><span class="pln">        </span><span class="kwd">this</span><span class="pun">.</span><span class="pln">pageAccordionItemHidden </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">;</span></li><li class="L0"><span class="pln">        $</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">getAccordionBody</span><span class="pun">()).</span><span class="pln">hide</span><span class="pun">();</span></li><li class="L1"><span class="pln">    </span><span class="pun">}</span><span class="pln"> </span><span class="kwd">else</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="com">// else use a slideUp animation</span></li><li class="L2"><span class="pln">        $</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">getAccordionBody</span><span class="pun">()).</span><span class="pln">slideUp</span><span class="pun">();</span></li><li class="L3"><span class="pln">    </span><span class="pun">}</span></li><li class="L4"><span class="pun">};</span></li><li class="L5"><span class="pln">&nbsp;</span></li><li class="L6"><span class="com">// show the second child using a slideDown animation</span></li><li class="L7"><span class="pln">pager</span><span class="pun">.</span><span class="typ">PageAccordionItem</span><span class="pun">.</span><span class="pln">prototype</span><span class="pun">.</span><span class="pln">showElement </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">function</span><span class="pln"> </span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></li><li class="L8"><span class="pln">    $</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">.</span><span class="pln">getAccordionBody</span><span class="pun">()).</span><span class="pln">slideDown</span><span class="pun">();</span></li><li class="L9"><span class="pun">};</span></li><li class="L0"><span class="pln">    </span></li></ol></pre>
+    <p>
+        Finally you need to add the new class as a new custom binding.
+    </p>
+        <pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="pln">ko</span><span class="pun">.</span><span class="pln">bindingHandlers</span><span class="pun">[</span><span class="str">'page-accordion-item'</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">{</span></li><li class="L1"><span class="pln">    init</span><span class="pun">:</span><span class="kwd">function</span><span class="pln"> </span><span class="pun">(</span><span class="pln">element</span><span class="pun">,</span><span class="pln"> valueAccessor</span><span class="pun">,</span><span class="pln"> allBindingsAccessor</span><span class="pun">,</span><span class="pln"> viewModel</span><span class="pun">,</span><span class="pln"> bindingContext</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></li><li class="L2"><span class="pln">        </span><span class="kwd">var</span><span class="pln"> pageAccordionItem </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> pager</span><span class="pun">.</span><span class="typ">PageAccordionItem</span><span class="pun">(</span><span class="pln">element</span><span class="pun">,</span><span class="pln"> valueAccessor</span><span class="pun">,</span><span class="pln"> allBindingsAccessor</span><span class="pun">,</span><span class="pln"> viewModel</span><span class="pun">,</span><span class="pln"> bindingContext</span><span class="pun">);</span></li><li class="L3"><span class="pln">        pageAccordionItem</span><span class="pun">.</span><span class="pln">init</span><span class="pun">();</span></li><li class="L4"><span class="pln">    </span><span class="pun">},</span></li><li class="L5"><span class="pln">    update</span><span class="pun">:</span><span class="kwd">function</span><span class="pln"> </span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span></li><li class="L6"><span class="pln">    </span><span class="pun">}</span></li><li class="L7"><span class="pun">};</span></li><li class="L8"><span class="pln">   </span></li></ol></pre>
+    <div class="form-actions">
+        <a class="btn btn-large btn-primary" href="#!/modals">Read about modals</a>
+    </div>
+</div>
+</div>
+<footer>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="http://oscar.finnsson.nu/pagerjs/">Homepage</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs">Source code</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/new">Submit issues</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/milestones">Roadmap</a></li>
+        </ul>
+    </div>
+</footer>
+</body>

@@ -1,0 +1,102 @@
+<head>
+    <title>Lethal</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    
+    
+    
+    
+    
+    <meta name="fragment" content="!">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#!/start">pager.js</a>
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 60px;">
+<div data-bind="page: {id: 'fx', title: 'FX', sourceOnShow: 'fx.html', sourceCache: true}" style="display: block; "><header class="jumbotron subhead">
+    <h1>FX</h1>
+    <p class="lead">
+        pager.js comes pre-packed with effects for fading, sliding, zooming, and flipping between pages.
+        These effects can easily be added to your page using
+        <code>fx: 'zoom'</code>,
+        <code>fx: 'flip'</code>,
+        <code>fx: 'slide'</code> or
+        <code>fx: 'fade'</code>.
+        In order to use <i>zoom</i> or <i>flip</i> you'll need to include <code>pager.css</code> or
+        <code>pager.less</code>.
+    </p>
+</header>
+<h2><a href="#!/fx/zoom">Zoom</a></h2>
+<div data-bind="page: {id: 'zoom'}" style="display: block; ">
+    <ul class="nav nav-tabs" data-bind="foreach: $page.children">
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()" href="#!/fx/zoom/bend_her">Bend Her</a>
+        </li>
+    
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()" href="#!/fx/zoom/buggalo_zoom">Buggalo</a>
+        </li>
+    
+        <li data-bind="css: {active: isVisible}" class="active"><a data-bind="text: $data.getValue().title, page-hash: getId()" href="#!/fx/zoom/lethal_zoom">Lethal</a>
+        </li>
+    </ul>
+    
+    
+    <div data-bind="page: {id: 'lethal_zoom', title: 'Lethal', fx: 'zoom', source: 'lethal.html'}" style="display: block; " class="pagerjs-fx-zoom pagerjs-fx-zoom-in"><h1>Lethal Inspection</h1>
+<p>I'm sure those windmills will keep them cool. Say what? File not found. Bender! Ship! Stop bickering or I'm
+    going to come back there and change your opinions manually! Wow, you got that off the Internet? In my day,
+    the Internet was only used to download pornography. And from now on you're all named Bender Jr.</p>
+<h2>Teenage Mutant Leela's Hurdles</h2>
+<p>Too much work. Let's burn it and say we dumped it in the sewer. I'm sure those windmills will keep them cool.
+    Hello, little man. I will destroy you! In our darkest hour, we can stand erect, with proud upthrust bosoms.
+    These old Doomsday Devices are dangerously unstable. I'll rest easier not knowing where they are.</p>
+<ul>
+    <li>Ah, computer dating. It's like pimping, but you rarely have to use the phrase "upside your head."</li>
+    <li>Too much work. Let's burn it and say we dumped it in the sewer.</li>
+</ul>
+<h3>The Luck of the Fryrish</h3>
+<p>Come, Comrade Bender! We must take to the streets! You'll have all the Slurm you can drink when you're
+    partying with Slurms McKenzie! Ow, my spirit!</p>
+<h4>Space Pilot 3000</h4>
+<p>Bender! Ship! Stop bickering or I'm going to come back there and change your opinions manually! I just want
+    to talk. It has nothing to do with mating. Fry, that doesn't make sense. Aww, it's true. I've been hiding it
+    for so long. Fetal stemcells, aren't those controversial? Anyone who laughs is a communist!</p>
+<ol>
+    <li>I haven't felt much of anything since my guinea pig died.</li>
+    <li>Yes, I saw. You were doing well, until everyone died.</li>
+    <li>Bender! Ship! Stop bickering or I'm going to come back there and change your opinions manually!</li>
+    <li>Who am I making this out to?</li>
+</ol>
+<h5>The Mutants Are Revolting</h5>
+<p>Take me to your leader! It's toe-tappingly tragic! Leela, Bender, we're going grave robbing. But, like most
+    politicians, he promised more than he could deliver.</p>
+</div>
+</div>
+<h2><a href="#!/fx/flip">Flip</a></h2>
+<h2><a href="#!/fx/slide">Slide</a></h2>
+<h2><a href="#!/fx/fade">Fade</a></h2>
+<h2><a href="#!/fx/pop">Popout</a></h2>
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/recapitulation">Read a recapitulation about the API</a>
+</div>
+</div>
+</div>
+<footer>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="http://oscar.finnsson.nu/pagerjs/">Homepage</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs">Source code</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/new">Submit issues</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/milestones">Roadmap</a></li>
+        </ul>
+    </div>
+</footer>
+</body>

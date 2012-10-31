@@ -1,0 +1,51 @@
+<head>
+    <title>Absolute Path</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    
+    
+    
+    
+    
+    <meta name="fragment" content="!">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#!/start">pager.js</a>
+            <div class="dropdown">
+                <a class="btn dropdown-toggle"><i class="icon-tasks"></i> Menu</a>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="padding-top: 60px;">
+<div data-bind="page: {id: 'absolute_path', title: 'Absolute Path', sourceOnShow: 'page/absolute_path.html', sourceCache: true}" style="display: block; "><header class="jumbotron subhead">
+    <h1>Absolute Path</h1>
+    <p class="lead">
+        If you got a reference to a page-instance you can bind a <code>href</code> to
+        its path directly. Use supply the <code>page-href</code> binding the
+        page instance and the binding will calculate the correct path to the page.
+        <br>
+        This is useful when iterating over a collection of pages (see the menu on the top).
+    </p>
+</header>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums"><ol class="linenums"><li class="L0"><span class="tag">&lt;ul</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"foreach: $__page__.children"</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"dropdown-menu"</span><span class="pln"> </span><span class="atn">role</span><span class="pun">=</span><span class="atv">"menu"</span></li><li class="L1"><span class="pln">    </span><span class="atn">aria-labelledby</span><span class="pun">=</span><span class="atv">"dropdownMenu"</span><span class="tag">&gt;</span></li><li class="L2"><span class="pln">    </span><span class="tag">&lt;li</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"css: {</span><a data-bind="tooltip: {}" data-original-title="add the class active if the page is visible"><span class="atv">active: isVisible</span></a><span class="atv">}"</span><span class="tag">&gt;</span></li><li class="L3"><span class="pln">        </span><span class="tag">&lt;a</span><span class="pln"> </span><span class="atn">data-bind</span><span class="pun">=</span><span class="atv">"text: val('title'), </span><a data-bind="tooltip: {}" data-original-title="$data is a Page-instance"><span class="atv">page-href: $data</span></a><span class="atv">"</span><span class="tag">&gt;&lt;/a&gt;</span></li><li class="L4"><span class="pln">    </span><span class="tag">&lt;/li&gt;</span></li><li class="L5"><span class="tag">&lt;/ul&gt;</span></li><li class="L6"><span class="pln">    </span></li></ol></pre>
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/html5_history">What about HTML5 history?</a>
+</div></div>
+</div>
+<footer>
+    <div class="pagination pagination-centered">
+        <ul>
+            <li><a href="http://oscar.finnsson.nu/pagerjs/">Homepage</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs">Source code</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/new">Submit issues</a></li>
+            <li><a href="https://github.com/finnsson/pagerjs/issues/milestones">Roadmap</a></li>
+        </ul>
+    </div>
+</footer>
+</body>
