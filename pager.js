@@ -968,7 +968,7 @@
 
         pager.startHashChange = function (id) {
             if(id) {
-                location.hash = id;
+                location.hash = pager.Href.hash + id;
             }
             $(window).hashchange(function () {
                 var hash = location.hash;
@@ -994,7 +994,7 @@
          */
         pager.start = function (id) {
             if(id) {
-                location.hash = id;
+                location.hash = pager.Href.hash + id;
             }
             var routeFromHashToPage = function (hash) {
                 // skip # (or #!/)
