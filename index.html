@@ -55,23 +55,27 @@
             <ul>
               
                 <li>
-                  <a href="#reference-manual/pager-route">`pager.route`</a>
+                  <a href="#reference-manual/pager-page-pager-page">`pager.page : pager.Page`</a>
                 </li>
               
                 <li>
-                  <a href="#reference-manual/pager-start">`pager.start`</a>
+                  <a href="#reference-manual/pager-showchild-string">`pager.showChild(String[])`</a>
                 </li>
               
                 <li>
-                  <a href="#reference-manual/pager-starthashchange">`pager.startHashChange`</a>
+                  <a href="#reference-manual/pager-start-string">`pager.start([String])`</a>
                 </li>
               
                 <li>
-                  <a href="#reference-manual/pager-starthistoryjs">`pager.startHistoryJs`</a>
+                  <a href="#reference-manual/pager-starthashchange-string">`pager.startHashChange([String])`</a>
                 </li>
               
                 <li>
-                  <a href="#reference-manual/pager-extendwithpage">`pager.extendWithPage`</a>
+                  <a href="#reference-manual/pager-starthistoryjs-string">`pager.startHistoryJs([String])`</a>
+                </li>
+              
+                <li>
+                  <a href="#reference-manual/pager-extendwithpage-object">`pager.extendWithPage(Object)`</a>
                 </li>
               
                 <li>
@@ -347,7 +351,7 @@
                 </li>
               
                 <li>
-                  <a href="#release-notes/0-6-current-target">0.6 (Current target)</a>
+                  <a href="#release-notes/0-6">0.6</a>
                 </li>
               
             </ul>
@@ -391,7 +395,12 @@
 <p><a href="https://travis-ci.org/finnsson/pagerjs"><img src="https://travis-ci.org/finnsson/pagerjs.png" alt="Build Status"></a>
 
 </p>
-<p>pager.js is a JavaScript library based on KnockoutJS, jQuery and Underscore.js that provides the possibility of
+<pre><code>one having <span class="keyword">or</span> covering a specified number <span class="keyword">or</span> kind <span class="keyword">of</span> pages
+  - Merriam-Webster</code></pre>
+<p>See the <a href="http://pagerjs.com/demo/">demo</a>.
+
+</p>
+<p>pager.js is a JavaScript library based on KnockoutJS and jQuery that provides the possibility of
 creating single page applications in a declarative fashion - nesting subpages inside subpages where each subpage can be
 developed standalone but still communicate between each other.
 
@@ -399,7 +408,8 @@ developed standalone but still communicate between each other.
 <p>This makes it easier to design very large scale single page web sites.
 
 </p>
-<p>See the <a href="http://oscar.finnsson.nu/pagerjs/demo/">demo</a>.
+<p>This readme is for version 0.7 (development version towards 0.8 milestone). See the r0.6-branch for the latest
+stable milestone.
 
 </p>
 <h2 id='getting-started'>Getting Started</h2 id='getting-started'>
@@ -407,7 +417,7 @@ developed standalone but still communicate between each other.
 <li>Download the <a href="https://raw.github.com/finnsson/pagerjs/master/pager.js">developer</a> version
 or the <a href="https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js">minified</a> version
 of pager.js</li>
-<li><p>Include all dependencies (jQuery, Underscore.js/Lo-Dash, KnockoutJS) as well as pager.js in your site
+<li><p>Include all dependencies (jQuery, KnockoutJS) as well as pager.js in your site
 using either AMD or non-AMD:</p>
 <pre><code> // AMD
  requirejs.config({
@@ -417,7 +427,6 @@ using either AMD or non-AMD:</p>
      },
      paths:{
          jquery:'jquery-1.8.2.min',
-         underscore:'lodash.min',
          knockout:'knockout-2.1.0',
          pager:'pager.amd.min',
          // iff using jquery hashchange
@@ -429,7 +438,6 @@ using either AMD or non-AMD:</p>
 
  // non-AMD
  <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"jquery-1.8.2.min.js"</span>></span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>></span>
- <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"underscore-min.js"</span>></span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>></span>
  <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"knockout-2.1.0.js"</span>></span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>></span>
  <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"pager.js"</span>></span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>></span>
 
@@ -467,7 +475,7 @@ using either AMD or non-AMD:</p>
 </li>
 <li><p>Start using the bindings <code>page</code> and <code>page-href</code>. Consult the
 <a href="http://oscar.finnsson.nu/pagerjs/">web page</a>,
-<a href="http://oscar.finnsson.nu/pagerjs/demo/">demo</a>
+<a href="http://pagerjs.com/demo/">demo</a>
 or <a href="https://github.com/finnsson/pagerjs/tree/master/test">test cases</a> for how to use the bindings.</p>
 </li>
 <li>Rock &#39;n&#39; Roll!</li>
@@ -476,7 +484,6 @@ or <a href="https://github.com/finnsson/pagerjs/tree/master/test">test cases</a>
 <ul>
 <li><a href="http://knockoutjs.com/">KnockoutJS</a></li>
 <li><a href="http://jquery.com/">jQuery</a></li>
-<li><a href="http://underscorejs.org/">Underscore.js</a> or <a href="http://lodash.com/">Lo-Dash</a></li>
 </ul>
 <p>You will usually use pager.js in combination with either
 <a href="https://github.com/cowboy/jquery-hashchange">jQuery hashchange</a>
@@ -513,26 +520,54 @@ you&#39;ll be able to scale up and out the development. In order to ease develop
 extends KnockoutJS with four custom bindings: <code>page</code>, <code>page-href</code>, <code>page-hash</code> and
 <code>page-href5</code>.
 
+</p>
+<h3 id='reference-manual/pager-page-pager-page'><code>pager.page : pager.Page</code></h3 id='reference-manual/pager-page-pager-page'>
+<p>A reference to the root page, of type <code>pager.Page</code>. This page instance is the same as
+<code>$__page__</code> (or <code>$root.$__page__</code>) in your data binding.
 
 </p>
-<h3 id='reference-manual/pager-route'><code>pager.route</code></h3 id='reference-manual/pager-route'>
-<h3 id='reference-manual/pager-start'><code>pager.start</code></h3 id='reference-manual/pager-start'>
-<h3 id='reference-manual/pager-starthashchange'><code>pager.startHashChange</code></h3 id='reference-manual/pager-starthashchange'>
-<h3 id='reference-manual/pager-starthistoryjs'><code>pager.startHistoryJs</code></h3 id='reference-manual/pager-starthistoryjs'>
-<h3 id='reference-manual/pager-extendwithpage'><code>pager.extendWithPage</code></h3 id='reference-manual/pager-extendwithpage'>
-<h4>Example</h4>
-<pre><code><span class="comment">// viewModel is your KnockoutJS view model</span>
-var viewModel = {};
-<span class="comment">// pager.extendWithPage extends your</span>
-<span class="comment">// view model with some pager-specific data</span>
-pager<span class="variable">.extendWithPage</span>(viewModel);
-<span class="comment">// apply your view model as normal</span>
-ko<span class="variable">.applyBindings</span>(viewModel);
-<span class="comment">// start the pager. Will listen to hashchange and</span>
-<span class="comment">// show/hide pages depending on their page IDs</span>
-pager<span class="variable">.start</span>();</code></pre>
+<h3 id='reference-manual/pager-showchild-string'><code>pager.showChild(String[])</code></h3 id='reference-manual/pager-showchild-string'>
+<p>Display the pages matching the route (String-array) without changing the location.
+
+</p>
+<p>This method is called by <code>pager.start</code>, <code>pager.startHashChange</code> and <code>pager.startHistoryJS</code>. If you plan to implement
+your own start-method you&#39;ll need to call this method with the calculated route.
+
+</p>
+<h3 id='reference-manual/pager-start-string'><code>pager.start([String])</code></h3 id='reference-manual/pager-start-string'>
+<p>Used if you are using neither <code>jQuery hashchange</code> nor <code>History.js</code>. This method does not work for IE7 and
+can give unexpected results for IE8!
+
+</p>
+<ul>
+<li><a href="http://pagerjs.com/demo/#setup">Setup</a></li>
+</ul>
+<h3 id='reference-manual/pager-starthashchange-string'><code>pager.startHashChange([String])</code></h3 id='reference-manual/pager-starthashchange-string'>
+<p>Used if you are using <code>jQuery hashchange</code>.
+
+</p>
+<ul>
+<li><a href="http://pagerjs.com/demo/#setup">Setup</a></li>
+</ul>
+<h3 id='reference-manual/pager-starthistoryjs-string'><code>pager.startHistoryJs([String])</code></h3 id='reference-manual/pager-starthistoryjs-string'>
+<p>Used if you are using <code>History.js</code>.
+
+</p>
+<ul>
+<li><a href="http://pagerjs.com/demo/#html5_history">HTML5 History API</a></li>
+<li><a href="http://pagerjs.com/demo/#setup">Setup</a></li>
+</ul>
+<h3 id='reference-manual/pager-extendwithpage-object'><code>pager.extendWithPage(Object)</code></h3 id='reference-manual/pager-extendwithpage-object'>
+<p>Extends your root view model with a root page-instance.
+
+</p>
+<ul>
+<li><a href="http://pagerjs.com/demo/#setup">Setup</a></li>
+</ul>
 <h3 id='reference-manual/page-href'>page-href</h3 id='reference-manual/page-href'>
 <pre><code><span class="tag">&lt;<span class="title">a</span> <span class="attribute">data-bind</span>=<span class="value">"page-href: 'somePagePath'"</span>></span><span class="tag">&lt;/<span class="title">a</span>></span>
+
+<span class="tag">&lt;<span class="title">a</span> <span class="attribute">data-bind</span>=<span class="value">"page-href: '../some/relative/page/path'"</span>></span><span class="tag">&lt;/<span class="title">a</span>></span>
 
 <span class="tag">&lt;<span class="title">a</span> <span class="attribute">data-bind</span>=<span class="value">"page-href: somePageInstance"</span>></span><span class="tag">&lt;/<span class="title">a</span>></span></code></pre>
 <p>Calculates absolute href based on the location of the element.
@@ -552,9 +587,9 @@ to e.g. <code>#!/</code> by setting <code>pager.Href.hash = &#39;#!/&#39;;</code
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#relative_path">Relative path</a></li>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#absolute_path">Absolute Path</a></li>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#html5_history">HTML5 History</a></li>
+<li><a href="http://pagerjs.com/demo/#relative_path">Relative path</a></li>
+<li><a href="http://pagerjs.com/demo/#absolute_path">Absolute Path</a></li>
+<li><a href="http://pagerjs.com/demo/#html5_history">HTML5 History</a></li>
 </ul>
 <h3 id='reference-manual/page'>page</h3 id='reference-manual/page'>
 <pre><code><span class="tag">&lt;<span class="title">div</span> <span class="attribute">data-bind</span>=<span class="value">"page: {}"</span>></span>
@@ -573,17 +608,17 @@ If the id is <code>?</code> (wildcard) it will match anything if no other page i
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#setup">Setup</a></li>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#deep_navigation">Deep Navigation</a></li>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#matching_wildcards">Matching Wildcards</a></li>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#deep_navigation_with_wildcards">Deep Navigation with Wildcards</a></li>
+<li><a href="http://pagerjs.com/demo/#setup">Setup</a></li>
+<li><a href="http://pagerjs.com/demo/#deep_navigation">Deep Navigation</a></li>
+<li><a href="http://pagerjs.com/demo/#matching_wildcards">Matching Wildcards</a></li>
+<li><a href="http://pagerjs.com/demo/#deep_navigation_with_wildcards">Deep Navigation with Wildcards</a></li>
 </ul>
 <h3 id='configurations/object-with'>{Object} with</h3 id='configurations/object-with'>
 <p>That can change the scope of elements descendants. The same behavior as the normal <code>with</code>-binding.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#change_binding_context">Change Binding Context</a></li>
+<li><a href="http://pagerjs.com/demo/#change_binding_context">Change Binding Context</a></li>
 </ul>
 <h3 id='configurations/function-withonshow'>{Function} withOnShow</h3 id='configurations/function-withonshow'>
 <p>Sets the view model of elements descendants async after the page is shown. This is useful
@@ -591,7 +626,7 @@ so you can extract sub pages view models to other <code>.js</code>-files.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#lazy_bind_view_model">Lazy-Bind View-Model</a></li>
+<li><a href="http://pagerjs.com/demo/#lazy_bind_view_model">Lazy-Bind View-Model</a></li>
 </ul>
 <h3 id='configurations/string-function-source'>{String/Function} source</h3 id='configurations/string-function-source'>
 <p>Source to load into element using <code>jQuery#load</code>. The source will be loaded once the page is processed.
@@ -599,15 +634,15 @@ If it is a function it is invoked.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#load_external_content">Load External Content</a></li>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#custom_view_loader">Load View using Custom Method</a></li>
+<li><a href="http://pagerjs.com/demo/#load_external_content">Load External Content</a></li>
+<li><a href="http://pagerjs.com/demo/#custom_view_loader">Load View using Custom Method</a></li>
 </ul>
 <h3 id='configurations/function-sourceloaded'>{Function} sourceLoaded</h3 id='configurations/function-sourceloaded'>
 <p>Is a method/event/callback to run once the <code>source</code> (or <code>sourceOnShow</code>) is loaded.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#load_external_content">Load External Content</a></li>
+<li><a href="http://pagerjs.com/demo/#load_external_content">Load External Content</a></li>
 </ul>
 <h3 id='configurations/string-function-sourceonshow'>{String/Function} sourceOnShow</h3 id='configurations/string-function-sourceonshow'>
 <p>Source to load into element using <code>jQuery#load</code> when the element is displayed. Thus sub pages
@@ -615,8 +650,8 @@ can be extracted and loaded on demand. If it is a function it is invoked.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#lazy_load_external_content">Lazy-Load External Content</a></li>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#custom_view_loader">Load View using Custom Method</a></li>
+<li><a href="http://pagerjs.com/demo/#lazy_load_external_content">Lazy-Load External Content</a></li>
+<li><a href="http://pagerjs.com/demo/#custom_view_loader">Load View using Custom Method</a></li>
 </ul>
 <h3 id='configurations/boolean-number-sourcecache'>{Boolean/Number} sourceCache</h3 id='configurations/boolean-number-sourcecache'>
 <p>Can be set to true in order for sourceOnShow to only load the source once.
@@ -624,7 +659,7 @@ If a number is specified the cache is valid for that amount of time in seconds.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#cached_lazy">Cached Lazy-Loaded Content</a></li>
+<li><a href="http://pagerjs.com/demo/#cached_lazy">Cached Lazy-Loaded Content</a></li>
 </ul>
 <h3 id='configurations/string-frame'>{String} frame</h3 id='configurations/string-frame'>
 <p>Can be set to <code>iframe</code> in order for the source to be loaded into an iframe. If the page contains
@@ -632,8 +667,8 @@ an iframe that element is used.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#load_into_iframe">Load Content into iframe</a></li>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#configure_iframe">Configure an iframe</a></li>
+<li><a href="http://pagerjs.com/demo/#load_into_iframe">Load Content into iframe</a></li>
+<li><a href="http://pagerjs.com/demo/#configure_iframe">Configure an iframe</a></li>
 </ul>
 <h3 id='configurations/boolean-modal'>{Boolean} modal</h3 id='configurations/boolean-modal'>
 <p>Can be set to <code>true</code> in order for the page to act as a modal. If a page is a modal it can be
@@ -641,81 +676,81 @@ found by child-pages to sibling-pages of the modal.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#modals">Modals</a></li>
+<li><a href="http://pagerjs.com/demo/#modals">Modals</a></li>
 </ul>
 <h3 id='configurations/function-beforehide'>{Function} beforeHide</h3 id='configurations/function-beforehide'>
 <p>Is called before the page is hidden.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating">Custom JS when Navigating</a></li>
+<li><a href="http://pagerjs.com/demo/#custom_js_when_navigating">Custom JS when Navigating</a></li>
 </ul>
 <h3 id='configurations/function-beforeshow'>{Function} beforeShow</h3 id='configurations/function-beforeshow'>
 <p>Is called before the page is shown.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating">Custom JS when Navigating</a></li>
+<li><a href="http://pagerjs.com/demo/#custom_js_when_navigating">Custom JS when Navigating</a></li>
 </ul>
 <h3 id='configurations/function-afterhide'>{Function} afterHide</h3 id='configurations/function-afterhide'>
 <p>Is called after the page is hidden.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating">Custom JS when Navigating</a></li>
+<li><a href="http://pagerjs.com/demo/#custom_js_when_navigating">Custom JS when Navigating</a></li>
 </ul>
 <h3 id='configurations/function-aftershow'>{Function} afterShow</h3 id='configurations/function-aftershow'>
 <p>Is called after the page is shown.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#custom_js_when_navigating">Custom JS when Navigating</a></li>
+<li><a href="http://pagerjs.com/demo/#custom_js_when_navigating">Custom JS when Navigating</a></li>
 </ul>
 <h3 id='configurations/function-hideelement'>{Function} hideElement</h3 id='configurations/function-hideelement'>
 <p>Custom hide-method instead of the default <code>$(element).hide()</code>;
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#custom_hide_show">Custom Hide- and Show-Methods</a></li>
+<li><a href="http://pagerjs.com/demo/#custom_hide_show">Custom Hide- and Show-Methods</a></li>
 </ul>
 <h3 id='configurations/function-showelement'>{Function} showElement</h3 id='configurations/function-showelement'>
 <p>Custom show-method instead of the default <code>$(element).show()</code>;
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#custom_hide_show">Custom Hide- and Show-Methods</a></li>
+<li><a href="http://pagerjs.com/demo/#custom_hide_show">Custom Hide- and Show-Methods</a></li>
 </ul>
 <h3 id='configurations/function-loader'>{Function} loader</h3 id='configurations/function-loader'>
 <p>Loader to call once the page is loaded. Can e.g. create a spinner inside the element.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#loader">Loader</a></li>
+<li><a href="http://pagerjs.com/demo/#loader">Loader</a></li>
 </ul>
 <h3 id='configurations/function-navigationfailed'>{Function} navigationFailed</h3 id='configurations/function-navigationfailed'>
 <p>Method to call if a navigation could not find any matching page.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#failed_navigation">Reacting to Failed Navigation</a></li>
+<li><a href="http://pagerjs.com/demo/#failed_navigation">Reacting to Failed Navigation</a></li>
 </ul>
 <h3 id='configurations/object-params'>{Object} params</h3 id='configurations/object-params'>
 <p>Binds URL-parameters to local observables.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#params">Binding URI parameters</a></li>
+<li><a href="http://pagerjs.com/demo/#params">Binding URI parameters</a></li>
 </ul>
 <h3 id='configurations/function-guard'>{Function} guard</h3 id='configurations/function-guard'>
 <p>Validates a page transition before it is happening.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#guards">Guards</a></li>
+<li><a href="http://pagerjs.com/demo/#guards">Guards</a></li>
 </ul>
 <h3 id='configurations/string-fx'>{String} fx</h3 id='configurations/string-fx'>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#fx">FX</a></li>
+<li><a href="http://pagerjs.com/demo/#fx">FX</a></li>
 </ul>
 <h3 id='configurations/object-vars'>{Object} vars</h3 id='configurations/object-vars'>
 <p>Created scoped observables for the view. Useful for when observables are needed purely for the view
@@ -723,14 +758,14 @@ and has no connection to the view-model.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#vars">Custom observables in the view</a></li>
+<li><a href="http://pagerjs.com/demo/#vars">Custom observables in the view</a></li>
 </ul>
 <h3 id='configurations/boolean-deep'>{Boolean} deep</h3 id='configurations/boolean-deep'>
 <p>By setting <code>deep: true</code> a wildcard page will deep-load supplied sources.
 
 </p>
 <ul>
-<li><a href="http://oscar.finnsson.nu/pagerjs/demo/#deep_load_content_into_wildcard">Deep Load Content into Wildcard</a></li>
+<li><a href="http://pagerjs.com/demo/#deep_load_content_into_wildcard">Deep Load Content into Wildcard</a></li>
 </ul>
 <h2 id='cookbook'>Cookbook</h2 id='cookbook'>
 <p>The following behaviors specify and exemplify what pager.js is capable of.
@@ -1140,15 +1175,16 @@ specified the source should have been <code>some.html</code> instead of <code>so
 array of strings).
 
 </p>
-<pre><code>// send user <span class="keyword">to</span> login-page
+<pre><code>// send user <span class="keyword">to</span> login-page <span class="keyword">and</span> updating the location
 pager.start(<span class="attribute">'login</span>');
 
 // send user <span class="keyword">to</span> login-page without updating the location
+paget.start();
 pager.showChild([<span class="attribute">'login</span>']);</code></pre>
 <h2 id='faq'>FAQ</h2 id='faq'>
 <h3 id='faq/can-i-use-it-together-with'>Can I use it together with...</h3 id='faq/can-i-use-it-together-with'>
-<p>pager.js is not depending on anything but jQuery, KnockoutJS and Underscore.js/Lo-Dash. You can use it together with
-any CSS framework. If you don&#39;t like Underscore.js you can use it together with Lo-Dash instead.
+<p>pager.js is not depending on anything but jQuery and KnockoutJS. You can use it together with
+any CSS framework.
 
 </p>
 <h3 id='faq/can-i-use-true-urls-instead'>Can I use true URLs instead?</h3 id='faq/can-i-use-true-urls-instead'>
@@ -1187,7 +1223,7 @@ any CSS framework. If you don&#39;t like Underscore.js you can use it together w
 <li><a href="https://github.com/finnsson/pagerjs/issues/19">Tab panel custom widget</a></li>
 <li><a href="https://github.com/finnsson/pagerjs/issues/18">Should be possible to run custom JS on &quot;navigate to&quot;</a></li>
 </ul>
-<h3 id='release-notes/0-6-current-target'>0.6 (Current target)</h3 id='release-notes/0-6-current-target'>
+<h3 id='release-notes/0-6'>0.6</h3 id='release-notes/0-6'>
 <ul>
 <li><a href="https://github.com/finnsson/pagerjs/issues/28">Should contain common effects</a></li>
 <li><a href="https://github.com/finnsson/pagerjs/issues/34">HTML5 History Boilerplate</a></li>
@@ -1202,7 +1238,7 @@ any CSS framework. If you don&#39;t like Underscore.js you can use it together w
 <li><a href="https://github.com/finnsson/pagerjs/issues/43">Demo as is does not work in IE7</a></li>
 </ul>
 <h2 id='roadmap'>Roadmap</h2 id='roadmap'>
-<p>Currently working towards 0.8
+<p>Currently working on development version 0.7, towards stable version 0.8.
 
 </p>
 <p>See <a href="https://github.com/finnsson/pagerjs/issues/milestones">Milestones</a>.
