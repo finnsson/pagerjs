@@ -845,6 +845,12 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 - [Should be able to change initial page](https://github.com/finnsson/pagerjs/issues/44)
 - [Demo as is does not work in IE7](https://github.com/finnsson/pagerjs/issues/43)
 
+### 0.7 (Current Development Revision)
+
+- [Remove underscorejs dependency](https://github.com/finnsson/pagerjs/issues/49)
+- [pager.start id does not honor pager.Href.hash](https://github.com/finnsson/pagerjs/issues/51)
+
+
 ## Roadmap
 
 Currently working on development version 0.7, towards stable version 0.8.
