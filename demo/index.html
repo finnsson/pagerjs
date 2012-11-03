@@ -950,8 +950,7 @@ hideFry:function (page, callback) {
 
     <a href="#!/loader/Sabrepulse">Load Sabrepulse</a>
 
-    <div data-bind="page: {id: 'Sabrepulse', frame: 'iframe', title: 'Sabrepulse', loader: textLoader, sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3'}">
-        <iframe width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+    <div data-bind="page: {id: 'Sabrepulse', title: 'Sabrepulse', loader: textLoader, sourceOnShow: delaySource('https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3')}">
     </div>
     
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">

@@ -100,9 +100,9 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
         },
         textLoader:function (page, element) {
             var loader = {};
-            var txt = $('<div></div>', {text:'Loading ' + page.getValue().title});
+            var txt = $('<h3></h3>', {text:'Loading ' + page.getValue().title});
             loader.load = function () {
-                $(element).parent().prepend(txt);
+                $(element).prepend(txt);
             };
             loader.unload = function () {
                 txt.remove();
@@ -128,6 +128,17 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
             return true;
         },
         newChildren:ko.observableArray([])
+    };
+
+    window.delaySource = function(url) {
+        var iframe = $('<iframe width="300" height="380" frameborder="0" allowtransparency="true"></iframe>');
+        return function(page, callback) {
+            setTimeout(function() {
+                $(page.element).append(iframe);
+                iframe.attr('src', url);
+                callback();
+            }, 2000);
+        };
     };
 
     window.requireVM = function (module) {
