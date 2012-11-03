@@ -27,7 +27,7 @@
                 <ul data-bind="foreach: $__page__.children" class="dropdown-menu" role="menu"
                     aria-labelledby="dropdownMenu">
                     <li data-bind="css: {active: isVisible}">
-                        <a data-bind="page-href: $data, tooltip: {}" title="source and sourceOnShow">
+                        <a data-bind="page-href: $data">
                             <span data-bind="text: val('title')"></span>
                             <!-- ko if val('desc') -->
                             <span class="muted" data-bind="text: val('desc')"></span>
