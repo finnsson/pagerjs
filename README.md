@@ -319,6 +319,12 @@ Binds URL-parameters to local observables.
 
 * [Binding URI parameters](http://pagerjs.com/demo/#!/params)
 
+### {String/Observable} nameParam
+
+Bind the current wildcard ID to an observable.
+
+* [Binding Wildcard to Observable](http://pagerjs.com/demo/#!/binding_wildcard_to_observable)
+
 ### {Function} guard
 
 Validates a page transition before it is happening.
@@ -341,6 +347,7 @@ and has no connection to the view-model.
 By setting `deep: true` a wildcard page will deep-load supplied sources.
 
 * [Deep Load Content into Wildcard](http://pagerjs.com/demo/#!/deep_load_content_into_wildcard)
+
 
 ## Cookbook
 

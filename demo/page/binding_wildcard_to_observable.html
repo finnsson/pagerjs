@@ -1,0 +1,35 @@
+<header class="jumbotron subhead">
+    <h1>Binding Wildcard to Observable</h1>
+
+    <p class="lead">
+        You can bind the wildcard ID to an observable.
+
+        Using the <code>nameParam</code> property you can either specify the name of the observable to
+        bind to (or create) or directly specify an observable.
+
+    </p>
+</header>
+
+<a data-bind="page-href: 'inventions/Mind-Switcher'">Navigate to some sub page</a>
+
+<div data-bind="page: {id: '?', nameParam: theID}">
+
+    <div data-bind="page: {id: '?', nameParam: theSecondID}">
+        <h2 data-bind="text: theID"></h2>
+        <h3 data-bind="text: theSecondID"></h3>
+    </div>
+</div>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: '?', nameParam: theID}"&gt;
+
+    &lt;div data-bind="page: {id: '?', nameParam: theSecondID}"&gt;
+        &lt;h2 data-bind="text: theID"&gt;&lt;/h2&gt;
+        &lt;h3 data-bind="text: theSecondID"&gt;&lt;/h3&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/vars">Read about custom observables in the view</a>
+</div>

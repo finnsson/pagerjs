@@ -414,6 +414,20 @@
                     }
                 });
             }
+            if (this.pageRoute) {
+                var nameParam = this.getValue()['nameParam'];
+                if (nameParam) {
+                    if (typeof nameParam === 'string') {
+                        if (this.ctx[nameParam]) { // set observable ...
+                            this.ctx[nameParam](this.currentId);
+                        } else { // ... or create observable
+                            this.ctx[nameParam] = ko.observable(this.currentId);
+                        }
+                    } else { // is Observable
+                        nameParam(this.currentId);
+                    }
+                }
+            }
         };
 
         /**
@@ -471,7 +485,7 @@
             // check if this page should trigger showChild at parent
             if (m.parentPage.route && m.parentPage.route[0] === m.getId()) {
                 // call once the current event loop is finished.
-                setTimeout(function() {
+                setTimeout(function () {
                     m.parentPage.showPage(m.parentPage.route);
                 }, 0);
             }
@@ -957,7 +971,7 @@
 
 
         pager.startHistoryJs = function (id) {
-            if(id) {
+            if (id) {
                 History.pushState(null, null, id);
             }
             var hashChange = function (hash) {
@@ -984,7 +998,7 @@
         };
 
         pager.startHashChange = function (id) {
-            if(id) {
+            if (id) {
                 location.hash = pager.Href.hash + id;
             }
             $(window).hashchange(function () {
@@ -1010,7 +1024,7 @@
          * @static
          */
         pager.start = function (id) {
-            if(id) {
+            if (id) {
                 location.hash = pager.Href.hash + id;
             }
             var routeFromHashToPage = function (hash) {
