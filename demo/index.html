@@ -27,7 +27,12 @@
                 <ul data-bind="foreach: $__page__.children" class="dropdown-menu" role="menu"
                     aria-labelledby="dropdownMenu">
                     <li data-bind="css: {active: isVisible}">
-                        <a data-bind="text: val('title'), page-href: $data"></a>
+                        <a data-bind="page-href: $data, tooltip: {}" title="source and sourceOnShow">
+                            <span data-bind="text: val('title')"></span>
+                            <!-- ko if val('desc') -->
+                            <span class="muted" data-bind="text: val('desc')"></span>
+                            <!-- -->
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -61,7 +66,7 @@
 
 </div>
 
-<div data-bind="page: {id: 'structure', title: 'Structure'}">
+<div data-bind="page: {id: 'structure', title: 'Structure', desc: 'how pages are combined'}">
     <header class="jumbotron subhead">
         <h1>Structure</h1>
 
@@ -96,7 +101,7 @@
 
 </div>
 
-<div data-bind="page: {id: 'setup', title: 'Setup'}">
+<div data-bind="page: {id: 'setup', title: 'Setup', desc: 'starting pager.js'}">
 
     <header class="jumbotron subhead">
         <h1>Setup</h1>
@@ -163,7 +168,7 @@ pager.startHistoryJs();
 
 </div>
 
-<div data-bind="page: {id: 'deep_navigation', title: 'Deep Navigation'}">
+<div data-bind="page: {id: 'deep_navigation', title: 'Deep Navigation', desc: 'navigating into subpages of subpages'}">
     <header class="jumbotron subhead">
         <h1>Deep Navigation</h1>
 
@@ -206,17 +211,17 @@ pager.startHistoryJs();
 
 </div>
 
-<div data-bind="page: {id: 'load_external_content', sourceLoaded: externalContentLoaded, source: 'load_external_content.html .content', title: 'Load External Content'}">
+<div data-bind="page: {id: 'load_external_content', sourceLoaded: externalContentLoaded, source: 'load_external_content.html .content', title: 'Load External Content', desc: 'from another HTML page'}">
 </div>
 
-<div data-bind="page: {id: 'lazy_load_external_content', sourceLoaded: externalContentLazyLoaded, sourceOnShow: 'lazy_load_external_content.html .content', title: 'Lazy-Load External Content'}">
+<div data-bind="page: {id: 'lazy_load_external_content', sourceLoaded: externalContentLazyLoaded, sourceOnShow: 'lazy_load_external_content.html .content', title: 'Lazy-Load External Content', desc: 'load pages on demand'}">
 </div>
 
-<div data-bind="page: {id: 'cached_lazy', sourceLoaded: externalContentLazyLoaded, sourceOnShow: 'cached_lazy.html .content', sourceCache: true, title: 'Cache Lazy-Loaded Content'}">
+<div data-bind="page: {id: 'cached_lazy', sourceLoaded: externalContentLazyLoaded, sourceOnShow: 'cached_lazy.html .content', sourceCache: true, title: 'Cache Lazy-Loaded Content', desc: 'cache the pages in the client'}">
 </div>
 
 
-<div data-bind="page: {id: 'relative_path', title: 'Relative Path'}">
+<div data-bind="page: {id: 'relative_path', title: 'Relative Path', desc: 'traversing the fragment identifier'}">
     <header class="jumbotron subhead">
         <h1>Relative path</h1>
 
@@ -288,10 +293,10 @@ pager.startHistoryJs();
 
 </div>
 
-<div data-bind="page: {id: 'absolute_path', title: 'Absolute Path', sourceOnShow: 'page/absolute_path.html', sourceCache: true}">
+<div data-bind="page: {id: 'absolute_path', title: 'Absolute Path', sourceOnShow: 'page/absolute_path.html', sourceCache: true, desc: 'binding page-href to page-instance'}">
 </div>
 
-<div data-bind="page: {id: 'html5_history', title: 'HTML5 History'}">
+<div data-bind="page: {id: 'html5_history', title: 'HTML5 History', desc: 'you do not need to use fragment identifiers'}">
     <header class="jumbotron subhead">
         <h1>HTML5 History API</h1>
 
@@ -322,7 +327,7 @@ ko.applyBindings(viewModel);
 
 </div>
 
-<div data-bind="page: {id: 'change_binding_context', title: 'Change Binding Context'}">
+<div data-bind="page: {id: 'change_binding_context', title: 'Change Binding Context', desc: 'like with or foreach'}">
     <header class="jumbotron subhead">
         <h1>Change Binding Context</h1>
 
@@ -352,7 +357,7 @@ ko.applyBindings(viewModel);
 
 </div>
 
-<div data-bind="page: {id: 'lazy_bind_view_model', title: 'Lazy-Bind View-Model'}">
+<div data-bind="page: {id: 'lazy_bind_view_model', title: 'Lazy-Bind View-Model', desc: 'delay data binding until first displayed'}">
     <header class="jumbotron subhead">
         <h1>Change Binding Context on Show</h1>
 
@@ -408,7 +413,7 @@ var requireVM = function (module) {
 </div>
 
 
-<div data-bind="page: {id: 'matching_wildcards', title: 'Matching Wildcards'}">
+<div data-bind="page: {id: 'matching_wildcards', title: 'Matching Wildcards', desc: 'pages that match any route'}">
     <header class="jumbotron subhead">
         <h1>Matching Wildcards</h1>
 
@@ -490,7 +495,7 @@ var requireVM = function (module) {
 
 </div>
 
-<div data-bind="page: {id: 'send_wildcard_to_source', title: 'Send Wildcards to Source'}">
+<div data-bind="page: {id: 'send_wildcard_to_source', title: 'Send Wildcards to Source', desc: 'using the ? as a parameter'}">
     <header class="jumbotron subhead">
         <h1>Sending the Wildcard to Source</h1>
 
@@ -535,7 +540,7 @@ var requireVM = function (module) {
 
 </div>
 
-<div data-bind="page: {id: 'deep_load_content_into_wildcard', title: 'Deep Load Content into Wildcard'}">
+<div data-bind="page: {id: 'deep_load_content_into_wildcard', title: 'Deep Load Content into Wildcard', desc: 'arbitrarily nested content'}">
     <header class="jumbotron subhead">
         <h1>Deep Load Content into Wildcard</h1>
 
@@ -579,7 +584,7 @@ var requireVM = function (module) {
     </div>
 </div>
 
-<div data-bind="page: {id: 'load_into_iframe', title: 'Load Content into iframe'}">
+<div data-bind="page: {id: 'load_into_iframe', title: 'Load Content into iframe', desc: 'instead of into the same document'}">
     <header class="jumbotron subhead">
         <h1>Loading Content into iframe</h1>
 
@@ -605,7 +610,7 @@ var requireVM = function (module) {
 
 </div>
 
-<div data-bind="page: {id: 'configure_iframe', title: 'Configure iframe'}">
+<div data-bind="page: {id: 'configure_iframe', title: 'Configure iframe', desc: 'supply iframes with defaul values'}">
     <header class="jumbotron subhead">
         <h1>Configure an iframe</h1>
 
@@ -633,7 +638,7 @@ var requireVM = function (module) {
 
 </div>
 
-<div data-bind="page: {id: 'custom_widgets', title: 'Custom Widgets'}">
+<div data-bind="page: {id: 'custom_widgets', title: 'Custom Widgets', desc: 'subclassing the page-binding'}">
     <header class="jumbotron subhead">
         <h1>Custom Widgets</h1>
 
@@ -753,7 +758,7 @@ ko.bindingHandlers['page-accordion-item'] = {
 
 </div>
 
-<div data-bind="page: {id: 'modals', title: 'Modals'}">
+<div data-bind="page: {id: 'modals', title: 'Modals', desc: 'pages that can show up anywhere'}">
     <header class="jumbotron subhead">
         <h1>Modals</h1>
 
@@ -831,7 +836,7 @@ ko.bindingHandlers['page-accordion-item'] = {
     </div>
 </div>
 
-<div data-bind="page: {id: 'custom_js_when_navigating', title: 'Custom JS when Navigating'}">
+<div data-bind="page: {id: 'custom_js_when_navigating', title: 'Custom JS when Navigating', desc: 'reacting to navigation'}">
     <header class="jumbotron subhead">
         <h1>Custom JS when Navigating</h1>
 
@@ -883,7 +888,7 @@ beforeFryIsHidden:function () {
 
 </div>
 
-<div data-bind="page: {id: 'custom_hide_show', title: 'Custom Hide- and Show-methods'}">
+<div data-bind="page: {id: 'custom_hide_show', title: 'Custom Hide- and Show-methods', desc: 'effects for showing and hiding pages'}">
     <header class="jumbotron subhead">
         <h1>Custom Hide- and Show-methods</h1>
 
@@ -933,7 +938,7 @@ hideFry:function (page, callback) {
 
 </div>
 
-<div data-bind="page: {id: 'loader', title: 'Loaders'}">
+<div data-bind="page: {id: 'loader', title: 'Loaders', desc: 'custom spinners etc before a page is loaded'}">
     <header class="jumbotron subhead">
         <h1>Loaders</h1>
 
@@ -983,7 +988,7 @@ textLoader: function(page, element) {
 
 </div>
 
-<div data-bind="page: {id: 'tabpanel', title: 'Tab Panel'}">
+<div data-bind="page: {id: 'tabpanel', title: 'Tab Panel', desc: 'roll your own tab panel'}">
 
     <header class="jumbotron subhead">
         <h1>Tab Panel</h1>
@@ -1103,7 +1108,7 @@ newChildren:ko.observableArray([])
 
 </div>
 
-<div data-bind="page: {id: 'custom_view_loader', title: 'Load View using Custom Method'}">
+<div data-bind="page: {id: 'custom_view_loader', title: 'Load View using Custom Method', desc: 'for programming in the large'}">
     <header class="jumbotron subhead">
         <h1>Load View using Custom Method</h1>
 
@@ -1150,7 +1155,7 @@ window.requireView = function(viewModule) {
 
 </div>
 
-<div data-bind="page: {id: 'params', title: 'Binding URI Parameters'}">
+<div data-bind="page: {id: 'params', title: 'Binding URL Parameters', desc: 'using parameters from forms in #'}">
     <header class="jumbotron subhead">
         <h1>Binding URI Parameters</h1>
 
@@ -1207,14 +1212,14 @@ window.requireView = function(viewModule) {
 
 </div>
 
-<div data-bind="page: {id: 'binding_wildcard_to_observable', title: 'Binding Wildcard to observable', sourceOnShow: 'page/binding_wildcard_to_observable.html', sourceCache: true}">
+<div data-bind="page: {id: 'binding_wildcard_to_observable', title: 'Binding Wildcard to observable', sourceOnShow: 'page/binding_wildcard_to_observable.html', sourceCache: true, desc: 'set a name on the ?'}">
 </div>
 
 
-<div data-bind="page: {id: 'vars', title: 'Custom observables in the view', sourceOnShow: 'page/vars.html', sourceCache: true}">
+<div data-bind="page: {id: 'vars', title: 'Custom observables in the view', sourceOnShow: 'page/vars.html', sourceCache: true, desc: 'pure local view-observables'}">
 </div>
 
-<div data-bind="page: {id: 'guards', title: 'Guards'}">
+<div data-bind="page: {id: 'guards', title: 'Guards', desc: 'conditions when navigating to a page is ok'}">
     <header class="jumbotron subhead">
         <h1>Guards</h1>
 
@@ -1284,11 +1289,11 @@ isLoggedIn: function(page, route, callback) {
 
 </div>
 
-<div data-bind="page: {id: 'fx', title: 'FX', sourceOnShow: 'fx.html', sourceCache: true}">
+<div data-bind="page: {id: 'fx', title: 'FX', sourceOnShow: 'fx.html', sourceCache: true, desc: 'effects between page transitions'}">
 </div>
 
 
-<div data-bind="page: {id: 'recapitulation', title: 'Recapitulation', sourceOnShow: 'recapitulation.html', sourceLoaded: recapLoaded}">
+<div data-bind="page: {id: 'recapitulation', title: 'Recapitulation', sourceOnShow: 'recapitulation.html', sourceLoaded: recapLoaded, desc: 'the entire API once again'}">
 </div>
 
 </div>
