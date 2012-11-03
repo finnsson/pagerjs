@@ -564,14 +564,14 @@
                     loader = _ko.value(loaderMethod)(me, iframe);
                     loader.load();
                 }
-                if (value.sourceLoaded) {
-                    iframe.one('load', function () {
-                        if (loader) {
-                            loader.unload();
-                        }
+                iframe.one('load', function () {
+                    if (loader) {
+                        loader.unload();
+                    }
+                    if (value.sourceLoaded) {
                         value.sourceLoaded(me);
-                    });
-                }
+                    }
+                });
                 // TODO: remove src binding and add this binding
                 ko.applyBindingsToNode(iframe[0], {
                     attr:{

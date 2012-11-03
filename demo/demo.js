@@ -102,7 +102,7 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
             var loader = {};
             var txt = $('<div></div>', {text:'Loading ' + page.getValue().title});
             loader.load = function () {
-                $(element).append(txt);
+                $(element).parent().prepend(txt);
             };
             loader.unload = function () {
                 txt.remove();
