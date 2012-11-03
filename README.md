@@ -199,6 +199,10 @@ The configuration options for the page-binding.
 ID of scoped page that a router should react to. E.g. `start` or `user/me`.
 If the id is `?` (wildcard) it will match anything if no other page in the same parent match.
 
+If you are using fragment idetifiers (`#`) you can control the prefix by setting `pager.Href.hash`. Setting
+`pager.Href.hash = "#!/"` before calling `paget.start()` will tell `pager` to react to fragments starting with
+`#!/` instead of simply `#`.
+
 * [Setup](http://pagerjs.com/demo/#!/setup)
 * [Deep Navigation](http://pagerjs.com/demo/#!/deep_navigation)
 * [Matching Wildcards](http://pagerjs.com/demo/#!/matching_wildcards)
