@@ -1,5 +1,7 @@
 (function (window) {
 
+    var History = window.History;
+
     var pagerJsModule = function ($, ko) {
 
         "use strict";
@@ -238,17 +240,32 @@
             };
         };
 
-        /*
-         * @typedef {{id:String,hideElment:Function,showElement:Function}}
-         */
-        var PageConfig;
-
         /**
          *
          * @class pager.Page
          *
          * @param {Node} element
-         * @param {Observable} valueAccessor
+         * @param {Object} valueAccessor
+         * @param {String} valueAccessor.id
+         * @param {Observable} valueAccessor.with
+         * @param {Function} valueAccessor.withOnShow
+         * @param {String/Function} valueAccessor.source
+         * @param {String/Function} valueAccessor.sourceLoaded
+         * @param {Number/Boolean} valueAccessor.sourceCache
+         * @param {String} valueAccessor.frame
+         * @param {Boolean} valueAccessor.modal
+         * @param {Boolean} valueAccessor.deep
+         * @param {Function} valueAccessor.beforeHide
+         * @param {Function} valueAccessor.beforeShow
+         * @param {Function} valueAccessor.afterHide
+         * @param {Function} valueAccessor.hideElement
+         * @param {Function} valueAccessor.showElement
+         * @param {Function} valueAccessor.loader
+         * @param {Function} valueAccessor.navigationFailed
+         * @param {Function} valueAccessor.guard
+         * @param {Object} valueAccessor.params
+         * @param {Object} valueAccessor.vars
+         * @param {String} valueAccessor.fx
          * @param allBindingsAccessor
          * @param {Observable} viewModel
          * @param bindingContext
@@ -794,8 +811,7 @@
 
                     var fullRoute = page.getFullRoute()();
                     var parentPath = fullRoute.slice(0, fullRoute.length - parentsToTrim).join('/');
-                    var fullPath = (parentPath === '' ? '' : parentPath + '/') + value;
-                    return fullPath;
+                    return (parentPath === '' ? '' : parentPath + '/') + value;
                 } else if (value.getFullRoute) {
                     return value.getFullRoute()().join('/');
                 }
@@ -1020,42 +1036,22 @@
 
     /*--------------------------------------------------------------------------*/
 
-    /** Detect free variable `exports` */
-    var freeExports = typeof exports === 'object' && exports &&
-        (typeof global === 'object' && global && global === global.global && (window = global), exports);
+    var define = window.define;
 
     // expose Pager.js
     // This code is a modified version of the AMD-fallback code found in Lo-Dash
     // (https://raw.github.com/bestiejs/lodash/master/lodash.js)
     // some AMD build optimizers, like r.js, check for specific condition patterns like the following:
-    if (typeof define == 'function' && typeof define.amd == 'object' && define.amd) {
-        // Expose Lo-Dash to the global object even when an AMD loader is present in
-        // case Lo-Dash was injected by a third-party script and not intended to be
-        // loaded as a module. The global assignment can be reverted in the Lo-Dash
-        // module via its `noConflict()` method.
-        // window.pager = pager;
-
+    if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
         // define as an anonymous module so, through path mapping, it can be
         // referenced as any module
         define(['knockout', 'jquery'], function (ko) {
             return pagerJsModule($, ko);
         });
-    }
-    // check for `exports` after `define` in case a build optimizer adds an `exports` object
-    else if (freeExports) {
-        // in Node.js or RingoJS v0.8.0+
-        if (typeof module == 'object' && module && module.exports == freeExports) {
-            (module.exports = pager).pager = pager;
-        }
-        // in Narwhal or RingoJS v0.7.0-
-        else {
-            freeExports.pager = pager;
-        }
-    }
-    else {
-        // in a browser or Rhino
+    } else {
+        // without AMD
         window.pager = pagerJsModule($, ko);
     }
 
 
-}(this));
+}(window));
