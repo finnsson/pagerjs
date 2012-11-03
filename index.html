@@ -168,6 +168,10 @@
                 </li>
               
                 <li>
+                  <a href="#configurations/string-observable-nameparam">{String/Observable} nameParam</a>
+                </li>
+              
+                <li>
                   <a href="#configurations/function-guard">{Function} guard</a>
                 </li>
               
@@ -352,6 +356,10 @@
               
                 <li>
                   <a href="#release-notes/0-6">0.6</a>
+                </li>
+              
+                <li>
+                  <a href="#release-notes/0-7-current-development-revision">0.7 (Current Development Revision)</a>
                 </li>
               
             </ul>
@@ -607,6 +615,11 @@ to e.g. <code>#!/</code> by setting <code>pager.Href.hash = &#39;#!/&#39;;</code
 If the id is <code>?</code> (wildcard) it will match anything if no other page in the same parent match.
 
 </p>
+<p>If you are using fragment idetifiers (<code>#</code>) you can control the prefix by setting <code>pager.Href.hash</code>. Setting
+<code>pager.Href.hash = &quot;#!/&quot;</code> before calling <code>paget.start()</code> will tell <code>pager</code> to react to fragments starting with
+<code>#!/</code> instead of simply <code>#</code>.
+
+</p>
 <ul>
 <li><a href="http://pagerjs.com/demo/#!/setup">Setup</a></li>
 <li><a href="http://pagerjs.com/demo/#!/deep_navigation">Deep Navigation</a></li>
@@ -740,6 +753,13 @@ found by child-pages to sibling-pages of the modal.
 </p>
 <ul>
 <li><a href="http://pagerjs.com/demo/#!/params">Binding URI parameters</a></li>
+</ul>
+<h3 id='configurations/string-observable-nameparam'>{String/Observable} nameParam</h3 id='configurations/string-observable-nameparam'>
+<p>Bind the current wildcard ID to an observable.
+
+</p>
+<ul>
+<li><a href="http://pagerjs.com/demo/#!/binding_wildcard_to_observable">Binding Wildcard to Observable</a></li>
 </ul>
 <h3 id='configurations/function-guard'>{Function} guard</h3 id='configurations/function-guard'>
 <p>Validates a page transition before it is happening.
@@ -1236,6 +1256,11 @@ any CSS framework.
 <li><a href="https://github.com/finnsson/pagerjs/issues/31">Wildcards should deep-load content if configured so</a></li>
 <li><a href="https://github.com/finnsson/pagerjs/issues/44">Should be able to change initial page</a></li>
 <li><a href="https://github.com/finnsson/pagerjs/issues/43">Demo as is does not work in IE7</a></li>
+</ul>
+<h3 id='release-notes/0-7-current-development-revision'>0.7 (Current Development Revision)</h3 id='release-notes/0-7-current-development-revision'>
+<ul>
+<li><a href="https://github.com/finnsson/pagerjs/issues/49">Remove underscorejs dependency</a></li>
+<li><a href="https://github.com/finnsson/pagerjs/issues/51">pager.start id does not honor pager.Href.hash</a></li>
 </ul>
 <h2 id='roadmap'>Roadmap</h2 id='roadmap'>
 <p>Currently working on development version 0.7, towards stable version 0.8.
