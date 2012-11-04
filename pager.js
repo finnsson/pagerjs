@@ -364,6 +364,8 @@
          * @method pager.Page#showPage
          *
          * @param route
+         * @param [pageRoute]
+         * @param [originalRoute]
          */
         p.showPage = function (route, pageRoute, originalRoute) {
             var m = this,
@@ -372,7 +374,9 @@
                 isVisible = m.isVisible();
             m.currentId = pageRoute ? pageRoute.name : null;
             m.isVisible(true);
-            m.originalRoute(originalRoute);
+            if(originalRoute) {
+                m.originalRoute(originalRoute);
+            }
             m.route = route;
             m.pageRoute = pageRoute;
             // show if not already visible

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should resolve wildcards in parents</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div id="first" data-bind="page: {id: '?'}">
+    <a id="a1" data-bind="page-href: 'test'">test</a>
+    <div id="second" data-bind="page: {id: '?'}">
+        <a id="a2" data-bind="page-href: 'test'">test</a>
+        <div id="third" data-bind="page: {id: '?'}">
+            <a id="a3" data-bind="page-href: 'test'">test</a>
+            <div data-bind="page: {id: 'test'}">
+            </div>
+            <!-- ko if: addFourth -->
+            <div data-bind="page: {id: 'fourth'}">
+                <a id="a4" data-bind="page-href: 'test'">test</a>
+                <span id="text_in_fourth">some text</span>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    var viewModel = {
+        addFourth : ko.observable(false)
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.startHashChange();
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should resolve wildcards in parents", function () {
+        var a1 = $('#a1');
+        var a2 = $('#a2');
+        var a3 = $('#a3');
+        window.location.hash = '#first/second/third/fourth';
+        until(function () {
+            return a3.is(':visible');
+        }, function () {
+            assert.equal(a1.attr('href'), '#first/test', "href should be first/test");
+            assert.equal(a2.attr('href'), '#first/second/test', "href should be first/second/test");
+            assert.equal(a3.attr('href'), '#first/second/third/test', "href should be first/second/third/test");
+            assert.equal($('#text_in_fourth').length, 0, "test in fourth should not exist yet");
+
+            //var newPage = $('<div style="display: none;" data-bind="page: {id: \'fourth\'}"></div>');
+            //$('#third').append(newPage);
+            viewModel.addFourth(true);
+
+
+            until(function() {
+                return $('#text_in_fourth').length === 1;
+            }, function() {
+                var a4 = $('#a4');
+                assert.equal(a1.attr('href'), '#first/test', "href should be first/test");
+                assert.equal(a2.attr('href'), '#first/second/test', "href should be first/second/test");
+                assert.equal(a3.attr('href'), '#first/second/third/test', "href should be first/second/third/test");
+                assert.equal(a4.attr('href'), '#first/second/third/fourth/test', "href should be first/second/third/fourth/test");
+
+                start();
+            });
+        });
+    });
+</script>
+
+
+</body>
+</html>
