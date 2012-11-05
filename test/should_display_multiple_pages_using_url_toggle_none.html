@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should display multiple pages using URL toggle none</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'a', urlToggle: 'none'}">
+    <span id="hej">Hej</span>
+</div>
+
+<div data-bind="page: {id: 'b', urlToggle: 'none'}">
+    <span id="hola">Hola</span>
+</div>
+
+<div data-bind="page: {id: 'c', urlToggle: 'none'}">
+    <span id="hi">Hi</span>
+</div>
+
+
+<script type="text/javascript">
+
+
+    var viewModel = {
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.startHashChange();
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should display multiple pages using URL toggle none", function () {
+
+        assert.equal($('#hej').is(':visible'), true, "hej should be visible");
+        assert.equal($('#hola').is(':visible'), true, "hola should be visible");
+        assert.equal($('#hi').is(':visible'), true, "hi should be visible");
+
+        start();
+
+    });
+</script>
+
+
+</body>
+</html>

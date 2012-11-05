@@ -452,6 +452,7 @@
          */
         p.init = function () {
             var m = this;
+            var urlToggle = m.val('urlToggle');
 
             // listen to when the element is removed
             ko.utils.domNodeDisposal.addDisposeCallback(m.element, function () {
@@ -460,10 +461,12 @@
             });
 
             var value = m.getValue();
-            m.parentPage = m.getParentPage();
-            m.parentPage.children.push(this);
+            if(urlToggle !== 'none') {
+                m.parentPage = m.getParentPage();
+                m.parentPage.children.push(this);
+                m.hideElement();
+            }
 
-            m.hideElement();
 
             // Fetch source
             if (m.val('source')) {
@@ -486,12 +489,14 @@
                 ko.applyBindingsToDescendants(m.childBindingContext, m.element);
             }
 
-            // check if this page should trigger showChild at parent
-            if (m.parentPage.route && m.parentPage.route[0] === m.getId()) {
-                // call once the current event loop is finished.
-                setTimeout(function () {
-                    m.parentPage.showPage(m.parentPage.route);
-                }, 0);
+            if(urlToggle !== 'none') {
+                // check if this page should trigger showChild at parent
+                if (m.parentPage.route && m.parentPage.route[0] === m.getId()) {
+                    // call once the current event loop is finished.
+                    setTimeout(function () {
+                        m.parentPage.showPage(m.parentPage.route);
+                    }, 0);
+                }
             }
 
             return { controlsDescendantBindings:true};
