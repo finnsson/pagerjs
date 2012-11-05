@@ -726,7 +726,7 @@
          * @method pager.Page#hideElementWrapper
          * @param {Function} callback
          */
-        pager.Page.prototype.hideElementWrapper = function (callback) {
+        p.hideElementWrapper = function (callback) {
             if (this.val('beforeHide')) {
                 this.val('beforeHide')(this);
             }

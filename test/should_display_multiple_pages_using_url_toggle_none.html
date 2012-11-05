@@ -26,6 +26,9 @@
     <span id="hi">Hi</span>
 </div>
 
+<div data-bind="page: {id: 'c'}">
+    <span id="eho">Eho</span>
+</div>
 
 <script type="text/javascript">
 
@@ -49,6 +52,19 @@
         assert.equal($('#hej').is(':visible'), true, "hej should be visible");
         assert.equal($('#hola').is(':visible'), true, "hola should be visible");
         assert.equal($('#hi').is(':visible'), true, "hi should be visible");
+        assert.equal($('#eho').is(':visible'), false, "eho should be hidden");
+
+        location.hash = '#c';
+
+        until(function() {
+            return $('#eho').is(':visible');
+        }, function() {
+            assert.equal($('#hej').is(':visible'), true, "hej should be visible");
+            assert.equal($('#hola').is(':visible'), true, "hola should be visible");
+            assert.equal($('#hi').is(':visible'), true, "hi should be visible");
+            assert.equal($('#eho').is(':visible'), false, "eho should be visible");
+
+        });
 
         start();
 
