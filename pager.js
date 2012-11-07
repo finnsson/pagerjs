@@ -375,7 +375,7 @@
                 isVisible = m.isVisible();
             m.currentId = pageRoute ? pageRoute.name : null;
             m.isVisible(true);
-            if(originalRoute) {
+            if (originalRoute) {
                 m.originalRoute(originalRoute);
             }
             m.route = route;
@@ -442,12 +442,12 @@
          */
         p.hidePage = function (callback) {
             var m = this;
-            if('show' !== m.val('urlToggle')) {
+            if ('show' !== m.val('urlToggle')) {
                 m.isVisible(false);
                 m.hideElementWrapper(callback);
                 m.childManager.hideChild();
             } else {
-                if(callback) {
+                if (callback) {
                     callback();
                 }
             }
@@ -469,7 +469,7 @@
             });
 
             var value = m.getValue();
-            if(urlToggle !== 'none') {
+            if (urlToggle !== 'none') {
                 m.parentPage = m.getParentPage();
                 m.parentPage.children.push(this);
                 m.hideElement();
@@ -497,7 +497,7 @@
                 ko.applyBindingsToDescendants(m.childBindingContext, m.element);
             }
 
-            if(urlToggle !== 'none') {
+            if (urlToggle !== 'none') {
                 // check if this page should trigger showChild at parent
                 if (m.parentPage.route && m.parentPage.route[0] === m.getId()) {
                     // call once the current event loop is finished.
@@ -505,6 +505,15 @@
                         m.parentPage.showPage(m.parentPage.route);
                     }, 0);
                 }
+            } else { // urlToggle === 'none'
+                // when the page is rendered
+                setTimeout(function () {
+                    // if the page is visible
+                    if ($(m.element).is(':visible')) {
+                        // trigger showPage with empty route-array
+                        m.showPage([]);
+                    }
+                }, 0);
             }
 
             return { controlsDescendantBindings:true};
@@ -547,7 +556,8 @@
             // search this context/$data until either root is accessed or no page is found
             var bindingContext = this.bindingContext;
             while (bindingContext) {
-                if (bindingContext.$page) {
+                // get first parent page, but exclude pages with urlToggle: none
+                if (bindingContext.$page && bindingContext.$page.val('urlToggle') !== 'none') {
                     return bindingContext.$page;
                 } else if (bindingContext.$data && bindingContext.$data.$__page__) {
                     return bindingContext.$data.$__page__;
