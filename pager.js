@@ -266,6 +266,7 @@
          * @param {Object} valueAccessor.params
          * @param {Object} valueAccessor.vars
          * @param {String} valueAccessor.fx
+         * @param {String} valueAccessor.urlToggle can be either null (default), "none" or "show"
          * @param allBindingsAccessor
          * @param {Observable} viewModel
          * @param bindingContext
@@ -440,9 +441,16 @@
          * @param {Function} callback
          */
         p.hidePage = function (callback) {
-            this.isVisible(false);
-            this.hideElementWrapper(callback);
-            this.childManager.hideChild();
+            var m = this;
+            if('show' !== m.val('urlToggle')) {
+                m.isVisible(false);
+                m.hideElementWrapper(callback);
+                m.childManager.hideChild();
+            } else {
+                if(callback) {
+                    callback();
+                }
+            }
         };
 
         /**

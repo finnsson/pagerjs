@@ -14,19 +14,19 @@
 
 <div id="qunit"></div>
 
-<div data-bind="page: {id: 'a', urlToggle: 'none'}">
+<div data-bind="page: {id: 'a', urlToggle: 'show'}">
     <span id="hej">Hej</span>
 </div>
 
-<div data-bind="page: {id: 'b', urlToggle: 'none'}">
+<div data-bind="page: {id: 'b', urlToggle: 'show'}">
     <span id="hola">Hola</span>
 </div>
 
-<div data-bind="page: {id: 'c', urlToggle: 'none'}">
+<div data-bind="page: {id: 'c', urlToggle: 'show'}">
     <span id="hi">Hi</span>
 </div>
 
-<div data-bind="page: {id: 'c'}">
+<div data-bind="page: {id: 'd'}">
     <span id="eho">Eho</span>
 </div>
 
@@ -49,24 +49,71 @@
 
     asyncTest("Should display multiple pages using URL toggle none", function () {
 
-        assert.equal($('#hej').is(':visible'), true, "hej should be visible");
-        assert.equal($('#hola').is(':visible'), true, "hola should be visible");
-        assert.equal($('#hi').is(':visible'), true, "hi should be visible");
+        assert.equal($('#hej').is(':visible'), false, "hej should be visible");
+        assert.equal($('#hola').is(':visible'), false, "hola should be visible");
+        assert.equal($('#hi').is(':visible'), false, "hi should be visible");
         assert.equal($('#eho').is(':visible'), false, "eho should be hidden");
 
-        location.hash = '#c';
+        location.hash = '#a';
 
-        until(function() {
-            return $('#eho').is(':visible');
-        }, function() {
+        until(function () {
+            return $('#hej').is(':visible');
+        }, function () {
             assert.equal($('#hej').is(':visible'), true, "hej should be visible");
-            assert.equal($('#hola').is(':visible'), true, "hola should be visible");
-            assert.equal($('#hi').is(':visible'), true, "hi should be visible");
-            assert.equal($('#eho').is(':visible'), false, "eho should be visible");
+            assert.equal($('#hola').is(':visible'), false, "hola should be hidden");
+            assert.equal($('#hi').is(':visible'), false, "hi should be hidden");
+            assert.equal($('#eho').is(':visible'), false, "eho should be hidden");
+
+            location.hash = '#b';
+            until(function () {
+                return $('#hola').is(':visible');
+            }, function () {
+                assert.equal($('#hej').is(':visible'), true, "hej should be visible");
+                assert.equal($('#hola').is(':visible'), true, "hola should be visible");
+                assert.equal($('#hi').is(':visible'), false, "hi should be hidden");
+                assert.equal($('#eho').is(':visible'), false, "eho should be hidden");
+
+                location.hash = '#c';
+                until(function () {
+                    return $('#hi').is(':visible');
+                }, function () {
+                    assert.equal($('#hej').is(':visible'), true, "hej should be visible");
+                    assert.equal($('#hola').is(':visible'), true, "hola should be visible");
+                    assert.equal($('#hi').is(':visible'), true, "hi should be visible");
+                    assert.equal($('#eho').is(':visible'), false, "eho should be hidden");
+
+                    location.hash = '#d';
+                    until(function () {
+                        return $('#eho').is(':visible');
+                    }, function () {
+                        assert.equal($('#hej').is(':visible'), true, "hej should be visible");
+                        assert.equal($('#hola').is(':visible'), true, "hola should be visible");
+                        assert.equal($('#hi').is(':visible'), true, "hi should be visible");
+                        assert.equal($('#eho').is(':visible'), true, "eho should be visible");
+
+                        location.hash = '#a';
+                        until(function () {
+                            return ! $('#eho').is(':visible');
+                        }, function () {
+                            assert.equal($('#hej').is(':visible'), true, "hej should be visible");
+                            assert.equal($('#hola').is(':visible'), true, "hola should be visible");
+                            assert.equal($('#hi').is(':visible'), true, "hi should be visible");
+                            assert.equal($('#eho').is(':visible'), false, "eho should be hidden");
+
+                            start();
+                        });
+
+
+                    });
+
+
+                });
+
+
+            });
 
         });
 
-        start();
 
     });
 </script>
