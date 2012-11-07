@@ -861,6 +861,8 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 - [Remove underscorejs dependency](https://github.com/finnsson/pagerjs/issues/49)
 - [pager.start id does not honor pager.Href.hash](https://github.com/finnsson/pagerjs/issues/51)
 - [Sending wildcards to the viewmodel](https://github.com/finnsson/pagerjs/issues/52)
+- [Should handle pages that does not react to URL changes](https://github.com/finnsson/pagerjs/issues/61)
+- [Should handle pages that does not hide on URL changes](https://github.com/finnsson/pagerjs/issues/62)
 
 ## Roadmap
 
