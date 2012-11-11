@@ -266,6 +266,7 @@
          * @param {Object} valueAccessor.params
          * @param {Object} valueAccessor.vars
          * @param {String} valueAccessor.fx
+         * @param {String} valueAccessor.urlToggle can be either null (default), "none" or "show"
          * @param allBindingsAccessor
          * @param {Observable} viewModel
          * @param bindingContext
@@ -364,6 +365,8 @@
          * @method pager.Page#showPage
          *
          * @param route
+         * @param [pageRoute]
+         * @param [originalRoute]
          */
         p.showPage = function (route, pageRoute, originalRoute) {
             var m = this,
@@ -372,7 +375,9 @@
                 isVisible = m.isVisible();
             m.currentId = pageRoute ? pageRoute.name : null;
             m.isVisible(true);
-            m.originalRoute(originalRoute);
+            if (originalRoute) {
+                m.originalRoute(originalRoute);
+            }
             m.route = route;
             m.pageRoute = pageRoute;
             // show if not already visible
@@ -436,9 +441,16 @@
          * @param {Function} callback
          */
         p.hidePage = function (callback) {
-            this.isVisible(false);
-            this.hideElementWrapper(callback);
-            this.childManager.hideChild();
+            var m = this;
+            if ('show' !== m.val('urlToggle')) {
+                m.isVisible(false);
+                m.hideElementWrapper(callback);
+                m.childManager.hideChild();
+            } else {
+                if (callback) {
+                    callback();
+                }
+            }
         };
 
         /**
@@ -448,6 +460,7 @@
          */
         p.init = function () {
             var m = this;
+            var urlToggle = m.val('urlToggle');
 
             // listen to when the element is removed
             ko.utils.domNodeDisposal.addDisposeCallback(m.element, function () {
@@ -456,10 +469,12 @@
             });
 
             var value = m.getValue();
-            m.parentPage = m.getParentPage();
-            m.parentPage.children.push(this);
+            if (urlToggle !== 'none') {
+                m.parentPage = m.getParentPage();
+                m.parentPage.children.push(this);
+                m.hideElement();
+            }
 
-            m.hideElement();
 
             // Fetch source
             if (m.val('source')) {
@@ -482,11 +497,22 @@
                 ko.applyBindingsToDescendants(m.childBindingContext, m.element);
             }
 
-            // check if this page should trigger showChild at parent
-            if (m.parentPage.route && m.parentPage.route[0] === m.getId()) {
-                // call once the current event loop is finished.
+            if (urlToggle !== 'none') {
+                // check if this page should trigger showChild at parent
+                if (m.parentPage.route && m.parentPage.route[0] === m.getId()) {
+                    // call once the current event loop is finished.
+                    setTimeout(function () {
+                        m.parentPage.showPage(m.parentPage.route);
+                    }, 0);
+                }
+            } else { // urlToggle === 'none'
+                // when the page is rendered
                 setTimeout(function () {
-                    m.parentPage.showPage(m.parentPage.route);
+                    // if the page is visible
+                    if ($(m.element).is(':visible')) {
+                        // trigger showPage with empty route-array
+                        m.showPage([]);
+                    }
                 }, 0);
             }
 
@@ -530,7 +556,8 @@
             // search this context/$data until either root is accessed or no page is found
             var bindingContext = this.bindingContext;
             while (bindingContext) {
-                if (bindingContext.$page) {
+                // get first parent page, but exclude pages with urlToggle: none
+                if (bindingContext.$page && bindingContext.$page.val('urlToggle') !== 'none') {
                     return bindingContext.$page;
                 } else if (bindingContext.$data && bindingContext.$data.$__page__) {
                     return bindingContext.$data.$__page__;
@@ -717,7 +744,7 @@
          * @method pager.Page#hideElementWrapper
          * @param {Function} callback
          */
-        pager.Page.prototype.hideElementWrapper = function (callback) {
+        p.hideElementWrapper = function (callback) {
             if (this.val('beforeHide')) {
                 this.val('beforeHide')(this);
             }

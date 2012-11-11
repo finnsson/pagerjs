@@ -14,6 +14,19 @@
     <link href="google-code-prettify/prettify.css" type="text/css" rel="stylesheet"/>
     <script type="text/javascript" src="google-code-prettify/prettify.js"></script>
     <meta name="fragment" content="!">
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-36110085-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
 </head>
 <body>
 
@@ -107,9 +120,8 @@
         <h1>Setup</h1>
 
         <p class="lead">
-            Pager.js depends on <a href="http://knockoutjs.com/">KnockoutJS</a>,
-            <a href="http://jquery.com/">jQuery</a> and <a href="http://underscorejs.org/">Underscore.js</a>
-            (or <a href="http://lodash.com/">Lo-Dash</a>). Include either
+            Pager.js depends on <a href="http://knockoutjs.com/">KnockoutJS</a> and
+            <a href="http://jquery.com/">jQuery</a>. Include either
             <a href="https://raw.github.com/finnsson/pagerjs/master/pager.js">pager.js</a>
             or <a href="https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js">pager.min.js</a>.
             Choose between a naïve history manager (<code>pager.start([id: String])</code>),
@@ -1290,6 +1302,9 @@ isLoggedIn: function(page, route, callback) {
 </div>
 
 <div data-bind="page: {id: 'fx', title: 'FX', sourceOnShow: 'fx.html', sourceCache: true, desc: 'effects between page transitions'}">
+</div>
+
+<div data-bind="page: {id: 'crawling', title: 'Crawling', sourceOnShow: 'page/crawling.html', desc: 'making sure the site can be crawled'}">
 </div>
 
 
