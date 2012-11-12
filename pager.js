@@ -469,7 +469,8 @@
             // listen to when the element is removed
             ko.utils.domNodeDisposal.addDisposeCallback(m.element, function () {
                 // then remove this Page-instance
-                m.parentPage.children.remove(m);
+                if (m.parentPage)
+                    m.parentPage.children.remove(m);
             });
 
             var value = m.getValue();
@@ -496,7 +497,7 @@
                 m.augmentContext();
             }
             m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
-            ko.utils.extend(m.childBindingContext, {$page:this});
+            ko.utils.extend(m.childBindingContext, { $page: this });
             if (!m.val('withOnShow')) {
                 ko.applyBindingsToDescendants(m.childBindingContext, m.element);
             }
@@ -511,16 +512,22 @@
                 }
             } else { // urlToggle === 'none'
                 // when the page is rendered
-                setTimeout(function () {
+                var display = function () {
                     // if the page is visible
                     if ($(m.element).is(':visible')) {
                         // trigger showPage with empty route-array
                         m.showPage([]);
                     }
-                }, 0);
+                };
+                setTimeout(display, 0);
+                m.getParentPage().isVisible.subscribe(function (x) {
+                    if (x) {
+                        setTimeout(display, 0);
+                    }
+                });
             }
 
-            return { controlsDescendantBindings:true};
+            return { controlsDescendantBindings: true };
         };
 
         p.augmentContext = function () {
