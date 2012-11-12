@@ -369,7 +369,7 @@
                 currentId = m.currentId,
                 params = m.pageRoute ? m.pageRoute.params : null,
                 isVisible = m.isVisible();
-            m.currentId = pageRoute ? pageRoute.name : null;
+            m.currentId = pageRoute ? (pageRoute.name || '') : '';
             m.isVisible(true);
             if (originalRoute) {
                 m.originalRoute(originalRoute);
