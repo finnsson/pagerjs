@@ -66,15 +66,11 @@
 
         var parseStringAsParameters = function (query) {
             var match,
-                urlParams = {},
-                pl = /\+/g, // Regex for replacing addition symbol with a space
-                search = /([^&=]+)=?([^&]*)/g,
-                decode = function (s) {
-                    return decodeURIComponent(s.replace(pl, " "));
-                };
+                urlParams = {},                
+                search = /([^&=]+)=?([^&]*)/g;
 
             while (match = search.exec(query)) {
-                urlParams[decode(match[1])] = decode(match[2]);
+                urlParams[match[1]] = match[2];
             }
             return urlParams;
         };
@@ -1035,7 +1031,7 @@
                     hash = hash.slice(pager.Href.hash.length);
                 }
                 // split on '/'
-                var hashRoute = decodeURIComponent(hash).split('/');
+                var hashRoute = decodeURIComponent(hash.replace(/\+/g, ' ')).split('/');
                 pager.showChild(hashRoute);
             });
             $(window).hashchange();
