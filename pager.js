@@ -410,13 +410,21 @@
                 var userParams = this.val('params') || {};
                 // for each param for URL
                 $.each(params, function (key, value) {
-                    if ($.inArray(key, userParams) !== -1) { // make sure it's a valid param
-                        if (vm[key]) { // set observable ...
-                            vm[key](value);
-                        } else { // ... or create observable
-                            vm[key] = ko.observable(value);
+
+                    if (Object.prototype.toString.call(userParams) === "[object Array]") {
+                        if ($.inArray(key, userParams) !== -1) { // make sure it's a valid param
+                            if (vm[key]) { // set observable ...
+                                vm[key](value);
+                            } else { // ... or create observable
+                                vm[key] = ko.observable(value);
+                            }
                         }
                     }
+                    else {
+                        if (userParams[key])
+                            userParams[key](value);
+                    }
+
                 });
             }
             if (this.pageRoute) {
