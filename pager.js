@@ -790,20 +790,28 @@
          * @return {Observable}
          */
         p.getFullRoute = function () {
-            return ko.computed(function () {
-                var res = null;
-                if (this.currentParentPage && this.currentParentPage()) {
-                    res = this.currentParentPage().getFullRoute()();
-                    res.push((this.originalRoute() || this.getId()));
-                    return res;
-                } else if (this.parentPage) {
-                    res = this.parentPage.getFullRoute()();
-                    res.push((this.originalRoute() || this.getId()));
-                    return res;
-                } else { // is root page
-                    return [];
-                }
-            }, this);
+            // either return an already created computed observable
+            if(this._fullRoute) {
+                return this._fullRoute;
+            } else {
+                // or create a computed observable..
+                this._fullRoute = ko.computed(function () {
+                    var res = null;
+                    if (this.currentParentPage && this.currentParentPage()) {
+                        res = this.currentParentPage().getFullRoute()().slice(0);
+                        res.push((this.originalRoute() || this.getId()));
+                        return res;
+                    } else if (this.parentPage) {
+                        res = this.parentPage.getFullRoute()().slice(0);
+                        res.push((this.originalRoute() || this.getId()));
+                        return res;
+                    } else { // is root page
+                        return [];
+                    }
+                }, this);
+                // ... and return it
+                return this._fullRoute;
+            }
         };
 
         p.nullObject = new pager.Page();
