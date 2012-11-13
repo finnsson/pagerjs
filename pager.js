@@ -66,7 +66,7 @@
 
         var parseStringAsParameters = function (query) {
             var match,
-                urlParams = {},                
+                urlParams = {},
                 search = /([^&=]+)=?([^&]*)/g;
 
             while (match = search.exec(query)) {
@@ -417,10 +417,10 @@
                         }
                     }
                     else {
-                        if (userParams[key])
+                        if (userParams[key]) {
                             userParams[key](value);
+                        }
                     }
-
                 });
             }
             if (this.pageRoute) {
@@ -469,8 +469,9 @@
             // listen to when the element is removed
             ko.utils.domNodeDisposal.addDisposeCallback(m.element, function () {
                 // then remove this Page-instance
-                if (m.parentPage)
+                if (m.parentPage) {
                     m.parentPage.children.remove(m);
+                }
             });
 
             var value = m.getValue();
@@ -497,7 +498,7 @@
                 m.augmentContext();
             }
             m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
-            ko.utils.extend(m.childBindingContext, { $page: this });
+            ko.utils.extend(m.childBindingContext, { $page:this });
             if (!m.val('withOnShow')) {
                 ko.applyBindingsToDescendants(m.childBindingContext, m.element);
             }
@@ -527,7 +528,7 @@
                 });
             }
 
-            return { controlsDescendantBindings: true };
+            return { controlsDescendantBindings:true };
         };
 
         p.augmentContext = function () {
@@ -653,34 +654,35 @@
                     loader.load();
                 }
                 // TODO: remove all children and add sourceUrl(source)
-                ko.computed(function () {
-                    var onLoad = function () {
-                        // remove load
-                        if (loader) {
-                            loader.unload();
-                        }
-                        // apply bindings
-                        ko.applyBindingsToDescendants(me.childBindingContext, me.element);
-                        // trigger event
-                        if (value.sourceLoaded) {
-                            value.sourceLoaded(me);
-                        }
-                        // possibly continue routing
-                        if (me.route) {
-                            me.childManager.showChild(me.route);
-                        }
-                    };
-                    if (typeof _ko.value(source) === 'string') {
-                        var s = _ko.value(this.sourceUrl(source));
-                        $(element).load(s, function () {
-                            onLoad();
-                        });
-                    } else { // should be a method
-                        _ko.value(source)(this, function () {
-                            onLoad();
-                        });
+                var onLoad = function () {
+                    // remove load
+                    if (loader) {
+                        loader.unload();
                     }
-                }, this);
+                    // apply bindings
+                    ko.applyBindingsToDescendants(me.childBindingContext, me.element);
+                    // trigger event
+                    if (value.sourceLoaded) {
+                        value.sourceLoaded(me);
+                    }
+                    // possibly continue routing
+                    if (me.route) {
+                        me.childManager.showChild(me.route);
+                    }
+                };
+                if (typeof _ko.value(source) === 'string') {
+                    var s = _ko.value(this.sourceUrl(source));
+                    $(element).load(s, function () {
+                        onLoad();
+                    });
+                } else { // should be a method
+                    $.each($(element).children(), function (i, c) {
+                        ko.utils.domNodeDisposal.removeNode(c);
+                    });
+                    _ko.value(source)(this, function () {
+                        onLoad();
+                    });
+                }
             }
         };
 
@@ -791,7 +793,7 @@
          */
         p.getFullRoute = function () {
             // either return an already created computed observable
-            if(this._fullRoute) {
+            if (this._fullRoute) {
                 return this._fullRoute;
             } else {
                 // or create a computed observable..

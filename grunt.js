@@ -26,7 +26,7 @@ module.exports = function (grunt) {
         concat:{
             demo:{
                 src:['<banner:meta.banner>', '<file_strip_banner:pager.js>'],
-                dest:'demo/pager.min.js'
+                dest:'pagerjs.com/demo/pager.min.js'
             }
         },
         min:{
@@ -36,7 +36,7 @@ module.exports = function (grunt) {
             },
             demo:{
                 src:['<banner:meta.banner>', '<file_strip_banner:pager.js>'],
-                dest:'demo/pager.min.js'
+                dest:'pagerjs.com/demo/pager.min.js'
             }
         },
         watch:{
