@@ -14,7 +14,7 @@
 
 <div id="qunit"></div>
 
-<div data-bind="page: {id: 'main', sourceOnShow: '../test-data/parent_to_ipsum.html'}">
+<div data-bind="page: {id: 'main', sourceOnShow: '../test-data/parent_to_ipsum.html', withOnShow: loadViewModelSlow()}">
 </div>
 
 <div data-bind="page: {id: 'other'}">
@@ -25,7 +25,18 @@
 
 
     var viewModel = {
-        name: "Sofia"
+        name: "Wrong name"
+    };
+
+    window.loadViewModelSlow = function() {
+        return function (callback) {
+            // delay the view-model so the binding can crash if it is applied to soon!
+            setTimeout(function() {
+                callback({
+                    name: "Pelle"
+                });
+            }, 200);
+        };
     };
 
     pager.extendWithPage(viewModel);
@@ -43,7 +54,7 @@
 
         location.hash = '#main/ipsum';
         until(function () {
-            return $('#ipsum').is(':visible');
+            return $('#ipsum').is(':visible') && $('#ipsum').text().trim() === 'Pelle';
         }, function () {
             assert.equal($('#other').is(':visible'), false, "Other should be hidden");
             assert.equal($('#ipsum').is(':visible'), true, "Ipsum should be visible");
@@ -59,7 +70,7 @@
 
                 location.hash = '#main/ipsum';
                 until(function () {
-                    return $('#ipsum').is(':visible');
+                    return $('#ipsum').is(':visible') && $('#ipsum').text().trim() === 'Pelle';
                 }, function () {
                     assert.equal($('#other').is(':visible'), false, "Other should be hidden");
                     assert.equal($('#ipsum').is(':visible'), true, "Ipsum should be visible");

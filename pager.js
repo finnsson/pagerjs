@@ -614,6 +614,22 @@
             }
         };
 
+        p.loadWithOnShow = function() {
+            var me = this;
+            if (!me.withOnShowLoaded || me.val('sourceCache') !== true) {
+                me.withOnShowLoaded = true;
+                me.val('withOnShow')(function (vm) {
+                    var childBindingContext = me.bindingContext.createChildContext(vm);
+                    me.ctx = vm;
+                    // replace the childBindingContext
+                    me.childBindingContext = childBindingContext;
+                    me.augmentContext();
+                    ko.utils.extend(childBindingContext, {$page:me});
+                    ko.applyBindingsToDescendants(childBindingContext, me.element);
+                }, me);
+            }
+        };
+
         /**
          * @method pager.Page#loadSource
          * @param source
@@ -660,7 +676,14 @@
                         loader.unload();
                     }
                     // apply bindings
-                    ko.applyBindingsToDescendants(me.childBindingContext, me.element);
+                    // TODO: call abstraction that either applies binding or loads view-model
+
+                    if(!me.val('withOnShow')) {
+                        ko.applyBindingsToDescendants(me.childBindingContext, me.element);
+                    } else if (me.val('withOnShow')) {
+                        me.loadWithOnShow();
+                    }
+
                     // trigger event
                     if (value.sourceLoaded) {
                         value.sourceLoaded(me);
@@ -752,19 +775,6 @@
             if (me.val('title')) {
                 window.document.title = me.val('title');
             }
-            if (me.val('withOnShow')) {
-                if (!me.withOnShowLoaded || me.val('sourceCache') !== true) {
-                    me.withOnShowLoaded = true;
-                    me.val('withOnShow')(function (vm) {
-                        var childBindingContext = me.bindingContext.createChildContext(vm);
-                        me.ctx = vm;
-                        me.augmentContext();
-                        ko.utils.extend(childBindingContext, {$page:me});
-                        ko.applyBindingsToDescendants(childBindingContext, me.element);
-                    }, me);
-                }
-            }
-
             // Fetch source
             if (me.val('sourceOnShow')) {
                 if (!me.val('sourceCache') ||
@@ -774,6 +784,11 @@
                     me.loadSource(me.val('sourceOnShow'));
                 }
             }
+            else if (me.val('withOnShow')) {
+                me.loadWithOnShow();
+            }
+
+
         };
 
         /**

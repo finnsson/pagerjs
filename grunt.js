@@ -88,6 +88,6 @@ module.exports = function (grunt) {
     // Default task.
     grunt.registerTask('default', 'lint less qunit concat min');
 
-    grunt.registerTask('travis', 'qunit');
+    grunt.registerTask('travis', 'qunit lint');
 
 };
