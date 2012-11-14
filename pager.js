@@ -672,7 +672,7 @@
                 };
                 if (typeof _ko.value(source) === 'string') {
                     var s = _ko.value(this.sourceUrl(source));
-                    $(element).load(s, function () {
+                    koLoad(element, s, function() {
                         onLoad();
                     });
                 } else { // should be a method
@@ -684,6 +684,60 @@
                     });
                 }
             }
+        };
+
+        var rscript = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+
+        // a modified version of jQUery.fn.load, where the element is executing removeNode
+        // before adding the new node.
+        var koLoad = function (element, url, callback) {
+            var selector, type, response,
+                self = $(element),
+                off = url.indexOf(" ");
+
+            if (off >= 0) {
+                selector = url.slice(off, url.length);
+                url = url.slice(0, off);
+            }
+
+            // Request the remote document
+            jQuery.ajax({
+                url:url,
+                type:'GET',
+                dataType:"html",
+                complete:function (jqXHR, status) {
+                    if (callback) {
+                        self.each(callback, response || [ jqXHR.responseText, status, jqXHR ]);
+                    }
+                }
+            }).done(function (responseText) {
+
+                    // Save response for use in complete callback
+                    response = arguments;
+
+                    // clean up the element
+                    $.each(self.children(), function (i, c) {
+                        ko.utils.domNodeDisposal.removeNode(c);
+                    });
+
+                    // See if a selector was specified
+                    self.html(selector ?
+
+                        // Create a dummy div to hold the results
+                        jQuery("<div>")
+
+                            // inject the contents of the document in, removing the scripts
+                            // to avoid any 'Permission Denied' errors in IE
+                            .append(responseText.replace(rscript, ""))
+
+                            // Locate the specified elements
+                            .find(selector) :
+
+                        // If not, just inject the full result
+                        responseText);
+
+                });
+            return self;
         };
 
         /**
