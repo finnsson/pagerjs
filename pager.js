@@ -888,13 +888,34 @@
         p.nullObject = new pager.Page();
         p.nullObject.children = ko.observableArray([]);
 
+        /**
+         * Get the child page, by name, of the current child as a
+         * computed observable.
+         *
+         *     // get the child page of somePage, with the id admin
+         *     var adminObservable = somePage.child('admin');
+         *     // run () to get the object, getId is a method on pager.Page
+         *     var id = adminObservable().getId();
+         *     // id is admin
+         *     console.log(id === 'admin');
+         *
+         * @param {String} key
+         * @return {Observable}
+         */
         p.child = function (key) {
-            return ko.computed(function () {
-                var child = $.grep(this.children(), function (c) {
-                    return c.getId() === key;
-                })[0];
-                return child || this.nullObject;
-            }, this);
+            var me = this;
+            if(me._child == null) {
+                me._child = {};
+            }
+            if(!me._child[key]) {
+                me._child[key] = ko.computed(function () {
+                    var child = $.grep(this.children(), function (c) {
+                        return c.getId() === key;
+                    })[0];
+                    return child || this.nullObject;
+                }, this);
+            }
+            return me._child[key];
         };
 
         ko.bindingHandlers.page = {
