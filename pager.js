@@ -419,6 +419,11 @@
                     else {
                         if (userParams[key]) {
                             userParams[key](value);
+                            if (vm[key]) {
+                                vm[key](value);
+                            } else {
+                                vm[key] = ko.observable(value);
+                            }
                         }
                     }
                 });
@@ -533,16 +538,33 @@
 
         p.augmentContext = function () {
             var m = this;
-            if (m.val('params')) {
-                $.each(this.val('params'), function (index, param) {
-                    if (!m.ctx[param]) {
-                        m.ctx[param] = ko.observable();
-                    }
-                });
+            var params = m.val('params');
+            if (params) {
+                if($.isArray(params)) {
+                    $.each(params, function (index, param) {
+                        if (!m.ctx[param]) {
+                            m.ctx[param] = ko.observable();
+                        }
+                    });
+                } else { // is object
+                    $.each(params, function(key, value) {
+                        if(!m.ctx[key]) {
+                            if(ko.isObservable(value)) {
+                                m.ctx[key] = value;
+                            } else {
+                                m.ctx[key] = ko.observable(value);
+                            }
+                        }
+                    });
+                }
             }
             if (this.val('vars')) {
                 $.each(this.val('vars'), function (key, value) {
-                    m.ctx[key] = ko.observable(value);
+                    if(ko.isObservable(value)) {
+                        m.ctx[key] = value;
+                    } else {
+                        m.ctx[key] = ko.observable(value);
+                    }
                 });
             }
             this.setParams();
