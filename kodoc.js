@@ -16,8 +16,18 @@
     /**
      * @class Observable
      */
-    var Observable = null;
+    var Observable = function(val) {
 
+    };
+
+
+    /**
+     *
+     * @param {Function} fn
+     */
+    Observable.prototype.subscribe = function(fn) {
+
+    };
 
     /**
      * @method observable

@@ -493,19 +493,25 @@
             }
 
             m.ctx = null;
-            if (value['with']) {
-                m.ctx = _ko.value(value['with']);
-                m.augmentContext();
-            } else if (value.withOnShow) {
+            if (value.withOnShow) {
                 m.ctx = {};
+                m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
+                ko.utils.extend(m.childBindingContext, { $page:this });
             } else {
-                m.ctx = m.viewModel;
+                var context = value['with'] || m.viewModel;
+                m.ctx = _ko.value(context);
                 m.augmentContext();
-            }
-            m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
-            ko.utils.extend(m.childBindingContext, { $page:this });
-            if (!m.val('withOnShow')) {
+                m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
+                ko.utils.extend(m.childBindingContext, { $page:this });
                 ko.applyBindingsToDescendants(m.childBindingContext, m.element);
+
+                if(ko.isObservable(context)) {
+                    context.subscribe(function() {
+                        // update $data in childBindingContext
+                        m.childBindingContext['$data'] = _ko.value(context);
+                        ko.applyBindingsToDescendants(m.childBindingContext, m.element);
+                    });
+                }
             }
 
             if (urlToggle !== 'none') {
@@ -540,16 +546,16 @@
             var m = this;
             var params = m.val('params');
             if (params) {
-                if($.isArray(params)) {
+                if ($.isArray(params)) {
                     $.each(params, function (index, param) {
                         if (!m.ctx[param]) {
                             m.ctx[param] = ko.observable();
                         }
                     });
                 } else { // is object
-                    $.each(params, function(key, value) {
-                        if(!m.ctx[key]) {
-                            if(ko.isObservable(value)) {
+                    $.each(params, function (key, value) {
+                        if (!m.ctx[key]) {
+                            if (ko.isObservable(value)) {
                                 m.ctx[key] = value;
                             } else {
                                 m.ctx[key] = ko.observable(value);
@@ -560,7 +566,7 @@
             }
             if (this.val('vars')) {
                 $.each(this.val('vars'), function (key, value) {
-                    if(ko.isObservable(value)) {
+                    if (ko.isObservable(value)) {
                         m.ctx[key] = value;
                     } else {
                         m.ctx[key] = ko.observable(value);
@@ -636,7 +642,7 @@
             }
         };
 
-        p.loadWithOnShow = function() {
+        p.loadWithOnShow = function () {
             var me = this;
             if (!me.withOnShowLoaded || me.val('sourceCache') !== true) {
                 me.withOnShowLoaded = true;
@@ -700,7 +706,7 @@
                     // apply bindings
                     // TODO: call abstraction that either applies binding or loads view-model
 
-                    if(!me.val('withOnShow')) {
+                    if (!me.val('withOnShow')) {
                         ko.applyBindingsToDescendants(me.childBindingContext, me.element);
                     } else if (me.val('withOnShow')) {
                         me.loadWithOnShow();
@@ -717,7 +723,7 @@
                 };
                 if (typeof _ko.value(source) === 'string') {
                     var s = _ko.value(this.sourceUrl(source));
-                    koLoad(element, s, function() {
+                    koLoad(element, s, function () {
                         onLoad();
                     });
                 } else { // should be a method
@@ -926,10 +932,10 @@
          */
         p.child = function (key) {
             var me = this;
-            if(me._child == null) {
+            if (me._child == null) {
                 me._child = {};
             }
-            if(!me._child[key]) {
+            if (!me._child[key]) {
                 me._child[key] = ko.computed(function () {
                     var child = $.grep(this.children(), function (c) {
                         return c.getId() === key;
