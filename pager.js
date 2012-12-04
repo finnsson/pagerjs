@@ -471,6 +471,14 @@
             var m = this;
             var urlToggle = m.val('urlToggle');
 
+
+            var existingPage = ko.utils.domData.get(m.element, '__ko_pagerjsBindingData');
+            if(existingPage) {
+                return { controlsDescendantBindings: true};
+            } else {
+                ko.utils.domData.set(m.element, '__ko_pagerjsBindingData', m);
+            }
+
             // listen to when the element is removed
             ko.utils.domNodeDisposal.addDisposeCallback(m.element, function () {
                 // then remove this Page-instance
