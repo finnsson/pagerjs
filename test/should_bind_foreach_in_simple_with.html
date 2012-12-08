@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should bind foreach in simple with</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.2.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<!-- ko foreach: ["1", "2", "3", "4", "5", "6"] -->
+<a data-bind="page-href: $data, text: 'Goto ' + $data">1</a>
+<!-- /ko -->
+<a data-bind="page-href: '1/a'">Goto 1/a</a>
+<a data-bind="page-href: '3/b'">Goto 3/b</a>
+
+<br/>
+<pre data-bind="text: ko.toJSON(selectedId)"></pre>
+<div data-bind="page:{id: '?', with: innerVM, nameParam: selectedId}">
+    <h1 id="wildcard_card_h1">Wildcard page</h1>
+    <ul data-bind="foreach: $page.children">
+        <li class="subpage"><a data-bind="text: val('title'), page-href: $data"></a></li>
+    </ul>
+    <div data-bind="page: {id: 'a', title: 'Page A'}">
+        <h2>Page A</h2>
+        <pre id="a" data-bind="text: a"></pre>
+    </div>
+    <div data-bind="page: {id: 'b', title: 'Page B'}">
+        <h2>Page B</h2>
+        <pre data-bind="text: b"></pre>
+    </div>
+    <div id="text-a" data-bind="text: a"></div>
+    <div id="text-b" data-bind="text: b"></div>
+</div>
+
+
+<script type="text/javascript">
+
+    var InnerViewModel = function (id) {
+        var self = this;
+        self.a = "a-" + id;
+        self.b = "b-" + id;
+    };
+
+    var ViewModel = function () {
+        var self = this;
+        self.selectedId = ko.observable("");
+        self.innerVM = new InnerViewModel('test')
+    };
+    var vm = new ViewModel();
+
+    pager.extendWithPage(vm);
+    ko.applyBindings(vm);
+
+    pager.startHashChange();
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should bind foreach in simple with", function () {
+
+        // 1. Make sure we start at the beginning
+        location.hash = '#';
+        until(function () {
+            return !$('#wildcard_card_h1').is(':visible');
+        }, function () {
+
+            // 2. Navigate to first page, sub page a
+            location.hash = '#1/a';
+
+            until(function() {
+                return $('#a').is(':visible');
+            }, function() {
+                // 3. Make sure the wildcard page realizes there are 2 sub pages
+                assert.equal($('li.subpage').length, 2, "2 child pages are expected");
+                // 4. Make sure the correct data is bound
+                assert.equal($('#a').text() , 'a-test');
+                assert.equal($('#text-a').text() , 'a-test');
+                assert.equal($('#text-b').text() , 'b-test');
+
+                start();
+            });
+
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>
