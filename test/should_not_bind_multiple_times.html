@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Should not bind multiple times</title>
+    <title>Should access URI parameters</title>
     <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="../lib/underscore-min.js"></script>
-    <script type="text/javascript" src="../lib/knockout-2.2.0.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0-mbest-smart-binding-beta.6.js"></script>
     <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
     <script type="text/javascript" src="../pager.js"></script>
 
@@ -17,73 +17,48 @@
 <!-- ko foreach: ["1", "2", "3", "4", "5", "6"] -->
 <a data-bind="page-href: $data, text: 'Goto ' + $data">1</a>
 <!-- /ko -->
-<a data-bind="page-href: '1/a'">Goto 1/a</a>
-<a data-bind="page-href: '3/b'">Goto 3/b</a>
 
 <br/>
 <pre data-bind="text: ko.toJSON(selectedId)"></pre>
+
 <div data-bind="page:{id: '?', with: innerVM, nameParam: selectedId}">
-    <h1 id="wildcard_card_h1">Wildcard page</h1>
     <ul data-bind="foreach: $page.children">
-        <li class="subpage"><a data-bind="text: val('title'), page-href: $data"></a></li>
+        <li><a data-bind="text: val('title'), page-href: $data"></a></li>
     </ul>
     <div data-bind="page: {id: 'a', title: 'Page A'}">
-        <h2>Page A</h2>
-        <pre id="page_a_text" data-bind="text: a"></pre>
+        <pre data-bind="text: a"></pre>
     </div>
     <div data-bind="page: {id: 'b', title: 'Page B'}">
-        <h2>Page B</h2>
         <pre data-bind="text: b"></pre>
     </div>
-    <div id="text_a" data-bind="text: a"></div>
-    <div id="text_b" data-bind="text: b"></div>
-    <div>
-        <span>Timestamp for template rendering: </span>
-        <span data-bind="text: (new Date()).toISOString()"></span>
-    </div>
-    <div>
-        <span>Number of child pages:</span>
-        <span data-bind="text: $page.children().length"></span>
-    </div>
-    <div>
-        <h2>Children not using foreach:</h2>
-        <div id="title_a" data-bind="text: $page.child('a')().val('title')"></div>
-        <div id="title_b" data-bind="text: $page.child('b')().val('title')"></div>
-    </div>
-    <div>
-        <h2>Children (should be 'Page A' and 'Page B'):</h2>
-        <!-- ko foreach: $page.children -->
-        <span data-bind="text: printTitle($data)"></span>
-        <!-- /ko -->
-    </div>
+    <div data-bind="text: $page.children().length"></div>
+    <!-- ko foreach: $page.children -->
+      <span data-bind="text: printTitle($data)"></span>
+    <!-- /ko -->
 </div>
-
 
 <script type="text/javascript">
 
-    window.printTitle = function (data) {
-        var title;
-        if (data.val) {
-            title = data.val('title');
+    window.printTitle = function(data) {
+        if(data.val) {
+            var title = data.val('title');
+            return title;
         } else {
-            title = 'no title';
+            return 'no title';
         }
-        return title;
     };
 
 
-    var InnerViewModel = function (id) {
+    var InnerViewModel = function(id) {
         var self = this;
         self.a = "a-" + id;
         self.b = "b-" + id;
     };
 
-    var ViewModel = function () {
+    var ViewModel = function() {
         var self = this;
         self.selectedId = ko.observable("");
-        self.innerVM = ko.computed(function () {
-            return new InnerViewModel(self.selectedId());
-        });
+        self.innerVM = ko.computed(function() { return new InnerViewModel(self.selectedId()); });
     };
     var vm = new ViewModel();
 
@@ -98,72 +73,9 @@
 
 <script type="text/javascript">
 
-    asyncTest("Should not bind multiple times", function () {
-
-        // 1. Make sure we start at the beginning
-        location.hash = '#';
-        until(function () {
-            return !$('#wildcard_card_h1').is(':visible');
-        }, function () {
-
-            // 2. Go to page 1
-
-            location.hash = '#1';
-            until(function() {
-                return $('#wildcard_card_h1').is(':visible');
-            }, function() {
-
-                // 3. Make sure data is bound correctly and both children are listed
-
-                assert.equal($('li.subpage').length, 2, "should be two children listed");
-                assert.equal($('#text_a').text(), "a-1");
-                assert.equal($('#text_b').text(), "b-1");
-                assert.equal($('#title_a').text(), "Page A");
-                assert.equal($('#title_b').text(), "Page B");
-
-                // 4. Go to page 2
-                location.hash = '#2';
-                until(function() {
-                   return $('#text_a').text() == 'a-2';
-                }, function() {
-
-                    // 5. Make sure data is rebound correctly and only two children are listed
-
-                    assert.equal($('li.subpage').length, 2, "should be two children listed");
-                    assert.equal($('#text_a').text(), "a-2");
-                    assert.equal($('#text_b').text(), "b-2");
-                    assert.equal($('#title_a').text(), "Page A");
-                    assert.equal($('#title_b').text(), "Page B");
-
-                    // 6. Go to page 1/a
-                    location.hash = '#1/a';
-                    until(function() {
-                        return $('#text_a').text() == 'a-1';
-                    }, function() {
-                        // 5. Make sure data is rebound correctly and only two children are listed
-
-                        assert.equal($('li.subpage').length, 2, "should be two children listed");
-                        assert.equal($('#text_a').text(), "a-1");
-                        assert.equal($('#text_b').text(), "b-1");
-                        assert.equal($('#page_a_text').text(), "a-1");
-                        assert.equal($('#title_a').text(), "Page A");
-                        assert.equal($('#title_b').text(), "Page B");
-
-
-                        ok(true, "everything is ok");
-                        start();
-                    });
-
-
-                });
-
-
-            });
-
-
-        });
-
-
+    asyncTest("Should access URI parameters", function () {
+        ok(true);
+        start();
     });
 </script>
 

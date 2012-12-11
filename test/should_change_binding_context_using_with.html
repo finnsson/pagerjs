@@ -25,9 +25,9 @@
 <script type="text/javascript">
 
     var viewModel = {
-        user:ko.observable({
+        user:{
             name:ko.observable("Arne")
-        }),
+        },
         admin:{
             error:"404"
         }
@@ -47,7 +47,7 @@
         equal($('#name').text(), "Arne", "the name should be Arne");
         equal($('#error').text(), "404", "the error should be 404");
 
-        viewModel.user().name("Sofia");
+        viewModel.user.name("Sofia");
         equal($('#name').text(), "Sofia", "the name should be Sofia now");
 
     });

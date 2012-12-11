@@ -65,15 +65,6 @@
             });
         };
 
-        // From Knockout.js - could not find the method at ko.utils.cloneNodes
-        var _cloneNodes = function (nodesArray, shouldCleanNodes) {
-            for (var i = 0, j = nodesArray.length, newNodesArray = []; i < j; i++) {
-                var clonedNode = nodesArray[i].cloneNode(true);
-                newNodesArray.push(shouldCleanNodes ? ko.cleanNode(clonedNode) : clonedNode);
-            }
-            return newNodesArray;
-        };
-
         var parseStringAsParameters = function (query) {
             var match,
                 urlParams = {},
@@ -138,7 +129,6 @@
              * @param {String[]} route route to match a sub-page to. Can be on the form `['foo','bar?x=22&y=11']`.
              */
             this.showChild = function (route) {
-                // if the route length i 0 (i.e. route = []) only a page with id 'start' should be displayed.
                 var showOnlyStart = route.length === 0;
                 this.timeStamp = pager.now();
                 var timeStamp = this.timeStamp;
@@ -193,7 +183,7 @@
                     }
                 }
 
-                if (!me.currentChild && wildcard && !showOnlyStart) {
+                if (!me.currentChild && wildcard  && !showOnlyStart) {
                     me.currentChild = wildcard;
                     //me.currentChild.currentId = currentRoute;
                 }
@@ -483,9 +473,9 @@
             var m = this;
             var urlToggle = m.val('urlToggle');
 
+
             var existingPage = ko.utils.domData.get(m.element, '__ko_pagerjsBindingData');
             if(existingPage) {
-                existingPage.update(m.valueAccessor, m.allBindingsAccessor, m.viewModel, m.bindingContext);
                 return { controlsDescendantBindings: true};
             } else {
                 ko.utils.domData.set(m.element, '__ko_pagerjsBindingData', m);
@@ -502,7 +492,7 @@
             var value = m.getValue();
             if (urlToggle !== 'none') {
                 m.parentPage = m.getParentPage();
-                m.parentPage.children.push(m);
+                m.parentPage.children.push(this);
                 m.hideElement();
             }
 
@@ -513,7 +503,36 @@
             }
 
             m.ctx = null;
-            m.refreshWith();
+            if (value.withOnShow) {
+                m.ctx = {};
+                m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
+                ko.utils.extend(m.childBindingContext, { $page:this });
+            } else {
+                var context = value['with'] || m.bindingContext['$observableData'] || m.viewModel;
+                m.ctx = _ko.value(context);
+                m.augmentContext();
+                
+                if(ko.isObservable(context)) {
+                    var dataInContext = ko.observable(m.ctx);
+                    m.childBindingContext = m.bindingContext.createChildContext(dataInContext);
+                    ko.utils.extend(m.childBindingContext, {
+                        $page:this,
+                        $observableData: context
+                    });
+                    ko.applyBindingsToDescendants(m.childBindingContext, m.element);
+
+                    context.subscribe(function() {
+                        dataInContext(_ko.value(context));
+                    });
+                } else {
+                    m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
+                    ko.utils.extend(m.childBindingContext, {
+                        $page:this,
+                        $observableData: undefined
+                    });
+                    ko.applyBindingsToDescendants(m.childBindingContext, m.element);
+                }
+            }
 
             if (urlToggle !== 'none') {
                 // check if this page should trigger showChild at parent
@@ -541,45 +560,6 @@
             }
 
             return { controlsDescendantBindings:true };
-        };
-
-        p.update = function(valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-            var me = this;
-            me.valueAccessor = valueAccessor;
-            me.allBindingsAccessor = allBindingsAccessor;
-            me.viewModel = viewModel;
-            me.bindingContext = bindingContext;
-
-            me.refreshWith();
-        };
-
-        p.refreshWith = function() {
-            var m = this;
-            var value = m.getValue();
-            if (value.withOnShow) {
-                m.ctx = {};
-                m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
-                ko.utils.extend(m.childBindingContext, { $page:this });
-            } else {
-                var context = value['with'] || m.viewModel;
-                m.ctx = _ko.value(context);
-                // do not save elements here!
-                m.savedNodes = _cloneNodes(ko.virtualElements.childNodes(m.element), true);
-                m.augmentContext();
-                m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
-                ko.utils.extend(m.childBindingContext, { $page:this });
-                ko.applyBindingsToDescendants(m.childBindingContext, m.element);
-
-                if(ko.isObservable(context)) {
-                    context.subscribe(function() {
-                        m.augmentContext();
-                        m.childBindingContext = m.bindingContext.createChildContext(_ko.value(context));
-                        ko.utils.extend(m.childBindingContext, { $page:m });
-                        ko.virtualElements.setDomNodeChildren(m.element, _cloneNodes(m.savedNodes));
-                        ko.applyBindingsToDescendants(m.childBindingContext, m.element);
-                    });
-                }
-            }
         };
 
         p.augmentContext = function () {
