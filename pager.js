@@ -407,28 +407,31 @@
                 var vm = this.ctx;
                 var userParams = this.val('params') || {};
                 // for each param for URL
-                $.each(params, function (key, value) {
-
-                    if (Object.prototype.toString.call(userParams) === "[object Array]") {
-                        if ($.inArray(key, userParams) !== -1) { // make sure it's a valid param
-                            if (vm[key]) { // set observable ...
-                                vm[key](value);
-                            } else { // ... or create observable
-                                vm[key] = ko.observable(value);
-                            }
+                if($.isArray(userParams)) {
+                    $.each(userParams, function(index, key) {
+                        var value = params[key];
+                        if (vm[key]) { // set observable ...
+                            vm[key](value);
+                        } else { // ... or create observable
+                            vm[key] = ko.observable(value);
                         }
-                    }
-                    else {
-                        if (userParams[key]) {
-                            userParams[key](value);
-                            if (vm[key]) {
-                                vm[key](value);
-                            } else {
-                                vm[key] = ko.observable(value);
-                            }
+                    });
+                } else {
+                    $.each(userParams, function(key, defaultValue) {
+                        var value = params[key];
+                        var runtimeValue;
+                        if(value == null) {
+                            runtimeValue = _ko.value(defaultValue);
+                        } else {
+                            runtimeValue = value;
                         }
-                    }
-                });
+                        if(vm[key]) {
+                            vm[key](runtimeValue);
+                        } else {
+                            vm[key] = ko.observable(runtimeValue);
+                        }
+                    });
+                }
             }
             if (this.pageRoute) {
                 var nameParam = this.getValue()['nameParam'];
@@ -454,7 +457,6 @@
         p.hidePage = function (callback) {
             var m = this;
             if ('show' !== m.val('urlToggle')) {
-                m.isVisible(false);
                 m.hideElementWrapper(callback);
                 m.childManager.hideChild();
             } else {
@@ -511,7 +513,7 @@
                 var context = value['with'] || m.bindingContext['$observableData'] || m.viewModel;
                 m.ctx = _ko.value(context);
                 m.augmentContext();
-                
+
                 if(ko.isObservable(context)) {
                     var dataInContext = ko.observable(m.ctx);
                     m.childBindingContext = m.bindingContext.createChildContext(dataInContext);
@@ -577,6 +579,9 @@
                         if (!m.ctx[key]) {
                             if (ko.isObservable(value)) {
                                 m.ctx[key] = value;
+                            } else if(value === null) {
+                                params[key] = ko.observable(null);
+                                m.ctx[key] = ko.observable(null);
                             } else {
                                 m.ctx[key] = ko.observable(value);
                             }
@@ -875,6 +880,7 @@
          * @param {Function} callback
          */
         p.hideElementWrapper = function (callback) {
+            this.isVisible(false);
             if (this.val('beforeHide')) {
                 this.val('beforeHide')(this);
             }

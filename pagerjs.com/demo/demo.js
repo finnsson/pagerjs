@@ -75,6 +75,13 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
     };
 
     var viewModel = {
+        question: ko.observable('How many roads must a man walk down before you can call him a man?'),
+        closePage: function(page) {
+            return function() {
+                page.hideElementWrapper();
+                return true;
+            };
+        },
         theID: ko.observable(''),
         theSecondID: ko.observable(''),
         name:ko.observable("Pelle"),

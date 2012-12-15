@@ -1,0 +1,55 @@
+<header class="jumbotron subhead">
+    <h1>Pages that only toggle on</h1>
+
+    <p class="lead">
+        Using <code>urlToggle: 'show'</code> you can specify that a page will display as normal, but not be
+        automatically hidden when navigating away.
+        This can be useful when you want URLs that can toggle on multiple sub-pages at the same time.
+        These pages can later be hidden using <code>$page.hideElementWrapper()</code>.
+    </p>
+</header>
+
+<ul>
+    <li><a href="#!/url_toggle_show/psy">Psy</a></li>
+    <li><a href="#!/url_toggle_show/lmfao">LMFAO</a></li>
+    <li><a href="#!/url_toggle_show/miikesnow">Miike Snow</a></li>
+</ul>
+
+
+<div data-bind="page: {id: 'psy', urlToggle: 'show'}" class="well">
+    <a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"><i class="icon-eject"></i></a>
+    <iframe width="560" height="315" src="http://www.youtube.com/embed/9bZkp7q19f0" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<div data-bind="page: {id: 'lmfao', urlToggle: 'show'}" class="well">
+    <a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"><i class="icon-eject"></i></a>
+    <iframe width="560" height="315" src="http://www.youtube.com/embed/KQ6zr6kCPj8" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<div data-bind="page: {id: 'miikesnow', urlToggle: 'show'}" class="well">
+    <a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"><i class="icon-eject"></i></a>
+    <iframe width="560" height="315" src="http://www.youtube.com/embed/mVWeqAPQUXc" frameborder="0" allowfullscreen></iframe>
+</div>
+
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'psy', urlToggle: 'show'}" class="well"&gt;
+    &lt;a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"&gt;&lt;i class="icon-eject"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;iframe width="560" height="315" src="http://www.youtube.com/embed/9bZkp7q19f0" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;div data-bind="page: {id: 'lmfao', urlToggle: 'show'}" class="well"&gt;
+    &lt;a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"&gt;&lt;i class="icon-eject"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;iframe width="560" height="315" src="http://www.youtube.com/embed/KQ6zr6kCPj8" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;div data-bind="page: {id: 'miikesnow', urlToggle: 'show'}" class="well"&gt;
+    &lt;a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"&gt;&lt;i class="icon-eject"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;iframe width="560" height="315" src="http://www.youtube.com/embed/mVWeqAPQUXc" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+</pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/binding_wildcard_to_observable">Read about binding wildcard to
+        observable</a>
+</div>

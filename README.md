@@ -319,6 +319,8 @@ Binds URL-parameters to local observables.
 
 * [Binding URI parameters](http://pagerjs.com/demo/#!/params)
 
+* [Parameters as objects](http://pagerjs.com/demo/#!/binding_params_object)
+
 ### {String/Observable} nameParam
 
 Bind the current wildcard ID to an observable.
@@ -348,6 +350,18 @@ By setting `deep: true` a wildcard page will deep-load supplied sources.
 
 * [Deep Load Content into Wildcard](http://pagerjs.com/demo/#!/deep_load_content_into_wildcard)
 
+### {String} urlToggle
+
+Control when the page will be displayed or hidden. There are three possible values: `null` (default), `show` or `none`.
+
+`null` is the normal behaviour.
+
+`show` makes the page show when the route is matching, but wont automatically hide.
+
+`none` means that the page does not react to the route. You'll need to control the visibility of the page
+in some other way. Pages with `urlToggle: 'none'` will be visible by default.
+
+* [Pages that only toggle on](http://pagerjs.com/demo/#!/url_toggle_show)
 
 ## Cookbook
 
@@ -718,11 +732,19 @@ A page should be able to access the information in the current route - changing 
 Sending parts of the fragment identifier to variables in the view-model is possible using
 `params`.
 
-    <div data-bind="page: {id: 'search', params: {'name', 'fromdate'}}">
+    <div data-bind="page: {id: 'search', params: ['name', 'fromdate']}">
       <span data-bind="text: name"></span> (<span data-bind="text: fromdate"></span>)
     </div>
 
 where `name` and `fromdate` with be bound by the parameters `name` and `fromdate`.
+
+It is also possible to use a key-value pairs as params
+
+    <div data-bind="page: {id: 'search', params: {'name': ko.observable('Pelle'), answer: ko.observable(42)}}">
+      <span data-bind="text: name"></span> (<span data-bind="text: answer"></span>)
+    </div>
+
+where `name`s default value is `Pelle` and `answer`s default value is `42` if non is given from the URL.
 
 An example route for the example above could look like
 

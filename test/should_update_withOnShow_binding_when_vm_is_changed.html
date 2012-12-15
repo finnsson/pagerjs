@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should update with binding when VM is changed</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.2.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'first', withOnShow: vm, sourceOnShow: '../test-data/ipsum.html'}">
+</div>
+
+<script type="text/javascript">
+
+    var x = {
+        name:'Pelle'
+    };
+
+    var viewModel = {
+        vm:function (callback) {
+            callback(x);
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.startHashChange();
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should update with binding when VM is changed", function () {
+
+        window.location.hash = '#first';
+        until(function () {
+            return $('#ipsum').is(':visible');
+        }, function () {
+            assert.equal($('#ipsum').text(), "Pelle", "text should be Pelle");
+
+            location.hash = '#';
+
+            until(function () {
+                return !$('ipsum').is(':visible');
+            }, function () {
+                x.name = 'Arne';
+
+                location.hash = '#first';
+
+                until(function () {
+                    return $('#ipsum').is(':visible');
+                }, function () {
+
+                    assert.equal($('#ipsum').text(), "Arne", "text should be Arne");
+
+                    start();
+                })
+
+            });
+
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>

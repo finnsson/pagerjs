@@ -209,6 +209,7 @@ ko.computed(function() {
 
 <div class="form-actions">
     <a class="btn btn-primary" href="#!/params">Binding URI parameters</a>
+    <a class="btn btn-primary" href="#!/binding_params_object">Parameters as objects</a>
 </div>
 
 <h3><code class="code-large"><a href="https://github.com/GilesBradshaw" data-bind="tooltip: {}" title="Thanks to Giles Bradshaw">nameParam</a>: String/Observable</code> </h3>
@@ -433,6 +434,23 @@ Cool.loadUser = function(callback, page) {
     <a class="btn btn-primary" href="#!/guards">Guards</a>
 </div>
 
+
+
+<h3><code class="code-large">urlToggle :String</code></h3>
+<p>
+    Control when the page will be displayed or hidden. There are three possible values: <code>null</code> (default),
+    <code>show</code> or <code>none</code>.
+
+    <code>null</code> is the normal behaviour.
+
+    <code>show</code> makes the page show when the route is matching, but wont automatically hide.
+
+    <code>none</code> means that the page does not react to the route. You'll need to control the visibility of the page
+    in some other way. Pages with <code>urlToggle: 'none'</code> will be visible by default.
+</p>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/url_toggle_show">Pages that only toggle on</a>
+</div>
 
 <h2>pager.Page</h2>
 

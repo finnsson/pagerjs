@@ -14,10 +14,11 @@
 
 <div id="qunit"></div>
 
-<div data-bind="page: {id: 'first', params: {'nam': ko.observable(11),'ans': ko.observable(42), foo: bar}}">
+<div data-bind="page: {id: 'first', params: {'nam': ko.observable(11),'ans': ko.observable(42), foo: bar, test: null}}">
     <div id="answer" data-bind="text: ans"></div>
     <div id="name" data-bind="text: nam"></div>
     <div id="foo" data-bind="text: foo"></div>
+    <div id="test" data-bind="text: test"></div>
 </div>
 
 <script type="text/javascript">
@@ -40,7 +41,7 @@
 
     asyncTest("Should access URI parameters as object", function () {
 
-        window.location.hash = '#first?nam=foobar';
+        window.location.hash = '#first?nam=foobar&test=43';
         until(function () {
             return $('#name').text() === 'foobar'
         }, function () {
@@ -48,6 +49,7 @@
             assert.equal($('#answer').text(), '42');
             assert.equal($('#name').text(), 'foobar');
             assert.equal($('#foo').text(), 'Pelle');
+            assert.equal($('#test').text(), '43');
             start();
         });
 

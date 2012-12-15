@@ -1,0 +1,37 @@
+<header class="jumbotron subhead">
+    <h1>Parameters as objects</h1>
+
+    <p class="lead">
+        The <code>params</code>-config can also be an object with key-value pairs, where the
+        value is the default value if none is given from the URL.
+    </p>
+</header>
+
+<ul>
+    <li><a href="#!/binding_params_object/question?answer=43">See with answer 43</a>
+    </li>
+    <li><a href="#!/binding_params_object/question?answer=99">See with answer 99</a></li>
+    <li><a href="#!/binding_params_object/question">See with default answer</a></li>
+</ul>
+
+
+<div data-bind="page: {id: 'question', params: {'query': question,'answer': 42}}" class="well">
+    <a style="float: right" data-bind="page-href: '../'"><i class="icon-eject"></i></a>
+    <span data-bind="text: query"></span>
+    <br/>
+    <b>Answer: <span data-bind="text: answer"></span></b>
+</div>
+
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'question', params: {'query': question,'answer': null}}" class="well"&gt;
+    &lt;a style="float: right" data-bind="page-href: '../'"&gt;&lt;i class="icon-eject"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;span data-bind="text: query"&gt;&lt;/span&gt;
+    &lt;br/&gt;
+    &lt;b&gt;Answer: &lt;span data-bind="text: answer"&gt;&lt;/span&gt;&lt;/b&gt;
+&lt;/div&gt;
+</pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/url_toggle_show">Read about pages that only toggle on</a>
+</div>
