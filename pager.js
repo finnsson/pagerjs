@@ -45,6 +45,15 @@
         pager.navigationFailed = ko.observable();
 
         /**
+         * Called when a binding could not be applied.
+         *
+         * @var onBindingError
+         * @type {$.Callbacks}
+         * @static
+         */
+        pager.onBindingError = $.Callbacks();
+
+        /**
          *
          * @param {String[]} route
          */
@@ -466,6 +475,21 @@
             }
         };
 
+        var applyBindingsToDescendants = function(page) {
+            try {
+                ko.applyBindingsToDescendants(page.childBindingContext, page.element);
+            } catch(e) {
+                var onBindingError = page.val('onBindingError');
+                if(onBindingError) {
+                    onBindingError(page. e);
+                }
+                pager.onBindingError.fire({
+                    page: page,
+                    error: e
+                });
+            }
+        };
+
         /**
          * @method pager.Page#init
          *
@@ -521,7 +545,21 @@
                         $page:this,
                         $observableData: context
                     });
-                    ko.applyBindingsToDescendants(m.childBindingContext, m.element);
+                    applyBindingsToDescendants(m);
+                    /*
+                    try {
+                        ko.applyBindingsToDescendants(m.childBindingContext, m.element);
+                    } catch(e) {
+                        var onBindingError = m.val('onBindingError');
+                        if(onBindingError) {
+                            onBindingError(m. e);
+                        }
+                        pager.onBindingError.fire({
+                            page: m,
+                            error: e
+                        });
+                    }
+                    */
 
                     context.subscribe(function() {
                         dataInContext(_ko.value(context));
@@ -532,7 +570,7 @@
                         $page:this,
                         $observableData: undefined
                     });
-                    ko.applyBindingsToDescendants(m.childBindingContext, m.element);
+                    applyBindingsToDescendants(m);
                 }
             }
 
@@ -678,7 +716,7 @@
                     me.childBindingContext = childBindingContext;
                     me.augmentContext();
                     ko.utils.extend(childBindingContext, {$page:me});
-                    ko.applyBindingsToDescendants(childBindingContext, me.element);
+                    applyBindingsToDescendants(me);
                 }, me);
             }
         };
@@ -732,7 +770,7 @@
                     // TODO: call abstraction that either applies binding or loads view-model
 
                     if (!me.val('withOnShow')) {
-                        ko.applyBindingsToDescendants(me.childBindingContext, me.element);
+                        applyBindingsToDescendants(me);
                     } else if (me.val('withOnShow')) {
                         me.loadWithOnShow();
                     }
