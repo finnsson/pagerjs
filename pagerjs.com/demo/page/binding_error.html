@@ -1,0 +1,31 @@
+<header class="jumbotron subhead">
+    <h1>Binding Error</h1>
+
+    <p class="lead">
+        Developing a huge single page application is difficult. Sometimes errors creep in. Being able to gracefully
+        react to these errors is important. One type of error is binding errors - errors that appear because
+        some data binding wasn't correctly defined. Using either <code>onBindingError:</code> on the page
+        or <code>pager.onBindingError.add</code> you can identify these errors during runtime.
+    </p>
+</header>
+
+<div data-bind="page: {id: 'start'}">
+    <div data-bind="text: thisPropertyDoesNotExist"></div>
+</div>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;div data-bind="text: thisPropertyDoesNotExist"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+where the JavaScript is
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+pager.onBindingError.add(function(event) {
+    var page = event.page;
+    $(page.element).empty().append('&lt;div class="alert"&gt; Error Loading Page&lt;/div&gt;');
+});
+</pre>
+
+<div data-bind="template: {name: 'link-template'}"></div>

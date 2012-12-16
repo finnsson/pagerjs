@@ -363,6 +363,15 @@ in some other way. Pages with `urlToggle: 'none'` will be visible by default.
 
 * [Pages that only toggle on](http://pagerjs.com/demo/#!/url_toggle_show)
 
+### {Function} onBindingError
+
+When a page failes to data binding its content it will trigger the callback `onBindingError`.
+
+This can be useful for e.g. cleaning up failing pages.
+
+* [Binding Error](http://pagerjs.com/demo/#!/binding_error)
+
+
 ## Cookbook
 
 The following behaviors specify and exemplify what pager.js is capable of.

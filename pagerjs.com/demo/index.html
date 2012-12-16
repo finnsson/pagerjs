@@ -30,6 +30,15 @@
 </head>
 <body>
 
+<script type="text/html" id="link-template">
+    <div class="form-actions">
+        <div class="pull-right">
+            <a class="btn btn-large" data-bind="page-step: -1">Go back and read about {0}</a>
+            <a class="btn btn-large btn-primary" data-bind="page-step: 1">Read about {0}</a>
+        </div>
+    </div>
+</script>
+
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
@@ -1303,11 +1312,13 @@ isLoggedIn: function(page, route, callback) {
     </pre>
 
 
-    <div class="form-actions">
-        <a class="btn btn-large btn-primary" href="#!/fx">Read about FX</a>
-    </div>
+    <div data-bind="template: {name: 'link-template'}"></div>
 
 </div>
+
+<div data-bind="page: {id: 'binding_error', title: 'Binding Error', sourceOnShow: 'page/binding_error.html', sourceCache: true, desc: 'trigger event'}">
+</div>
+
 
 <div data-bind="page: {id: 'fx', title: 'FX', sourceOnShow: 'fx.html', sourceCache: true, desc: 'effects between page transitions'}">
 </div>
