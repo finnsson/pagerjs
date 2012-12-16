@@ -137,6 +137,30 @@ ko.computed(function() {
     History.js) a fallback solution with hash bangs will be used for older browsers.
 </p>
 
+<h3><code class="code-large">getParentPage(BindingContext) : Observable(Page)</code> </h3>
+
+<p class="p">
+    Supplying the method with a bindingContext will return the first Page-instance in the
+    context hierarchy. If no self-defined Page-instance can be found the root Page-instance will be returned.
+</p>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+ko.bindingHandlers['lorem-ipsum'] = {
+    init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        // get the Page-instance that this element resides in
+        var page = pager.getParentPage(bindingContext);
+        // bind the text of the element to the page title
+        ko.applyBindingsToNode(element, {
+            text: page.val('title')
+        });
+    }
+};
+</pre>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/custom_navigation_binding">Custom Navigation Binding</a>
+</div>
+
+
 <h3><code class="code-large">Href.hash: String</code></h3>
 
 <p class="p">
@@ -452,6 +476,15 @@ Cool.loadUser = function(callback, page) {
     <a class="btn btn-primary" href="#!/url_toggle_show">Pages that only toggle on</a>
 </div>
 
+<h3><code class="code-large">title : String</code></h3>
+<p>
+    Controls the page title if set.
+</p>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/start">Show start page by default</a>
+</div>
+
+
 <h2>pager.Page</h2>
 
 <h3><code class="code-large">element : Node</code></h3>
@@ -507,6 +540,9 @@ Cool.loadUser = function(callback, page) {
     If you want to get hold of e.g. the configuration property <code>beforeHide</code> you should
     call <code>somePage.val('beforeHide')</code> instead of <code>somePage.valueAccessor.beforeHide</code>
     since both <code>valueAccessor</code> and <code>beforeHide</code> can be observables!
+    <br/>
+    All the possible keys for the configuration object can be accessed using <code>val</code>
+    (e.g. title, params, with, withOnShow).
 </p>
 
 
@@ -520,4 +556,25 @@ Cool.loadUser = function(callback, page) {
 <h3><code class="code-large">init() : {controlsDescendantBindings:true}</code></h3>
 <div class="form-actions">
     <a class="btn btn-primary" href="#!/custom_widgets">Custom Widgets</a>
+</div>
+
+<h3><code class="code-large">getFullRoute() : [String]</code></h3>
+
+<p>
+    Returns the full route of the page.
+</p>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/custom_navigation_binding">Custom Navigation Binding</a>
+</div>
+
+<h3><code class="code-large">nullObject : pager.Page</code></h3>
+
+<p>
+    Is a null-object of <code>pager.Page</code>. It is useful in computed observables
+    as a temporary Page-instance before the correct Page-instance is loaded or parsed.
+</p>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/custom_navigation_binding">Custom Navigation Binding</a>
 </div>

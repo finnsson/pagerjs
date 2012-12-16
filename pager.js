@@ -63,6 +63,21 @@
             pager.page.showPage(trimmedRoute);
         };
 
+        pager.getParentPage = function (bindingContext) {
+            // search this context/$data until either root is accessed or no page is found
+            while (bindingContext) {
+                // get first parent page, but exclude pages with urlToggle: none
+                if (bindingContext.$page && bindingContext.$page.val('urlToggle') !== 'none') {
+                    return bindingContext.$page;
+                } else if (bindingContext.$data && bindingContext.$data.$__page__) {
+                    return bindingContext.$data.$__page__;
+                }
+                bindingContext = bindingContext.$parentContext;
+            }
+            return null;
+        };
+
+
 // common KnockoutJS helpers
         var _ko = {};
 
@@ -656,18 +671,7 @@
          * @return {pager.Page}
          */
         p.getParentPage = function () {
-            // search this context/$data until either root is accessed or no page is found
-            var bindingContext = this.bindingContext;
-            while (bindingContext) {
-                // get first parent page, but exclude pages with urlToggle: none
-                if (bindingContext.$page && bindingContext.$page.val('urlToggle') !== 'none') {
-                    return bindingContext.$page;
-                } else if (bindingContext.$data && bindingContext.$data.$__page__) {
-                    return bindingContext.$data.$__page__;
-                }
-                bindingContext = bindingContext.$parentContext;
-            }
-            return null;
+            return pager.getParentPage(this.bindingContext);
         };
 
         /**
@@ -1034,18 +1038,20 @@
             this.element = element;
             this.bindingContext = bindingContext;
             this.path = ko.observable();
-            this.val = ko.observable(valueAccessor);
+            this.pageOrRelativePath = ko.observable(valueAccessor);
         };
 
         var hp = pager.Href.prototype;
 
-        hp.getParentPage = p.getParentPage;
+        hp.getParentPage = function() {
+            return pager.getParentPage(this.bindingContext);
+        };
 
         hp.init = function () {
             var page = this.getParentPage();
 
             this.path = ko.computed(function () {
-                var value = _ko.value(this.val()());
+                var value = _ko.value(this.pageOrRelativePath()());
                 if (typeof(value) === 'string') {
                     var parentsToTrim = 0;
                     while (value.substring(0, 3) === '../') {
@@ -1078,7 +1084,7 @@
         };
 
         hp.update = function (valueAccessor) {
-            this.val(valueAccessor);
+            this.pageOrRelativePath(valueAccessor);
         };
 
         pager.Href5 = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {

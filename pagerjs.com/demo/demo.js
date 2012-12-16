@@ -200,18 +200,6 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
         return page.parentPage.children.indexOf(page);
     };
 
-    window.nextPage = function(page) {
-        return ko.computed(function() {
-            return page.parentPage.children()[(Math.abs(indexOfCurrentPage(page))) + 1] || page.nullObject;
-        });
-    };
-
-    window.previousPage = function(page) {
-        return ko.computed(function() {
-            return page.parentPage.children()[(Math.abs(indexOfCurrentPage(page))) - 1] || page.nullObject;
-        });
-    };
-
     var pageStep = function(page, step) {
         return ko.computed(function() {
             var rawStep = ko.utils.unwrapObservable(step);
@@ -221,52 +209,50 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
 
 
     var NextPage = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        pager.Href.apply(this, arguments);
-        this.val = pageStep(this.getParentPage(), valueAccessor());
-    };
-
-    NextPage.prototype = new pager.Href();
-
-    NextPage.prototype.init = function () {
+        this.element = element;
+        this.bindingContext = bindingContext;
+        this.path = ko.observable();
+        var parent = pager.getParentPage(bindingContext);
+        this.siblingPage = pageStep(parent, valueAccessor());
         this.path = ko.computed(function () {
-            var value = this.val();
-           return value.getFullRoute()().join('/');
+            var value = this.siblingPage();
+            return value.getFullRoute()().join('/');
         }, this);
     };
 
     NextPage.prototype.bind = function () {
-        pager.Href.prototype.bind.apply(this);
+        var text = $(this.element).text();
 
         ko.computed(function () {
-            var page = this.val();
-            var pageId = page.getId();
-            var text = $(this.element).text();
+            var page = this.siblingPage();
             if (text.length === 0) {
-                text = page.val('title');
-                if (pageId) {
-                    ko.applyBindingsToNode(this.element, {
-                        text:text
-                    });
-                }
+                var newText = page.val('title');
+                ko.applyBindingsToNode(this.element, {
+                    text:newText
+                });
             } else if (text.indexOf('{0}')) {
-                text = text.replace('{0}', page.val('title'));
-                if (pageId) {
-                    ko.applyBindingsToNode(this.element, {
-                        text:text
-                    });
-                }
+                var replacedText = text.replace('{0}', page.val('title'));
+                ko.applyBindingsToNode(this.element, {
+                    text:replacedText
+                });
             }
         }, this);
+
+        var hash = ko.computed(function () {
+            return pager.Href.hash + this.path();
+        }, this);
+
+        ko.applyBindingsToNode(this.element, {
+            attr:{
+                'href':hash
+            }
+        });
     };
 
     ko.bindingHandlers['page-step'] = {
         init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-            var href = new NextPage(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-            href.init();
-            href.bind();
-            element.__ko__page = href;
-        },
-        update:function () {
+            var nextPage = new NextPage(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+            nextPage.bind();
         }
     };
 

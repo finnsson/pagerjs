@@ -159,6 +159,24 @@ Extends your root view model with a root page-instance.
 
 * [Setup](http://pagerjs.com/demo/#!/setup)
 
+### `pager.getParentPage(BindingContext) : Observable(Page)`
+
+Supplying the method with a bindingContext will return the first Page-instance in the
+context hierarchy. If no self-defined Page-instance can be found the root Page-instance will be returned.
+
+    ko.bindingHandlers['lorem-ipsum'] = {
+        init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            // get the Page-instance that this element resides in
+            var page = pager.getParentPage(bindingContext);
+            // bind the text of the element to the page title
+            ko.applyBindingsToNode(element, {
+                text: page.val('title')
+            });
+        }
+    };
+
+* [Custom Navigation Binding](http://pagerjs.com/demo/#!/custom_navigation_binding)
+
 ### page-href
 
     <a data-bind="page-href: 'somePagePath'"></a>

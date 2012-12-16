@@ -1,0 +1,144 @@
+<header class="jumbotron subhead">
+    <h1>Custom Navigation Bindings</h1>
+
+    <p class="lead">
+        Useful navigation bindings can be developed by using methods such as <code>pager.getParentPage</code>,
+        and <code>pager.Page.prototype.getFullRoute</code>.
+        On this page we'll develop one such binding: <code>page-step:</code>.
+    </p>
+</header>
+<p>
+    The goal of the binding is to be able to use it like
+</p>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+    &lt;a data-bind="page-step: -1"&gt;Go back and read about {0}&lt;/a&gt;
+    &lt;a data-bind="page-step: 1"&gt;Next page&lt;/a&gt;
+</pre>
+
+<p>
+    where <code>page-step: -1</code> indicates that the link should point at the
+    previous page and <code>page-step: 1</code> indicates that the link should
+    point at the next page. If you look at the buttons below you'll see that they use this binding!
+</p>
+<p>
+    The <code>page-step:</code> binding needs to
+<ol>
+    <li>
+        Know which page it should link to. Thus we need a reference to the page.
+        Getting a reference to the page that contains the <code>a</code>-tag can be done using
+        <code>pager.getParentPage</code>. Navigating to the sibling pages can be done using
+        <code>pager.Page#children</code>-observable array and <code>pager.Page#parentPage</code>.
+        Using <code>pager.Page.prototype.nullObject</code> it is possible to make
+        the reference robust for race conditions.
+    </li>
+    <li>
+        Calculate the absolute path to the page and fetch the title of the page.
+        This is easily done using <code>pager.Page.prototype.getFullRoute</code>
+        and <code>pager.Page.prototype.val</code> using 'title' as argument.
+    </li>
+    <li>
+        Bind the page link and page title.
+    </li>
+</ol>
+</p>
+<p>
+    We start by developing a method to find the sibling
+</p>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+// return the index of the current page
+var indexOfCurrentPage = function(page) {
+    return page.parentPage.children.indexOf(page);
+};
+
+// returns a sibling page, or the nullObject-page if no sibling exists at the moment
+var pageStep = function(page, step) {
+    return ko.computed(function() {
+        var rawStep = ko.utils.unwrapObservable(step);
+        return page.parentPage.children()[(indexOfCurrentPage(page)) + rawStep] || page.nullObject;
+    });
+};
+</pre>
+<p>
+    that now can be used in a new class:
+</p>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+// new constructor
+var NextPage = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    this.element = element;
+    this.bindingContext = bindingContext;
+    this.path = ko.observable();
+    var parent = pager.getParentPage(bindingContext);
+    this.siblingPage = pageStep(parent, valueAccessor());
+};
+</pre>
+
+<p>
+    Now we got a reference to the page (<code>this.sublingPage</code>). Next we need to calculate the absolute path to
+    the page.
+</p>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+    // this line already exists
+    this.siblingPage = pageStep(parent, valueAccessor());
+    // calculate the path to the sibling page as a computed observable
+    this.path = ko.computed(function () {
+        var value = this.siblingPage();
+        return value.getFullRoute()().join('/');
+    }, this);
+};
+</pre>
+<p>
+    Let us bind the path and title to the element.
+</p>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+NextPage.prototype.bind = function () {
+    // Here we bind the text inside the a-tag
+    var text = $(this.element).text();
+    ko.computed(function () {
+        var page = this.siblingPage();
+        if (text.length === 0) {
+            // Use the page title as text if no text is supplied inside the a-tag
+            var newText = page.val('title');
+            ko.applyBindingsToNode(this.element, {
+                'text':newText
+            });
+        } else if (text.indexOf('{0}')) {
+            // Search replace {0} with the page title
+            var replacedText = text.replace('{0}', page.val('title'));
+            ko.applyBindingsToNode(this.element, {
+                'text':replacedText
+            });
+        }
+    }, this);
+
+    // Here we bind the path to the sibling page
+    var hash = ko.computed(function () {
+        return pager.Href.hash + this.path();
+    }, this);
+    ko.applyBindingsToNode(this.element, {
+        attr:{
+            'href':hash
+        }
+    });
+};
+</pre>
+<p>
+    Finally we register the binding using KnockoutJS.
+</p>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+// register the binding as page-step
+ko.bindingHandlers['page-step'] = {
+    init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        // call the constructor in order to setup element, bindingContext and and siblingPage
+        var nextPage = new NextPage(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+        // bind href and text
+        nextPage.bind();
+    }
+};
+</pre>
+<p>
+    If you inspect the source code of the navigation buttons you'll see that this binding is used
+    for their navigation.
+</p>
+
+<div data-bind="template: {name: 'link-template'}"></div>
