@@ -746,14 +746,23 @@ pager.PageAccordionItem.prototype.hideElement = function () {
     if (!this.pageAccordionItemHidden) {
         this.pageAccordionItemHidden = true;
         $(this.getAccordionBody()).hide();
+        if (callback) {
+            callback();
+        }
     } else { // else use a slideUp animation
         $(this.getAccordionBody()).slideUp();
+        if (callback) {
+            callback();
+        }
     }
 };
 
 // show the second child using a slideDown animation
 pager.PageAccordionItem.prototype.showElement = function () {
     $(this.getAccordionBody()).slideDown();
+    if (callback) {
+        callback();
+    }
 };
     </pre>
 
