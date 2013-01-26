@@ -883,7 +883,14 @@ ko.bindingHandlers['page-accordion-item'] = {
             <li>Bind to local <code>click</code> if you want to control a certain navigation. This is probably what you
                 want to do if you want to inject validation.
             </li>
-            <li>Bind to local before/after show/hide if you just want to be notified about a navigation.</li>
+            <li>Bind to local before/after show/hide if you just want to be notified about a navigation.
+                Some custom bindings from other 3rd parties (e.g. Kendo UI) might be triggered after
+                <code>afterShow</code>, since they put the processing of their bindings on the event queue (possible
+                out of performance reasons).
+                If you want your code to execute after their bindings are processed you either have to be able
+                to jack into their bindings version of <code>afterShow</code> (if they got one)
+                or put your code on the event queue too.
+            </li>
         </ol>
 
         <a href="#!/custom_js_when_navigating/fry">Show Fry</a>
