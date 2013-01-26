@@ -1205,6 +1205,9 @@
         pager.fx.slide = pager.fx.jQuerySync($.fn.slideDown, $.fn.slideUp);
         pager.fx.fade = pager.fx.jQuerySync($.fn.fadeIn, $.fn.fadeOut);
 
+        var parseHash = function(hash) {
+            return hash.replace(/\+/g, ' ').split('/').map(decodeURIComponent);
+        };
 
         pager.startHistoryJs = function (id) {
             if (id) {
@@ -1216,7 +1219,7 @@
                     hash = hash.slice(pager.Href.hash.length);
                 }
                 // split on '/'
-                var hashRoute = decodeURIComponent(hash).split('/');
+                var hashRoute = parseHash(hash);
                 pager.showChild(hashRoute);
             };
 
@@ -1244,7 +1247,7 @@
                     hash = hash.slice(pager.Href.hash.length);
                 }
                 // split on '/'
-                var hashRoute = decodeURIComponent(hash.replace(/\+/g, ' ')).split('/');
+                var hashRoute = parseHash(hash); // decodeURIComponent(hash.replace(/\+/g, ' ')).split('/');
                 pager.showChild(hashRoute);
             });
             $(window).hashchange();
@@ -1269,7 +1272,7 @@
                     hash = hash.slice(pager.Href.hash.length);
                 }
                 // split on '/'
-                var hashRoute = decodeURIComponent(hash).split('/');
+                var hashRoute = parseHash(hash);
                 pager.showChild(hashRoute);
             };
 

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should access URI parameters</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'first', params: ['nam','ans']}">
+    <div id="nam" data-bind="text: nam"></div>
+    <div id="ans" data-bind="text: ans"></div>
+    <div data-bind="page: {id: 'second', params: ['foo','bar']}">
+        <div id="foo" data-bind="text: foo"></div>
+        <div id="bar" data-bind="text: bar"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    var viewModel = {
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.startHashChange();
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should access URI parameters", function () {
+
+        window.location.hash = '#first?nam=%2F42%2F&ans=42/second?foo=%2Ffoo%2F&bar=%2F4%2F';
+        until(function () {
+            return $('#ans').text() === '42' && $('#bar').text() === '/4/'
+        }, function () {
+            assert.equal($('#ans').text(), 42);
+            assert.equal($('#nam').text(), '/42/');
+            assert.equal($('#foo').text(), '/foo/');
+            assert.equal($('#bar').text(), '/4/');
+            start();
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>
