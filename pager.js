@@ -1102,7 +1102,11 @@
                     'href':self.path
                 },
                 click:function () {
-                    pager.Href5.history.pushState(null, null, self.path());
+                    var path = self.path();
+                    if(path === '' || path === '/') {
+                        path = $('base').attr('href');
+                    }
+                    pager.Href5.history.pushState(null, null, path);
                 }
             });
         };
@@ -1206,7 +1210,7 @@
         pager.fx.fade = pager.fx.jQuerySync($.fn.fadeIn, $.fn.fadeOut);
 
         var parseHash = function(hash) {
-            return hash.replace(/\+/g, ' ').split('/').map(decodeURIComponent);
+            return $.map(hash.replace(/\+/g, ' ').split('/'), decodeURIComponent);
         };
 
         pager.startHistoryJs = function (id) {

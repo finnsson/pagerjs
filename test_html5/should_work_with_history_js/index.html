@@ -24,6 +24,20 @@
     <span id="arne">Arne</span>
 </div>
 
+<a data-bind="page-href: 'pelle'">Pelle</a>
+<br/>
+<a data-bind="page-href: $__page__.child('pelle')()">Pelle</a>
+<br/>
+<a data-bind="page-href: 'arne'">Arne</a>
+<br/>
+<a data-bind="page-href: $__page__.child('arne')()">Arne</a>
+<br/>
+<a data-bind="page-href: '/'">Start with /</a>
+<br/>
+<a data-bind="page-href: $__page__">Start with $__page__</a>
+<br/>
+<a href="http://localhost:3000/test_html5/should_work_with_history_js/">Start with absolute URL</a>
+
 <script type="text/javascript">
 
 
