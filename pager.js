@@ -1206,7 +1206,7 @@
         pager.fx.fade = pager.fx.jQuerySync($.fn.fadeIn, $.fn.fadeOut);
 
         var parseHash = function(hash) {
-            return jQuery.map(e.replace(/\+/g," ").split("/"), decodeURIComponent);
+            return jQuery.map(hash.replace(/\+/g," ").split("/"), decodeURIComponent);
         };
 
         pager.startHistoryJs = function (id) {
