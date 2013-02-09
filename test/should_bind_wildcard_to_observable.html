@@ -18,6 +18,7 @@
 
     <div data-bind="page: {id: '?', nameParam: 'theSecondID'}">
         <span id="text" data-bind="text: theID"></span>
+        <span id="secondText" data-bind="text: theSecondID"></span>
     </div>
 </div>
 
@@ -47,6 +48,8 @@
         }, function () {
             equal(viewModel.theID(), "first", "theID should be first");
             equal(viewModel.theSecondID(), "name", "theSecondID should be name");
+            equal($('#text').text(), "first", "the element bound to theID should be first");
+            equal($('#secondText').text(), "name", "the element bound to theSecondID should be name");
             start();
         });
 

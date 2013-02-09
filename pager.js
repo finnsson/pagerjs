@@ -651,6 +651,10 @@
                     }
                 });
             }
+            var nameParam = this.getValue()['nameParam'];
+            if(nameParam && typeof nameParam === 'string') {
+                m.ctx[nameParam] = ko.observable(null);
+            }
             this.setParams();
         };
 

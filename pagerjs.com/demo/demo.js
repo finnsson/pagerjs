@@ -83,7 +83,6 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
             };
         },
         theID: ko.observable(''),
-        theSecondID: ko.observable(''),
         name:ko.observable("Pelle"),
         description:ko.observable('pl'),
         externalContentLoaded:function (page) {
