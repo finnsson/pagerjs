@@ -1057,6 +1057,9 @@
             this.path = ko.computed(function () {
                 var value = _ko.value(this.pageOrRelativePath()());
                 if (typeof(value) === 'string') {
+                    if(value.substring(0,1) === '/') {
+                        return pager.page.getFullRoute()() + value.substring(1);
+                    }
                     var parentsToTrim = 0;
                     while (value.substring(0, 3) === '../') {
                         parentsToTrim++;

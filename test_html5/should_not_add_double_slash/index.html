@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should work with history.js</title>
+    <script type="text/javascript" src="../../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../../lib/jquery.history.js"></script>
+    <script type="text/javascript" src="../../pager.js"></script>
+
+    <link rel="stylesheet" href="../../lib/qunit.css"/>
+
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<base href="http://localhost:3000/test_html5/should_not_add_double_slash/" />
+<div id="content">
+    Home Page <br>
+    <a data-bind="page-href: '../page1' ">Go to Page1</a><br/>
+    <a data-bind="page-href: '../page2' ">Go to Page2</a><br/>
+    <hr>
+    <div data-bind="page: { id: 'page1' }">
+        Page1<br>
+        <a data-bind="page-href: '../page2' ">Go to Page2 using relative URL</a><br>
+        <a data-bind="page-href: '/page2' ">Go to Page2 using absolute URL</a><br>
+        <a data-bind="page-href: $__page__ ">Back to Home Page using $__page__</a>
+    </div>
+
+    <div data-bind="page: { id: 'page2' }">
+        Page2<br>
+        <a data-bind="page-href: '../page1' ">Go to Page1 using relative URL</a><br>
+        <a data-bind="page-href: '/page1' ">Go to Page1 using absolute URL</a><br>
+        <hr/>
+        <a data-bind="page-href: 'pageA' ">Go to PageA using short relative URL</a><br>
+        <a data-bind="page-href: '../page2/pageA' ">Go to PageA using long relative URL</a><br>
+        <a data-bind="page-href: '/page2/pageA' ">Go to PageA using absolute URL</a><br>
+        <hr/>
+        <a data-bind="page-href: '/' ">Back to Home Page using /</a>
+
+        <div data-bind="page: {id: 'pageA'}">
+            Page A
+            <a data-bind="page-href: '../' ">Go to Page2 using relative URL</a><br>
+            <a data-bind="page-href: '/page2' ">Go to Page2 using absolute URL</a><br>
+            <hr/>
+            <a data-bind="page-href: '/'">Back to Home Page using /</a><br/>
+            <a data-bind="page-href: '../../'">Back to Home Page using ../../</a><br/>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    window.App = {};
+
+    App.ViewModel = function() {}
+
+
+    $(function() {
+        App.vm = new App.ViewModel();
+        pager.useHTML5history = true;
+        pager.Href5.history = History;
+        pager.extendWithPage(App.vm);
+        ko.applyBindings(App.vm, document.getElementById('content'));
+        pager.startHistoryJs();
+    });
+</script>
+
+<script type="text/javascript" src="../../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should work with history.js", function () {
+
+        ok(true);
+        start();
+
+        /*
+        History.pushState(null, null, "pelle");
+
+        until(function () {
+            return $('#pelle').is(':visible')
+        }, function () {
+            ok(true, "Pelle is visible");
+
+            History.pushState(null, null, "arne");
+
+            until(function () {
+                return $('#arne').is(':visible');
+            }, function () {
+                ok(true, "Arne is visible");
+                start();
+            });
+        });
+        */
+
+    });
+</script>
+
+
+</body>
+</html>
