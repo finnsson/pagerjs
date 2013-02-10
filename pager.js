@@ -53,7 +53,7 @@
          */
         pager.onBindingError = $.Callbacks();
 
-        pager.onSourceError = $.Callbacks()
+        pager.onSourceError = $.Callbacks();
 
         /**
          *
