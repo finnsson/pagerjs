@@ -177,6 +177,16 @@ context hierarchy. If no self-defined Page-instance can be found the root Page-i
 
 * [Custom Navigation Binding](http://pagerjs.com/demo/#!/custom_navigation_binding)
 
+### `pager.onBindingError : $.Callbacks`
+
+* [Binding Error](http://pagerjs.com/demo/#!/binding_error)
+
+### `pager.onSourceError : $.Callbacks`
+
+When a source failes to load the page will trigger the callback `onSourceError`.
+
+* [Source Error](http://pagerjs.com/demo/#!/source_error)
+
 ### page-href
 
     <a data-bind="page-href: 'somePagePath'"></a>
@@ -388,6 +398,12 @@ When a page failes to data binding its content it will trigger the callback `onB
 This can be useful for e.g. cleaning up failing pages.
 
 * [Binding Error](http://pagerjs.com/demo/#!/binding_error)
+
+### {Function} onSourceError
+
+When a source failes to load the page will trigger the callback `onSourceError`.
+
+* [Source Error](http://pagerjs.com/demo/#!/source_error)
 
 
 ## Cookbook
@@ -912,6 +928,8 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 - [Sending wildcards to the viewmodel](https://github.com/finnsson/pagerjs/issues/52)
 - [Should handle pages that does not react to URL changes](https://github.com/finnsson/pagerjs/issues/61)
 - [Should handle pages that does not hide on URL changes](https://github.com/finnsson/pagerjs/issues/62)
+- [Should handle exceptions in with/withOnShow](https://github.com/finnsson/pagerjs/issues/46)
+- [Should handle exceptions on source/sourceOnShow](https://github.com/finnsson/pagerjs/issues/47)
 
 ## Roadmap
 
