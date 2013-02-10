@@ -194,6 +194,12 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
         $(page.element).empty().append('<div class="alert"> Error Loading Page</div>');
     });
 
+    pager.onSourceError.add(function(event) {
+        var page = event.page;
+        var url = event.url;
+        $(page.element).empty().append($('<div></div>', {text: 'Error loading page ' + url, "class" : 'alert'}));
+    });
+
 
     var indexOfCurrentPage = function(page) {
         return page.parentPage.children.indexOf(page);

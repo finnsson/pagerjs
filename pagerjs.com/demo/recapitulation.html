@@ -112,6 +112,19 @@ ko.computed(function() {
 });
     </pre>
 
+<h3><code class="code-large">onBindingError : $.Callbacks</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/binding_error">Binding Error</a>
+</div>
+
+<h3><code class="code-large">onSourceError : $.Callbacks</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/source_error">Source Error</a>
+</div>
+
+
 <h3><code class="code-large">showChild(route : String[])</code></h3>
 
 <p class="p">
@@ -447,6 +460,19 @@ Cool.loadUser = function(callback, page) {
     <a class="btn btn-primary" href="#!/failed_navigation">Reacting to Failed Navigation</a>
 </div>
 
+<h3><code class="code-large">onBindingError : Function({page:Page,url:String,xhrPromise:$.Promise})</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/binding_error">Binding Error</a>
+</div>
+
+<h3><code class="code-large">onSourceError : Function({page:Page,url:String,xhrPromise:$.Promise})</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/source_error">Source Error</a>
+</div>
+
+
 <h3><code class="code-large">guard : Function(Page,String[],Function(),Page)</code></h3>
 <p>
     The first argument is the page being navigated to,
@@ -503,6 +529,12 @@ Cool.loadUser = function(callback, page) {
 <div class="form-actions">
     <a class="btn btn-primary" href="#!/tabpanel">Tab Panel</a>
 </div>
+
+<h3><code class="code-large">child(String) : Observable(Page)</code></h3>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/url_toggle_show">Pages that only toggle on</a>
+</div>
+
 
 <h3><code class="code-large">parentPage : Page</code></h3>
 <p>

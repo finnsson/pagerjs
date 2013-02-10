@@ -9,10 +9,10 @@
     </p>
 </header>
 
-<ul>
-    <li><a href="#!/url_toggle_show/psy">Psy</a></li>
-    <li><a href="#!/url_toggle_show/lmfao">LMFAO</a></li>
-    <li><a href="#!/url_toggle_show/miikesnow">Miike Snow</a></li>
+<ul class="nav nav-tabs">
+    <li data-bind="css: {active: $page.child('psy')().isVisible}"><a href="#!/url_toggle_show/psy">Psy</a></li>
+    <li data-bind="css: {active: $page.child('lmfao')().isVisible}"><a href="#!/url_toggle_show/lmfao">LMFAO</a></li>
+    <li data-bind="css: {active: $page.child('miikesnow')().isVisible}"><a href="#!/url_toggle_show/miikesnow">Miike Snow</a></li>
 </ul>
 
 
@@ -31,6 +31,22 @@
     <iframe width="560" height="315" src="http://www.youtube.com/embed/mVWeqAPQUXc" frameborder="0" allowfullscreen></iframe>
 </div>
 
+<p>
+    The css class is data bound using the method <code>pager.Page.prototype.child(String)</code> that returns
+    and observable to the page-instance. If the page is visible the css class <code>active</code> is applied.
+</p>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;ul class="nav nav-tabs"&gt;
+    &lt;li data-bind="css: {active: $page.child('psy')().isVisible}"&gt;&lt;a href="#!/url_toggle_show/psy"&gt;Psy&lt;/a&gt;&lt;/li&gt;
+    &lt;li data-bind="css: {active: $page.child('lmfao')().isVisible}"&gt;&lt;a href="#!/url_toggle_show/lmfao"&gt;LMFAO&lt;/a&gt;&lt;/li&gt;
+    &lt;li data-bind="css: {active: $page.child('miikesnow')().isVisible}"&gt;&lt;a href="#!/url_toggle_show/miikesnow"&gt;Miike Snow&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</pre>
+
+<p>
+    The pages are configured using <code>urlToggle: 'show'</code>.
+</p>
 
 <pre data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'psy', urlToggle: 'show'}" class="well"&gt;

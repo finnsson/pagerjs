@@ -53,6 +53,8 @@
          */
         pager.onBindingError = $.Callbacks();
 
+        pager.onSourceError = $.Callbacks()
+
         /**
          *
          * @param {String[]} route
@@ -796,7 +798,7 @@
                     var s = _ko.value(this.sourceUrl(source));
                     koLoad(element, s, function () {
                         onLoad();
-                    });
+                    }, me);
                 } else { // should be a method
                     $.each($(element).children(), function (i, c) {
                         ko.utils.domNodeDisposal.removeNode(c);
@@ -812,7 +814,7 @@
 
         // a modified version of jQUery.fn.load, where the element is executing removeNode
         // before adding the new node.
-        var koLoad = function (element, url, callback) {
+        var koLoad = function (element, url, callback, page) {
             var selector, type, response,
                 self = $(element),
                 off = url.indexOf(" ");
@@ -823,7 +825,7 @@
             }
 
             // Request the remote document
-            jQuery.ajax({
+            var loadPromise = jQuery.ajax({
                 url:url,
                 type:'GET',
                 dataType:"html",
@@ -859,6 +861,13 @@
                         responseText);
 
                 });
+
+            loadPromise.fail(function() {
+                if(page.val('onSourceError')) {
+                    page.val('onSourceError')({url: url, page: page, xhrPromise: loadPromise});
+                }
+                pager.onSourceError.fire({url: url, page: page, xhrPromise: loadPromise});
+            });
             return self;
         };
 
