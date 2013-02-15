@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should find relative and absolute page</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div id="x" data-bind="page: {id: 'x'}">
+    <div id="x_1" data-bind="page: {id: 'x1'}">
+        <div id="a" data-bind="text: $page.find('../x1')().d()"></div>
+        <div id="b" data-bind="text: $page.find('../x2')().d()"></div>
+    </div>
+    <div id="x_2" data-bind="page: {id: 'x2'}">
+        <div id="c" data-bind="text: $page.find('/x/x1')().d()"></div>
+        <div id="d" data-bind="text: $page.find('/x/x2')().d()"></div>
+    </div>
+</div>
+
+<div id="y" data-bind="page: {id: 'y'}">
+    <div id="y_1" data-bind="page: {id: 'y1'}">
+        <div id="e" data-bind="text: $page.find('../y1')().d()"></div>
+        <div id="f" data-bind="text: $page.find('../y2')().d()"></div>
+        <div id="g" data-bind="text: $page.find('../../y/y1')().d()"></div>
+        <div id="h" data-bind="text: $page.find('../../x/x2')().d()"></div>
+    </div>
+    <div id="y_2" data-bind="page: {id: 'y2'}">
+        <div id="i" data-bind="text: $page.find('/x/x1')().d()"></div>
+        <div id="j" data-bind="text: $page.find('/x/x2')().d()"></div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var viewModel = {
+    };
+
+    pager.Page.prototype.d = function () {
+        return this.getFullRoute()().join('/');
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.startHashChange();
+</script>
+
+<script type="text/javascript" src="../lib/qunit.js"></script>
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+
+<script type="text/javascript">
+
+    $(function () {
+        asyncTest("should find relative and absolute page", function () {
+
+            until(function () {
+                return $('#j').text() === 'x/x2';
+            }, function () {
+                assert.equal($('#a').text(), 'x/x1');
+                assert.equal($('#b').text(), 'x/x2');
+                assert.equal($('#c').text(), 'x/x1');
+                assert.equal($('#d').text(), 'x/x2');
+                assert.equal($('#e').text(), 'y/y1');
+                assert.equal($('#f').text(), 'y/y2');
+                assert.equal($('#g').text(), 'y/y1');
+                assert.equal($('#h').text(), 'x/x2');
+                assert.equal($('#i').text(), 'x/x1');
+                assert.equal($('#j').text(), 'x/x2');
+                start();
+            });
+        });
+    });
+</script>
+
+
+</body>
+</html>

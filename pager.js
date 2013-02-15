@@ -80,6 +80,11 @@
         };
 
 
+        var parseHash = function(hash) {
+            return $.map(hash.replace(/\+/g, ' ').split('/'), decodeURIComponent);
+        };
+
+
 // common KnockoutJS helpers
         var _ko = {};
 
@@ -383,6 +388,39 @@
 
         p.currentChildPage = function () {
             return this.childManager.currentChildO;
+        };
+
+        /**
+         *
+         * @param {String} key relative (to this page) or absolute page path
+         * @return {Observable}
+         */
+        p.find = function (key) {
+            return ko.computed(function () {
+                try {
+                var k = _ko.value(key);
+                var currentRoot = this;
+                if(k.substring(0, 1) === '/') {
+                    currentRoot = pager.page;
+                    k = k.slice(1);
+                } else {
+                    while(k.substring(0, 3) === '../') {
+                        currentRoot = (currentRoot.currentParentPage && currentRoot.currentParentPage()) ?
+                            currentRoot.currentParentPage() :
+                            currentRoot.parentPage;
+                        k = k.slice(3);
+                    }
+                }
+                var route = parseHash(k);
+                $.each(route, function (_, r) {
+                    currentRoot = currentRoot.child(r)();
+                });
+                return currentRoot;
+                } catch(e) {
+                    console.error(e);
+                    return null;
+                }
+            }, this);
         };
 
         /**
@@ -1224,10 +1262,6 @@
 
         pager.fx.slide = pager.fx.jQuerySync($.fn.slideDown, $.fn.slideUp);
         pager.fx.fade = pager.fx.jQuerySync($.fn.fadeIn, $.fn.fadeOut);
-
-        var parseHash = function(hash) {
-            return $.map(hash.replace(/\+/g, ' ').split('/'), decodeURIComponent);
-        };
 
         pager.startHistoryJs = function (id) {
             if (id) {
