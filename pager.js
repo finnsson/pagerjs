@@ -1189,7 +1189,22 @@
 
         ko.bindingHandlers.page = {
             init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                var page = new pager.Page(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+                var page = null;
+                if(_ko.value(valueAccessor()) instanceof pager.Page) {
+                    page = _ko.value(valueAccessor());
+                    page.element = element;
+                    if(page.allBindingsAccessor == null) {
+                        page.allBindingsAccessor = allBindingsAccessor;
+                    }
+                    if(page.viewModel == null) {
+                        page.viewModel = viewModel;
+                    }
+                    if(page.bindingContext == null) {
+                        page.bindingContext = bindingContext;
+                    }
+                } else {
+                    page = new pager.Page(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+                }
                 return page.init();
             }
         };

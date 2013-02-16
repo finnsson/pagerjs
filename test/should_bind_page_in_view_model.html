@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should bind page in view model</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: myPage">
+    <div id="answer" data-bind="text: answer"></div>
+    <div id="question" data-bind="text: question"></div>
+</div>
+
+<script type="text/javascript">
+
+    var myPage = new pager.Page();
+    valueAccessorObject = {
+        id:"first"
+    };
+    myPage.valueAccessor = function () {
+        return valueAccessorObject;
+    };
+
+    myPage.viewModel = {
+        answer:42,
+        question:'How many roads must a man walk down before you can call him a man?'
+    };
+
+    var viewModel = {
+        myPage:myPage
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.startHashChange();
+
+    VM = viewModel;
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should bind page in view model", function () {
+
+        //window.location.hash = '#first?nam=foobar&ans=42';
+        until(function () {
+            return $('#answer').text() === '42' && $('#question').text() === 'How many roads must a man walk down before you can call him a man?'
+        }, function () {
+            ok(true, "answer and question is set");
+
+            assert.equal(viewModel.myPage.getId(), "first", "ID is first");
+
+            var firstPage = pager.page.find('first');
+
+            assert.equal(firstPage.getId(), "first", "page is in the DOM");
+
+            start();
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>
