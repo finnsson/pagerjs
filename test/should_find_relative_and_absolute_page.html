@@ -36,7 +36,12 @@
     <div id="y_2" data-bind="page: {id: 'y2'}">
         <div id="i" data-bind="text: $page.find$('/x/x1')().d()"></div>
         <div id="j" data-bind="text: $page.find$('/x/x2')().d()"></div>
+        <div id="k" data-bind="text: $page.find$('/42')().d()"></div>
     </div>
+</div>
+
+<div id="w" data-bind="page: {id: '?'}">
+    <div id="w_text">Wildcard</div>
 </div>
 
 
@@ -75,7 +80,28 @@
                 assert.equal($('#h').text(), 'x/x2');
                 assert.equal($('#i').text(), 'x/x1');
                 assert.equal($('#j').text(), 'x/x2');
-                start();
+
+
+                location.hash = '#42';
+
+                until(function() {
+                    return $('#w_text').is(':visible');
+                }, function() {
+
+                    assert.equal($('#k').text(), '42');
+
+                    location.hash = '#44';
+
+                    until(function() {
+                        return $('#k').text() === '';
+                    }, function() {
+                        assert.equal($('#k').text(), '');
+
+                        start();
+                    });
+
+                });
+
             });
         });
     });

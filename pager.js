@@ -818,6 +818,15 @@
             return this.val('id');
         };
 
+        p.id = function() {
+            var currentId = this.getCurrentId();
+            if(currentId == null || currentId === '') {
+                return this.getId();
+            } else {
+                return currentId;
+            }
+        };
+
 
         /**
          * @method pager.Page#sourceUrl
@@ -1149,7 +1158,7 @@
             if (!me._child[key]) {
                 me._child[key] = ko.computed(function () {
                     var child = $.grep(this.children(), function (c) {
-                        return c.getId() === key;
+                        return c.id() === key;
                     })[0];
                     return child || this.nullObject;
                 }, this);
