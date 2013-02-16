@@ -688,8 +688,20 @@
             // listen to when the element is removed
             ko.utils.domNodeDisposal.addDisposeCallback(m.element, function () {
                 // then remove this Page-instance
+                var beforeRemove = m.val('beforeRemove');
+                if(beforeRemove) {
+                    beforeRemove({
+                        page: m
+                    });
+                }
                 if (m.parentPage) {
                     m.parentPage.children.remove(m);
+                }
+                var afterRemove = m.val('afterRemove');
+                if(afterRemove) {
+                    afterRemove({
+                        page: m
+                    });
                 }
             });
 

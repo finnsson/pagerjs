@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should trigger before remove and after remove</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div id="page_to_remove" data-bind="page: {id: 'foo', beforeRemove: before, afterRemove: after}">
+    <div id="answer" data-bind="text: answer"></div>
+    <div id="question" data-bind="text: question"></div>
+</div>
+
+<script type="text/javascript">
+
+    var isBeforeRemoved = false;
+    var isAfterRemoved = false;
+
+    var viewModel = {
+        answer:42,
+        question:'?',
+        before:function () {
+            isBeforeRemoved = true;
+        },
+        after:function () {
+            isAfterRemoved = true;
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.startHashChange();
+
+    VM = viewModel;
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should trigger before remove and after remove", function () {
+
+        //window.location.hash = '#first?nam=foobar&ans=42';
+        until(function () {
+            return $('#answer').text() === '42' && $('#question').text() === '?'
+        }, function () {
+            ok(true, "answer and question is set");
+
+            assert.equal(isBeforeRemoved, false);
+            assert.equal(isAfterRemoved, false);
+
+            ko.utils.domNodeDisposal.removeNode(document.getElementById('page_to_remove'));
+
+            until(function () {
+                return $('#answer').length === 0;
+            }, function () {
+                assert.equal(isBeforeRemoved, true);
+                assert.equal(isAfterRemoved, true);
+
+                start();
+            });
+
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>
