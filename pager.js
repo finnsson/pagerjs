@@ -17,10 +17,10 @@
          * @param scope
          * @return {Function}
          */
-        var makeComputed = function(fn, scope) {
-            return function() {
+        var makeComputed = function (fn, scope) {
+            return function () {
                 var args = arguments;
-                return ko.computed(function() {
+                return ko.computed(function () {
                     return fn.apply(scope, args);
                 });
             };
@@ -489,8 +489,24 @@
                     page = me;
                 } else if (p instanceof pager.Page) {
                     page = p;
-                } else {
-                    page = me.find(p);
+                } else { // if string
+                    if (p.substring(0, 1) === '/') {
+                        return pager.page.getFullRoute()() + p.substring(1);
+                    }
+                    var parentsToTrim = 0;
+                    while (p.substring(0, 3) === '../') {
+                        parentsToTrim++;
+                        p = p.slice(3);
+                    }
+
+                    var fullRoute = me.getFullRoute()();
+                    var parentPath = fullRoute.slice(0, fullRoute.length - parentsToTrim).join('/');
+                    var fullPathWithoutHash = (parentPath === '' ? '' : parentPath + '/') + p;
+                    if (pager.useHTML5history) {
+                        return $('base').attr('href') + fullPathWithoutHash;
+                    } else {
+                        return pager.Href.hash + fullPathWithoutHash;
+                    }
                 }
                 var pagePath = page.getFullRoute()().join('/');
                 if (pager.useHTML5history) {
@@ -658,7 +674,7 @@
             var urlToggle = m.val('urlToggle');
 
             var id = m.val('id');
-            if(id !== '?') {
+            if (id !== '?') {
                 m.getCurrentId(id);
             }
 
@@ -818,9 +834,9 @@
             return this.val('id');
         };
 
-        p.id = function() {
+        p.id = function () {
             var currentId = this.getCurrentId();
-            if(currentId == null || currentId === '') {
+            if (currentId == null || currentId === '') {
                 return this.getId();
             } else {
                 return currentId;
@@ -1203,47 +1219,19 @@
             var me = this;
             var page = me.getParentPage();
 
-            // TODO: this should use $page.path instead, but $page.find need to handle wildcards first
-            /*
-            me.path = ko.computed(function() {
+            me.path = ko.computed(function () {
                 var value = _ko.value(me.pageOrRelativePath()());
+                var x = page.path(value);
                 return page.path(value);
             });
-
-            */
-            this.path = ko.computed(function () {
-                var value = _ko.value(this.pageOrRelativePath()());
-                if (typeof(value) === 'string') {
-                    if (value.substring(0, 1) === '/') {
-                        return pager.page.getFullRoute()() + value.substring(1);
-                    }
-                    var parentsToTrim = 0;
-                    while (value.substring(0, 3) === '../') {
-                        parentsToTrim++;
-                        value = value.slice(3);
-                    }
-
-                    var fullRoute = page.getFullRoute()();
-                    var parentPath = fullRoute.slice(0, fullRoute.length - parentsToTrim).join('/');
-                    return (parentPath === '' ? '' : parentPath + '/') + value;
-                } else if (value.getFullRoute) {
-                    return value.getFullRoute()().join('/');
-                }
-                return "";
-            }, this);
-
         };
 
         pager.Href.hash = '#';
 
         hp.bind = function () {
-            var hash = ko.computed(function () {
-                return pager.Href.hash + this.path();
-            }, this);
-
             ko.applyBindingsToNode(this.element, {
                 attr:{
-                    'href':hash
+                    'href':this.path
                 }
             });
         };
