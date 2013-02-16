@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should bind page using bind</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'first', bind: myPage}">
+    <div id="answer" data-bind="text: ans"></div>
+    <div id="name" data-bind="text: nam"></div>
+</div>
+
+<script type="text/javascript">
+
+
+    var viewModel = {
+        myPage:ko.observable(),
+        ans:42,
+        nam:"Pelle"
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.startHashChange();
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should access URI parameters", function () {
+
+        //window.location.hash = '#first?nam=foobar&ans=42';
+        until(function () {
+            return $('#answer').text() === '42' && $('#name').text() === 'Pelle'
+        }, function () {
+            ok(true, "answer and name is set");
+
+            assert.equal(viewModel.myPage().getId(), "first", "ID is first");
+
+            start();
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>

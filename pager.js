@@ -761,6 +761,11 @@
                     }
                 });
             }
+            // Bind the page to the config property `bind` if it exists
+            var bind = m.getValue()['bind'];
+            if(ko.isObservable(bind)) {
+                bind(m);
+            }
 
             return { controlsDescendantBindings:true };
         };
