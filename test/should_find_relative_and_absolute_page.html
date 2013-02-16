@@ -17,25 +17,25 @@
 
 <div id="x" data-bind="page: {id: 'x'}">
     <div id="x_1" data-bind="page: {id: 'x1'}">
-        <div id="a" data-bind="text: $page.find('../x1')().d()"></div>
-        <div id="b" data-bind="text: $page.find('../x2')().d()"></div>
+        <div id="a" data-bind="text: $page.find$('../x1')().d()"></div>
+        <div id="b" data-bind="text: $page.find$('../x2')().d()"></div>
     </div>
     <div id="x_2" data-bind="page: {id: 'x2'}">
-        <div id="c" data-bind="text: $page.find('/x/x1')().d()"></div>
-        <div id="d" data-bind="text: $page.find('/x/x2')().d()"></div>
+        <div id="c" data-bind="text: $page.find$('/x/x1')().d()"></div>
+        <div id="d" data-bind="text: $page.find$('/x/x2')().d()"></div>
     </div>
 </div>
 
 <div id="y" data-bind="page: {id: 'y'}">
     <div id="y_1" data-bind="page: {id: 'y1'}">
-        <div id="e" data-bind="text: $page.find('../y1')().d()"></div>
-        <div id="f" data-bind="text: $page.find('../y2')().d()"></div>
-        <div id="g" data-bind="text: $page.find('../../y/y1')().d()"></div>
-        <div id="h" data-bind="text: $page.find('../../x/x2')().d()"></div>
+        <div id="e" data-bind="text: $page.find$('../y1')().d()"></div>
+        <div id="f" data-bind="text: $page.find$('../y2')().d()"></div>
+        <div id="g" data-bind="text: $page.find$('../../y/y1')().d()"></div>
+        <div id="h" data-bind="text: $page.find$('../../x/x2')().d()"></div>
     </div>
     <div id="y_2" data-bind="page: {id: 'y2'}">
-        <div id="i" data-bind="text: $page.find('/x/x1')().d()"></div>
-        <div id="j" data-bind="text: $page.find('/x/x2')().d()"></div>
+        <div id="i" data-bind="text: $page.find$('/x/x1')().d()"></div>
+        <div id="j" data-bind="text: $page.find$('/x/x2')().d()"></div>
     </div>
 </div>
 

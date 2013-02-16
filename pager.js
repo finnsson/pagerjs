@@ -11,6 +11,22 @@
          * @readme README.md
          */
 
+        /**
+         *
+         * @param fn
+         * @param scope
+         * @return {Function}
+         */
+        var makeComputed = function(fn, scope) {
+            return function() {
+                var args = arguments;
+                return ko.computed(function() {
+                    return fn.apply(scope, args);
+                });
+            };
+        };
+
+
         var pager = {};
 
         pager.page = null;
@@ -77,6 +93,37 @@
                 bindingContext = bindingContext.$parentContext;
             }
             return null;
+        };
+
+        /**
+         *
+         * Takes a complete, working, path as parameter. *Not* a route, relative route or Page-object.
+         *
+         * @param {String} path
+         */
+        var goTo = function (path) {
+            // strip # (or #!/)
+            if (path.substring(0, pager.Href.hash.length) === pager.Href.hash) {
+                path = path.slice(pager.Href.hash.length);
+            }
+            // split on '/' and decode
+            var hashRoute = parseHash(path);
+            // trigger navigation
+            pager.showChild(hashRoute);
+        };
+
+        /**
+         *
+         * navigate takes a complete, working, path as parameter. *NOT* a route, object or pager.Page-object.
+         *
+         * @param {String} path
+         */
+        pager.navigate = function (path) {
+            if (pager.useHTML5history) {
+                pager.Href5.history.pushState(null, null, path);
+            } else {
+                location.hash = path;
+            }
         };
 
 
@@ -349,6 +396,8 @@
              */
             this.currentId = null;
 
+            this.getCurrentId = ko.observable();
+
             /**
              *
              *
@@ -393,29 +442,87 @@
         /**
          *
          * @param {String} key relative (to this page) or absolute page path
-         * @return {Observable}
+         * @return {Observable} page
          */
         p.find = function (key) {
-            return ko.computed(function () {
-                var k = _ko.value(key);
-                var currentRoot = this;
-                if (k.substring(0, 1) === '/') {
-                    currentRoot = pager.page;
-                    k = k.slice(1);
-                } else {
-                    while (k.substring(0, 3) === '../') {
-                        currentRoot = (currentRoot.currentParentPage && currentRoot.currentParentPage()) ?
-                            currentRoot.currentParentPage() :
-                            currentRoot.parentPage;
-                        k = k.slice(3);
-                    }
+            var k = _ko.value(key);
+            var currentRoot = this;
+            if (k.substring(0, 1) === '/') {
+                currentRoot = pager.page;
+                k = k.slice(1);
+            } else {
+                while (k.substring(0, 3) === '../') {
+                    currentRoot = (currentRoot.currentParentPage && currentRoot.currentParentPage()) ?
+                        currentRoot.currentParentPage() :
+                        currentRoot.parentPage;
+                    k = k.slice(3);
                 }
-                var route = parseHash(k);
-                $.each(route, function (_, r) {
-                    currentRoot = currentRoot.child(r)();
+            }
+            var route = parseHash(k);
+            $.each(route, function (_, r) {
+                currentRoot = currentRoot.child(r)();
+            });
+            return currentRoot;
+        };
+
+        p.find$ = function (key) {
+            return makeComputed(this.find, this)(key);
+        };
+
+        /**
+         *
+         * Utility method to generate a complete (computed observable) path relative to the current Page.
+         *
+         * @param {String/pager.Page/Object} path can either be relative path, a Page-object or a {path: params:}-object.
+         * @return {String}
+         */
+        p.path = function (path) {
+            var me = this;
+            var p = _ko.value(path);
+            if (p && typeof(p) === 'object' && p.path && p.params && !(p instanceof pager.Page)) {
+                var objectPath = p.path;
+                var params = p.params;
+                return me.path(objectPath) + '?' + $.param(params);
+            } else {
+                var page;
+                if (p == null || p === '') {
+                    page = me;
+                } else if (p instanceof pager.Page) {
+                    page = p;
+                } else {
+                    page = me.find(p);
+                }
+                var pagePath = page.getFullRoute()().join('/');
+                if (pager.useHTML5history) {
+                    return $('base').attr('href') + pagePath;
+                } else {
+                    return pager.Href.hash + pagePath;
+                }
+            }
+        };
+
+        p.path$ = function (path) {
+            return makeComputed(this.path, this)(path);
+        };
+
+        /**
+         *
+         * @param {Function} fn should return a $.Promise.
+         * @param {String/Object} ok route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
+         * @param {String/Object} notOk route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
+         * @return {Function}
+         */
+        p.async = function (fn, ok, notOk) {
+            var me = this;
+            return function () {
+                var result = fn();
+                result.done(function () {
+                    pager.navigate(me.path(ok));
                 });
-                return currentRoot;
-            }, this);
+                result.fail(function () {
+                    pager.navigate(me.path(notOk));
+                });
+            };
         };
 
         /**
@@ -431,6 +538,7 @@
                 params = m.pageRoute ? m.pageRoute.params : null,
                 isVisible = m.isVisible();
             m.currentId = pageRoute ? (pageRoute.name || '') : '';
+            m.getCurrentId(m.currentId);
             m.isVisible(true);
             if (originalRoute) {
                 m.originalRoute(originalRoute);
@@ -549,6 +657,10 @@
             var m = this;
             var urlToggle = m.val('urlToggle');
 
+            var id = m.val('id');
+            if(id !== '?') {
+                m.getCurrentId(id);
+            }
 
             var existingPage = ko.utils.domData.get(m.element, '__ko_pagerjsBindingData');
             if (existingPage) {
@@ -596,21 +708,6 @@
                         $observableData:context
                     });
                     applyBindingsToDescendants(m);
-                    /*
-                     try {
-                     ko.applyBindingsToDescendants(m.childBindingContext, m.element);
-                     } catch(e) {
-                     var onBindingError = m.val('onBindingError');
-                     if(onBindingError) {
-                     onBindingError(m. e);
-                     }
-                     pager.onBindingError.fire({
-                     page: m,
-                     error: e
-                     });
-                     }
-                     */
-
                     context.subscribe(function () {
                         dataInContext(_ko.value(context));
                     });
@@ -1094,8 +1191,17 @@
         };
 
         hp.init = function () {
-            var page = this.getParentPage();
+            var me = this;
+            var page = me.getParentPage();
 
+            // TODO: this should use $page.path instead, but $page.find need to handle wildcards first
+            /*
+            me.path = ko.computed(function() {
+                var value = _ko.value(me.pageOrRelativePath()());
+                return page.path(value);
+            });
+
+            */
             this.path = ko.computed(function () {
                 var value = _ko.value(this.pageOrRelativePath()());
                 if (typeof(value) === 'string') {
@@ -1116,6 +1222,7 @@
                 }
                 return "";
             }, this);
+
         };
 
         pager.Href.hash = '#';
@@ -1260,44 +1367,28 @@
 
         pager.startHistoryJs = function (id) {
             if (id) {
-                History.pushState(null, null, id);
+                pager.Href5.history.pushState(null, null, id);
             }
-            var hashChange = function (hash) {
-                // strip #
-                if (hash.substring(0, pager.Href.hash.length) === pager.Href.hash) {
-                    hash = hash.slice(pager.Href.hash.length);
-                }
-                // split on '/'
-                var hashRoute = parseHash(hash);
-                pager.showChild(hashRoute);
-            };
 
             // Bind to StateChange Event
             History.Adapter.bind(window, 'statechange', function () {
                 var baseUrl = $('base').attr('href');
                 var relativeUrl = History.getState().url.replace(baseUrl, '');
-                hashChange(relativeUrl);
+                goTo(relativeUrl);
             });
             History.Adapter.bind(window, 'anchorchange', function () {
-                hashChange(location.hash);
+                goTo(location.hash);
             });
 
-            hashChange(History.getState().url.replace(History.getRootUrl(), ''));
+            goTo(History.getState().url.replace(History.getRootUrl(), ''));
         };
 
         pager.startHashChange = function (id) {
             if (id) {
-                location.hash = pager.Href.hash + id;
+                window.location.hash = pager.Href.hash + id;
             }
             $(window).hashchange(function () {
-                var hash = location.hash;
-                // strip #
-                if (hash.substring(0, pager.Href.hash.length) === pager.Href.hash) {
-                    hash = hash.slice(pager.Href.hash.length);
-                }
-                // split on '/'
-                var hashRoute = parseHash(hash); // decodeURIComponent(hash.replace(/\+/g, ' ')).split('/');
-                pager.showChild(hashRoute);
+                goTo(window.location.hash);
             });
             $(window).hashchange();
         };
@@ -1313,20 +1404,10 @@
          */
         pager.start = function (id) {
             if (id) {
-                location.hash = pager.Href.hash + id;
+                window.location.hash = pager.Href.hash + id;
             }
-            var routeFromHashToPage = function (hash) {
-                // skip # (or #!/)
-                if (hash.substring(0, pager.Href.hash.length) === pager.Href.hash) {
-                    hash = hash.slice(pager.Href.hash.length);
-                }
-                // split on '/'
-                var hashRoute = parseHash(hash);
-                pager.showChild(hashRoute);
-            };
-
             var onHashChange = function () {
-                routeFromHashToPage(window.location.hash);
+                goTo(window.location.hash);
             };
             $(window).bind('hashchange', onHashChange);
 

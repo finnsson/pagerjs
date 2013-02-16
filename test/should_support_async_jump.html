@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should support async jump</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<a id="click_x" data-bind="click: $__page__.async(ok, 'x','y')">click</a>
+<a id="click_y" data-bind="click: $__page__.async(fail, 'x','y')">click</a>
+
+<div id="x" data-bind="page: {id: 'x'}">
+    page x<br/>
+
+    <div id="x_a" data-bind="page: {id: 'a'}">
+        page a<br/>
+
+        <div id="x_a_x" data-bind="page: {id: 'x'}">
+            page x<br/>
+            <a id="click_x_b_from_x_a_x"
+               data-bind="click: $page.async(fail, '../x/a/x',{path: '../../b', params: {foo: 'bar'}})">click</a>
+        </div>
+        <div id="x_a_y" data-bind="page: {id: 'y', params: ['ans', 'bar']}">
+            page y<br/>
+
+            <div id="x_a_y_ans" data-bind="text: ans"></div>
+            <div id="x_a_y_bar" data-bind="text: bar"></div>
+        </div>
+    </div>
+    <div id="x_b" data-bind="page: {id: 'b', params: ['foo']}">
+        page b<br/>
+
+        <div id="x_b_foo" data-bind="text: foo"></div>
+
+        <a id="click_x_a_y_from_x_b"
+           data-bind="click: $page.async(fail, '',{path: $page.find('../a/y'), params: {bar: 'foo', ans:'42'}})">click</a>
+
+
+        <div id="x_b_x" data-bind="page: {id: 'x'}">
+            page x<br/>
+        </div>
+        <div id="x_b_y" data-bind="page: {id: 'y'}">
+            page y<br/>
+        </div>
+    </div>
+</div>
+<div id="y" data-bind="page: {id: 'y'}">
+    page y<br/>
+    <a id="click_x_a_x_from_y" data-bind="click: $page.async(ok, '../x/a/x','')">click</a>
+</div>
+<div id="z" data-bind="page: {id: 'z'}">
+    page z<br/>
+</div>
+
+
+<script type="text/javascript">
+
+    window.ok = function () {
+        var p = $.Deferred();
+        p.resolve('ok');
+        return p;
+    };
+    window.fail = function () {
+        var p = $.Deferred();
+        p.reject('ok');
+        return p;
+    };
+
+    var viewModel = {
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.startHashChange();
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+
+    asyncTest("Should support async jump", function () {
+
+        $('#click_x').click();
+
+        until(function () {
+            return $('#x').is(':visible');
+        }, function () {
+            ok(true, "click_x is working");
+
+            $('#click_y').click();
+
+            until(function () {
+                return $('#y').is(':visible');
+            }, function () {
+                ok(true, "#click_y is working");
+
+                $('#click_x_a_x_from_y').click();
+
+                until(function () {
+                    return $('#x_a_x').is(':visible');
+                }, function () {
+                    ok(true, '#click_x_a_x_form_y is working');
+
+                    $('#click_x_b_from_x_a_x').click();
+
+                    until(function () {
+                        return $('#x_b_foo').text() === 'bar';
+                    }, function () {
+                        ok(true, '#click_x_b_from_x_a_x is working');
+                        assert.equal($('#x_b_foo').text(), 'bar', 'variable foo is bar');
+
+                        $('#click_x_a_y_from_x_b').click();
+
+                        until(function () {
+                            return $('#x_a_y_ans').text() === '42';
+                        }, function () {
+                            assert.equal($('#x_a_y_ans').text(), '42');
+                            assert.equal($('#x_a_y_bar').text(), 'foo');
+                            ok($('#x_a_y').is(':visible'), 'page x_a_y is visible');
+
+                            start();
+
+                        });
+
+                    });
+
+                });
+
+            });
+
+        });
+
+    });
+</script>
+
+
+</body>
+</html>
