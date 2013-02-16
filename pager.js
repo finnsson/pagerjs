@@ -80,7 +80,7 @@
         };
 
 
-        var parseHash = function(hash) {
+        var parseHash = function (hash) {
             return $.map(hash.replace(/\+/g, ' ').split('/'), decodeURIComponent);
         };
 
@@ -214,7 +214,7 @@
                     }
                 }
 
-                if (!me.currentChild && wildcard  && !showOnlyStart) {
+                if (!me.currentChild && wildcard && !showOnlyStart) {
                     me.currentChild = wildcard;
                     //me.currentChild.currentId = currentRoute;
                 }
@@ -399,11 +399,11 @@
             return ko.computed(function () {
                 var k = _ko.value(key);
                 var currentRoot = this;
-                if(k.substring(0, 1) === '/') {
+                if (k.substring(0, 1) === '/') {
                     currentRoot = pager.page;
                     k = k.slice(1);
                 } else {
-                    while(k.substring(0, 3) === '../') {
+                    while (k.substring(0, 3) === '../') {
                         currentRoot = (currentRoot.currentParentPage && currentRoot.currentParentPage()) ?
                             currentRoot.currentParentPage() :
                             currentRoot.parentPage;
@@ -466,8 +466,8 @@
                 var vm = this.ctx;
                 var userParams = this.val('params') || {};
                 // for each param for URL
-                if($.isArray(userParams)) {
-                    $.each(userParams, function(index, key) {
+                if ($.isArray(userParams)) {
+                    $.each(userParams, function (index, key) {
                         var value = params[key];
                         if (vm[key]) { // set observable ...
                             vm[key](value);
@@ -476,15 +476,15 @@
                         }
                     });
                 } else {
-                    $.each(userParams, function(key, defaultValue) {
+                    $.each(userParams, function (key, defaultValue) {
                         var value = params[key];
                         var runtimeValue;
-                        if(value == null) {
+                        if (value == null) {
                             runtimeValue = _ko.value(defaultValue);
                         } else {
                             runtimeValue = value;
                         }
-                        if(vm[key]) {
+                        if (vm[key]) {
                             vm[key](runtimeValue);
                         } else {
                             vm[key] = ko.observable(runtimeValue);
@@ -525,17 +525,17 @@
             }
         };
 
-        var applyBindingsToDescendants = function(page) {
+        var applyBindingsToDescendants = function (page) {
             try {
                 ko.applyBindingsToDescendants(page.childBindingContext, page.element);
-            } catch(e) {
+            } catch (e) {
                 var onBindingError = page.val('onBindingError');
-                if(onBindingError) {
-                    onBindingError(page. e);
+                if (onBindingError) {
+                    onBindingError(page.e);
                 }
                 pager.onBindingError.fire({
-                    page: page,
-                    error: e
+                    page:page,
+                    error:e
                 });
             }
         };
@@ -551,8 +551,8 @@
 
 
             var existingPage = ko.utils.domData.get(m.element, '__ko_pagerjsBindingData');
-            if(existingPage) {
-                return { controlsDescendantBindings: true};
+            if (existingPage) {
+                return { controlsDescendantBindings:true};
             } else {
                 ko.utils.domData.set(m.element, '__ko_pagerjsBindingData', m);
             }
@@ -588,37 +588,37 @@
                 m.ctx = _ko.value(context);
                 m.augmentContext();
 
-                if(ko.isObservable(context)) {
+                if (ko.isObservable(context)) {
                     var dataInContext = ko.observable(m.ctx);
                     m.childBindingContext = m.bindingContext.createChildContext(dataInContext);
                     ko.utils.extend(m.childBindingContext, {
                         $page:this,
-                        $observableData: context
+                        $observableData:context
                     });
                     applyBindingsToDescendants(m);
                     /*
-                    try {
-                        ko.applyBindingsToDescendants(m.childBindingContext, m.element);
-                    } catch(e) {
-                        var onBindingError = m.val('onBindingError');
-                        if(onBindingError) {
-                            onBindingError(m. e);
-                        }
-                        pager.onBindingError.fire({
-                            page: m,
-                            error: e
-                        });
-                    }
-                    */
+                     try {
+                     ko.applyBindingsToDescendants(m.childBindingContext, m.element);
+                     } catch(e) {
+                     var onBindingError = m.val('onBindingError');
+                     if(onBindingError) {
+                     onBindingError(m. e);
+                     }
+                     pager.onBindingError.fire({
+                     page: m,
+                     error: e
+                     });
+                     }
+                     */
 
-                    context.subscribe(function() {
+                    context.subscribe(function () {
                         dataInContext(_ko.value(context));
                     });
                 } else {
                     m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
                     ko.utils.extend(m.childBindingContext, {
                         $page:this,
-                        $observableData: undefined
+                        $observableData:undefined
                     });
                     applyBindingsToDescendants(m);
                 }
@@ -667,7 +667,7 @@
                         if (!m.ctx[key]) {
                             if (ko.isObservable(value)) {
                                 m.ctx[key] = value;
-                            } else if(value === null) {
+                            } else if (value === null) {
                                 params[key] = ko.observable(null);
                                 m.ctx[key] = ko.observable(null);
                             } else {
@@ -687,7 +687,7 @@
                 });
             }
             var nameParam = this.getValue()['nameParam'];
-            if(nameParam && typeof nameParam === 'string') {
+            if (nameParam && typeof nameParam === 'string') {
                 m.ctx[nameParam] = ko.observable(null);
             }
             this.setParams();
@@ -895,11 +895,11 @@
 
                 });
 
-            loadPromise.fail(function() {
-                if(page.val('onSourceError')) {
-                    page.val('onSourceError')({url: url, page: page, xhrPromise: loadPromise});
+            loadPromise.fail(function () {
+                if (page.val('onSourceError')) {
+                    page.val('onSourceError')({url:url, page:page, xhrPromise:loadPromise});
                 }
-                pager.onSourceError.fire({url: url, page: page, xhrPromise: loadPromise});
+                pager.onSourceError.fire({url:url, page:page, xhrPromise:loadPromise});
             });
             return self;
         };
@@ -1089,7 +1089,7 @@
 
         var hp = pager.Href.prototype;
 
-        hp.getParentPage = function() {
+        hp.getParentPage = function () {
             return pager.getParentPage(this.bindingContext);
         };
 
@@ -1099,7 +1099,7 @@
             this.path = ko.computed(function () {
                 var value = _ko.value(this.pageOrRelativePath()());
                 if (typeof(value) === 'string') {
-                    if(value.substring(0,1) === '/') {
+                    if (value.substring(0, 1) === '/') {
                         return pager.page.getFullRoute()() + value.substring(1);
                     }
                     var parentsToTrim = 0;
@@ -1152,7 +1152,7 @@
                 },
                 click:function () {
                     var path = self.path();
-                    if(path === '' || path === '/') {
+                    if (path === '' || path === '/') {
                         path = $('base').attr('href');
                     }
                     pager.Href5.history.pushState(null, null, path);
