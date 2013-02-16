@@ -397,7 +397,6 @@
          */
         p.find = function (key) {
             return ko.computed(function () {
-                try {
                 var k = _ko.value(key);
                 var currentRoot = this;
                 if(k.substring(0, 1) === '/') {
@@ -416,10 +415,6 @@
                     currentRoot = currentRoot.child(r)();
                 });
                 return currentRoot;
-                } catch(e) {
-                    console.error(e);
-                    return null;
-                }
             }, this);
         };
 
