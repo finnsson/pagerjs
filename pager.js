@@ -1226,7 +1226,6 @@
 
             me.path = ko.computed(function () {
                 var value = _ko.value(me.pageOrRelativePath()());
-                var x = page.path(value);
                 return page.path(value);
             });
         };
