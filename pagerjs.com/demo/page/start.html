@@ -1,0 +1,19 @@
+<header class="jumbotron subhead">
+    <h1>Show start page by default</h1>
+
+    <p class="lead"> This is the default start page. It is so because the page ID is set to <code>'start'</code>.
+        Every other element with a page binding (<code>data-bind="page: {id: ...}"</code>) will be hidden
+        by default. Set <code>title: 'Some Title'</code> if you want to update the page title as the user
+        navigates to the page (look up at the title as you navigate this tutorial).
+    </p>
+</header>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {<a data-bind="tooltip: {}" title="start it will be displayed by default">id: 'start'</a>, <a data-bind="tooltip: {}" title="change document title to this">title: 'Pager.js Demo Start'</a>}"&gt;
+    ...&lt;a href="#!/structure"&gt;Read about the structure.&lt;/a&gt;...
+&lt;/div&gt;
+        </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/structure">Read about the structure.</a>
+</div>

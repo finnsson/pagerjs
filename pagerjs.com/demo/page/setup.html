@@ -1,0 +1,61 @@
+<header class="jumbotron subhead">
+    <h1>Setup</h1>
+
+    <p class="lead">
+        Pager.js depends on <a href="http://knockoutjs.com/">KnockoutJS</a> and
+        <a href="http://jquery.com/">jQuery</a>. Include either
+        <a href="https://raw.github.com/finnsson/pagerjs/master/pager.js">pager.js</a>
+        or <a href="https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js">pager.min.js</a>.
+        Choose between a naïve history manager (<code>pager.start([id: String])</code>),
+        a history manager based on jQuery hashchange (<code>pager.startHashChange([id: String])</code>),
+        a history manager based on History.js (<code>pager.startHistoryJs([id: String])</code>)
+        or write your own.
+    </p>
+</header>
+
+<h2>Naïve history manager</h2>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+// extend your view-model with pager.js specific data
+pager.extendWithPage(viewModel);
+// apply the view-model using KnockoutJS as normal
+ko.applyBindings(viewModel);
+// start pager.js
+pager.start();
+    </pre>
+
+<h2>jQuery Hashchange as history manager</h2>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+// use #!/ instead of the default #
+pager.Href.hash = '#!/';
+// extend your view-model with pager.js specific data
+pager.extendWithPage(viewModel);
+// apply the view-model using KnockoutJS as normal
+ko.applyBindings(viewModel);
+// start pager.js
+pager.startHashChange();
+    </pre>
+
+
+<h2>History.js as history manager</h2>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+// use HTML5 history
+pager.useHTML5history = true;
+// use History instead of history
+pager.Href5.history = History;
+// extend your view-model with pager.js specific data
+pager.extendWithPage(viewModel);
+// apply the view-model using KnockoutJS as normal
+ko.applyBindings(viewModel);
+// start pager.js
+pager.startHistoryJs();
+    </pre>
+
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/deep_navigation"> You can jump to another page using an absolute
+        fragment identifier.
+    </a>
+</div>

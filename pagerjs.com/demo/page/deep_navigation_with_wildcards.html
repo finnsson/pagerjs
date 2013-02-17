@@ -1,0 +1,40 @@
+<header class="jumbotron subhead">
+    <h1>Deep Navigation with Wildcards</h1>
+
+    <p class="lead">
+        The wildcard does not need to be at the end. It can be in a sub-page with sub-pages.
+    </p>
+</header>
+
+<div class="well">
+    <div data-bind="page: {id: 'start'}">
+        <a class="btn" href="#!/deep_navigation_with_wildcards/wild/leela">Go to Leela</a>
+    </div>
+
+    <div data-bind="page: {id: '?'}">
+        <h3>Character</h3>
+
+        <div data-bind="page: {id: 'leela'}">
+            Leela
+        </div>
+    </div>
+</div>
+
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;a class="btn" href="#!/deep_navigation_with_wildcards/wild/leela"&gt;Go to Leela&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div data-bind="page: {id: '?'}"&gt;
+    &lt;h3&gt;Character&lt;/h3&gt;
+
+    &lt;div data-bind="page: {id: 'leela'}"&gt;
+        Leela
+    &lt;/div&gt;
+&lt;/div&gt;
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/send_wildcard_to_source">Further features of wildcards</a>
+</div>

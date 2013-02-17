@@ -1,0 +1,64 @@
+<header class="jumbotron subhead">
+    <h1>Guards</h1>
+
+    <p class="lead">
+        Guards are methods that are run before the page navigation takes place and
+        that can stop the navigation from displaying a certain page.
+        <br/>
+        Use the property <code>guard: someMethod</code> to apply the guard. The method
+        takes 3 parameters: page, route, and callback. If the callback is called
+        the navigation takes place - otherwise it is stopped.
+        <br/>
+        Use cases are login, validating steps in state machines, etc.
+        <br/>
+        The reason the guard takes a callback as the third argument is simply because the guard might be asynchronous,
+        e.g., accessing a webserver for login details or asking if a valid shopping cart exists, etc.
+    </p>
+</header>
+
+
+<a class="btn" data-bind="page-href: 'admin'">Go to admin panel</a><br/>
+
+<div data-bind="page: {id: 'admin', guard: isLoggedIn}" class="well">
+    This page is only accessible if the user is logged in.
+    <a href="#!/guards" data-bind="click: logout">Logout</a>
+</div>
+<div data-bind="page: {id: 'login'}" class="well">
+    <p class="alert alert-error">You are not logged in. Check the checkbox and try again.</p>
+
+    <form>
+        <label class="checkbox">Login <input type="checkbox" data-bind="checked: loggedIn"/> </label>
+    </form>
+</div>
+
+<br/>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'admin', guard: isLoggedIn}" class="well"&gt;
+    This page is only accessible if the user is logged in.
+    &lt;a href="#!/guards" data-bind="click: logout"&gt;Logout&lt;/a&gt;
+&lt;/div&gt;
+&lt;div data-bind="page: {id: 'login'}" class="well"&gt;
+    &lt;p class="alert alert-error"&gt;You are not logged in. Check the checkbox and try again.&lt;/p&gt;
+
+    &lt;form&gt;
+        &lt;label class="checkbox"&gt;Login &lt;input type="checkbox" data-bind="checked: loggedIn"/&gt; &lt;/label&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+    </pre>
+
+where
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+loggedIn: ko.observable(false),
+isLoggedIn: function(page, route, callback) {
+    if(viewModel.loggedIn()) {
+        callback();
+    } else {
+        window.location.href = "login";
+    }
+},
+    </pre>
+
+
+<div data-bind="template: {name: 'link-template'}"></div>

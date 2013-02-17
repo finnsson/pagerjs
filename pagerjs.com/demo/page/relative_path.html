@@ -1,0 +1,67 @@
+<header class="jumbotron subhead">
+    <h1>Relative path</h1>
+
+    <p class="lead">
+        It can be tricky to calculate the absolute path of a link -
+        especially if you know the page will be loaded form somewhere else.
+        <br/>
+        Just use the <code>page-href</code> custom binding instead of specifying
+        a <code>href</code> directly!
+        <br/>
+        The <code>page-href</code> link will be relative to the page where the
+        element is. So if an anchor tag is in the page "user" a value <code>pelle</code>
+        will be resolved to <code>user/pelle</code>. The binding also understands <code>../</code>
+        if you need to track back up the page hierarchy!
+        <br/>
+        <code>pager.Href.hash</code> is by default <code>#</code> but can be changed to <code>#!/</code>
+        (or any other string). All <code>page-href</code> bindings will use the prefix from <code>pager.Href.hash</code>.
+    </p>
+</header>
+
+
+<div data-bind="page: {id: 'start'}">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-bind="page-href: 'fry'">Fry</a>
+        </li>
+        <li class="active">
+            <a data-bind="page-href: 'interesting'">Interesting</a>
+        </li>
+    </ul>
+
+    <div data-bind="page: {id: 'fry'}">
+        <img src="fry.jpg"/>
+    </div>
+    <div data-bind="page: {id: 'interesting'}">
+        <a data-bind="page-href: '../../'">Close this tab</a>
+        <br/>
+        <img src="interesting.jpeg"/>
+    </div>
+</div>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;ul class="nav nav-tabs"&gt;
+        &lt;li class="active"&gt;
+            &lt;a data-bind="page-href: 'fry'"&gt;Fry&lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li class="active"&gt;
+            &lt;a data-bind="page-href: 'interesting'"&gt;Interesting&lt;/a&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div data-bind="page: {id: 'fry'}"&gt;
+        &lt;img src="fry.jpg"/&gt;
+    &lt;/div&gt;
+    &lt;div data-bind="page: {id: 'interesting'}"&gt;
+        &lt;a data-bind="page-href: '../../'"&gt;Close this tab&lt;/a&gt;
+        &lt;br/&gt;
+        &lt;img src="interesting.jpg"/&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+        </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/absolute_path">What about binding to pages?</a>
+</div>

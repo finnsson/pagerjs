@@ -1,0 +1,124 @@
+<header class="jumbotron subhead">
+    <h1>Custom Widgets</h1>
+
+    <p class="lead">
+        pager.js is based on sound object oriented principles, making it easy to extend
+        with new custom widgets.
+        <br/>
+        In this tutorial the custom binding <code>page-accordion-item</code> is demonstrated.
+    </p>
+</header>
+
+<p>The page-accordion-item works like</p>
+
+<div data-bind="page: {id: 'start'}" class="well">
+    <div data-bind="page-accordion-item: {id: 'zoidberg'}">
+        <a href="#!/custom_widgets/start/zoidberg">Zoidberg</a>
+
+        <div>Zoidberg Information</div>
+    </div>
+    <div data-bind="page-accordion-item: {id: 'hermes'}">
+        <a href="#!/custom_widgets/start/hermes">Hermes</a>
+
+        <div>Hermes Information</div>
+    </div>
+</div>
+
+and is constructed with the markup
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page-accordion-item: {id: 'zoidberg'}"&gt;
+    &lt;a href="#!/custom_widgets/start/zoidberg"&gt;Zoidberg&lt;/a&gt;
+
+    &lt;div&gt;Zoidberg Information&lt;/div&gt;
+&lt;/div&gt;
+&lt;div data-bind="page-accordion-item: {id: 'hermes'}"&gt;
+    &lt;a href="#!/custom_widgets/start/hermes"&gt;Hermes&lt;/a&gt;
+
+    &lt;div&gt;Hermes Information&lt;/div&gt;
+&lt;/div&gt;
+    </pre>
+
+
+<p>
+    First we need to create a class that inherits from <code>pager.Page</code>.
+</p>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+    pager.Page.apply(this, arguments);
+};
+pager.PageAccordionItem.prototype = new pager.Page();
+    </pre>
+
+<p>
+    The <code>Page</code> class has these methods to override:
+</p>
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+init : void
+getValue : void
+getPage : void
+sourceUrl : String
+loadSource : String
+show: void
+showElement: void
+hideElement : void
+    </pre>
+
+<p>
+    We want our custom binding to always show the first child element and only hide the second child element.
+    Thus we need to override <code>showElement</code> and <code>hideElement</code>.
+    <code>showElement</code> should show the second child and <code>hideElement</code> should hide the second child.
+</p>
+
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+// get second child
+pager.PageAccordionItem.prototype.getAccordionBody = function () {
+    return $(this.element).children()[1];
+};
+
+// hide second child
+pager.PageAccordionItem.prototype.hideElement = function () {
+    // use hide if it is the first time the page is hidden
+    if (!this.pageAccordionItemHidden) {
+        this.pageAccordionItemHidden = true;
+        $(this.getAccordionBody()).hide();
+        if (callback) {
+            callback();
+        }
+    } else { // else use a slideUp animation
+        $(this.getAccordionBody()).slideUp();
+        if (callback) {
+            callback();
+        }
+    }
+};
+
+// show the second child using a slideDown animation
+pager.PageAccordionItem.prototype.showElement = function () {
+    $(this.getAccordionBody()).slideDown();
+    if (callback) {
+        callback();
+    }
+};
+    </pre>
+
+<p>
+    Finally you need to add the new class as a new custom binding.
+</p>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+ko.bindingHandlers['page-accordion-item'] = {
+    init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        var pageAccordionItem = new pager.PageAccordionItem(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
+        pageAccordionItem.init();
+    },
+    update:function () {
+    }
+};
+   </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/modals">Read about modals</a>
+</div>

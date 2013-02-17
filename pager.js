@@ -1078,12 +1078,16 @@
          * @param {Function} callback
          */
         p.showElementWrapper = function (callback) {
-            if (this.val('beforeShow')) {
-                this.val('beforeShow')(this);
+            var me = this;
+            if (me.val('beforeShow')) {
+                me.val('beforeShow')(this);
             }
-            this.showElement(callback);
-            if (this.val('afterShow')) {
-                this.val('afterShow')(this);
+            me.showElement(callback);
+            if(me.val('scrollToTop')) {
+                me.element.scrollIntoView();
+            }
+            if (me.val('afterShow')) {
+                me.val('afterShow')(this);
             }
         };
 

@@ -1,0 +1,49 @@
+<header class="jumbotron subhead">
+    <h1>Change Binding Context</h1>
+
+    <p class="lead">
+        Use <code>with:</code> to change the binding context - similar to the standard KnockoutJS <code>with</code> binding.
+        <br/>
+        One important difference is that you shouldn't use an observable model (see workaround). The current version (2.2) of KnockoutJS
+        does not support changing the binding context (which pager.js does) while binding to an observable model.
+        Hopefully this will be solved in KnockoutJS 2.3.
+    </p>
+</header>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'user', 'with': user}"&gt;
+    &lt;span data-bind="text: name"&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+    viewModel = {
+        user:{
+            name:ko.observable("Amy")
+        }
+    };
+&lt;/script&gt;
+    </pre>
+
+<p>
+    A workaround if you got an observable model is to write
+</p>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'user'}"&gt;
+    &lt;!-- ko with: user -->
+    &lt;span data-bind="text: name"&gt;&lt;/span&gt;
+    &lt;!-- /ko -->
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;
+    viewModel = {
+        user:ko.observable({
+            name:ko.observable("Amy")
+        })
+    };
+&lt;/script&gt;
+    </pre>
+
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/lazy_bind_view_model">Read more about changing the binding
+        context</a>
+</div>

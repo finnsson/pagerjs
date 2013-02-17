@@ -1,4 +1,4 @@
-body > .container > div {
+body > .container > .row > .span9 > div {
     display: none;
 }
 
@@ -44,4 +44,8 @@ a .atv {
 h1, h2, h3 {
     font-family: 'PT Sans', sans-serif;
     font-weight: normal;
+}
+
+h1 {
+    padding-top: 50px;
 }

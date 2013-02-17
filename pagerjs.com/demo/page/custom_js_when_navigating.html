@@ -1,0 +1,54 @@
+<header class="jumbotron subhead">
+    <h1>Custom JS when Navigating</h1>
+
+    <p class="lead">
+        There are 4 main alternatives when it comes to running custom JS:
+    <ol class="">
+        <li>Listen to <code>pager.childManager</code> if you want to be notified whenever a navigation has happened.
+            It is not recommended to try to stop the navigation at this point since it would involve changing the
+            history.
+        </li>
+        <li>Bind to global <code>click</code> if you want to be notified when a navigation is about to happen and
+            you want a chance to stop it. Just do not <code>return true;</code> in order to stop the navigation.
+        </li>
+        <li>Bind to local <code>click</code> if you want to control a certain navigation. This is probably what you
+            want to do if you want to inject validation.
+        </li>
+        <li>Bind to local before/after show/hide if you just want to be notified about a navigation.
+            Some custom bindings from other 3rd parties (e.g. Kendo UI) might be triggered after
+            <code>afterShow</code>, since they put the processing of their bindings on the event queue (possible
+            out of performance reasons).
+            If you want your code to execute after their bindings are processed you either have to be able
+            to jack into their bindings version of <code>afterShow</code> (if they got one)
+            or put your code on the event queue too.
+        </li>
+    </ol>
+
+    <a href="#!/custom_js_when_navigating/fry">Show Fry</a>
+
+    <div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}">
+        Fry
+        <a class="btn" href="#!/custom_js_when_navigating">Hide Fry</a>
+    </div>
+
+    </p>
+</header>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}"&gt;
+    Fry
+    &lt;a class="btn" href="#!/custom_js_when_navigating"&gt;Hide Fry&lt;/a&gt;
+&lt;/div&gt;
+    </pre>
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+afterFryIsDisplayed:function () {
+    $('body').css("background-color", "#FF9999");
+}
+beforeFryIsHidden:function () {
+    $('body').stop().css("background-color", "#FFFFFF");
+}
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/custom_hide_show">Read about custom <code>hide</code>- and <code>show</code>-methods</a>
+</div>

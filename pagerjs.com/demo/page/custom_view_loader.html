@@ -1,0 +1,42 @@
+<header class="jumbotron subhead">
+    <h1>Load View using Custom Method</h1>
+
+    <p class="lead">
+        In order to facilitate programming in the large it is useful to be able to extract views as separate
+        components.
+        These views should not be forced to be stored as HTML fragments or be loaded with jQuery.
+        <br/>
+        Thus a way to inject custom views should be possible. This is done using the <code>source</code>- or
+        <code>sourceOnShow</code>-properties. Just supply a method instead of a string!
+        <br/>
+        These properties take a method that should take a <code>pager.Page</code> as first argument, a callback,
+        and return nothing.
+    </p>
+</header>
+
+<a href="#!/custom_view_loader/zoidberg">Load custom view using requireView-method</a>
+
+<div data-bind="page: {id: 'zoidberg', sourceOnShow: requireView('zoidberg')}">
+
+</div>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'zoidberg', sourceOnShow: requireView('zoidberg')}"/&gt;        
+    </pre>
+
+where
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+window.requireView = function(viewModule) {
+    return function(page, callback) {
+        require([viewModule], function(viewString) {
+            $(page.element).html(viewString);
+            callback();
+        });
+    };
+};
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/params">Read about binding URI parameters</a>
+</div>

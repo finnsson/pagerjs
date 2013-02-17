@@ -1,0 +1,23 @@
+<header class="jumbotron subhead">
+    <h1>Configure an iframe</h1>
+
+    <p class="lead">
+        Often you might need to configure the <code>iframe</code> element used.
+        Just include an <code>iframe</code> element inside the page and that
+        <code>iframe</code> will be used.
+    </p>
+</header>
+
+<div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}">
+    <iframe sandbox="" height="100" width="920"></iframe>
+</div>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start', frame: 'iframe', source: 'character/fry.html'}"&gt;
+    &lt;iframe sandbox="" height="100" width="920"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/custom_widgets">Read about custom widgets</a>
+</div>

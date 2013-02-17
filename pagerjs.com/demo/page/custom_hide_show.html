@@ -1,0 +1,45 @@
+<header class="jumbotron subhead">
+    <h1>Custom Hide- and Show-methods</h1>
+
+    <p class="lead">
+        You might want to use a custom animation or custom behaviour for a page.
+        This is easily done by using the <code>showElement</code> and <code>hideElement</code>-properties.
+
+        These properties should be supplied with a method that takes 2 arguments: the first is the page
+        and the second is a callback that should be executed.
+    </p>
+</header>
+
+<a href="#!/custom_hide_show/fry">Show Fry</a>
+
+<div data-bind="page:{id: 'fry', showElement: showFry, hideElement: hideFry}">
+    <h2>Fry</h2>
+    <a class="btn" data-bind="page-href: '../'">Hide Fry</a>
+</div>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'fry', showElement: showFry, hideElement: hideFry}"&gt;
+    &lt;h2&gt;Fry&lt;/h2&gt;
+    &lt;a class="btn" data-bind="page-href: '../'"&gt;Hide Fry&lt;/a&gt;
+&lt;/div&gt;
+    </pre>
+
+<p>where</p>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+showFry:function (page, callback) {
+    $(page.element).fadeIn(1000, callback);
+};
+hideFry:function (page, callback) {
+    $(page.element).fadeOut(1000, function () {
+        $(page.element).hide();
+        if (callback) {
+            callback();
+        }
+    });
+};
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/loader">Read about custom loaders</a>
+</div>

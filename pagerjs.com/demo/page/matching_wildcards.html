@@ -1,0 +1,32 @@
+<header class="jumbotron subhead">
+    <h1>Matching Wildcards</h1>
+
+    <p class="lead">
+        Setting the <code>id:</code> property to <code>'?'</code> will make it
+        match anything. This is a useful catch-all with uses like error handling.
+    </p>
+</header>
+
+<div data-bind="page: {id: 'start'}">
+    <p>
+        <a data-bind="page-href: ('../' + (Math.random()*100).toFixed(0))">Go to some random site</a>
+    </p>
+</div>
+<div data-bind="page: {id: '?'}">
+    <h3>Error</h3>
+
+    <p>The page you requested does not exist.</p>
+
+    <p><a href="#!/matching_wildcards">Go back</a></p>
+</div>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: '?'}"&gt;
+    &lt;h3&gt;Error&lt;/h3&gt;
+    &lt;p&gt;The page you requested does not exist.&lt;/p&gt;
+&lt;/div&gt;
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/deep_navigation_with_wildcards">Continue reading about wildcards</a>
+</div>

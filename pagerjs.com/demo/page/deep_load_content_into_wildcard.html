@@ -1,0 +1,41 @@
+<header class="jumbotron subhead">
+    <h1>Deep Load Content into Wildcard</h1>
+
+    <p class="lead">
+        Normally a <code>sourceOnShow</code> will only use the first page of the route as its
+        URL, but by specifying <code>deep: true</code> the entire route will be used to
+        identify the content to load. This makes it possible to load arbitrarily nested content
+        into the same page-element.
+    </p>
+</header>
+
+<div class="well">
+    <div data-bind="page: {id: 'start'}">
+        <a href="#!/deep_load_content_into_wildcard/deep/character/fry">Go to Fry</a>
+    </div>
+
+    <div data-bind="page: {id: 'deep'}">
+        <h3>Character</h3>
+
+        <div data-bind="page: {id: '?', deep: true, sourceOnShow: '{1}.html'}">
+            <div data-bind="text: $page.currentId"></div>
+        </div>
+    </div>
+</div>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;a href="#!/deep_load_content_into_wildcard/deep/character/fry"&gt;Go to Fry&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div data-bind="page: {id: 'deep'}"&gt;
+    &lt;h3&gt;Character&lt;/h3&gt;
+
+    &lt;div data-bind="page: {id: '?', <a data-bind="tooltip: {}" title="now the wildcard will deep load">deep: true</a>, sourceOnShow: '{1}.html'}"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/load_into_iframe">Read about loading content into iframes</a>
+</div>

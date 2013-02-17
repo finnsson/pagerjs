@@ -1,0 +1,75 @@
+<header class="jumbotron subhead">
+    <h1>Modals</h1>
+
+    <p class="lead">
+        It is possible to navigate into pages that are further up but still give the impression
+        you are navigating deeper down.
+        This is useful for modal windows that you might want to show on multiple pages.
+        Just append <code>modal: true</code> and the page is accessible for sub-pages to sibling-pages.
+    </p>
+</header>
+
+<div data-bind="page: {id: 'start'}">
+    <a data-bind="page-href: 'first'" class="btn">Show first sub-page</a>
+    <a data-bind="page-href: 'second'" class="btn">Show second sub-page</a>
+
+    <div data-bind="page: {id: 'first'}" class="well">
+        First sub-page
+        <a class="btn" data-bind="page-href: 'alert'">Show an alert!</a>
+    </div>
+    <div data-bind="page: {id: 'second'}" class="well">
+        Second sub-page
+        <a class="btn" data-bind="page-href: 'alert'">Show an alert!</a>
+    </div>
+</div>
+<div data-bind="page: {id: 'alert', modal: true}" class="modal hide">
+    <div class="modal-header">
+        <a data-bind="page-href: '../'" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+
+        <h3>Alert</h3>
+    </div>
+    <div class="modal-body">
+        <p>This modal is actually under <code>#!/modals/alert</code> but show up here because <code>modal: true</code>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <a data-bind="page-href: '../'" class="btn">This button get an auto-calculated href based on modals current
+            location</a>
+    </div>
+</div>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;a data-bind="page-href: 'first'" class="btn"&gt;Show first sub-page&lt;/a&gt;
+    &lt;a data-bind="page-href: 'second'" class="btn"&gt;Show second sub-page&lt;/a&gt;
+
+    &lt;div data-bind="page: {id: 'first'}" class="well"&gt;
+        First sub-page
+        &lt;a class="btn" data-bind="page-href: 'alert'"&gt;Show an alert!&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div data-bind="page: {id: 'second'}" class="well"&gt;
+        Second sub-page
+        &lt;a class="btn" data-bind="page-href: 'alert'"&gt;Show an alert!&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;div data-bind="page: {id: 'alert', modal: true}" class="modal hide"&gt;
+    &lt;div class="modal-header"&gt;
+        &lt;a data-bind="page-href: '../'" class="close" data-dismiss="modal" aria-hidden="true"&gt;&times;&lt;/a&gt;
+
+        &lt;h3&gt;Alert&lt;/h3&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-body"&gt;
+        &lt;p&gt;Lorem Ipsum&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-footer"&gt;
+        &lt;a data-bind="page-href: '../'" class="btn"&gt;This button get an auto-calculated href based on modals current location&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/custom_js_when_navigating">Read about how to run custom JS when
+        navigating</a>
+</div>

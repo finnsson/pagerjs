@@ -1,0 +1,40 @@
+<header class="jumbotron subhead">
+    <h1>Sending the Wildcard to Source</h1>
+
+    <p class="lead">
+        The page ID that matched the wildcard can be sent to the <code>source:</code> or
+        <code>sourceOnShow:</code>.
+        Just add <code>{1}</code> inside the <code>source:</code> or <code>sourceOnShow:</code>
+        and <code>{1}</code> will be replaced by the page ID.
+    </p>
+</header>
+
+<div class="well">
+    <div data-bind="page: {id: 'start'}">
+        <a href="#!/send_wildcard_to_source/character/fry">Go to Fry</a>
+    </div>
+
+    <div data-bind="page: {id: 'character'}">
+        <h3>Character</h3>
+
+        <div data-bind="page: {id: '?', sourceOnShow: 'character/{1}.html'}">
+        </div>
+    </div>
+</div>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;a href="#!/send_wildcard_to_source/character/fry"&gt;Go to Fry&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div data-bind="page: {id: 'character'}"&gt;
+    &lt;h3&gt;Character&lt;/h3&gt;
+
+    &lt;div data-bind="page: {id: '?', sourceOnShow: 'character/{1}.html'}"&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/deep_load_content_into_wildcard">Read about loading deep content</a>
+</div>

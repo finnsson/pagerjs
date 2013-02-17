@@ -1,0 +1,55 @@
+<header class="jumbotron subhead">
+    <h1>Loaders</h1>
+
+    <p class="lead">
+        It is possible to specify both locally and globally a loader to be used.
+
+        Use <code>loader: loader</code> for specifying a loader for a page
+        and <code>pager.loader = function(page, element) { ... }</code> for specifying
+        a default-loader for all pages.
+        The loader-method should return an object with 2 methods: <code>load</code>
+        and <code>unload</code>.
+    </p>
+</header>
+
+<a href="#!/loader/Sabrepulse">Load Sabrepulse</a>
+
+<div data-bind="page: {id: 'Sabrepulse', title: 'Sabrepulse', loader: spinnerLoader, sourceOnShow: delaySource('https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3')}">
+</div>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'Sabrepulse', title: 'Sabrepulse', loader: spinnerLoader, sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3'}"&gt;
+    &lt;iframe  width="300" height="380" frameborder="0" allowtransparency="true"&gt;&lt;/iframe&gt;
+&lt;/div&gt;        
+    </pre>
+
+<p>where</p>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+spinnerLoader: function(page, element) {
+    var loader = {};
+    var txt = $('&lt;img src="ajax-loader.gif"/&gt;');
+    loader.load = function () {
+        $(element).empty();
+        $(element).append(txt);
+    };
+    loader.unload = function () {
+        txt.remove();
+    };
+    return loader;
+}
+</pre>
+
+<p>
+    Here is an example where the load method never returns (so we can see the spinner).
+    <a href="#!/loader/eternal">Open eternal spinner</a>.
+</p>
+
+<div class="well">
+    <div data-bind="page: {id: 'eternal', loader: spinnerLoader, sourceOnShow: eternalSource}">
+    </div>
+</div>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/tabpanel">Read about developing a tab panel</a>
+</div>

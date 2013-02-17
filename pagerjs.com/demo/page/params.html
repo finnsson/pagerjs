@@ -1,0 +1,52 @@
+<header class="jumbotron subhead">
+    <h1>Binding URI Parameters</h1>
+
+    <p class="lead">
+        A page is able to access the information in the current route and change the view-model.
+        <br/>
+        Using <code>params: ['x','y']</code> it is possible to pick up pseudo parameters from the URL
+        and bind them as observable variables in the page. If the parameter already exists on the
+        viewModel it is bound to that observable instead.
+        <br/>
+        These parameters can even be nested!
+    </p>
+</header>
+
+<a href="#!/params/search?product=tv&price=200">Search for a $200 TV</a>
+
+<div data-bind="page: {id: 'search', params: ['product','price']}" class="well">
+    <span data-bind="text: product"></span> @ $ <span data-bind="text: price"></span>
+    <br/>
+
+    <a class="btn" data-bind="page-href: 'details'">See Details</a>
+    <a class="btn" data-bind="page-href: 'lorem'">See Lorem Ipsum</a>
+
+    <div data-bind="page: {id: 'details'}">
+        Details about the search
+    </div>
+    <div data-bind="page: {id: 'lorem'}">
+        Lorem Ipsum
+    </div>
+</div>
+
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'search', params: ['product','price']}" class="well"&gt;
+    &lt;span data-bind="text: product"&gt;&lt;/span&gt; @ $ &lt;span data-bind="text: price"&gt;&lt;/span&gt;
+    &lt;br/&gt;
+
+    &lt;a class="btn" data-bind="page-href: 'details'"&gt;See Details&lt;/a&gt;
+    &lt;a class="btn" data-bind="page-href: 'lorem'"&gt;See Lorem Ipsum&lt;/a&gt;
+
+    &lt;div data-bind="page: {id: 'details'}"&gt;
+        Details about the search
+    &lt;/div&gt;
+    &lt;div data-bind="page: {id: 'lorem'}"&gt;
+        Lorem Ipsum
+    &lt;/div&gt;
+&lt;/div>
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/binding_params_object">Read about default values for URL parameters</a>
+</div>

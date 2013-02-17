@@ -1,0 +1,51 @@
+<header class="jumbotron subhead">
+    <h1>Change Binding Context on Show</h1>
+
+    <p class="lead">
+        When constructing an application with multiple pages, you might want to delay data binding
+        the pages until they are first displayed.
+        Use <code>withOnShow:</code> to asynchronously data bind a page when it is first displayed.
+    </p>
+</header>
+
+<div data-bind="page: {id: 'start'}">
+    <p>
+        <a class="btn" data-bind="page-href: '../invention'">Show page and lazy load view model</a>
+    </p>
+</div>
+
+<div class="well" data-bind="page: {id: 'invention', withOnShow: requireVM('invention')}">
+    <h3 data-bind="text: name"></h3>
+
+    <p data-bind="text: description"></p>
+    <a data-bind="page-href: '../'">Hide this page</a>
+</div>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start'}"&gt;
+    &lt;p&gt;
+        &lt;a class="btn" data-bind="page-href: '../invention'"&gt;Show page and lazy load view model&lt;/a&gt;
+    &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="well" data-bind="page: {id: 'invention', withOnShow: requireVM('invention')}"&gt;
+    &lt;h3 data-bind="text: name"&gt;&lt;/h3&gt;
+    &lt;p data-bind="text: description"&gt;&lt;/p&gt;
+    &lt;a data-bind="page-href: '../'"&gt;Hide this page&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;script type="text/javascript&gt;
+var requireVM = function (module) {
+    return function (callback) {
+        require([module], function (mod) {
+            callback(mod.getVM());
+        });
+    };
+};
+&lt;/script&gt;
+    </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/matching_wildcards">And now about wildcards</a>
+</div>
+

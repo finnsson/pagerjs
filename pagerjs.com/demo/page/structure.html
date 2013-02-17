@@ -1,0 +1,31 @@
+<header class="jumbotron subhead">
+    <h1>Structure</h1>
+
+    <p class="lead">
+        A page is an element with a <code>page</code> custom binding. They can be placed anywhere in your site
+        and will work as pages that you can jump between. The ID of the page corresponds to the fragment
+        identifier in the URL (the thingy after #!/).
+        <br/>
+        All the main pages in this demo are placed inside a main container div.
+    </p>
+</header>
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;html&gt;
+&lt;body&gt;
+&lt;div class="container" style="padding-top: 30px;"&gt;
+
+    &lt;div data-bind="page: {id: 'start'}"&gt;
+        &lt;!-- the previous page --&gt;
+    &lt;/div&gt;
+    &lt;div data-bind="page: {<a data-bind="tooltip: {}" title="look at the document location. it will match this id">id: 'structure'</a>}"&gt;
+        &lt;!-- this page --&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+        </pre>
+
+<div class="form-actions">
+    <a class="btn btn-large btn-primary" href="#!/setup">Read about how to setup pagerjs</a>
+</div>
