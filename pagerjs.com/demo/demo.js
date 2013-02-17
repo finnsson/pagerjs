@@ -143,7 +143,7 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
             if (viewModel.loggedIn()) {
                 callback();
             } else {
-                window.location.href = "#!/guards/login";
+                window.location.href = "#!/navigation/guards/login";
             }
         },
         logout:function () {

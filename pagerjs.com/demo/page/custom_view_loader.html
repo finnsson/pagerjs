@@ -14,7 +14,7 @@
     </p>
 </header>
 
-<a href="#!/custom_view_loader/zoidberg">Load custom view using requireView-method</a>
+<a href="#!/view/custom_view_loader/zoidberg">Load custom view using requireView-method</a>
 
 <div data-bind="page: {id: 'zoidberg', sourceOnShow: requireView('zoidberg')}">
 
@@ -37,6 +37,4 @@ window.requireView = function(viewModule) {
 };
     </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/params">Read about binding URI parameters</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>

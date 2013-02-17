@@ -17,16 +17,15 @@
 
     <p>The page you requested does not exist.</p>
 
-    <p><a href="#!/matching_wildcards">Go back</a></p>
+    <p><a data-bind="page-href: '../'">Go back</a></p>
 </div>
 
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: '?'}"&gt;
     &lt;h3&gt;Error&lt;/h3&gt;
     &lt;p&gt;The page you requested does not exist.&lt;/p&gt;
+    &lt;p&gt;&lt;a data-bind="page-href: '../'"&gt;Go back&lt;/a&gt;&lt;/p&gt;
 &lt;/div&gt;
     </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/deep_navigation_with_wildcards">Continue reading about wildcards</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>

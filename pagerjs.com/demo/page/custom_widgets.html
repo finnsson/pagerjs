@@ -13,12 +13,12 @@
 
 <div data-bind="page: {id: 'start'}" class="well">
     <div data-bind="page-accordion-item: {id: 'zoidberg'}">
-        <a href="#!/custom_widgets/start/zoidberg">Zoidberg</a>
+        <a href="#!/widgets/custom_widgets/start/zoidberg">Zoidberg</a>
 
         <div>Zoidberg Information</div>
     </div>
     <div data-bind="page-accordion-item: {id: 'hermes'}">
-        <a href="#!/custom_widgets/start/hermes">Hermes</a>
+        <a href="#!/widgets/custom_widgets/start/hermes">Hermes</a>
 
         <div>Hermes Information</div>
     </div>
@@ -28,12 +28,12 @@ and is constructed with the markup
 
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page-accordion-item: {id: 'zoidberg'}"&gt;
-    &lt;a href="#!/custom_widgets/start/zoidberg"&gt;Zoidberg&lt;/a&gt;
+    &lt;a href="#!/widgets/custom_widgets/start/zoidberg"&gt;Zoidberg&lt;/a&gt;
 
     &lt;div&gt;Zoidberg Information&lt;/div&gt;
 &lt;/div&gt;
 &lt;div data-bind="page-accordion-item: {id: 'hermes'}"&gt;
-    &lt;a href="#!/custom_widgets/start/hermes"&gt;Hermes&lt;/a&gt;
+    &lt;a href="#!/widgets/custom_widgets/start/hermes"&gt;Hermes&lt;/a&gt;
 
     &lt;div&gt;Hermes Information&lt;/div&gt;
 &lt;/div&gt;
@@ -119,6 +119,4 @@ ko.bindingHandlers['page-accordion-item'] = {
 };
    </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/modals">Read about modals</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>

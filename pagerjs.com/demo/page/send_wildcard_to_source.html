@@ -11,7 +11,7 @@
 
 <div class="well">
     <div data-bind="page: {id: 'start'}">
-        <a href="#!/send_wildcard_to_source/character/fry">Go to Fry</a>
+        <a href="#!/view/send_wildcard_to_source/character/fry">Go to Fry</a>
     </div>
 
     <div data-bind="page: {id: 'character'}">
@@ -24,7 +24,7 @@
 
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
-    &lt;a href="#!/send_wildcard_to_source/character/fry"&gt;Go to Fry&lt;/a&gt;
+    &lt;a href="#!/view/send_wildcard_to_source/character/fry"&gt;Go to Fry&lt;/a&gt;
 &lt;/div&gt;
 
 &lt;div data-bind="page: {id: 'character'}"&gt;
@@ -35,6 +35,4 @@
 &lt;/div&gt;
     </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/deep_load_content_into_wildcard">Read about loading deep content</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>

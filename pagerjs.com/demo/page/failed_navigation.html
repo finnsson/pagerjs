@@ -12,7 +12,7 @@
     </p>
 </header>
 
-<a data-bind="click: function() { window.location.hash = '#!/failed_navigation/random/' + (Math.random()*1000).toFixed() }">
+<a data-bind="click: function() { window.location.hash = '#!/navigation/failed_navigation/random/' + (Math.random()*1000).toFixed() }">
     Go to random sub-page
 </a>
 
@@ -56,7 +56,4 @@ randomFailed:function (page, route) {
 newChildren:ko.observableArray([])
     </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/custom_view_loader">Read about loading a view using a custom
-        method</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>

@@ -8,7 +8,7 @@
 
 <div class="well">
     <div data-bind="page: {id: 'start'}">
-        <a class="btn" href="#!/deep_navigation_with_wildcards/wild/leela">Go to Leela</a>
+        <a class="btn" href="#!/navigation/deep_navigation_with_wildcards/wild/leela">Go to Leela</a>
     </div>
 
     <div data-bind="page: {id: '?'}">
@@ -23,7 +23,7 @@
 
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'start'}"&gt;
-    &lt;a class="btn" href="#!/deep_navigation_with_wildcards/wild/leela"&gt;Go to Leela&lt;/a&gt;
+    &lt;a class="btn" href="#!/navigation/deep_navigation_with_wildcards/wild/leela"&gt;Go to Leela&lt;/a&gt;
 &lt;/div&gt;
 
 &lt;div data-bind="page: {id: '?'}"&gt;
@@ -35,6 +35,4 @@
 &lt;/div&gt;
     </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/send_wildcard_to_source">Further features of wildcards</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>

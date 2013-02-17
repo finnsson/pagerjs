@@ -10,12 +10,12 @@
 
 <div class="well" data-bind="page: {id: 'start'}">
     This is the default sub page.
-    <a href="#!/deep_navigation/second">Show the second page</a>.
+    <a href="#!/navigation/deep_navigation/second">Show the second page</a>.
 </div>
 <div class="well" data-bind="page: {id: 'second'}">
     This is the second sub page.
 
-    <a href="#!/deep_navigation">Go back to the first sub page</a>.
+    <a href="#!/navigation/deep_navigation">Go back to the first sub page</a>.
 </div>
 
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
@@ -23,16 +23,13 @@
     ...
     &lt;div data-bind="page: {id: 'start'}"&gt;
         ...
-        &lt;a href="#!/deep_navigation/second"&gt;Show the second page&lt;/a&gt;.
+        &lt;a href="#!/navigation/deep_navigation/second"&gt;Show the second page&lt;/a&gt;.
     &lt;/div&gt;
     &lt;div data-bind="page: {id: 'second'}"&gt;
         ...
-        &lt;a href="#!/deep_navigation"&gt;Go back to the first sub page&lt;/a&gt;.
+        &lt;a href="#!/navigation/deep_navigation"&gt;Go back to the first sub page&lt;/a&gt;.
     &lt;/div&gt;
-    ...&lt;a href="#!/load_external_content"&gt;Go on&lt;/a&gt;...
 &lt;/div&gt;
         </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/load_external_content">Read about loading content</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>

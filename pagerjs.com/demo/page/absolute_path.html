@@ -6,20 +6,29 @@
         its path directly. Use supply the <code>page-href</code> binding the
         page instance and the binding will calculate the correct path to the page.
         <br/>
-        This is useful when iterating over a collection of pages (see the menu on the top).
+        This is useful when iterating over a collection of pages (see the menu to the left).
     </p>
 </header>
 
 
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
-&lt;ul data-bind="foreach: $__page__.children" class="dropdown-menu" role="menu"
-    aria-labelledby="dropdownMenu"&gt;
-    &lt;li data-bind="css: {<a data-bind="tooltip: {}" title="add the class active if the page is visible">active: isVisible</a>}"&gt;
-        &lt;a data-bind="text: val('title'), <a data-bind="tooltip: {}" title="$data is a Page-instance">page-href: $data</a>"&gt;&lt;/a&gt;
+&lt;ul data-bind="foreach: $__page__.children" class="nav nav-pills nav-stacked"&gt;
+    &lt;li data-bind="css: {active: isVisible}"&gt;
+        &lt;a class="lead" data-bind="page-href: $data"&gt;
+            &lt;span data-bind="text: val('title')"&gt;&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;ul data-bind="foreach: children" class="nav nav-tabs nav-stacked"&gt;
+            &lt;li data-bind="css: {active: isVisible}"&gt;
+                &lt;a data-bind="page-href: $data"&gt;
+                    &lt;span data-bind="text: val('title')"&gt;&lt;/span&gt;
+                    &lt;!-- ko if val('desc') --&gt;
+                    &lt;span class="muted" data-bind="text: val('desc')"&gt;&lt;/span&gt;
+                    &lt;!-- --&gt;
+                &lt;/a&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
     &lt;/li&gt;
 &lt;/ul&gt;
     </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/html5_history">What about HTML5 history?</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>

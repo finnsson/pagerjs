@@ -8,10 +8,10 @@
 </header>
 
 <ul>
-    <li><a href="#!/binding_params_object/question?answer=43">See with answer 43</a>
+    <li><a href="#!/model/binding_params_object/question?answer=43">See with answer 43</a>
     </li>
-    <li><a href="#!/binding_params_object/question?answer=99">See with answer 99</a></li>
-    <li><a href="#!/binding_params_object/question">See with default answer</a></li>
+    <li><a href="#!/model/binding_params_object/question?answer=99">See with answer 99</a></li>
+    <li><a href="#!/model/binding_params_object/question">See with default answer</a></li>
 </ul>
 
 
@@ -32,6 +32,4 @@
 &lt;/div&gt;
 </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/url_toggle_show">Read about pages that only toggle on</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>

@@ -10,24 +10,24 @@
 </header>
 
 <ul class="nav nav-tabs">
-    <li data-bind="css: {active: $page.child('psy')().isVisible}"><a href="#!/url_toggle_show/psy">Psy</a></li>
-    <li data-bind="css: {active: $page.child('lmfao')().isVisible}"><a href="#!/url_toggle_show/lmfao">LMFAO</a></li>
-    <li data-bind="css: {active: $page.child('miikesnow')().isVisible}"><a href="#!/url_toggle_show/miikesnow">Miike Snow</a></li>
+    <li data-bind="css: {active: $page.child('psy')().isVisible}"><a href="#!/view/url_toggle_show/psy">Psy</a></li>
+    <li data-bind="css: {active: $page.child('lmfao')().isVisible}"><a href="#!/view/url_toggle_show/lmfao">LMFAO</a></li>
+    <li data-bind="css: {active: $page.child('miikesnow')().isVisible}"><a href="#!/view/url_toggle_show/miikesnow">Miike Snow</a></li>
 </ul>
 
 
 <div data-bind="page: {id: 'psy', urlToggle: 'show'}" class="well">
-    <a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"><i class="icon-eject"></i></a>
+    <a style="float: right" href="#!/view/url_toggle_show" data-bind="click: closePage($page)"><i class="icon-eject"></i></a>
     <iframe width="560" height="315" src="http://www.youtube.com/embed/9bZkp7q19f0" frameborder="0" allowfullscreen></iframe>
 </div>
 
 <div data-bind="page: {id: 'lmfao', urlToggle: 'show'}" class="well">
-    <a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"><i class="icon-eject"></i></a>
+    <a style="float: right" href="#!/view/url_toggle_show" data-bind="click: closePage($page)"><i class="icon-eject"></i></a>
     <iframe width="560" height="315" src="http://www.youtube.com/embed/KQ6zr6kCPj8" frameborder="0" allowfullscreen></iframe>
 </div>
 
 <div data-bind="page: {id: 'miikesnow', urlToggle: 'show'}" class="well">
-    <a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"><i class="icon-eject"></i></a>
+    <a style="float: right" href="#!/view/url_toggle_show" data-bind="click: closePage($page)"><i class="icon-eject"></i></a>
     <iframe width="560" height="315" src="http://www.youtube.com/embed/mVWeqAPQUXc" frameborder="0" allowfullscreen></iframe>
 </div>
 
@@ -38,9 +38,9 @@
 
 <pre data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;ul class="nav nav-tabs"&gt;
-    &lt;li data-bind="css: {active: $page.child('psy')().isVisible}"&gt;&lt;a href="#!/url_toggle_show/psy"&gt;Psy&lt;/a&gt;&lt;/li&gt;
-    &lt;li data-bind="css: {active: $page.child('lmfao')().isVisible}"&gt;&lt;a href="#!/url_toggle_show/lmfao"&gt;LMFAO&lt;/a&gt;&lt;/li&gt;
-    &lt;li data-bind="css: {active: $page.child('miikesnow')().isVisible}"&gt;&lt;a href="#!/url_toggle_show/miikesnow"&gt;Miike Snow&lt;/a&gt;&lt;/li&gt;
+    &lt;li data-bind="css: {active: $page.child('psy')().isVisible}"&gt;&lt;a href="#!/view/url_toggle_show/psy"&gt;Psy&lt;/a&gt;&lt;/li&gt;
+    &lt;li data-bind="css: {active: $page.child('lmfao')().isVisible}"&gt;&lt;a href="#!/view/url_toggle_show/lmfao"&gt;LMFAO&lt;/a&gt;&lt;/li&gt;
+    &lt;li data-bind="css: {active: $page.child('miikesnow')().isVisible}"&gt;&lt;a href="#!/view/url_toggle_show/miikesnow"&gt;Miike Snow&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </pre>
 
@@ -50,22 +50,19 @@
 
 <pre data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'psy', urlToggle: 'show'}" class="well"&gt;
-    &lt;a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"&gt;&lt;i class="icon-eject"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;a style="float: right" href="#!/view/url_toggle_show" data-bind="click: closePage($page)"&gt;&lt;i class="icon-eject"&gt;&lt;/i&gt;&lt;/a&gt;
     &lt;iframe width="560" height="315" src="http://www.youtube.com/embed/9bZkp7q19f0" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 
 &lt;div data-bind="page: {id: 'lmfao', urlToggle: 'show'}" class="well"&gt;
-    &lt;a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"&gt;&lt;i class="icon-eject"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;a style="float: right" href="#!/view/url_toggle_show" data-bind="click: closePage($page)"&gt;&lt;i class="icon-eject"&gt;&lt;/i&gt;&lt;/a&gt;
     &lt;iframe width="560" height="315" src="http://www.youtube.com/embed/KQ6zr6kCPj8" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 
 &lt;div data-bind="page: {id: 'miikesnow', urlToggle: 'show'}" class="well"&gt;
-    &lt;a style="float: right" href="#!/url_toggle_show" data-bind="click: closePage($page)"&gt;&lt;i class="icon-eject"&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;a style="float: right" href="#!/view/url_toggle_show" data-bind="click: closePage($page)"&gt;&lt;i class="icon-eject"&gt;&lt;/i&gt;&lt;/a&gt;
     &lt;iframe width="560" height="315" src="http://www.youtube.com/embed/mVWeqAPQUXc" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/binding_wildcard_to_observable">Read about binding wildcard to
-        observable</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>

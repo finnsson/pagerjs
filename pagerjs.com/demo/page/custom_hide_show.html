@@ -10,7 +10,7 @@
     </p>
 </header>
 
-<a href="#!/custom_hide_show/fry">Show Fry</a>
+<a href="#!/view/custom_hide_show/fry">Show Fry</a>
 
 <div data-bind="page:{id: 'fry', showElement: showFry, hideElement: hideFry}">
     <h2>Fry</h2>
@@ -40,6 +40,4 @@ hideFry:function (page, callback) {
 };
     </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/loader">Read about custom loaders</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>

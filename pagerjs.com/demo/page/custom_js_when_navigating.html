@@ -24,11 +24,11 @@
         </li>
     </ol>
 
-    <a href="#!/custom_js_when_navigating/fry">Show Fry</a>
+    <a href="#!/navigation/custom_js_when_navigating/fry">Show Fry</a>
 
     <div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}">
         Fry
-        <a class="btn" href="#!/custom_js_when_navigating">Hide Fry</a>
+        <a class="btn" href="#!/navigation/custom_js_when_navigating">Hide Fry</a>
     </div>
 
     </p>
@@ -37,7 +37,7 @@
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 &lt;div data-bind="page: {id: 'fry', beforeHide: beforeFryIsHidden, afterShow: afterFryIsDisplayed}"&gt;
     Fry
-    &lt;a class="btn" href="#!/custom_js_when_navigating"&gt;Hide Fry&lt;/a&gt;
+    &lt;a class="btn" href="#!/navigation/custom_js_when_navigating"&gt;Hide Fry&lt;/a&gt;
 &lt;/div&gt;
     </pre>
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
@@ -49,6 +49,4 @@ beforeFryIsHidden:function () {
 }
     </pre>
 
-<div class="form-actions">
-    <a class="btn btn-large btn-primary" href="#!/custom_hide_show">Read about custom <code>hide</code>- and <code>show</code>-methods</a>
-</div>
+<div data-bind="template: {name: 'link-template'}"></div>
