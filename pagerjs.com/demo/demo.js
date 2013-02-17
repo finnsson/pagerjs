@@ -121,6 +121,7 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
             var loader = {};
             var txt = $('<img src="ajax-loader.gif"/>');
             loader.load = function () {
+                $(element).empty();
                 $(element).append(txt);
             };
             loader.unload = function () {

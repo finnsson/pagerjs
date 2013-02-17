@@ -1020,7 +1020,7 @@ hideFry:function (page, callback) {
     </div>
     
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
-&lt;div data-bind="page: {id: 'Sabrepulse', title: 'Sabrepulse', loader: textLoader, sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3'}"&gt;
+&lt;div data-bind="page: {id: 'Sabrepulse', title: 'Sabrepulse', loader: spinnerLoader, sourceOnShow: 'https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3'}"&gt;
     &lt;iframe  width="300" height="380" frameborder="0" allowtransparency="true"&gt;&lt;/iframe&gt;
 &lt;/div&gt;        
     </pre>
@@ -1028,20 +1028,19 @@ hideFry:function (page, callback) {
     <p>where</p>
 
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
-textLoader: function(page, element) {
+spinnerLoader: function(page, element) {
     var loader = {};
-    var txt = $("&lt;div&gt;&lt;/div>",
-        {text: 'Loading ' + page.getValue().title}
-    );
-    loader.load = function() {
+    var txt = $('&lt;img src="ajax-loader.gif"/&gt;');
+    loader.load = function () {
+        $(element).empty();
         $(element).append(txt);
     };
-    loader.unload = function() {
+    loader.unload = function () {
         txt.remove();
     };
     return loader;
 }
-    </pre>
+</pre>
 
     <p>
         Here is an example where the load method never returns (so we can see the spinner).
