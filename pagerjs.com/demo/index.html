@@ -1016,7 +1016,7 @@ hideFry:function (page, callback) {
 
     <a href="#!/loader/Sabrepulse">Load Sabrepulse</a>
 
-    <div data-bind="page: {id: 'Sabrepulse', title: 'Sabrepulse', loader: textLoader, sourceOnShow: delaySource('https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3')}">
+    <div data-bind="page: {id: 'Sabrepulse', title: 'Sabrepulse', loader: spinnerLoader, sourceOnShow: delaySource('https://embed.spotify.com/?uri=spotify:album:43tqiFDcU8JcMVSYj6NTi3')}">
     </div>
     
     <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
@@ -1042,6 +1042,16 @@ textLoader: function(page, element) {
     return loader;
 }
     </pre>
+
+    <p>
+        Here is an example where the load method never returns (so we can see the spinner).
+        <a href="#!/loader/eternal">Open eternal spinner</a>.
+    </p>
+
+    <div class="well">
+    <div data-bind="page: {id: 'eternal', loader: spinnerLoader, sourceOnShow: eternalSource}">
+    </div>
+    </div>
 
     <div class="form-actions">
         <a class="btn btn-large btn-primary" href="#!/tabpanel">Read about developing a tab panel</a>

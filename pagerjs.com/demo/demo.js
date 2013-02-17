@@ -117,6 +117,20 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
             };
             return loader;
         },
+        spinnerLoader: function(page, element) {
+            var loader = {};
+            var txt = $('<img src="ajax-loader.gif"/>');
+            loader.load = function () {
+                $(element).append(txt);
+            };
+            loader.unload = function () {
+                txt.remove();
+            };
+            return loader;
+        },
+        eternalSource: function() {
+            // do nothing :)
+        },
         randomFailed:function (page, route) {
             viewModel.newChildren.push({
                 childId:route[0]

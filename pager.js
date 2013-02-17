@@ -973,10 +973,11 @@
                         onLoad();
                     }, me);
                 } else { // should be a method
-                    $.each($(element).children(), function (i, c) {
-                        ko.utils.domNodeDisposal.removeNode(c);
-                    });
+                    var childrenToRemove = $(element).children();
                     _ko.value(source)(this, function () {
+                        $.each(childrenToRemove, function(i,c) {
+                            ko.utils.domNodeDisposal.removeNode(c);
+                        });
                         onLoad();
                     });
                 }
