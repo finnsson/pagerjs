@@ -219,8 +219,9 @@
                 $.each(children(), function (childIndex, child) {
                     if (!match) {
                         var id = child.getId();
+                        var role = child.getRole();
                         if (id === currentRoute ||
-                            ((currentRoute === '' || currentRoute == null) && id === 'start')) {
+                            ((currentRoute === '' || currentRoute == null) && (id === 'start' || role === 'start'))) {
                             match = true;
                             me.currentChild = child;
                         }
@@ -1164,6 +1165,20 @@
                 // ... and return it
                 return this._fullRoute;
             }
+        };
+
+        /**
+         * Return the role of the page (either `next` or `start`).
+         *
+         *     <div data-bind="page: {id: 'x', role: 'start'}"></div>
+         *
+         * Specifying role `start` gives the page the same behaviour as if the page
+         * had `{id: 'start'}`.
+         *
+         * @return {String}
+         */
+        p.getRole = function () {
+            return this.val('role') || 'next';
         };
 
         p.nullObject = new pager.Page();

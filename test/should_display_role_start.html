@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should display role start</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: 'x', role: 'start'}">
+    <div id="answer" data-bind="text: answer"></div>
+    <div id="question" data-bind="text: question"></div>
+
+
+    <div data-bind="page: {id: 'y', role: 'start'}">
+        <div id="y">Y</div>
+    </div>
+
+    <div data-bind="page: {id: 'z'}">
+        <div id="z">Z</div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    var viewModel = {
+        answer:42,
+        question:'?'
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.startHashChange();
+
+    VM = viewModel;
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should display role start", function () {
+
+        // make sure we're on the start page
+        window.location.hash = '#';
+
+        until(function () {
+            return $('#y').is(':visible');
+        }, function () {
+
+            assert.equal($('#z').is(':visible'), false, 'z should be hidden');
+            assert.equal($('#y').is(':visible'), true, 'y should be visible');
+
+            location.hash = '#x/z';
+
+            until(function () {
+                return $('#z').is(':visible');
+            }, function () {
+                assert.equal($('#z').is(':visible'), true, 'z should be visible');
+                assert.equal($('#y').is(':visible'), false, 'y should be hidden');
+                start();
+
+            });
+
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>
