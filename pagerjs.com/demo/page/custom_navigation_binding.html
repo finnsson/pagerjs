@@ -141,4 +141,9 @@ ko.bindingHandlers['page-step'] = {
     for their navigation.
 </p>
 
-<div data-bind="template: {name: 'end-link-template'}"></div>
+<div class="form-actions">
+    <div class="pull-right">
+        <a class="btn btn-large" data-bind="page-step: -1">Back to {0}</a>
+        <a class="btn btn-large btn-primary" href="#!/misc/crawling">Read about Crawling</a>
+    </div>
+</div>

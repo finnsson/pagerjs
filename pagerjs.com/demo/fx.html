@@ -82,7 +82,13 @@
 </div>
 
 
-<div data-bind="template: {name: 'end-link-template'}"></div>
+<div class="form-actions">
+    <div class="pull-right">
+        <a class="btn btn-large" data-bind="page-step: -1">Back to {0}</a>
+        <a class="btn btn-large btn-primary" href="#!/widgets/tabpanel">Read about Tab Panel</a>
+    </div>
+</div>
+
 
 <div data-bind="page: {id: 'popout', modal: true, fx: 'popout'}" style="background-color: rgba(200,200,200,0.5); position: absolute; left: 0; right: 0; top: 0; bottom: 0;">
 
