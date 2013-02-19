@@ -14,23 +14,37 @@
 
 <div id="qunit"></div>
 
-<a id="click" data-bind="page-href: {path: 'first', params: {nam: 'foobar', ans: 42}}">click me</a>
+<div id="a">
 
-<div data-bind="page: {id: 'first', params: ['nam','ans']}">
-    <div id="answer" data-bind="text: ans"></div>
-    <div id="name" data-bind="text: nam"></div>
+    <a id="click" data-bind="page-href: {path: 'first', params: {nam: 'foobar', ans: 42}}">click me</a>
+
+    <div data-bind="page: {id: 'first', params: ['nam','ans']}">
+        <div id="answer" data-bind="text: ans"></div>
+        <div id="name" data-bind="text: nam"></div>
+    </div>
 </div>
+<div id="b">
 
+</div>
 <script type="text/javascript">
 
 
-    var viewModel = {
-    };
+    try {
+        var viewModel = {
+        };
+        // dummy VM
+        var vm2 = {};
 
-    pager.extendWithPage(viewModel);
-    ko.applyBindings(viewModel);
+        pager.extendWithPage(viewModel);
+        // use the same root page
+        vm2.$__page__ = viewModel.$__page__;
+        ko.applyBindings(viewModel, $('#a')[0]);
+        ko.applyBindings(vm2, $('#b')[0]);
 
-    pager.startHashChange();
+        pager.startHashChange();
+    } catch (e) {
+        console.error(e);
+    }
 </script>
 
 <script type="text/javascript" src="../lib/qunit-until.js"></script>

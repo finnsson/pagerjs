@@ -62,21 +62,25 @@
 
         <div class="span3" style="padding-top: 20px;">
             <ul data-bind="foreach: $__page__.children" class="nav nav-pills nav-stacked">
+                <!-- ko if: ($data.getId() !== '?') -->
                 <li data-bind="css: {active: isVisible}">
                     <a class="lead" data-bind="page-href: $data">
                         <span data-bind="text: val('title')"></span>
                     </a>
                     <ul data-bind="foreach: children" class="nav nav-tabs nav-stacked">
+                        <!-- ko if: ($data.getId() !== '?') -->
                         <li data-bind="css: {active: isVisible}">
                             <a data-bind="page-href: $data">
                                 <span data-bind="text: val('title')"></span>
-                                <!-- ko if val('desc') -->
+                                <!-- ko: if: val('desc') -->
                                 <span class="muted" data-bind="text: val('desc')"></span>
                                 <!-- -->
                             </a>
                         </li>
+                        <!-- /ko -->
                     </ul>
                 </li>
+                <!-- /ko -->
             </ul>
         </div>
 
@@ -98,6 +102,7 @@
                 <div data-bind="page: {id: 'custom_js_when_navigating', title: 'Custom JS when Navigating', desc: 'reacting to navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/custom_js_when_navigating.html'}"></div>
                 <div data-bind="page: {id: 'failed_navigation', title: 'Failed Navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/failed_navigation.html'}"></div>
                 <div data-bind="page: {id: 'guards', title: 'Guards', desc: 'conditions when navigating to a page is ok', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/guards.html'}"></div>
+                <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
 
             <div data-bind="page: {id: 'model', title: 'Model', desc: 'Model'}">
@@ -108,6 +113,7 @@
                 <div data-bind="page: {id: 'binding_wildcard_to_observable', title: 'Binding Wildcard to observable', sourceOnShow: 'page/binding_wildcard_to_observable.html', scrollToTop: true, sourceCache:  true, desc: 'set a name on the ?'}"></div>
                 <div data-bind="page: {id: 'vars', title: 'Custom observables', sourceOnShow: 'page/vars.html', scrollToTop: true, sourceCache:  true, desc: 'pure local view-observables'}"></div>
                 <div data-bind="page: {id: 'binding_error', title: 'Binding Error', sourceOnShow: 'page/binding_error.html', scrollToTop: true, sourceCache:  true, desc: 'trigger event'}"></div>
+                <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
 
             <div data-bind="page: {id: 'view', title: 'View', desc: 'View'}">
@@ -125,18 +131,22 @@
                 <div data-bind="page: {id: 'url_toggle_show', title: 'Pages that only toggle on', sourceOnShow: 'page/url_toggle_show.html', scrollToTop: true, sourceCache:  true, desc: 'pages that does not automatically hide'}"></div>
                 <div data-bind="page: {id: 'source_error', title: 'Source Error', sourceOnShow: 'page/source_error.html', scrollToTop: true, sourceCache:  true, desc: 'trigger event'}"></div>
                 <div data-bind="page: {id: 'fx', title: 'FX', sourceOnShow: 'fx.html', scrollToTop: true, sourceCache:  true, desc: 'effects between page transitions'}"></div>
+                <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
 
             <div data-bind="page: {id: 'widgets', title: 'Widgets', desc: 'Widgets'}">
                 <div data-bind="page: {id: 'tabpanel', title: 'Tab Panel', desc: 'roll your own tab panel', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/tabpanel.html', role: 'start'}"></div>
                 <div data-bind="page: {id: 'custom_widgets', title: 'Custom Widgets', desc: 'subclassing the page-binding', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/custom_widgets.html'}"></div>
                 <div data-bind="page: {id: 'custom_navigation_binding', title: 'Custom Navigation Binding', sourceOnShow: 'page/custom_navigation_binding.html', scrollToTop: true, sourceCache:  true, desc: 'developing a page-step: binding'}"></div>
+                <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
 
             <div data-bind="page: {id: 'misc', title: 'Misc', desc: 'Misc'}">
                 <div data-bind="page: {id: 'crawling', title: 'Crawling', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/crawling.html', desc: 'making sure the site can be crawled', role: 'start'}"></div>
+                <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
 
+            <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
 
         </div>
     </div>

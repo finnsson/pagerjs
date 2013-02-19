@@ -1,0 +1,177 @@
+<h3><code class="code-large">start([id: String])</code></h3>
+
+<p class="p">
+    This method will start to listen to hashchange-events. Works only for newer browsers (not IE7).
+    <br/>
+    This method should be called after <code>ko.applyBindings(...)</code>.
+    <br/>
+    If an ID is supplied that ID will be set as initial <code>location.hash</code>.
+</p>
+
+<pre class="prettyprint">
+// your view model
+var viewModel = {
+};
+// extend viewModel with a $__page__ that points to pager.page that points to a new Page
+pager.extendWithPage(viewModel);
+// apply your bindings
+ko.applyBindings(viewModel);
+// run this method - listening to hashchange
+pager.start();
+    </pre>
+
+
+<h3><code class="code-large">startHashChange([id: String])</code></h3>
+
+<p class="p">
+    This method will start to listen to hashchange-events using the jQuery hashchange plugin.
+    You'll need to load the hashchange plugin before calling this method.
+    <br/>
+    This method should be called after <code>ko.applyBindings(...)</code>.
+    <br/>
+    If an ID is supplied that ID will be set as initial <code>location.hash</code>.
+</p>
+
+<pre class="prettyprint">
+// your view model
+var viewModel = {
+};
+// extend viewModel with a $__page__ that points to pager.page that points to a new Page
+pager.extendWithPage(viewModel);
+// apply your bindings
+ko.applyBindings(viewModel);
+// run this method - listening to hashchange
+pager.startHashChange();
+    </pre>
+
+
+<h3><code class="code-large">startHistoryJs([id: String])</code></h3>
+
+<p class="p">
+    This method will start to listen to statechange and anchorchange-events using History.js.
+    You'll need to load History.js before calling this method.
+    <br/>
+    This method should be called after <code>ko.applyBindings(...)</code>.
+    <br/>
+    If an ID is supplied that ID will be set as initial <code>History.pushState</code>.
+</p>
+
+<pre class="prettyprint">
+// your view model
+var viewModel = {
+};
+// extend viewModel with a $__page__ that points to pager.page that points to a new Page
+pager.extendWithPage(viewModel);
+// apply your bindings
+ko.applyBindings(viewModel);
+// run this method - listening to hashchange
+pager.startHistoryJs();
+    </pre>
+
+
+
+<h3><code class="code-large">extendWithPage(viewModel : Object)</code></h3>
+
+<p class="p">
+    Create a new Page-object and set it on pager (<code>pager.page</code>) as well as the
+    viewModel (<code>viewModel.$__page__</code>). This page-object works as the root page.
+    <br/>
+    You must call this method (or do the identical thing yourself) before calling
+    <code>ko.applyBindings(...)</code>
+</p>
+
+<h3><code class="code-large">navigationFailed : Observable({page,route})</code></h3>
+
+<p class="p">
+    A global observable that is triggered every time a navigation fails.
+    The observable has 2 members: route and page.
+</p>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+ko.computed(function() {
+    var page = pager.navigationFailed().page;
+    var route = pager.navigationFailed().route;
+    if (page && page.getId() == null) {
+        viewModel.newChildren.push({childId: route[0]});
+        page.showPage(route);
+    }
+});
+    </pre>
+
+<h3><code class="code-large">onBindingError : $.Callbacks</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/model/binding_error">Binding Error</a>
+</div>
+
+<h3><code class="code-large">onSourceError : $.Callbacks</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/source_error">Source Error</a>
+</div>
+
+
+<h3><code class="code-large">showChild(route : String[])</code></h3>
+
+<p class="p">
+    Will trigger <code>pager.page.childManager.showChild</code>, i.e. route
+    to the correct pages. You should call this method if you are using your own
+    event listener for user navigation (e.g. History.js)
+    or in some other way need to call the routing.
+</p>
+
+<h3><code class="code-large">page : pager.Page</code></h3>
+
+<p class="p">
+    The root page. Got no ID. Using this reference (or <code>$__page__</code> in the view model)
+    it is possible to e.g. get a hold of all the pages on the site using <code>pager.page.children()</code>
+</p>
+
+<h3><code class="code-large">useHTML5history: Boolean</code></h3>
+
+<p class="p">
+    Default to <code>false</code>. If set to <code>true</code> the custom binding <code>page-href</code>
+    will use the custom binding <code>page-href5</code>, thus giving true URLs instead of
+    hash bangs. If History.js is used (by setting <code>pager.Href5.history = History</code> after loading
+    History.js) a fallback solution with hash bangs will be used for older browsers.
+</p>
+
+<h3><code class="code-large">getParentPage(BindingContext) : Observable(Page)</code> </h3>
+
+<p class="p">
+    Supplying the method with a bindingContext will return the first Page-instance in the
+    context hierarchy. If no self-defined Page-instance can be found the root Page-instance will be returned.
+</p>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+ko.bindingHandlers['lorem-ipsum'] = {
+    init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        // get the Page-instance that this element resides in
+        var page = pager.getParentPage(bindingContext);
+        // bind the text of the element to the page title
+        ko.applyBindingsToNode(element, {
+            text: page.val('title')
+        });
+    }
+};
+</pre>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/widgets/custom_navigation_binding">Custom Navigation Binding</a>
+</div>
+
+
+<h3><code class="code-large">Href.hash: String</code></h3>
+
+<p class="p">
+    Defaults to <code>#</code>. Can be set to <code>#!/</code> if google style hash bangs are preferred.
+</p>
+
+<h3><code class="code-large">Href5.history: Object</code></h3>
+
+<p class="p">
+    Defaults to <code>window.history</code>. Can be set to <code>History</code> if
+    History.js is loaded. This object will be used by <code>page-href</code> and <code>page-href5</code>
+    when <code>useHTML5history === true</code>.
+</p>
+
+</div>

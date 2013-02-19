@@ -1,0 +1,103 @@
+<h3><code class="code-large">element : Node</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/widgets/custom_widgets">Custom Widgets</a>
+    <a class="btn btn-primary" href="#!/view/custom_hide_show">Custom Show- and Hide-Methods</a>
+    <a class="btn btn-primary" href="#!/view/loader">Loaders</a>
+</div>
+
+<h3><code class="code-large">viewModel : Observable/Object</code></h3>
+
+<p>
+    The view-model of the page.
+</p>
+
+<h3><code class="code-large">children : ObservableArray(Page[])</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/widgets/tabpanel">Tab Panel</a>
+</div>
+
+<h3><code class="code-large">child(String) : Observable(Page)</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/url_toggle_show">Pages that only toggle on</a>
+</div>
+
+
+<h3><code class="code-large">parentPage : Page</code></h3>
+
+<p>
+    The parent page, or null if the page is the root page (<i>pages.page</i>).
+</p>
+
+<h3><code class="code-large">currentParentPage : Observable(Page)</code></h3>
+
+<p>
+    The current parent page. Normally it is the same as <code>parentPage</code>
+    but for modal pages it change change.
+</p>
+
+<h3><code class="code-large">currentChildPage : Observable(Page)</code></h3>
+
+<p>
+    The currently visible child-page of the page. Observe that the current child page
+    does not need to be in the collection <code>children</code> since the current child page
+    can be a modal page!
+</p>
+
+<h3><code class="code-large">currentId : Observable(String)</code></h3>
+
+<p>
+    Get the current ID of the page. You should normally call this method instead of <code>getId</code>
+    since the current ID can change for wildcard-pages (<i>?</i>).
+</p>
+
+<h3><code class="code-large">isVisible : Observable(Boolean)</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/widgets/tabpanel">Tab Panel</a>
+</div>
+
+<h3><code class="code-large">val(String) : Object</code></h3>
+
+<p>
+    Get an un-boxed configuration property from <code>valueAccessor</code> by the key specified.
+    If you want to get hold of e.g. the configuration property <code>beforeHide</code> you should
+    call <code>somePage.val('beforeHide')</code> instead of <code>somePage.valueAccessor.beforeHide</code>
+    since both <code>valueAccessor</code> and <code>beforeHide</code> can be observables!
+    <br/>
+    All the possible keys for the configuration object can be accessed using <code>val</code>
+    (e.g. title, params, with, withOnShow).
+</p>
+
+
+<h3><code class="code-large">getId() : String</code></h3>
+
+<p>
+    The ID of the page. You should normally call <code>currentId</code> instead since the
+    ID can change for wildcard pages.
+</p>
+
+<h3><code class="code-large">init() : {controlsDescendantBindings:true}</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/widgets/custom_widgets">Custom Widgets</a>
+</div>
+
+<h3><code class="code-large">getFullRoute() : [String]</code></h3>
+
+<p>
+    Returns the full route of the page.
+</p>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/widgets/custom_navigation_binding">Custom Navigation Binding</a>
+</div>
+
+<h3><code class="code-large">nullObject : pager.Page</code></h3>
+
+<p>
+    Is a null-object of <code>pager.Page</code>. It is useful in computed observables
+    as a temporary Page-instance before the correct Page-instance is loaded or parsed.
+</p>

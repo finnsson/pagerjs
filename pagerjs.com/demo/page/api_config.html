@@ -1,0 +1,324 @@
+<header class="jumbotron subhead">
+    <p class="lead">
+        This is the config properties you can specify inside <code>data-bind="page: {...}"</code>.
+    </p>
+</header>
+
+<h3><code class="code-large" id="recapitulation/page/id">id : String</code></h3>
+
+<p>
+    The ID of the page. It can be either a normal name or <i>?</i>. <i>?</i> means that it matches
+    against any route. The <i>?</i>-ID is useful for automatically matching against a large set of
+    structured values.
+</p>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'search'}"&gt;
+    &lt;!-- Search for product here. Will only match #search --&gt;
+&lt;/div&gt;
+&lt;div data-bind="page: {id: 'product'}"&gt;
+    &lt;!-- List all products here. Will only match #product --&gt;
+    &lt;div data-bind="page: {id: '?', withOnShow: loadProduct}"&gt;
+        &lt;!-- This is a page for any product since the ID is ?. Will match any #product/.* --&gt;
+        &lt;span data-bind="text: productName"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/setup">Setup</a>
+    <a class="btn btn-primary" href="#!/navigation/deep_navigation">Deep Navigation</a>
+    <a class="btn btn-primary" href="#!/navigation/matching_wildcards">Matching Wildcards</a>
+    <a class="btn btn-primary" href="#!/navigation/deep_navigation_with_wildcards">Deep Navigation with Wildcards</a>
+</div>
+
+<h3><code class="code-large">params : String[]</code></h3>
+
+<p>
+    A list of URL parameters (of URL-like parameters in the fragment ID)
+    that should be bound to the view-model of the page. If you specify <code>params: ['age']</code>
+    and the parameters for the current page got an age-parameter the value of that parameter
+    will appear inside the view-model.
+</p>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'search', params: ['name', 'price']}"&gt;
+    &lt;label&gt;Name &lt;input type="text" data-bind="value: name"&gt;&lt;/span&gt;&lt;/label&gt;
+    &lt;label&gt;Price &lt;input type="text" data-bind="value: price"&gt;&lt;/span&gt;&lt;/label&gt;
+&lt;/div&gt;
+</pre>
+
+<p>
+    and the user surfs to <code>/search?name=TV&price=200</code> the user will see
+</p>
+
+<form>
+    <label>Name <input type="text" value="TV"></span></label>
+    <label>Price <input type="text" value="200"></span></label>
+</form>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/model/params">Binding URI parameters</a>
+    <a class="btn btn-primary" href="#!/model/binding_params_object">Parameters as objects</a>
+</div>
+
+<h3><code class="code-large"><a href="https://github.com/GilesBradshaw" data-bind="tooltip: {}"
+                                title="Thanks to Giles Bradshaw">nameParam</a>: String/Observable</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/model/binding_wildcard_to_observable">Binding Wildcard to observable</a>
+</div>
+
+<h3><code class="code-large">vars: Object</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/model/vars">Custom observables in the view</a>
+</div>
+
+
+<h3><code class="code-large">with : Object</code></h3>
+
+<p>
+    Works as the normal <code>with</code>-binding.
+</p>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'fry', with: fry}"&gt;
+    The age of Fry is &lt;span data-bind="text: age"&gt;&lt;/span&gt;
+&lt;/div&gt;
+</pre>
+<p>where</p>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+var viewModel = {
+    fry: ko.observable({age: ko.observable(27)})
+}
+</pre>
+
+<div class="alert">
+    This member should also be possible to supply a method as <code>withOnShow</code>, i.e. should be possible
+    to be either an object or a method.
+</div>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/model/change_binding_context">Change Binding Context</a>
+</div>
+
+
+<h3><code class="code-large">withOnShow : Function(Function(Object), <a class="tt" title="Thanks to Shildrak"
+                                                                        href="https://github.com/Shildrak">Page</a>)</code>
+</h3>
+
+<p>
+    This member makes it possible to lazy-bind a view-model once the page is first displayed. <code>withOnShow</code>
+    takes a method that should take 2 arguments: a callback (that should be feeded the view-model)
+    and the current Page-object.
+</p>
+<p>
+    This property is very useful when you want to split up your view-model for your single page application
+    into multiple smaller view-models that can still communicate with each other. You might feed a page
+    a view-model for a certain item.
+</p>
+<p>
+    If you set <code>sourceCache: true</code> the view-model will not reload every time you revisit the page.
+</p>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: '?', withOnShow: Cool.loadUser}"&gt;
+    &lt;h1 data-bind="text: userName"&gt;&lt;/h1&gt;
+&lt;/div&gt;
+</pre>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+Cool.loadUser = function(callback, page) {
+    $.get('service/users/' + page.currentId, function(data) {
+        callback(ko.mapping.fromJSON(data));
+    });
+};
+</pre>
+
+<div class="alert">
+    This member should also be possible to supply an object as <code>with</code>, i.e. should be possible
+    to be either an object or a method.
+</div>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/model/lazy_bind_view_model">Lazy-Bind View-Model</a>
+</div>
+
+
+<h3><code class="code-large">source : String / Function(Page, Function())</code></h3>
+
+<p>
+    Load content into the page from an external source.
+</p>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/load_external_content">Load External Content</a>
+    <a class="btn btn-primary" href="#!/view/custom_view_loader">Load View using Custom Method</a>
+</div>
+
+<h3><code class="code-large">sourceOnShow : Function(Page, Function())</code></h3>
+<p>
+    While <code>source</code> loads the content into the page directly the configuration <code>sourceOnShow</code>
+    loads the content into the page when the page is first requested.
+    This configuration can be further controlled using <code>sourceCache</code>.
+</p>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/lazy_load_external_content">Lazy-Load External Content</a>
+    <a class="btn btn-primary" href="#!/view/custom_view_loader">Load View using Custom Method</a>
+</div>
+
+<h3><code class="code-large">sourceLoaded : Function(Page)</code></h3>
+<p>
+    Register a callback whenever an external source (<code>source</code> or <code>sourceOnShow</code>)
+    is loaded into the page. Useful for e.g. post-processing.
+</p>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/load_external_content">Load External Content</a>
+</div>
+
+
+<h3><code class="code-large">sourceCache : Boolean / Number</code></h3>
+<p>
+    sourceCache will control both the caching of the lazy-loaded source and the lazy-loaded view-model.
+</p>
+<p>
+    If not set (or false) the lazy-loaded model (<code>withOnShow</code>) and view (<code>withOnShow</code>) will be
+    requested
+    every time the page is displayed.
+</p>
+<p>
+    If set to true both the lazy-loaded model and view are cached.
+</p>
+<p>
+    If set to a number the lazy-loaded view is cached that amount of time in seconds.
+</p>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/cached_lazy">Cached Lazy-Loaded Content</a>
+</div>
+
+<h3><code class="code-large">frame : String</code></h3>
+<p>
+    By specifying <code>frame: 'iframe'</code> the external source is loaded into an iframe instead.
+</p>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/load_into_iframe">Load Content into iframe</a>
+    <a class="btn btn-primary" href="#!/view/configure_iframe">Configure an iframe</a>
+</div>
+
+<h3><code class="code-large">modal : Boolean</code></h3>
+
+<p>
+    If a page is configured as <code>modal: true</code> it can appear in child-pages of sibling-pages
+    to the modal page.
+</p>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/modals">Modals</a>
+</div>
+
+
+<h3><code class="code-large">beforeHide : Function(Page)</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
+</div>
+
+
+<h3><code class="code-large">beforeShow : Function(Page)</code></h3>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
+</div>
+
+<h3><code class="code-large">afterHide : Function(Page)</code></h3>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
+</div>
+
+<h3><code class="code-large">afterShow : Function(Page)</code></h3>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
+</div>
+
+<h3><code class="code-large">hideElement : Function(Page,Function())</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/custom_hide_show">Custom Hide- and Show-Methods</a>
+</div>
+
+
+<h3><code class="code-large">showElement : Function(Page)</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/custom_hide_show">Custom Hide- and Show-Methods</a>
+</div>
+
+<h3><code class="code-large">fx : String</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/fx">FX</a>
+</div>
+
+
+<h3><code class="code-large">loader : Function(Page,Node)</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/loader">Loader</a>
+</div>
+
+
+<h3><code class="code-large">navigationFailed : Observable({page:Page,route:String[])</code></h3>
+
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/failed_navigation">Reacting to Failed Navigation</a>
+</div>
+
+<h3><code class="code-large">onBindingError : Function({page:Page,url:String,xhrPromise:$.Promise})</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/model/binding_error">Binding Error</a>
+</div>
+
+<h3><code class="code-large">onSourceError : Function({page:Page,url:String,xhrPromise:$.Promise})</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/source_error">Source Error</a>
+</div>
+
+
+<h3><code class="code-large">guard : Function(Page,String[],Function(),Page)</code></h3>
+<p>
+    The first argument is the page being navigated to,
+    the second argument is the route,
+    the third argument is a callback
+    and the fourth argument is the page being navigated from.
+</p>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/guards">Guards</a>
+</div>
+
+
+<h3><code class="code-large">urlToggle :String</code></h3>
+<p>
+    Control when the page will be displayed or hidden. There are three possible values: <code>null</code> (default),
+    <code>show</code> or <code>none</code>.
+
+    <code>null</code> is the normal behaviour.
+
+    <code>show</code> makes the page show when the route is matching, but wont automatically hide.
+
+    <code>none</code> means that the page does not react to the route. You'll need to control the visibility of the page
+    in some other way. Pages with <code>urlToggle: 'none'</code> will be visible by default.
+</p>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/url_toggle_show">Pages that only toggle on</a>
+</div>
+
+<h3><code class="code-large">title : String</code></h3>
+<p>
+    Controls the page title if set.
+</p>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/start">Show start page by default</a>
+</div>

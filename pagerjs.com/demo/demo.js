@@ -99,12 +99,18 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
             $(page.element).fadeIn(1000, callback);
         },
         hideFry:function (page, callback) {
-            $(page.element).fadeOut(1000, function () {
-                $(page.element).hide();
+            var $e = $(page.element);
+            if (!page.pageHiddenOnce) {
+                page.pageHiddenOnce = true;
+                $e.hide();
+            } else {
+                $e.fadeOut(1000, function () {
+                    $e.hide();
+                });
                 if (callback) {
                     callback();
                 }
-            });
+            }
         },
         textLoader:function (page, element) {
             var loader = {};

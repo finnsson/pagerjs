@@ -7,11 +7,6 @@ body > .container > .row > .span9 > div {
     font-weight: normal;
     background-color: transparent;
     border: none;
-    cursor: pointer;
-}
-
-.code-large:hover {
-    text-decoration: underline;
 }
 
 .p {
