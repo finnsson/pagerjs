@@ -1,0 +1,41 @@
+<header class="jumbotron subhead">
+    <h1>Parameters in Path</h1>
+
+    <p class="lead">
+        You can supply the <code>page-href</code> binding with not only a path
+        but also parameters. This is done using the syntax <code>page-href: {path:,params:}</code>
+        where path can be a <code>String</code> or <code>Page</code> as normal and
+        params can be an object.
+    </p>
+</header>
+
+<a class="btn" data-bind="page-href: {path: 'user', params: {first: 'Philip', last: 'Fry'}}">Send parameter to page</a>
+
+<div data-bind="page: {id: 'user', params: ['first','last']}" class="well-small">
+    <div>
+        <span>First name:</span>
+        <span data-bind="text: first"></span>
+    </div>
+    <div>
+        <span>Last name:</span>
+        <span data-bind="text: last"></span>
+    </div>
+</div>
+
+
+<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;a class="btn" data-bind="page-href: {path: 'user', params: {first: 'Philip', last: 'Fry'}}"&gt;Send parameter to page&lt;/a&gt;
+
+&lt;div data-bind="page: {id: 'user', params: ['first','last']}" class="well-small"&gt;
+    &lt;div&gt;
+        &lt;span&gt;First name:&lt;/span&gt;
+        &lt;span data-bind="text: first"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;span&gt;Last name:&lt;/span&gt;
+        &lt;span data-bind="text: last"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+<div data-bind="template: {name: 'link-template'}"></div>
