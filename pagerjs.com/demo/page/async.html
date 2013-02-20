@@ -2,11 +2,103 @@
     <h1>Async Click</h1>
 
     <p class="lead">
-        The web is
+        The web is asynchronous. Being able to handle this in a SPA is important.
+        Using <code>$page.async(Function,String/Page,[String/Page],[Observable])</code> makes it trivial
+        in your SPA.
     </p>
+
+    <p class="lead">
+        The function <code>$page.async</code> got some interesting conditions.
+    </p>
+    <ul>
+        <li>
+            The first argument should be a function that returns a <code>$.Deferred</code>, <b>NOT</b>
+            a <code>$.Promise</code>. The reason is that the global navigation handler must be able to
+            <code>#reject</code> the deferred. Other listeners to the deferred should be able to handle
+            that it is fed with the data <code>{cancel: true}</code>.
+        </li>
+        <li>
+            The second argument should be a path (String), a page or an observable path or page.
+            This argument will be used to resolve the navigation path if the deferred is resolved.
+        </li>
+        <li>
+            The third argument is optional and can be <code>null</code> or <code>undefined</code>.
+            If it is defined it should have the same properties and the second argument (i.e. being
+            a path or page). It will decide which navigation to use if the deferred is rejected.
+        </li>
+        <li>
+            The fourth and final argument is also optional.
+            It should be an observable. The observables value will be updated to the state of
+            the deferred object returned by the first argument.
+            When the async function is called it will be set to <code>pending</code>.
+            If the deferred is resolved it will be set to <code>resolved</code>.
+            If the deferred is rejected it will be set to <code>rejected</code>.
+            See <a href="http://api.jquery.com/deferred.state/">deferred.state()</a> in the
+            jQuery documentation.
+        </li>
+    </ul>
 </header>
 
+<p>
+    In this example we got two buttons (one will be resolve and one will be rejected).
+    For brevity only one buttons model and markup is presented.
+</p>
 
-<pre  data-bind="prettyprint: {}" class="prettyprint linenums">
-    </pre>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+viewModel = {
+    // wait 2 secs before returning ok
+    wait2: function() {
+      var d = $.Deferred();
+      setTimeout(function() {
+        d.resolve();
+      }, 2000);
+      return d;
+    },
+    okIsLoading:ko.observable()
+};
+</pre>
 
+<p>and the markup</p>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;a class="btn" data-bind="click: $page.async(wait2,'ok','notok',okIsLoading)"&gt;
+    Show OK page after 2 secs
+    &lt;!-- ko if: (okIsLoading() == 'pending') --&gt;
+    &lt;img src="small-ajax-loader.gif"/&gt;
+    &lt;!-- /ko --&gt;
+&lt;/a&gt;
+</pre>
+
+<p>
+    Click on both buttons.
+</p>
+
+<a class="btn" data-bind="click: $page.async(wait2,'ok','notok',okIsLoading)">Show OK page after 2 secs
+    <!-- ko if: (okIsLoading() == 'pending') -->
+    <img src="small-ajax-loader.gif"/>
+    <!-- /ko -->
+</a>
+<br/>
+<br/>
+<a class="btn" data-bind="click: $page.async(wait2Fail,'ok','notok',notOkIsLoading)">Show NOT OK page after 2 secs
+    <!-- ko if: (notOkIsLoading() == 'pending') -->
+    <img src="small-ajax-loader.gif"/>
+    <!-- /ko -->
+</a>
+<br/>
+
+<div data-bind="page: {id: 'ok'}" class="well">
+    <h3>OK Page</h3>
+
+    <p>
+        The hash is now changed to <code>#!/navigation/async/ok</code>.
+    </p>
+</div>
+
+<div data-bind="page: {id: 'notok'}" class="well">
+    <h3>Not OK Page</h3>
+
+    <p>
+        The hash is now changed to <code>#!/navigation/async/notok</code>.
+    </p>
+</div>

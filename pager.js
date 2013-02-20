@@ -95,6 +95,12 @@
             return null;
         };
 
+        // set this to a random value in order to verify that the navigation should happen
+        // Is cleaned after every goTo.
+        var goToKey = null;
+
+        var currentAsyncDeferred = null;
+
         /**
          *
          * Takes a complete, working, path as parameter. *Not* a route, relative route or Page-object.
@@ -102,6 +108,11 @@
          * @param {String} path
          */
         var goTo = function (path) {
+            // reject any async navigation in progress
+            if(currentAsyncDeferred) {
+                currentAsyncDeferred.reject({cancel: true});
+            }
+            goToKey = null;
             // strip # (or #!/)
             if (path.substring(0, pager.Href.hash.length) === pager.Href.hash) {
                 path = path.slice(pager.Href.hash.length);
@@ -524,20 +535,43 @@
 
         /**
          *
-         * @param {Function} fn should return a $.Promise.
+         * @param {Function} fn should return a $.Deferred (NOT a promise since async should be able to reject it).
          * @param {String/Object} ok route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
          * @param {String/Object} notOk route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
          * @return {Function}
          */
-        p.async = function (fn, ok, notOk) {
+        p.async = function (fn, ok, notOk, state) {
             var me = this;
             return function () {
+                if(currentAsyncDeferred) {
+                    currentAsyncDeferred.reject({cancel: true});
+                }
                 var result = fn();
+                currentAsyncDeferred = result;
+                if(state) {
+                    state(result.state());
+                }
+                var key = Math.random();
+                goToKey = key;
+
                 result.done(function () {
-                    pager.navigate(me.path(ok));
+                    if(state) {
+                        state(result.state());
+                    }
+                    if (key === goToKey) {
+                        pager.navigate(me.path(ok));
+                    }
                 });
-                result.fail(function () {
-                    pager.navigate(me.path(notOk));
+                result.fail(function (data) {
+                    if(state) {
+                        state(result.state());
+                    }
+                    var cancel = data && data.cancel;
+                    if (key === goToKey) {
+                        if (!cancel && notOk) {
+                            pager.navigate(me.path(notOk));
+                        }
+                    }
                 });
             };
         };
@@ -690,18 +724,18 @@
             ko.utils.domNodeDisposal.addDisposeCallback(m.element, function () {
                 // then remove this Page-instance
                 var beforeRemove = m.val('beforeRemove');
-                if(beforeRemove) {
+                if (beforeRemove) {
                     beforeRemove({
-                        page: m
+                        page:m
                     });
                 }
                 if (m.parentPage) {
                     m.parentPage.children.remove(m);
                 }
                 var afterRemove = m.val('afterRemove');
-                if(afterRemove) {
+                if (afterRemove) {
                     afterRemove({
-                        page: m
+                        page:m
                     });
                 }
             });
@@ -776,7 +810,7 @@
             }
             // Bind the page to the config property `bind` if it exists
             var bind = m.getValue()['bind'];
-            if(ko.isObservable(bind)) {
+            if (ko.isObservable(bind)) {
                 bind(m);
             }
 
@@ -975,7 +1009,7 @@
                 } else { // should be a method
                     var childrenToRemove = $(element).children();
                     _ko.value(source)(this, function () {
-                        $.each(childrenToRemove, function(i,c) {
+                        $.each(childrenToRemove, function (i, c) {
                             ko.utils.domNodeDisposal.removeNode(c);
                         });
                         onLoad();
@@ -1083,7 +1117,7 @@
                 me.val('beforeShow')(this);
             }
             me.showElement(callback);
-            if(me.val('scrollToTop')) {
+            if (me.val('scrollToTop')) {
                 me.element.scrollIntoView();
             }
             if (me.val('afterShow')) {
@@ -1222,16 +1256,16 @@
         ko.bindingHandlers.page = {
             init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                 var page = null;
-                if(_ko.value(valueAccessor()) instanceof pager.Page) {
+                if (_ko.value(valueAccessor()) instanceof pager.Page) {
                     page = _ko.value(valueAccessor());
                     page.element = element;
-                    if(page.allBindingsAccessor == null) {
+                    if (page.allBindingsAccessor == null) {
                         page.allBindingsAccessor = allBindingsAccessor;
                     }
-                    if(page.viewModel == null) {
+                    if (page.viewModel == null) {
                         page.viewModel = viewModel;
                     }
-                    if(page.bindingContext == null) {
+                    if (page.bindingContext == null) {
                         page.bindingContext = bindingContext;
                     }
                 } else {
