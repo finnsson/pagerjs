@@ -1454,15 +1454,14 @@
 
             // Bind to StateChange Event
             History.Adapter.bind(window, 'statechange', function () {
-                var baseUrl = $('base').attr('href');
-                var relativeUrl = History.getState().url.replace(baseUrl, '');
+                var relativeUrl = History.getState().url.replace(History.getBaseUrl(), '');
                 goTo(relativeUrl);
             });
             History.Adapter.bind(window, 'anchorchange', function () {
                 goTo(location.hash);
             });
 
-            goTo(History.getState().url.replace(History.getRootUrl(), ''));
+            goTo(History.getState().url.replace(History.getBaseUrl(), ''));
         };
 
         pager.startHashChange = function (id) {
