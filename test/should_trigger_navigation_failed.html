@@ -75,7 +75,7 @@
     pager.extendWithPage(viewModel);
     ko.applyBindings(viewModel);
 
-    pager.startHashChange();
+    pager.start();
 
     pager.onNoMatch.add(function(op) {
         var page = op.page;

@@ -48,7 +48,7 @@
         pager.extendWithPage(viewModel);
         ko.applyBindings(viewModel);
 
-        pager.startHashChange();
+        pager.start();
 
         asyncTest("Should trigger hide in sub pages", function () {
 
