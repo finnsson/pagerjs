@@ -159,7 +159,9 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
         eternalSource: function() {
             // do nothing :)
         },
-        randomFailed:function (page, route) {
+        randomFailed:function (options) {
+            var page = options.page;
+            var route = options.route;
             viewModel.newChildren.push({
                 childId:route[0]
             });

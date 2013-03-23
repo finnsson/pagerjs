@@ -4,7 +4,7 @@
     <p class="lead">
         When pager or a page does not find a matching sub-page for a route
         a callback is called.
-        Either set <code>pager.navigationFailed</code> or supply <code>navigationFailed</code>
+        Either set <code>pager.onNoMatch</code> or supply <code>onNoMatch</code>
         to the page configuration with a function that takes 2 arguments: first the page and second the missing
         route.
         <br/>
@@ -16,7 +16,7 @@
     Go to random sub-page
 </a>
 
-<div data-bind="page: {id: 'random', navigationFailed: randomFailed}">
+<div data-bind="page: {id: 'random', onNoMatch: randomFailed}">
     <ul class="nav nav-tabs" data-bind="foreach: $page.children">
         <li data-bind="css: {active: isVisible}"><a
                 data-bind="text: getId(), page-href: getId()"></a></li>
@@ -30,7 +30,7 @@
 </div>
 
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
-&lt;div data-bind="page: {id: 'random', navigationFailed: randomFailed}"&gt;
+&lt;div data-bind="page: {id: 'random', onNoMatch: randomFailed}"&gt;
     &lt;ul class="nav nav-tabs" data-bind="foreach: $page.children"&gt;
         &lt;li data-bind="css: {active: isVisible}"&gt;&lt;a
                 data-bind="text: getId(), page-href: getId()"&gt;&lt;/a&gt;&lt;/li&gt;
@@ -47,7 +47,9 @@
 where
 
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
-randomFailed:function (page, route) {
+randomFailed:function (options) {
+    var page = options.page;
+    var route = options.route;
     viewModel.newChildren.push({
         childId:route[0]
     });
