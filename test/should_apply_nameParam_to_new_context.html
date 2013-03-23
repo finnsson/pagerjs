@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should access URI parameters</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div data-bind="page: {id: '?', nameParam: 'theID', withOnShow: someWith()}">
+    <h1>Page is visible</h1>
+    <div id="name" data-bind="text: name"></div>
+    <div id="the_ID" data-bind="text: theID"></div>
+</div>
+
+<script type="text/javascript">
+
+
+    var viewModel = {
+        theID: ko.observable(),
+        someWith: function() {
+            return function(callback) {
+                callback({
+                    name: 'Pelle',
+                    age: 31
+                });
+            };
+        }
+    };
+
+    viewModel.theID.subscribe(function(val) {
+        console.error(val);
+    });
+
+    VM = viewModel;
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.startHashChange();
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should access URI parameters", function () {
+
+        window.location.hash = '#first';
+        until(function () {
+            return $('#name').text() === 'Pelle' && $('#the_ID').text() === 'first'
+        }, function () {
+            assert.equal($('#name').text(), 'Pelle', 'name should be pelle');
+            assert.equal($('#the_ID').text(), 'first', 'theID should be first');
+            start();
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>
