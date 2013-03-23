@@ -1,7 +1,5 @@
 (function (window) {
 
-    var History = window.History;
-
     var pagerJsModule = function ($, ko) {
 
         "use strict";
@@ -1331,7 +1329,7 @@
 
         pager.Href5.prototype = new pager.Href();
 
-        pager.Href5.history = window.history;
+        pager.Href5.history = window.History;
 
         pager.Href5.prototype.bind = function () {
             var self = this;
@@ -1453,16 +1451,15 @@
             }
 
             // Bind to StateChange Event
-            History.Adapter.bind(window, 'statechange', function () {
-                var baseUrl = $('base').attr('href');
-                var relativeUrl = History.getState().url.replace(baseUrl, '');
+            pager.Href5.history.Adapter.bind(window, 'statechange', function () {
+                var relativeUrl = pager.Href5.history.getState().url.replace(pager.Href5.history.getBaseUrl(), '');
                 goTo(relativeUrl);
             });
-            History.Adapter.bind(window, 'anchorchange', function () {
+            pager.Href5.history.Adapter.bind(window, 'anchorchange', function () {
                 goTo(location.hash);
             });
 
-            goTo(History.getState().url.replace(History.getRootUrl(), ''));
+            goTo(pager.Href5.history.getState().url.replace(pager.Href5.history.getBaseUrl(), ''));
         };
 
         pager.startHashChange = function (id) {
