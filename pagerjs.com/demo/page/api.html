@@ -13,6 +13,16 @@
         <code>page: {}</code>-configuration,
         and <code>pager.Page</code>-class.
     </p>
+
+    <div class="alert">
+        <h3>There are a number of breaking changes in 1.0rc1</h3>
+        <ul>
+            <li><code>navigationFailed</code> is now called <code>onNoMatch</code> and is a <code>$.Callbacks()</code>.</li>
+            <li><code>startHashChange</code> is removed. <code>start</code> should be used instead.</li>
+            <li>All events/callbacks get a data-object <code>{page:}</code>.</li>
+            <li>Removed <code>page-href5</code> and <code>page-hash</code>. Only use <code>page-href</code>.</li>
+        </ul>
+    </div>
 </header>
 
 <ul class="nav nav-tabs" data-bind="foreach: $page.children">

@@ -1,7 +1,8 @@
 <h3><code class="code-large">start([id: String])</code></h3>
 
 <p class="p">
-    This method will start to listen to hashchange-events. Works only for newer browsers (not IE7).
+    This method will start to listen to hashchange-events. Works only for newer browsers (not IE7/IE8).
+    Include <code>jQuery Hashchange</code> plugin to get support for IE7/IE8.
     <br/>
     This method should be called after <code>ko.applyBindings(...)</code>.
     <br/>
@@ -18,30 +19,6 @@ pager.extendWithPage(viewModel);
 ko.applyBindings(viewModel);
 // run this method - listening to hashchange
 pager.start();
-    </pre>
-
-
-<h3><code class="code-large">startHashChange([id: String])</code></h3>
-
-<p class="p">
-    This method will start to listen to hashchange-events using the jQuery hashchange plugin.
-    You'll need to load the hashchange plugin before calling this method.
-    <br/>
-    This method should be called after <code>ko.applyBindings(...)</code>.
-    <br/>
-    If an ID is supplied that ID will be set as initial <code>location.hash</code>.
-</p>
-
-<pre class="prettyprint">
-// your view model
-var viewModel = {
-};
-// extend viewModel with a $__page__ that points to pager.page that points to a new Page
-pager.extendWithPage(viewModel);
-// apply your bindings
-ko.applyBindings(viewModel);
-// run this method - listening to hashchange
-pager.startHashChange();
     </pre>
 
 
@@ -80,23 +57,7 @@ pager.startHistoryJs();
     <code>ko.applyBindings(...)</code>
 </p>
 
-<h3><code class="code-large">navigationFailed : Observable({page,route})</code></h3>
-
-<p class="p">
-    A global observable that is triggered every time a navigation fails.
-    The observable has 2 members: route and page.
-</p>
-
-<pre data-bind="prettyprint: {}" class="prettyprint linenums">
-ko.computed(function() {
-    var page = pager.navigationFailed().page;
-    var route = pager.navigationFailed().route;
-    if (page && page.getId() == null) {
-        viewModel.newChildren.push({childId: route[0]});
-        page.showPage(route);
-    }
-});
-    </pre>
+<h3><code class="code-large">onNoMatch : $.Callbacks({page:pager.Page,route:String[]})</code></h3>
 
 <h3><code class="code-large">onBindingError : $.Callbacks</code></h3>
 
@@ -131,7 +92,7 @@ ko.computed(function() {
 
 <p class="p">
     Default to <code>false</code>. If set to <code>true</code> the custom binding <code>page-href</code>
-    will use the custom binding <code>page-href5</code>, thus giving true URLs instead of
+    will use true URLs instead of
     hash bangs. If History.js is used (by setting <code>pager.Href5.history = History</code> after loading
     History.js) a fallback solution with hash bangs will be used for older browsers.
 </p>
@@ -170,7 +131,7 @@ ko.bindingHandlers['lorem-ipsum'] = {
 
 <p class="p">
     Defaults to <code>window.history</code>. Can be set to <code>History</code> if
-    History.js is loaded. This object will be used by <code>page-href</code> and <code>page-href5</code>
+    History.js is loaded. This object will be used by <code>page-href</code>
     when <code>useHTML5history === true</code>.
 </p>
 

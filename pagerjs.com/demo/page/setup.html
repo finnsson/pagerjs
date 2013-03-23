@@ -7,7 +7,7 @@
         <a href="https://raw.github.com/finnsson/pagerjs/master/pager.js">pager.js</a>
         or <a href="https://raw.github.com/finnsson/pagerjs/master/dist/pager.min.js">pager.min.js</a>.
         Choose between a naïve history manager (<code>pager.start([id: String])</code>),
-        a history manager based on jQuery hashchange (<code>pager.startHashChange([id: String])</code>),
+        a history manager based on jQuery hashchange (<code>pager.start([id: String])</code>),
         a history manager based on History.js (<code>pager.startHistoryJs([id: String])</code>)
         or write your own.
     </p>
@@ -26,6 +26,8 @@ pager.start();
 
 <h2>jQuery Hashchange as history manager</h2>
 
+        Is the same as the naïve, but you need to include the jQuery hashchange plugin first.
+
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
 // use #!/ instead of the default #
 pager.Href.hash = '#!/';
@@ -34,13 +36,17 @@ pager.extendWithPage(viewModel);
 // apply the view-model using KnockoutJS as normal
 ko.applyBindings(viewModel);
 // start pager.js
-pager.startHashChange();
+pager.start();
     </pre>
 
 
 <h2>History.js as history manager</h2>
 
 <pre  data-bind="prettyprint: {}" class="prettyprint linenums">
+// Set in the head element
+&lt;base href="http://some/url/"/&gt;
+
+
 // use HTML5 history
 pager.useHTML5history = true;
 // use History instead of history

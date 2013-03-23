@@ -1412,23 +1412,6 @@
         };
 
         /**
-         *
-         * @param {String/Object} options
-         */
-        pager.startHashChange = function (options) {
-            var id = typeof options === 'string' ? options : null;
-            if (id) {
-                window.location.hash = pager.Href.hash + id;
-            }
-            $(window).hashchange(function () {
-                goTo(window.location.hash);
-            });
-            if(!options || !options.noGo) {
-                $(window).hashchange();
-            }
-        };
-
-        /**
          * This is the hash-based start-method.
          *
          * You should only use this method if you do not want HTML5 history support and
