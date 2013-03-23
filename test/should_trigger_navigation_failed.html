@@ -34,7 +34,7 @@
 <br/>
 <a href="#zoidberg">Zoidberg</a>
 
-<div data-bind="page: {id: 'first', navigationFailed: failedInFirst}">
+<div data-bind="page: {id: 'first', onNoMatch: failedInFirst}">
     First
 </div>
 
@@ -59,7 +59,9 @@
     var notFoundB = ko.observable(false);
 
     var viewModel = {
-        failedInFirst:function (page, route) {
+        failedInFirst:function (op) {
+            var page = op.page;
+            var route = op.route;
             $(page.element).text('Could not find ' + route[0]);
             if (route[0] === 'A') {
                 notFoundA(true);
@@ -74,14 +76,16 @@
     ko.applyBindings(viewModel);
 
     pager.startHashChange();
-    ko.computed(function() {
-        var page = pager.navigationFailed().page;
-        var route = pager.navigationFailed().route;
+
+    pager.onNoMatch.add(function(op) {
+        var page = op.page;
+        var route = op.route;
         if (page && page.getId() == null) {
             viewModel.newChildren.push({childId: route[0]});
             page.showPage(route);
         }
     });
+
 </script>
 
 <script type="text/javascript" src="../lib/qunit-until.js"></script>

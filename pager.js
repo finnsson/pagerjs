@@ -49,25 +49,24 @@
             pager.page = page;
         };
 
-        /**
-         * Called when a route does not find a match.
-         *
-         * @var navigationFailed
-         * @type {Observable}
-         * @static
-         */
-        pager.navigationFailed = ko.observable();
+        var fire = function(scope, name, options) {
+            options = options || {};
+            options.page = scope;
+            // first fire the global method
+            pager[name].fire(options);
+            // then call the local callback
+            if(scope.val(name)) {
+                scope.val(name)(options);
+            }
+        };
 
-        /**
-         * Called when a binding could not be applied.
-         *
-         * @var onBindingError
-         * @type {$.Callbacks}
-         * @static
-         */
-        pager.onBindingError = $.Callbacks();
-
-        pager.onSourceError = $.Callbacks();
+        // Add 9 callbacks on pager
+        $.each(['onBindingError', 'onSourceError','onNoMatch',
+            'beforeRemove', 'afterRemove',
+            'beforeHide', 'afterHide',
+            'beforeShow','afterShow'], function(i,n) {
+            pager[n] = $.Callbacks();
+        });
 
         /**
          *
@@ -120,6 +119,7 @@
             // trigger navigation
             pager.showChild(hashRoute);
         };
+        pager.goTo = goTo;
 
         /**
          *
@@ -287,12 +287,7 @@
                 }
 
                 var onFailed = function () {
-                    if (pager.navigationFailed) {
-                        pager.navigationFailed({page:me.page, route:route});
-                    }
-                    if (me.page.getValue().navigationFailed) {
-                        _ko.value(me.page.getValue().navigationFailed)(me.page, route);
-                    }
+                    fire(me.page, 'onNoMatch', {route:route});
                 };
 
                 var showCurrentChild = function () {
@@ -347,7 +342,7 @@
          * @param {Function} valueAccessor.hideElement
          * @param {Function} valueAccessor.showElement
          * @param {Function} valueAccessor.loader
-         * @param {Function} valueAccessor.navigationFailed
+         * @param {Function} valueAccessor.onNoMatch
          * @param {Function} valueAccessor.guard
          * @param {Object} valueAccessor.params
          * @param {Object} valueAccessor.vars
@@ -686,14 +681,7 @@
             try {
                 ko.applyBindingsToDescendants(page.childBindingContext, page.element);
             } catch (e) {
-                var onBindingError = page.val('onBindingError');
-                if (onBindingError) {
-                    onBindingError(page.e);
-                }
-                pager.onBindingError.fire({
-                    page:page,
-                    error:e
-                });
+                fire(page, 'onBindingError', {error:e});
             }
         };
 
@@ -721,21 +709,11 @@
             // listen to when the element is removed
             ko.utils.domNodeDisposal.addDisposeCallback(m.element, function () {
                 // then remove this Page-instance
-                var beforeRemove = m.val('beforeRemove');
-                if (beforeRemove) {
-                    beforeRemove({
-                        page:m
-                    });
-                }
+                fire(m, 'beforeRemove');
                 if (m.parentPage) {
                     m.parentPage.children.remove(m);
                 }
-                var afterRemove = m.val('afterRemove');
-                if (afterRemove) {
-                    afterRemove({
-                        page:m
-                    });
-                }
+                fire(m, 'afterRemove');
             });
 
             var value = m.getValue();
@@ -1069,10 +1047,7 @@
                 });
 
             loadPromise.fail(function () {
-                if (page.val('onSourceError')) {
-                    page.val('onSourceError')({url:url, page:page, xhrPromise:loadPromise});
-                }
-                pager.onSourceError.fire({url:url, page:page, xhrPromise:loadPromise});
+                fire(page, 'onSourceError', {url:url, xhrPromise:loadPromise});
             });
             return self;
         };
@@ -1111,16 +1086,12 @@
          */
         p.showElementWrapper = function (callback) {
             var me = this;
-            if (me.val('beforeShow')) {
-                me.val('beforeShow')(this);
-            }
+            fire(me, 'beforeShow');
             me.showElement(callback);
             if (me.val('scrollToTop')) {
                 me.element.scrollIntoView();
             }
-            if (me.val('afterShow')) {
-                me.val('afterShow')(this);
-            }
+            fire(me, 'afterShow');
         };
 
         /**
@@ -1146,13 +1117,9 @@
          */
         p.hideElementWrapper = function (callback) {
             this.isVisible(false);
-            if (this.val('beforeHide')) {
-                this.val('beforeHide')(this);
-            }
+            fire(this, 'beforeHide');
             this.hideElement(callback);
-            if (this.val('afterHide')) {
-                this.val('afterHide')(this);
-            }
+            fire(this, 'afterHide');
         };
 
         /**
@@ -1347,30 +1314,6 @@
             });
         };
 
-        ko.bindingHandlers['page-hash'] = {
-            init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                var href = new pager.Href(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-                href.init();
-                href.bind();
-                element.__ko__page = href;
-            },
-            update:function (element, valueAccessor) {
-                element.__ko__page.update(valueAccessor);
-            }
-        };
-
-        ko.bindingHandlers['page-href5'] = {
-            init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                var href = new pager.Href5(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-                href.init();
-                href.bind();
-                element.__ko__page = href;
-            },
-            update:function (element, valueAccessor) {
-                element.__ko__page.update(valueAccessor);
-            }
-        };
-
         ko.bindingHandlers['page-href'] = {
             init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                 var Cls = pager.useHTML5history ? pager.Href5 : pager.Href;
@@ -1445,7 +1388,12 @@
         pager.fx.slide = pager.fx.jQuerySync($.fn.slideDown, $.fn.slideUp);
         pager.fx.fade = pager.fx.jQuerySync($.fn.fadeIn, $.fn.fadeOut);
 
-        pager.startHistoryJs = function (id) {
+        /**
+         *
+         * @param {String/Object} options
+         */
+        pager.startHistoryJs = function (options) {
+            var id = typeof options === 'string' ? options : null;
             if (id) {
                 pager.Href5.history.pushState(null, null, id);
             }
@@ -1458,18 +1406,26 @@
             pager.Href5.history.Adapter.bind(window, 'anchorchange', function () {
                 goTo(location.hash);
             });
-
-            goTo(pager.Href5.history.getState().url.replace(pager.Href5.history.getBaseUrl(), ''));
+            if(!options || !options.noGo) {
+                goTo(History.getState().url.replace(History.getBaseUrl(), ''));
+            }
         };
 
-        pager.startHashChange = function (id) {
+        /**
+         *
+         * @param {String/Object} options
+         */
+        pager.startHashChange = function (options) {
+            var id = typeof options === 'string' ? options : null;
             if (id) {
                 window.location.hash = pager.Href.hash + id;
             }
             $(window).hashchange(function () {
                 goTo(window.location.hash);
             });
-            $(window).hashchange();
+            if(!options || !options.noGo) {
+                $(window).hashchange();
+            }
         };
 
         /**
@@ -1479,9 +1435,11 @@
          * do not want IE6/7 support.
          *
          * @method start
+         * @param {String/Object} options
          * @static
          */
-        pager.start = function (id) {
+        pager.start = function (options) {
+            var id = typeof options === 'string' ? options : null;
             if (id) {
                 window.location.hash = pager.Href.hash + id;
             }
@@ -1490,7 +1448,9 @@
             };
             $(window).bind('hashchange', onHashChange);
 
-            onHashChange();
+            if(!options || !options.noGo) {
+                onHashChange();
+            }
         };
         return pager;
     };
