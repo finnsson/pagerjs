@@ -314,7 +314,7 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
         pager.extendWithPage(viewModel);
         window.VM = viewModel;
         ko.applyBindings(viewModel);
-        pager.startHashChange();
+        pager.start();
 
         $('.dropdown-toggle').dropdown();
     });

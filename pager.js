@@ -1407,7 +1407,7 @@
                 goTo(location.hash);
             });
             if(!options || !options.noGo) {
-                goTo(History.getState().url.replace(History.getBaseUrl(), ''));
+                goTo(pager.Href5.history.getState().url.replace(pager.Href5.history.getBaseUrl(), ''));
             }
         };
 
