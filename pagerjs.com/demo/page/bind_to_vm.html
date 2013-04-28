@@ -1,0 +1,49 @@
+<header class="jumbotron subhead">
+    <h1>Binding to View Model</h1>
+
+    <p class="lead">
+        You can connect the page-instance to the view model using <code>bind: someVar</code>.
+    </p>
+</header>
+
+<p>
+    In this example the page is bound to the variable <code>bindToVM</code>.
+    Another div is printing the HTML code of the page.
+</p>
+
+<div data-bind="page: {id: 'start', bind: bindToVM}" class="well">
+    <h3>Start page</h3>
+
+    <p>This page is bound to the variable <code>bindToVM</code>.</p>
+</div>
+
+<div class="well-small">
+    <div data-bind="text: getText(bindToVM)"></div>
+</div>
+
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'start', bind: bindToVM}"&gt;
+    &lt;h3&gt;Start page&lt;/h3&gt;
+
+    &lt;p&gt;This page is bound to the variable &lt;code&gt;bindToVM&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+    &lt;div data-bind="text: getText(bindToVM)"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+</pre>
+
+where
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+{
+    bindToVM: ko.observable(),
+    getText: function(p) {
+        return $(p().element).html();
+    }
+}
+</pre>
+
+<div data-bind="template: {name: 'link-template'}"></div>
