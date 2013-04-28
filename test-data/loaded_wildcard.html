@@ -1,0 +1,24 @@
+<div>
+    <div id="first" data-bind="page: {id: 'x'}">
+        <div id="first_child">First page</div>
+    </div>
+
+    <div data-bind="page: {id: '?'}">
+        <div>1</div>
+        <div data-bind="page: {id: '?'}">
+            <div>2</div>
+            <div data-bind="page: {id: '?'}">
+                <div>3</div>
+                <div data-bind="page: {id: '?'}">
+                    <div>4</div>
+                    <div data-bind="page: {id: '?'}">
+                        <div>5</div>
+                        <div data-bind="page: {id: '?', afterShow: $root.afterShow6}">
+                            <div id="second_child">6</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

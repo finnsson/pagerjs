@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should show wildcard on refresh</title>
+    <script type="text/javascript" src="../lib/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div id="start" data-bind="page: {id: 'start', sourceOnShow: '../test-data/loaded_wildcard.html'}">
+
+</div>
+
+<script type="text/javascript">
+
+    window.location.hash = 'start/1/2/3/4/5/6';
+
+    var sixIsVisible = false;
+    var viewModel = {
+        afterShow6: function() {
+            sixIsVisible =true;
+        }
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.start();
+
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should show wildcard on refresh", function () {
+        until(function () {
+            return $('#second_child').is(':visible');
+        }, function () {
+            ok(true, "Second child is visible");
+            assert.equal(sixIsVisible, true, 'afterShow is triggered');
+            start();
+        });
+    });
+</script>
+
+
+</body>
+</html>

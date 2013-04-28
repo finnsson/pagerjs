@@ -49,22 +49,22 @@
             pager.page = page;
         };
 
-        var fire = function(scope, name, options) {
+        var fire = function (scope, name, options) {
             options = options || {};
             options.page = scope;
             // first fire the global method
             pager[name].fire(options);
             // then call the local callback
-            if(scope.val(name)) {
+            if (scope.val(name)) {
                 scope.val(name)(options);
             }
         };
 
         // Add 9 callbacks on pager
-        $.each(['onBindingError', 'onSourceError','onNoMatch',
+        $.each(['onBindingError', 'onSourceError', 'onNoMatch',
             'beforeRemove', 'afterRemove',
             'beforeHide', 'afterHide',
-            'beforeShow','afterShow'], function(i,n) {
+            'beforeShow', 'afterShow'], function (i, n) {
             pager[n] = $.Callbacks();
         });
 
@@ -106,7 +106,7 @@
          */
         var goTo = function (path) {
             // reject any async navigation in progress
-            if(currentAsyncDeferred) {
+            if (currentAsyncDeferred) {
                 currentAsyncDeferred.reject({cancel: true});
             }
             goToKey = null;
@@ -165,7 +165,7 @@
 
         var splitRoutePartIntoNameAndParameters = function (routePart) {
             if (!routePart) {
-                return {name:null, params:{}};
+                return {name: null, params: {}};
             }
             var routeSplit = routePart.split('?');
             var name = routeSplit[0];
@@ -175,8 +175,8 @@
                 params = parseStringAsParameters(paramsString);
             }
             return {
-                name:name,
-                params:params
+                name: name,
+                params: params
             };
         };
 
@@ -287,7 +287,7 @@
                 }
 
                 var onFailed = function () {
-                    fire(me.page, 'onNoMatch', {route:route});
+                    fire(me.page, 'onNoMatch', {route: route});
                 };
 
                 var showCurrentChild = function () {
@@ -440,6 +440,13 @@
             return _ko.value(this.getValue()[key]);
         };
 
+        /**
+         * @method pager.Page#currentChildPage
+         *
+         * Returns an observable to the child page.
+         *
+         * @returns {Observable}
+         */
         p.currentChildPage = function () {
             return this.childManager.currentChildO;
         };
@@ -536,19 +543,19 @@
         p.async = function (fn, ok, notOk, state) {
             var me = this;
             return function () {
-                if(currentAsyncDeferred) {
+                if (currentAsyncDeferred) {
                     currentAsyncDeferred.reject({cancel: true});
                 }
                 var result = fn();
                 currentAsyncDeferred = result;
-                if(state) {
+                if (state) {
                     state(result.state());
                 }
                 var key = Math.random();
                 goToKey = key;
 
                 result.done(function () {
-                    if(state) {
+                    if (state) {
                         state(result.state());
                     }
                     if (key === goToKey) {
@@ -556,7 +563,7 @@
                     }
                 });
                 result.fail(function (data) {
-                    if(state) {
+                    if (state) {
                         state(result.state());
                     }
                     var cancel = data && data.cancel;
@@ -681,7 +688,7 @@
             try {
                 ko.applyBindingsToDescendants(page.childBindingContext, page.element);
             } catch (e) {
-                fire(page, 'onBindingError', {error:e});
+                fire(page, 'onBindingError', {error: e});
             }
         };
 
@@ -701,7 +708,7 @@
 
             var existingPage = ko.utils.domData.get(m.element, '__ko_pagerjsBindingData');
             if (existingPage) {
-                return { controlsDescendantBindings:true};
+                return { controlsDescendantBindings: true};
             } else {
                 ko.utils.domData.set(m.element, '__ko_pagerjsBindingData', m);
             }
@@ -733,7 +740,7 @@
             if (value.withOnShow) {
                 m.ctx = {};
                 m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
-                ko.utils.extend(m.childBindingContext, { $page:this });
+                ko.utils.extend(m.childBindingContext, { $page: this });
             } else {
                 var context = value['with'] || m.bindingContext['$observableData'] || m.viewModel;
                 m.ctx = _ko.value(context);
@@ -743,8 +750,8 @@
                     var dataInContext = ko.observable(m.ctx);
                     m.childBindingContext = m.bindingContext.createChildContext(dataInContext);
                     ko.utils.extend(m.childBindingContext, {
-                        $page:this,
-                        $observableData:context
+                        $page: this,
+                        $observableData: context
                     });
                     applyBindingsToDescendants(m);
                     context.subscribe(function () {
@@ -753,8 +760,8 @@
                 } else {
                     m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
                     ko.utils.extend(m.childBindingContext, {
-                        $page:this,
-                        $observableData:undefined
+                        $page: this,
+                        $observableData: undefined
                     });
                     applyBindingsToDescendants(m);
                 }
@@ -762,10 +769,11 @@
 
             if (urlToggle !== 'none') {
                 // check if this page should trigger showChild at parent
-                if (m.parentPage.route && m.parentPage.route[0] === m.getId()) {
+                var parent = m.parentPage;
+                if (parent.route && (parent.route[0] === m.getId() || (parent.route.length && m.getId() === '?') )) {
                     // call once the current event loop is finished.
                     setTimeout(function () {
-                        m.parentPage.showPage(m.parentPage.route);
+                        parent.showPage(parent.route);
                     }, 0);
                 }
             } else { // urlToggle === 'none'
@@ -790,7 +798,7 @@
                 bind(m);
             }
 
-            return { controlsDescendantBindings:true };
+            return { controlsDescendantBindings: true };
         };
 
         p.augmentContext = function () {
@@ -908,7 +916,7 @@
                     // replace the childBindingContext
                     me.childBindingContext = childBindingContext;
                     me.augmentContext();
-                    ko.utils.extend(childBindingContext, {$page:me});
+                    ko.utils.extend(childBindingContext, {$page: me});
                     applyBindingsToDescendants(me);
                 }, me);
             }
@@ -944,8 +952,8 @@
                 });
                 // TODO: remove src binding and add this binding
                 ko.applyBindingsToNode(iframe[0], {
-                    attr:{
-                        src:this.sourceUrl(source)
+                    attr: {
+                        src: this.sourceUrl(source)
                     }
                 });
             } else {
@@ -1010,10 +1018,10 @@
 
             // Request the remote document
             var loadPromise = jQuery.ajax({
-                url:url,
-                type:'GET',
-                dataType:"html",
-                complete:function (jqXHR, status) {
+                url: url,
+                type: 'GET',
+                dataType: "html",
+                complete: function (jqXHR, status) {
                     if (callback) {
                         self.each(callback, response || [ jqXHR.responseText, status, jqXHR ]);
                     }
@@ -1047,7 +1055,7 @@
                 });
 
             loadPromise.fail(function () {
-                fire(page, 'onSourceError', {url:url, xhrPromise:loadPromise});
+                fire(page, 'onSourceError', {url: url, xhrPromise: loadPromise});
             });
             return self;
         };
@@ -1066,8 +1074,7 @@
             }
             // Fetch source
             if (me.val('sourceOnShow')) {
-                if (!me.val('sourceCache') ||
-                    !element.__pagerLoaded__ ||
+                if (!me.val('sourceCache') || !element.__pagerLoaded__ ||
                     (typeof(me.val('sourceCache')) === 'number' && element.__pagerLoaded__ + me.val('sourceCache') * 1000 < pager.now())) {
                     element.__pagerLoaded__ = pager.now();
                     me.loadSource(me.val('sourceOnShow'));
@@ -1219,7 +1226,7 @@
         };
 
         ko.bindingHandlers.page = {
-            init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                 var page = null;
                 if (_ko.value(valueAccessor()) instanceof pager.Page) {
                     page = _ko.value(valueAccessor());
@@ -1280,8 +1287,8 @@
 
         hp.bind = function () {
             ko.applyBindingsToNode(this.element, {
-                attr:{
-                    'href':this.path
+                attr: {
+                    'href': this.path
                 }
             });
         };
@@ -1301,10 +1308,10 @@
         pager.Href5.prototype.bind = function () {
             var self = this;
             ko.applyBindingsToNode(self.element, {
-                attr:{
-                    'href':self.path
+                attr: {
+                    'href': self.path
                 },
-                click:function () {
+                click: function () {
                     var path = self.path();
                     if (path === '' || path === '/') {
                         path = $('base').attr('href');
@@ -1315,14 +1322,14 @@
         };
 
         ko.bindingHandlers['page-href'] = {
-            init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                 var Cls = pager.useHTML5history ? pager.Href5 : pager.Href;
                 var href = new Cls(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
                 href.init();
                 href.bind();
                 element.__ko__page = href;
             },
-            update:function (element, valueAccessor) {
+            update: function (element, valueAccessor) {
                 element.__ko__page.update(valueAccessor);
             }
         };
@@ -1331,7 +1338,7 @@
 
         pager.fx.cssAsync = function (css) {
             return {
-                showElement:function (page, callback) {
+                showElement: function (page, callback) {
                     var $e = $(page.element);
                     $e.addClass(css);
                     $e.show();
@@ -1346,7 +1353,7 @@
                         }
                     }, 300);
                 },
-                hideElement:function (page, callback) {
+                hideElement: function (page, callback) {
                     var $e = $(page.element);
                     if (!page.pageHiddenOnce) {
                         page.pageHiddenOnce = true;
@@ -1371,10 +1378,10 @@
 
         pager.fx.jQuerySync = function (show, hide) {
             return {
-                showElement:function (page, callback) {
+                showElement: function (page, callback) {
                     show.call($(page.element), 300, callback);
                 },
-                hideElement:function (page, callback) {
+                hideElement: function (page, callback) {
                     hide.call($(page.element), 300, function () {
                         $(page.element).hide();
                     });
@@ -1406,7 +1413,7 @@
             pager.Href5.history.Adapter.bind(window, 'anchorchange', function () {
                 goTo(location.hash);
             });
-            if(!options || !options.noGo) {
+            if (!options || !options.noGo) {
                 goTo(pager.Href5.history.getState().url.replace(pager.Href5.history.getBaseUrl(), ''));
             }
         };
@@ -1431,7 +1438,7 @@
             };
             $(window).bind('hashchange', onHashChange);
 
-            if(!options || !options.noGo) {
+            if (!options || !options.noGo) {
                 onHashChange();
             }
         };
