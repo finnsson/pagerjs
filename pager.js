@@ -200,7 +200,7 @@
              */
             this.hideChild = function () {
                 if (me.currentChild) {
-                    if (me.currentChild.getId() !== 'start') {
+                    if (!me.currentChild.isStartPage()) {
                         me.currentChild.hidePage(function () {
                         });
                         me.currentChild = null;
@@ -230,7 +230,7 @@
                         var id = child.getId();
                         var role = child.getRole();
                         if (id === currentRoute ||
-                            ((currentRoute === '' || currentRoute == null) && (id === 'start' || role === 'start'))) {
+                            ((currentRoute === '' || currentRoute == null) && child.isStartPage())) {
                             match = true;
                             me.currentChild = child;
                         }
@@ -250,7 +250,7 @@
                         var modal = child.getValue().modal;
                         if (modal) {
                             if (id === currentRoute ||
-                                ((currentRoute === '' || currentRoute == null) && id === 'start')) {
+                                ((currentRoute === '' || currentRoute == null) && child.isStartPage())) {
                                 match = true;
                                 me.currentChild = child;
                                 isModal = true;
@@ -1190,6 +1190,17 @@
          */
         p.getRole = function () {
             return this.val('role') || 'next';
+        };
+
+        /**
+         * @method pager.Page#isStartPage
+         *
+         * Returns true if id is start or role is start.
+         *
+         * @returns {boolean}
+         */
+        p.isStartPage = function() {
+            return this.getId() === 'start' || this.getRole() === 'start';
         };
 
         p.nullObject = new pager.Page();

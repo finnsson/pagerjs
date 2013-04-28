@@ -1,0 +1,40 @@
+<header class="jumbotron subhead">
+    <h1>Role</h1>
+
+    <p class="lead">
+        Specifying <code>role: 'start'</code> makes the page behave as the start page
+        even though the ID is not start.
+    </p>
+</header>
+
+<div class="well-small">
+
+    <a class="btn" data-bind="page-href: 'user'">Go to user-page</a>
+    <a class="btn" data-bind="page-href: 'invention'">Go to invention-page</a>
+
+</div>
+<div class="well">
+
+    <div data-bind="page: {id: 'user', role: 'start'}">
+        <h2>Fry</h2>
+        This is the start page but the ID is <code>user</code>.
+    </div>
+
+    <div data-bind="page: {id: 'invention'}">
+        <h2>What-If-Machine</h2>
+    </div>
+
+</div>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'user', role: 'start'}"&gt;
+    &lt;h2&gt;Fry&lt;/h2&gt;
+    This is the start page but the ID is &lt;code&gt;user&lt;/code&gt;.
+&lt;/div&gt;
+
+&lt;div data-bind="page: {id: 'invention'}"&gt;
+    &lt;h2&gt;What-If-Machine&lt;/h2&gt;
+&lt;/div&gt;
+</pre>
+
+<div data-bind="template: {name: 'link-template'}"></div>
