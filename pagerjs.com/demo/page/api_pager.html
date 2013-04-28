@@ -135,4 +135,32 @@ ko.bindingHandlers['lorem-ipsum'] = {
     when <code>useHTML5history === true</code>.
 </p>
 
-</div>
+<h3><code class="code-large">beforeRemove : $.Callbacks</code></h3>
+
+<p>
+    Triggered when a page is removed from the DOM but before the page is removed from the parent page.
+</p>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+pager.beforeRemove.add(function(event) {
+    if(window.console) {
+        window.console.log("page removed");
+        window.console.log(event.page);
+    }
+});
+</pre>
+
+<h3><code class="code-large">afterRemove : $.Callbacks</code></h3>
+
+<p>
+    Triggered when a page is removed from the DOM but after the page is removed from the parent page.
+</p>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+pager.afterRemove.add(function(event) {
+    if(window.console) {
+        window.console.log("page removed");
+        window.console.log(event.page);
+    }
+});
+</pre>
