@@ -1199,7 +1199,7 @@
          *
          * @returns {boolean}
          */
-        p.isStartPage = function() {
+        p.isStartPage = function () {
             return this.getId() === 'start' || this.getRole() === 'start';
         };
 
@@ -1468,7 +1468,7 @@
     if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
         // define as an anonymous module so, through path mapping, it can be
         // referenced as any module
-        define(['knockout', 'jquery'], function (ko) {
+        define('pager', ['knockout', 'jquery'], function (ko) {
             return pagerJsModule($, ko);
         });
     } else {
