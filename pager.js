@@ -628,6 +628,7 @@
                 if ($.isArray(userParams)) {
                     $.each(userParams, function (index, key) {
                         var value = params[key];
+                        value = isNaN(value) ? value : parseInt(value);
                         if (vm[key]) { // set observable ...
                             vm[key](value);
                         } else { // ... or create observable
@@ -654,6 +655,7 @@
             if (this.pageRoute) {
                 var nameParam = this.getValue()['nameParam'];
                 if (nameParam) {
+                    this.currentId = isNaN(this.currentId) ? this.currentId : parseInt(this.currentId);
                     if (typeof nameParam === 'string') {
                         if (this.ctx[nameParam]) { // set observable ...
                             this.ctx[nameParam](this.currentId);
@@ -918,7 +920,13 @@
                     me.augmentContext();
                     ko.utils.extend(childBindingContext, {$page: me});
                     applyBindingsToDescendants(me);
+                    me.showElementWrapper();
+                    if (me.route) {
+                        me.childManager.showChild(me.route);
+                    }
                 }, me);
+            } else {
+                me.showElementWrapper();
             }
         };
 
@@ -972,6 +980,7 @@
 
                     if (!me.val('withOnShow')) {
                         applyBindingsToDescendants(me);
+                        me.showElementWrapper();
                     } else if (me.val('withOnShow')) {
                         me.loadWithOnShow();
                     }
@@ -982,7 +991,9 @@
                     }
                     // possibly continue routing
                     if (me.route) {
-                        me.childManager.showChild(me.route);
+                        if (!me.val('withOnShow')) {
+                            me.childManager.showChild(me.route);
+                        }
                     }
                 };
                 if (typeof _ko.value(source) === 'string') {
@@ -1068,7 +1079,6 @@
             var element = this.element;
             var me = this;
             //var value = me.getValue();
-            me.showElementWrapper(callback);
             if (me.val('title')) {
                 window.document.title = me.val('title');
             }
@@ -1078,12 +1088,16 @@
                     (typeof(me.val('sourceCache')) === 'number' && element.__pagerLoaded__ + me.val('sourceCache') * 1000 < pager.now())) {
                     element.__pagerLoaded__ = pager.now();
                     me.loadSource(me.val('sourceOnShow'));
+                } else {
+                    me.showElementWrapper(callback);
                 }
             }
             else if (me.val('withOnShow')) {
                 me.loadWithOnShow();
             }
-
+            else {
+                me.showElementWrapper(callback);
+            }
 
         };
 
