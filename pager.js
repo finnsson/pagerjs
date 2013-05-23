@@ -200,9 +200,8 @@
              */
             this.hideChild = function () {
                 if (me.currentChild) {
+                    me.currentChild.hidePage(function () { });
                     if (!me.currentChild.isStartPage()) {
-                        me.currentChild.hidePage(function () {
-                        });
                         me.currentChild = null;
                         me.currentChildO(null);
                     }
