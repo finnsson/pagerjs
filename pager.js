@@ -47,6 +47,9 @@
             var page = new pager.Page();
             viewModel.$__page__ = page;
             pager.page = page;
+
+            // initialize computed observables that depend on pager.page
+            pager.activePage$ = makeComputed(pager.getActivePage, pager)();
         };
 
         var fire = function (scope, name, options) {
@@ -538,6 +541,7 @@
          * @param {Function} fn should return a $.Deferred (NOT a promise since async should be able to reject it).
          * @param {String/Object} ok route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
          * @param {String/Object} notOk route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
+         * @param {Observable} [state]
          * @return {Function}
          */
         p.async = function (fn, ok, notOk, state) {
@@ -1234,6 +1238,14 @@
                 }, this);
             }
             return me._child[key];
+        };
+
+        pager.getActivePage = function() {
+            var active = pager.page;
+            while(active.currentChildPage()() != null) {
+                active = active.currentChildPage()();
+            }
+            return active;
         };
 
         ko.bindingHandlers.page = {
