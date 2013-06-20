@@ -433,6 +433,7 @@
         };
 
         var p = pager.Page.prototype;
+        var p = pager.Page.prototype;
 
         /**
          * @method pager.Page#val
@@ -1088,8 +1089,10 @@
             else if (me.val('withOnShow')) {
                 me.loadWithOnShow();
             }
+        };
 
-
+        p.titleOrId = function() {
+            return this.val('title') || this.id();
         };
 
         /**

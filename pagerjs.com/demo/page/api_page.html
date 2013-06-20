@@ -1,3 +1,10 @@
+<header class="jumbotron subhead">
+    <p class="lead">
+        These are all the instance methods that exists on <code>pager.Page-</code>-objects, i.e. the actual pages.
+    </p>
+</header>
+
+
 <h3><code class="code-large">element : Node</code></h3>
 
 <div class="form-actions">
@@ -54,6 +61,11 @@
 </p>
 
 <h3><code class="code-large">isVisible : Observable(Boolean)</code></h3>
+
+<p>
+    An observable that returns true if the page is visible at the moment, false otherwise. Useful for
+    communication with tab panels and menus.
+</p>
 
 <div class="form-actions">
     <a class="btn btn-primary" href="#!/widgets/tabpanel">Tab Panel</a>

@@ -1,6 +1,7 @@
 <header class="jumbotron subhead">
     <p class="lead">
         This is the config properties you can specify inside <code>data-bind="page: {...}"</code>.
+        Consult the Event-page for the events you can specify.
     </p>
 </header>
 
@@ -224,41 +225,6 @@ Cool.loadUser = function(callback, page) {
     <a class="btn btn-primary" href="#!/view/modals">Modals</a>
 </div>
 
-
-<h3><code class="code-large">beforeHide : Function(Page)</code></h3>
-
-<div class="form-actions">
-    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
-</div>
-
-
-<h3><code class="code-large">beforeShow : Function(Page)</code></h3>
-<div class="form-actions">
-    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
-</div>
-
-<h3><code class="code-large">afterHide : Function(Page)</code></h3>
-<div class="form-actions">
-    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
-</div>
-
-<h3><code class="code-large">afterShow : Function(Page)</code></h3>
-<div class="form-actions">
-    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
-</div>
-
-<h3><code class="code-large">beforeRemove : Function(Page)</code></h3>
-
-<p>
-    Triggered when a page is removed from the DOM but before the page is removed from the parent page.
-</p>
-
-<h3><code class="code-large">afterRemove : Function(Page)</code></h3>
-
-<p>
-    Triggered when a page is removed from the DOM but after the page is removed from the parent page.
-</p>
-
 <h3><code class="code-large">hideElement : Function(Page,Function())</code></h3>
 
 <div class="form-actions">
@@ -283,26 +249,6 @@ Cool.loadUser = function(callback, page) {
 
 <div class="form-actions">
     <a class="btn btn-primary" href="#!/view/loader">Loader</a>
-</div>
-
-
-<h3><code class="code-large">onNoMatch : {page:Page,route:String[]}</code></h3>
-
-
-<div class="form-actions">
-    <a class="btn btn-primary" href="#!/navigation/failed_navigation">Reacting to Failed Navigation</a>
-</div>
-
-<h3><code class="code-large">onBindingError : Function({page:Page,url:String,xhrPromise:$.Promise})</code></h3>
-
-<div class="form-actions">
-    <a class="btn btn-primary" href="#!/model/binding_error">Binding Error</a>
-</div>
-
-<h3><code class="code-large">onSourceError : Function({page:Page,url:String,xhrPromise:$.Promise})</code></h3>
-
-<div class="form-actions">
-    <a class="btn btn-primary" href="#!/view/source_error">Source Error</a>
 </div>
 
 

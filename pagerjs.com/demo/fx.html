@@ -18,7 +18,7 @@
 <div data-bind="page: {id: 'zoom'}">
 
     <ul class="nav nav-tabs" data-bind="foreach: $page.children">
-        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a>
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: titleOrId(), page-href: $data"></a>
         </li>
     </ul>
 
@@ -31,7 +31,7 @@
 
 <div data-bind="page: {id: 'flip'}">
     <ul class="nav nav-tabs" data-bind="foreach: $page.children">
-        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a>
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: titleOrId(), page-href: $data"></a>
         </li>
     </ul>
 
@@ -45,7 +45,7 @@
 
 <div data-bind="page: {id: 'slide'}">
     <ul class="nav nav-tabs" data-bind="foreach: $page.children">
-        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a>
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: titleOrId(), page-href: $data"></a>
         </li>
     </ul>
 
@@ -62,7 +62,7 @@
 
 <div data-bind="page: {id: 'fade'}">
     <ul class="nav nav-tabs" data-bind="foreach: $page.children">
-        <li data-bind="css: {active: isVisible}"><a data-bind="text: $data.getValue().title, page-hash: getId()"></a>
+        <li data-bind="css: {active: isVisible}"><a data-bind="text: titleOrId(), page-href: $data"></a>
         </li>
     </ul>
 

@@ -58,6 +58,15 @@
 
 <div class="container">
 
+    <ul class="breadcrumb">
+        <!-- ko foreach: activePageChildren -->
+        <li><a data-bind="page-href: $data, text: titleOrId()"></a> <span class="divider">/</span></li>
+        <!-- /ko -->
+        <!-- ko if: activePage() != null -->
+        <li data-bind="text: activePage().titleOrId()" class="active"></li>
+        <!-- /ko -->
+    </ul>
+
     <div class="row">
 
         <div class="span3" style="padding-top: 20px;">
@@ -86,7 +95,7 @@
 
         <div class="span9">
 
-            <div data-bind="page: {id: 'start', title: 'Pager.js', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/api.html'}"></div>
+            <div data-bind="page: {id: 'start', title: 'Pager.js', scrollToTop: true, source: 'page/api.html'}"></div>
 
             <div data-bind="page: {id: 'navigation', title: 'Navigation', desc: 'Navigation'}">
                 <div data-bind="page: {id: 'start', title: 'Pager.js Demo Start', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/start.html'}"></div>

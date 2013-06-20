@@ -1,4 +1,12 @@
-<h3><code class="code-large">start([id: String])</code></h3>
+<header class="jumbotron subhead">
+    <p class="lead">
+        These are all the static methods that exists directly on the <code>page</code>-object.
+        See the Event-page for list of events.
+    </p>
+</header>
+
+
+<h3><code class="code-large">start([id: String / {noGo:Boolean}])</code></h3>
 
 <p class="p">
     This method will start to listen to hashchange-events. Works only for newer browsers (not IE7/IE8).
@@ -7,6 +15,8 @@
     This method should be called after <code>ko.applyBindings(...)</code>.
     <br/>
     If an ID is supplied that ID will be set as initial <code>location.hash</code>.
+    <br/>
+    If <code>start({noGo: true})</code> then the initial path will be ignored - not triggering a navigation.
 </p>
 
 <pre class="prettyprint">
@@ -22,7 +32,7 @@ pager.start();
     </pre>
 
 
-<h3><code class="code-large">startHistoryJs([id: String])</code></h3>
+<h3><code class="code-large">startHistoryJs([id: String / {noGo:Boolean}])</code></h3>
 
 <p class="p">
     This method will start to listen to statechange and anchorchange-events using History.js.
@@ -31,6 +41,8 @@ pager.start();
     This method should be called after <code>ko.applyBindings(...)</code>.
     <br/>
     If an ID is supplied that ID will be set as initial <code>History.pushState</code>.
+    <br/>
+    If <code>start({noGo: true})</code> then the initial path will be ignored - not triggering a navigation.
 </p>
 
 <pre class="prettyprint">
@@ -56,20 +68,6 @@ pager.startHistoryJs();
     You must call this method (or do the identical thing yourself) before calling
     <code>ko.applyBindings(...)</code>
 </p>
-
-<h3><code class="code-large">onNoMatch : $.Callbacks({page:pager.Page,route:String[]})</code></h3>
-
-<h3><code class="code-large">onBindingError : $.Callbacks</code></h3>
-
-<div class="form-actions">
-    <a class="btn btn-primary" href="#!/model/binding_error">Binding Error</a>
-</div>
-
-<h3><code class="code-large">onSourceError : $.Callbacks</code></h3>
-
-<div class="form-actions">
-    <a class="btn btn-primary" href="#!/view/source_error">Source Error</a>
-</div>
 
 
 <h3><code class="code-large">showChild(route : String[])</code></h3>
@@ -135,32 +133,27 @@ ko.bindingHandlers['lorem-ipsum'] = {
     when <code>useHTML5history === true</code>.
 </p>
 
-<h3><code class="code-large">beforeRemove : $.Callbacks</code></h3>
+<h3><code class="code-large">goTo: Function(String)</code></h3>
 
-<p>
-    Triggered when a page is removed from the DOM but before the page is removed from the parent page.
+<p class="p">
+    Go to the page at the path. Will not update the URL.
 </p>
 
+
 <pre data-bind="prettyprint: {}" class="prettyprint linenums">
-pager.beforeRemove.add(function(event) {
-    if(window.console) {
-        window.console.log("page removed");
-        window.console.log(event.page);
-    }
-});
+var path = "#!/this/is/a/path";
+pager.goTo(path);
 </pre>
 
-<h3><code class="code-large">afterRemove : $.Callbacks</code></h3>
-
-<p>
-    Triggered when a page is removed from the DOM but after the page is removed from the parent page.
+<h3><code class="code-large">navigate: Function(String)</code></h3>
+<p class="p">
+    Update the URL to the path (as a <code>String</code>), triggering a navigation.
+    This is the preferred way to trigger navigation from the code.
 </p>
 
+
 <pre data-bind="prettyprint: {}" class="prettyprint linenums">
-pager.afterRemove.add(function(event) {
-    if(window.console) {
-        window.console.log("page removed");
-        window.console.log(event.page);
-    }
-});
+var path = "#!/this/is/a/path";
+pager.navigate(path);
 </pre>
+
