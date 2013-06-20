@@ -64,7 +64,7 @@
         };
 
         // Add 9 callbacks on pager
-        $.each(['onBindingError', 'onSourceError', 'onNoMatch',
+        $.each(['onBindingError', 'onSourceError', 'onNoMatch', 'onMatch',
             'beforeRemove', 'afterRemove',
             'beforeHide', 'afterHide',
             'beforeShow', 'afterShow'], function (i, n) {
@@ -294,6 +294,7 @@
                 };
 
                 var showCurrentChild = function () {
+                    fire(me.page, 'onMatch', {route: route});
                     var guard = _ko.value(me.currentChild.getValue().guard);
                     if (guard) {
                         guard(me.currentChild, route, function () {
