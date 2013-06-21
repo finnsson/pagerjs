@@ -434,7 +434,6 @@
         };
 
         var p = pager.Page.prototype;
-        var p = pager.Page.prototype;
 
         /**
          * @method pager.Page#val
