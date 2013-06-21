@@ -329,13 +329,12 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
 
         pager.extendWithPage(viewModel);
 
-        viewModel.activePages = ko.computed(function() { return getActivePages(); });
         viewModel.activePageChildren = ko.computed(function() {
-            var p = viewModel.activePages();
+            var p = getActivePages();
             return p.slice(0, p.length - 1);
         });
         viewModel.activePage = ko.computed(function() {
-            var p = viewModel.activePages();
+            var p = getActivePages();
            return p[p.length-1];
         });
 

@@ -202,11 +202,11 @@
              * @method pager.ChildManager#hideChild
              */
             this.hideChild = function () {
-                if (me.currentChild) {
-                    if (!me.currentChild.isStartPage()) {
-                        me.currentChild.hidePage(function () {
+                var currentChild = me.currentChildO();
+                if (currentChild) {
+                    if (!currentChild.isStartPage()) {
+                        currentChild.hidePage(function () {
                         });
-                        me.currentChild = null;
                         me.currentChildO(null);
                     }
                 }
@@ -222,8 +222,8 @@
                 var showOnlyStart = route.length === 0;
                 this.timeStamp = pager.now();
                 var timeStamp = this.timeStamp;
-                var oldCurrentChild = me.currentChild;
-                me.currentChild = null;
+                var oldCurrentChild = me.currentChildO();
+                var currentChild = null;
                 var match = false;
                 var currentRoutePair = splitRoutePartIntoNameAndParameters(route[0]);
                 var currentRoute = currentRoutePair.name;
@@ -235,7 +235,7 @@
                         if (id === currentRoute ||
                             ((currentRoute === '' || currentRoute == null) && child.isStartPage())) {
                             match = true;
-                            me.currentChild = child;
+                            currentChild = child;
                         }
                         if (id === '?') {
                             wildcard = child;
@@ -255,7 +255,7 @@
                             if (id === currentRoute ||
                                 ((currentRoute === '' || currentRoute == null) && child.isStartPage())) {
                                 match = true;
-                                me.currentChild = child;
+                                currentChild = child;
                                 isModal = true;
                             }
                             if (id === '?' && !wildcard) {
@@ -266,25 +266,26 @@
                     }
                 };
 
-                while (!me.currentChild && currentChildManager.page.parentPage && !currentChildManager.page.getValue().modal) {
+                while (!currentChild && currentChildManager.page.parentPage && !currentChildManager.page.getValue().modal) {
                     var parentChildren = currentChildManager.page.parentPage.children;
                     $.each(parentChildren(), findMatchModalOrWildCard);
-                    if (!me.currentChild) {
+                    if (!currentChild) {
                         currentChildManager = currentChildManager.page.parentPage.childManager;
                     }
                 }
 
-                if (!me.currentChild && wildcard && !showOnlyStart) {
-                    me.currentChild = wildcard;
+                if (!currentChild && wildcard && !showOnlyStart) {
+                    currentChild = wildcard;
                     //me.currentChild.currentId = currentRoute;
                 }
-                if (me.currentChild) {
-                    me.currentChildO(me.currentChild);
+
+                me.currentChildO(currentChild);
+                if (currentChild) {
 
                     if (isModal) {
-                        me.currentChild.currentParentPage(me.page);
+                        currentChild.currentParentPage(me.page);
                     } else {
-                        me.currentChild.currentParentPage(null);
+                        currentChild.currentParentPage(null);
                     }
 
                 }
@@ -295,29 +296,29 @@
 
                 var showCurrentChild = function () {
                     fire(me.page, 'onMatch', {route: route});
-                    var guard = _ko.value(me.currentChild.getValue().guard);
+                    var guard = _ko.value(currentChild.getValue().guard);
                     if (guard) {
-                        guard(me.currentChild, route, function () {
+                        guard(currentChild, route, function () {
                             if (me.timeStamp === timeStamp) {
-                                me.currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
+                                currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
                             }
                         }, oldCurrentChild);
                     } else {
-                        me.currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
+                        currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
                     }
                 };
 
-                if (oldCurrentChild && oldCurrentChild === me.currentChild) {
+                if (oldCurrentChild && oldCurrentChild === currentChild) {
                     showCurrentChild();
                 } else if (oldCurrentChild) {
                     oldCurrentChild.hidePage(function () {
-                        if (me.currentChild) {
+                        if (currentChild) {
                             showCurrentChild();
                         } else {
                             onFailed();
                         }
                     });
-                } else if (me.currentChild) {
+                } else if (currentChild) {
                     showCurrentChild();
                 } else {
                     onFailed();
