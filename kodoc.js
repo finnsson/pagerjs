@@ -64,7 +64,26 @@
     ko.applyBindingsToDescendants = function (context, element) {
     };
 
-    ko.utils = {};
+    ko.utils = {
+        /**
+         *
+         * @param {Observable} val
+         * @return {Object}
+         */
+        unwrapObservable: function(val) {
+            //
+            return {};
+        }
+    };
+
+    /**
+     *
+     * @param {Object} obj1
+     * @param {Object} obj2
+     */
+    ko.applyBindingsToNode = function(obj1, obj2) {
+
+    };
 
     /**
      *

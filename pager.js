@@ -45,7 +45,7 @@
          */
         pager.extendWithPage = function (viewModel) {
             var page = new pager.Page();
-            viewModel.$__page__ = page;
+            viewModel['$__page__'] = page;
             pager.page = page;
 
             // initialize computed observables that depend on pager.page
@@ -231,7 +231,6 @@
                 $.each(children(), function (childIndex, child) {
                     if (!match) {
                         var id = child.getId();
-                        var role = child.getRole();
                         if (id === currentRoute ||
                             ((currentRoute === '' || currentRoute == null) && child.isStartPage())) {
                             match = true;
@@ -1013,7 +1012,7 @@
         // a modified version of jQUery.fn.load, where the element is executing removeNode
         // before adding the new node.
         var koLoad = function (element, url, callback, page) {
-            var selector, type, response,
+            var selector, response,
                 self = $(element),
                 off = url.indexOf(" ");
 
@@ -1068,7 +1067,7 @@
 
         /**
          * @method pager.Page#show
-         * @param {Function} callback
+         * @param {Function} [callback]
          */
         p.show = function (callback) {
             var element = this.element;
