@@ -13,11 +13,17 @@ developed standalone but still communicate between each other.
 
 This makes it easier to design very large scale single page web sites.
 
-This readme is for version 1.0rc1.
+This readme is for version 1.0.0.
 
 ## Getting Started
 
 See the [demo](http://pagerjs.com/demo/).
+
+## Install
+
+Using npm
+
+    npm install pagerjs
 
 ## Dependencies
 
