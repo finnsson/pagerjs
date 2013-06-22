@@ -2,8 +2,37 @@
     <p class="lead">
         This is the config properties you can specify inside <code>data-bind="page: {...}"</code>.
         Consult the Event-page for the events you can specify.
+        <br/>
+        <code>data-bind:</code> can either take a configuration object <b>or</b> a
+        <code>pager.Page</code>-instance.
     </p>
 </header>
+<h3>In HTML</h3>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind="page: {id: 'someID', title: 'the page title', sourceOnShow: 'some.html', with: somePageViewModel}"&gt;&lt;/div&gt;
+</pre>
+<h3>In JavaScript</h3>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+// create a page
+var somePage = new pager.Page();
+// configure the page (the keys are the configurations you can see on this API page)
+valueAccessorObject = {
+    id:"someID"
+};
+myPage.valueAccessor = function () {
+    return valueAccessorObject;
+};
+// set the view model for the page
+myPage.viewModel = {
+    answer:42,
+    question:'How many roads must a man walk down before you can call him a man?'
+};
+// bind the page to the main view model
+var viewModel = {
+    myPage:myPage
+};
+</pre>
+
 
 <h3><code class="code-large" id="recapitulation/page/id">id : String</code></h3>
 
