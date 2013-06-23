@@ -923,6 +923,10 @@
                     me.augmentContext();
                     ko.utils.extend(childBindingContext, {$page: me});
                     applyBindingsToDescendants(me);
+                    // what is signaling if a page is active or not?
+                    if (me.route) {
+                        me.childManager.showChild(me.route);
+                    }
                 }, me);
             }
         };
