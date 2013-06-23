@@ -1,0 +1,9 @@
+<h2>Products</h2>
+
+<ul>
+    <li><a data-bind="page-href: 'start'">Overview</a></li>
+    <li><a data-bind="page-href: 'edit'">Edit</a></li>
+</ul>
+
+<div data-bind="page: {id: 'start', title: 'Products', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/product/start.html'}"></div>
+<div data-bind="page: {id: 'edit', title: 'Edit Product', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/product/edit.html'}"></div>
