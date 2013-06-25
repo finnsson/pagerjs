@@ -1,0 +1,74 @@
+<header class="jumbotron subhead">
+    <p class="lead">
+        All these events exists as config-parameters, and as <code>$.Callbacks</code> on the global <code>pager</code>.
+        Thus they can be used like
+    </p>
+<pre>
+data-bind="page: {onSomeEvent: someCallback}"
+</pre>
+
+    <p class="lead">
+        or
+    </p>
+<pre>
+pager.onSomeEvent.add(someCallback);
+</pre>
+</header>
+
+<h3><code class="code-large">onNoMatch : {page:Page,route:String[]}</code></h3>
+
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/failed_navigation">Reacting to Failed Navigation</a>
+</div>
+
+<h3><code class="code-large">onMatch : {page:Page,route:String[]}</code></h3>
+
+<p>Similar to <code>onNoMatch</code>, but triggers whenever a match is found.</p>
+
+
+<h3><code class="code-large">onBindingError : Function({page:Page,url:String,xhrPromise:$.Promise})</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/model/binding_error">Binding Error</a>
+</div>
+
+<h3><code class="code-large">onSourceError : Function({page:Page,url:String,xhrPromise:$.Promise})</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/view/source_error">Source Error</a>
+</div>
+
+<h3><code class="code-large">beforeHide : Function(Page)</code></h3>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
+</div>
+
+
+<h3><code class="code-large">beforeShow : Function(Page)</code></h3>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
+</div>
+
+<h3><code class="code-large">afterHide : Function(Page)</code></h3>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
+</div>
+
+<h3><code class="code-large">afterShow : Function(Page)</code></h3>
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/custom_js_when_navigating">Custom JS when Navigating</a>
+</div>
+
+<h3><code class="code-large">beforeRemove : Function(Page)</code></h3>
+
+<p>
+    Triggered when a page is removed from the DOM but before the page is removed from the parent page.
+</p>
+
+<h3><code class="code-large">afterRemove : Function(Page)</code></h3>
+
+<p>
+    Triggered when a page is removed from the DOM but after the page is removed from the parent page.
+</p>

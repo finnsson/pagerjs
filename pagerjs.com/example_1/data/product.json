@@ -1,0 +1,16 @@
+{
+    "products": [
+        {
+            "name": "What-If Machine",
+            "price": "$ 100"
+        },
+        {
+            "name": "Fing-Longer",
+            "price": "$ 200"
+        },
+        {
+            "name": "Parallel Universe Box",
+            "price": "$ 1000"
+        }
+    ]
+}

@@ -1,0 +1,27 @@
+<header class="jumbotron subhead">
+    <p class="lead">
+        This is the API documentation for <code>data-bind="page-href: ..."</code>.
+    </p>
+</header>
+
+<h3><code class="code-large" id="recapitulation/page/id">page-href: pager.Page / String /
+    {path:String,params:Object}</code></h3>
+
+<p>
+    There are three cases of <code>page-href</code>: using a <code>pager.Page</code>-object, a <code>String</code>
+    or an object containing a <code>String</code> as path and <code>Object</code> as params.
+</p>
+
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+    &lt;a data-bind="page-href: '../some/path'"&gt;link 1&lt;/a&gt;
+    &lt;a data-bind="page-href: {path: '../some/path', params: {key1: value1, key2: value2}"&gt;
+      link 2
+    &lt;/a&gt;
+    &lt;a data-bind="page-href: somePageObject"&gt;link 3&lt;/a&gt;
+</pre>
+
+<div class="form-actions">
+    <a class="btn btn-primary" href="#!/navigation/relative_path">Relative path</a>
+    <a class="btn btn-primary" href="#!/navigation/absolute_path">Absolute path</a>
+    <a class="btn btn-primary" href="#!/navigation/href_with_params">Parameters in path</a>
+</div>

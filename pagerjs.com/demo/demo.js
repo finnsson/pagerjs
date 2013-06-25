@@ -74,6 +74,16 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
         }
     };
 
+    var getActivePages = function() {
+        var pages = [];
+        var active = pager.page;
+        while(active != null && active.currentChildPage()() != null) {
+            active = active.currentChildPage()();
+            pages.push(active);
+        }
+        return pages;
+    };
+
     var viewModel = {
         page: {
             async: {
@@ -318,6 +328,16 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
         pager.Href.hash = '#!/';
 
         pager.extendWithPage(viewModel);
+
+        viewModel.activePageChildren = ko.computed(function() {
+            var p = getActivePages();
+            return p.slice(0, p.length - 1);
+        });
+        viewModel.activePage = ko.computed(function() {
+            var p = getActivePages();
+           return p[p.length-1];
+        });
+
         window.VM = viewModel;
         ko.applyBindings(viewModel);
         pager.start();

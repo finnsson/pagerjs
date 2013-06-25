@@ -45,8 +45,11 @@
          */
         pager.extendWithPage = function (viewModel) {
             var page = new pager.Page();
-            viewModel.$__page__ = page;
+            viewModel['$__page__'] = page;
             pager.page = page;
+
+            // initialize computed observables that depend on pager.page
+            pager.activePage$ = makeComputed(pager.getActivePage, pager)();
         };
 
         var fire = function (scope, name, options) {
@@ -61,7 +64,7 @@
         };
 
         // Add 9 callbacks on pager
-        $.each(['onBindingError', 'onSourceError', 'onNoMatch',
+        $.each(['onBindingError', 'onSourceError', 'onNoMatch', 'onMatch',
             'beforeRemove', 'afterRemove',
             'beforeHide', 'afterHide',
             'beforeShow', 'afterShow'], function (i, n) {
@@ -199,10 +202,10 @@
              * @method pager.ChildManager#hideChild
              */
             this.hideChild = function () {
-                if (me.currentChild) {
-                    me.currentChild.hidePage(function () { });
-                    if (!me.currentChild.isStartPage()) {
-                        me.currentChild = null;
+                var currentChild = me.currentChildO();
+                if (currentChild) {
+                    currentChild.hidePage(function () {});
+                    if (!currentChild.isStartPage()) {
                         me.currentChildO(null);
                     }
                 }
@@ -218,8 +221,8 @@
                 var showOnlyStart = route.length === 0;
                 this.timeStamp = pager.now();
                 var timeStamp = this.timeStamp;
-                var oldCurrentChild = me.currentChild;
-                me.currentChild = null;
+                var oldCurrentChild = me.currentChildO();
+                var currentChild = null;
                 var match = false;
                 var currentRoutePair = splitRoutePartIntoNameAndParameters(route[0]);
                 var currentRoute = currentRoutePair.name;
@@ -227,11 +230,10 @@
                 $.each(children(), function (childIndex, child) {
                     if (!match) {
                         var id = child.getId();
-                        var role = child.getRole();
                         if (id === currentRoute ||
                             ((currentRoute === '' || currentRoute == null) && child.isStartPage())) {
                             match = true;
-                            me.currentChild = child;
+                            currentChild = child;
                         }
                         if (id === '?') {
                             wildcard = child;
@@ -251,7 +253,7 @@
                             if (id === currentRoute ||
                                 ((currentRoute === '' || currentRoute == null) && child.isStartPage())) {
                                 match = true;
-                                me.currentChild = child;
+                                currentChild = child;
                                 isModal = true;
                             }
                             if (id === '?' && !wildcard) {
@@ -262,25 +264,26 @@
                     }
                 };
 
-                while (!me.currentChild && currentChildManager.page.parentPage && !currentChildManager.page.getValue().modal) {
+                while (!currentChild && currentChildManager.page.parentPage && !currentChildManager.page.getValue().modal) {
                     var parentChildren = currentChildManager.page.parentPage.children;
                     $.each(parentChildren(), findMatchModalOrWildCard);
-                    if (!me.currentChild) {
+                    if (!currentChild) {
                         currentChildManager = currentChildManager.page.parentPage.childManager;
                     }
                 }
 
-                if (!me.currentChild && wildcard && !showOnlyStart) {
-                    me.currentChild = wildcard;
+                if (!currentChild && wildcard && !showOnlyStart) {
+                    currentChild = wildcard;
                     //me.currentChild.currentId = currentRoute;
                 }
-                if (me.currentChild) {
-                    me.currentChildO(me.currentChild);
+
+                me.currentChildO(currentChild);
+                if (currentChild) {
 
                     if (isModal) {
-                        me.currentChild.currentParentPage(me.page);
+                        currentChild.currentParentPage(me.page);
                     } else {
-                        me.currentChild.currentParentPage(null);
+                        currentChild.currentParentPage(null);
                     }
 
                 }
@@ -290,29 +293,30 @@
                 };
 
                 var showCurrentChild = function () {
-                    var guard = _ko.value(me.currentChild.getValue().guard);
+                    fire(me.page, 'onMatch', {route: route});
+                    var guard = _ko.value(currentChild.getValue().guard);
                     if (guard) {
-                        guard(me.currentChild, route, function () {
+                        guard(currentChild, route, function () {
                             if (me.timeStamp === timeStamp) {
-                                me.currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
+                                currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
                             }
                         }, oldCurrentChild);
                     } else {
-                        me.currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
+                        currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
                     }
                 };
 
-                if (oldCurrentChild && oldCurrentChild === me.currentChild) {
+                if (oldCurrentChild && oldCurrentChild === currentChild) {
                     showCurrentChild();
                 } else if (oldCurrentChild) {
                     oldCurrentChild.hidePage(function () {
-                        if (me.currentChild) {
+                        if (currentChild) {
                             showCurrentChild();
                         } else {
                             onFailed();
                         }
                     });
-                } else if (me.currentChild) {
+                } else if (currentChild) {
                     showCurrentChild();
                 } else {
                     onFailed();
@@ -537,6 +541,7 @@
          * @param {Function} fn should return a $.Deferred (NOT a promise since async should be able to reject it).
          * @param {String/Object} ok route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
          * @param {String/Object} notOk route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
+         * @param {Observable} [state]
          * @return {Function}
          */
         p.async = function (fn, ok, notOk, state) {
@@ -920,6 +925,7 @@
                     ko.utils.extend(childBindingContext, {$page: me});
                     applyBindingsToDescendants(me);
                     me.showElementWrapper();
+                    // what is signaling if a page is active or not?
                     if (me.route) {
                         me.childManager.showChild(me.route);
                     }
@@ -1017,7 +1023,7 @@
         // a modified version of jQUery.fn.load, where the element is executing removeNode
         // before adding the new node.
         var koLoad = function (element, url, callback, page) {
-            var selector, type, response,
+            var selector, response,
                 self = $(element),
                 off = url.indexOf(" ");
 
@@ -1072,7 +1078,7 @@
 
         /**
          * @method pager.Page#show
-         * @param {Function} callback
+         * @param {Function} [callback]
          */
         p.show = function (callback) {
             var element = this.element;
@@ -1098,6 +1104,10 @@
                 me.showElementWrapper(callback);
             }
 
+        };
+
+        p.titleOrId = function() {
+            return this.val('title') || this.id();
         };
 
         /**
@@ -1247,6 +1257,14 @@
                 }, this);
             }
             return me._child[key];
+        };
+
+        pager.getActivePage = function() {
+            var active = pager.page;
+            while(active.currentChildPage()() != null) {
+                active = active.currentChildPage()();
+            }
+            return active;
         };
 
         ko.bindingHandlers.page = {

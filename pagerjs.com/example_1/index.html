@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script data-main="index.js" type="text/javascript" src="lib/require.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Example App 1</h1>
+
+    <ul>
+        <li><a href="#!/product">Products</a></li>
+        <li><a href="#!/user">User</a></li>
+    </ul>
+
+    <div data-bind="page: {id: 'product', title: 'Product', scrollToTop: true, sourceOnShow: 'page/product.html', sourceCache: true, role: 'start', withOnShow: requireVM('product')}"></div>
+    <div data-bind="page: {id: 'user', title: 'User', scrollToTop: true, sourceOnShow: 'page/user.html', sourceCache: true}"></div>
+
+</div>
+
+</body>
+</html>

@@ -58,6 +58,15 @@
 
 <div class="container">
 
+    <ul class="breadcrumb">
+        <!-- ko foreach: activePageChildren -->
+        <li><a data-bind="page-href: $data, text: titleOrId()"></a> <span class="divider">/</span></li>
+        <!-- /ko -->
+        <!-- ko if: activePage() != null -->
+        <li data-bind="text: activePage().titleOrId()" class="active"></li>
+        <!-- /ko -->
+    </ul>
+
     <div class="row">
 
         <div class="span3" style="padding-top: 20px;">
@@ -86,7 +95,7 @@
 
         <div class="span9">
 
-            <div data-bind="page: {id: 'start', title: 'Pager.js', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/api.html'}"></div>
+            <div data-bind="page: {id: 'start', title: 'Pager.js', scrollToTop: true, source: 'page/api.html'}"></div>
 
             <div data-bind="page: {id: 'navigation', title: 'Navigation', desc: 'Navigation'}">
                 <div data-bind="page: {id: 'start', title: 'Pager.js Demo Start', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/start.html'}"></div>
@@ -137,6 +146,13 @@
                 <div data-bind="page: {id: 'fx', title: 'FX', sourceOnShow: 'fx.html', scrollToTop: true, sourceCache:  true, desc: 'effects between page transitions'}"></div>
                 <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
+
+            <div data-bind="page: {id: 'traversal', title: 'Traversal', desc: 'Traversal'}">
+                <div data-bind="page: {id: 'path', title: 'Path', desc: 'generate absolute paths', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/traversal/path.html', role: 'start'}"></div>
+                <div data-bind="page: {id: 'find', title: 'Find', desc: 'find pages', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/traversal/find.html'}"></div>
+                <div data-bind="page: {id: 'child', title: 'Children', sourceOnShow: 'page/traversal/child.html', scrollToTop: true, sourceCache:  true, desc: 'finding children'}"></div>
+            </div>
+
 
             <div data-bind="page: {id: 'widgets', title: 'Widgets', desc: 'Widgets'}">
                 <div data-bind="page: {id: 'tabpanel', title: 'Tab Panel', desc: 'roll your own tab panel', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/tabpanel.html', role: 'start'}"></div>

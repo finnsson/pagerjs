@@ -2,8 +2,8 @@
     "name": "pagerjs",
     "title": "pagerjs",
     "description": "Single page application framework for KnockoutJS",
-    "version": "0.7.0",
-    "homepage": "http://oscar.finnsson.nu/pagerjs/",
+    "version": "1.0.0",
+    "homepage": "http://pagerjs.com",
     "author": {
         "name": "Oscar Finnsson",
         "email": "oscar.finnsson@gmail.com",
@@ -22,15 +22,20 @@
             "url": "https://github.com/finnsson/pagerjs/blob/master/LICENSE-MIT"
         }
     ],
-    "main": "dist/pager.amd.history.min.js",
+    "main": "pager.js",
+    "files": ["pager.js"],
     "engines": {
         "node": ">=0.8"
     },
     "scripts": {
         "test": "grunt travis --verbose"
     },
+    "dependencies": {
+        "jquery": ">=1.7.3",
+        "knockout": ">=2.2"
+    },
     "devDependencies": {
         "grunt": "~0.3.16"
     },
-    "keywords": []
+    "keywords": ["knockout"]
 }
