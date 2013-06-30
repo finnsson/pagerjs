@@ -105,12 +105,12 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
                 okIsLoading:ko.observable(),
                 notOkIsLoading: ko.observable()
             },
-            bindVM: {
+            bindVM: ko.observable({
                 bindToVM: ko.observable(),
                 getText: function(p) {
                     return $(p().element).html();
                 }
-            }
+            })
         },
         question: ko.observable('How many roads must a man walk down before you can call him a man?'),
         closePage: function(page) {

@@ -112,7 +112,7 @@
                 <div data-bind="page: {id: 'deep_navigation_with_wildcards', title: 'Deep Navigation with Wildcards', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/deep_navigation_with_wildcards.html'}"></div>
                 <div data-bind="page: {id: 'custom_js_when_navigating', title: 'Custom JS when Navigating', desc: 'reacting to navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/custom_js_when_navigating.html'}"></div>
                 <div data-bind="page: {id: 'failed_navigation', title: 'Failed Navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/failed_navigation.html'}"></div>
-                <div data-bind="page: {id: 'async', with: page.async, title: 'Async', desc: 'handling asynchronous navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/async.html'}"></div>
+                <div data-bind="page: {id: 'async', withOnShow: page.async, title: 'Async', desc: 'handling asynchronous navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/async.html'}"></div>
                 <div data-bind="page: {id: 'guards', title: 'Guards', desc: 'conditions when navigating to a page is ok', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/guards.html'}"></div>
                 <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
@@ -123,7 +123,7 @@
                 <div data-bind="page: {id: 'params', title: 'Binding URL Parameters', desc: 'using parameters from forms in #', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/params.html'}"></div>
                 <div data-bind="page: {id: 'binding_params_object', title: 'Binding parameters with default values', sourceOnShow: 'page/params_and_object.html', scrollToTop: true, sourceCache:  true, desc: 'params with default values'}"></div>
                 <div data-bind="page: {id: 'binding_wildcard_to_observable', title: 'Binding Wildcard to observable', sourceOnShow: 'page/binding_wildcard_to_observable.html', scrollToTop: true, sourceCache:  true, desc: 'set a name on the ?'}"></div>
-                <div data-bind="page: {id: 'bind_to_vm', title: 'Binding to View Model', sourceOnShow: 'page/bind_to_vm.html', scrollToTop: true, sourceCache:  true, desc: 'bind page to view model', with: page.bindVM}"></div>
+                <div data-bind="page: {id: 'bind_to_vm', title: 'Binding to View Model', sourceOnShow: 'page/bind_to_vm.html', scrollToTop: true, sourceCache: true, desc: 'bind page to view model', withOnShow: page.bindVM}"></div>
                 <div data-bind="page: {id: 'vars', title: 'Custom observables', sourceOnShow: 'page/vars.html', scrollToTop: true, sourceCache:  true, desc: 'pure local view-observables'}"></div>
                 <div data-bind="page: {id: 'binding_error', title: 'Binding Error', sourceOnShow: 'page/binding_error.html', scrollToTop: true, sourceCache:  true, desc: 'trigger event'}"></div>
                 <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
