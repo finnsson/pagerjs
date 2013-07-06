@@ -13,7 +13,7 @@ developed standalone but still communicate between each other.
 
 This makes it easier to design very large scale single page web sites.
 
-This readme is for version 1.0.0.
+This readme is for version 1.0.
 
 ## Getting Started
 
@@ -134,6 +134,18 @@ See [Milestones](https://github.com/finnsson/pagerjs/issues/milestones).
 
 Fork this repo. Install all dependencies (node.js, grunt, phnatomjs). Run all tests
 (`grunt qunit`). Run jslint (`grunt lint`). Make your changes. Run all tests and the linter again. Send a pull request.
+
+### Contributors
+
+[finnsson](https://github.com/finnsson)
+
+[GilesBradshaw](https://github.com/GilesBradshaw)
+
+[tedsteen](https://github.com/tedsteen)
+
+[Shildrak](https://github.com/Shildrak)
+
+[adimkov](https://github.com/adimkov)
 
 ## License
 
