@@ -15,4 +15,9 @@ var adminPath = somePage.find('admin');
 var loginPath = somePage.find$('../user/login');
 </pre>
 
-<div data-bind="template: {name: 'link-template'}"></div>
+<div class="form-actions">
+    <div class="pull-right">
+        <a class="btn btn-large btn-primary" href="#!/view/fx">Back to FX</a>
+        <a class="btn btn-large" data-bind="page-step: 1">Read about {0}</a>
+    </div>
+</div>
