@@ -335,6 +335,8 @@
          *
          * @class pager.Page
          *
+         * @constructor
+         *
          * @param {Node} element
          * @param {Object} valueAccessor
          * @param {String} valueAccessor.id
@@ -588,7 +590,8 @@
         };
 
         /**
-         * @method pager.Page#showPage
+         * @method showPage
+         * @member pager.Page
          *
          * @param route
          * @param [pageRoute]
@@ -625,7 +628,8 @@
         };
 
         /**
-         * @method pager.Page#setParams
+         * @method setParams
+         * @member pager.Page
          *
          */
         p.setParams = function () {
@@ -679,7 +683,8 @@
         };
 
         /**
-         * @method pager.Page#hidePage
+         * @method hidePage
+         * @member pager.Page
          *
          * @param {Function} callback
          */
@@ -704,7 +709,8 @@
         };
 
         /**
-         * @method pager.Page#init
+         * @method init
+         * @member pager.Page
          *
          * @return {Object}
          */
