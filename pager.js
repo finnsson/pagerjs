@@ -50,6 +50,12 @@
 
             // initialize computed observables that depend on pager.page
             pager.activePage$ = makeComputed(pager.getActivePage, pager)();
+
+            viewModel.toJSON = function() {
+                var copy = ko.toJS(this);
+                delete copy['$__page__'];
+                return copy;
+            };
         };
 
         var fire = function (scope, name, options) {
