@@ -95,54 +95,64 @@
 
         <div class="span9">
 
-            <div data-bind="page: {id: 'start', title: 'Pager.js', scrollToTop: true, source: 'page/api.html'}"></div>
+            <div data-bind="page: {id: 'start', title: 'Pager.js', scrollToTop: true, source: 'page/api/api.html'}"></div>
 
             <div data-bind="page: {id: 'navigation', title: 'Navigation', desc: 'Navigation'}">
-                <div data-bind="page: {id: 'start', title: 'Pager.js Demo Start', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/start.html'}"></div>
-                <div data-bind="page: {id: 'structure', title: 'Structure', desc: 'how pages are combined', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/structure.html'}"></div>
-                <div data-bind="page: {id: 'setup', title: 'Setup', desc: 'starting pager.js', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/setup.html'}"></div>
-                <div data-bind="page: {id: 'deep_navigation', title: 'Deep Navigation', desc: 'navigating into subpages of subpages', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/deep_navigation.html'}"></div>
-                <div data-bind="page: {id: 'relative_path', title: 'Relative Path', desc: 'traversing the fragment identifier', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/relative_path.html'}"></div>
-                <div data-bind="page: {id: 'absolute_path', title: 'Absolute Path', sourceOnShow: 'page/absolute_path.html', scrollToTop: true, sourceCache:  true, desc: 'binding page-href to page-instance'}"></div>
-                <div data-bind="page: {id: 'href_with_params', title: 'Parameters in Path', sourceOnShow: 'page/href_with_params.html', scrollToTop: true, sourceCache:  true, desc: 'add parameters to page-href'}"></div>
-                <div data-bind="page: {id: 'role', title: 'Role', sourceOnShow: 'page/role.html', scrollToTop: true, sourceCache:  true, desc: 'can be start'}"></div>
-                <div data-bind="page: {id: 'html5_history', title: 'HTML5 History', desc: 'you do not need to use fragment identifiers', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/html5_history.html'}"></div>
-                <div data-bind="page: {id: 'matching_wildcards', title: 'Matching Wildcards', desc: 'pages that match any route', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/matching_wildcards.html'}"></div>
+                <div data-bind="page: {id: 'start', title: 'Pager.js Demo Start', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/navigation/start.html'}"></div>
+                <div data-bind="page: {id: 'structure', title: 'Structure', desc: 'how pages are combined', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/navigation/structure.html'}"></div>
+                <div data-bind="page: {id: 'setup', title: 'Setup', desc: 'starting pager.js', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/navigation/setup.html'}"></div>
+                <div data-bind="page: {id: 'deep_navigation', title: 'Deep Navigation', desc: 'navigating into subpages of subpages', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/navigation/deep_navigation.html'}"></div>
+                <div data-bind="page: {id: 'relative_path', title: 'Relative Path', desc: 'traversing the fragment identifier', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/navigation/relative_path.html'}"></div>
+                <div data-bind="page: {id: 'absolute_path', title: 'Absolute Path', sourceOnShow: 'page/navigation/absolute_path.html', scrollToTop: true, sourceCache:  true, desc: 'binding page-href to page-instance'}"></div>
+                <div data-bind="page: {id: 'href_with_params', title: 'Parameters in Path', sourceOnShow: 'page/navigation/href_with_params.html', scrollToTop: true, sourceCache:  true, desc: 'add parameters to page-href'}"></div>
+                <div data-bind="page: {id: 'role', title: 'Role', sourceOnShow: 'page/navigation/role.html', scrollToTop: true, sourceCache:  true, desc: 'can be start'}"></div>
+                <div data-bind="page: {id: 'html5_history', title: 'HTML5 History', desc: 'you do not need to use fragment identifiers', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/navigation/html5_history.html'}"></div>
+                <div data-bind="page: {id: 'matching_wildcards', title: 'Matching Wildcards', desc: 'pages that match any route', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/navigation/matching_wildcards.html'}"></div>
 
-                <div data-bind="page: {id: 'deep_navigation_with_wildcards', title: 'Deep Navigation with Wildcards', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/deep_navigation_with_wildcards.html'}"></div>
-                <div data-bind="page: {id: 'custom_js_when_navigating', title: 'Custom JS when Navigating', desc: 'reacting to navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/custom_js_when_navigating.html'}"></div>
-                <div data-bind="page: {id: 'failed_navigation', title: 'Failed Navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/failed_navigation.html'}"></div>
-                <div data-bind="page: {id: 'async', withOnShow: page.async, title: 'Async', desc: 'handling asynchronous navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/async.html'}"></div>
-                <div data-bind="page: {id: 'guards', title: 'Guards', desc: 'conditions when navigating to a page is ok', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/guards.html'}"></div>
+                <div data-bind="page: {id: 'deep_navigation_with_wildcards', title: 'Deep Navigation with Wildcards', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/navigation/deep_navigation_with_wildcards.html'}"></div>
+                <div data-bind="page: {id: 'custom_js_when_navigating', title: 'Custom JS when Navigating', desc: 'reacting to navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/navigation/custom_js_when_navigating.html'}"></div>
+                <div data-bind="page: {id: 'failed_navigation', title: 'Failed Navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/navigation/failed_navigation.html'}"></div>
+                <div data-bind="page: {id: 'async', withOnShow: requireVM('vm/navigation/async'), title: 'Async', desc: 'handling asynchronous navigation', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/navigation/async.html'}"></div>
+                <div data-bind="page: {id: 'guards', title: 'Guards', desc: 'conditions when navigating to a page is ok', scrollToTop: true, sourceCache:  true,
+                withOnShow: requireVM('vm/navigation/guards'),
+                sourceOnShow: 'page/navigation/guards.html'}"></div>
                 <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
 
             <div data-bind="page: {id: 'model', title: 'Model', desc: 'Model'}">
-                <div data-bind="page: {id: 'change_binding_context', title: 'Change Binding Context', desc: 'like with or foreach', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/change_binding_context.html', role: 'start'}"></div>
-                <div data-bind="page: {id: 'lazy_bind_view_model', title: 'Lazy-Bind View-Model', desc: 'delay data binding until first displayed', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/lazy_bind_view_model.html'}"></div>
-                <div data-bind="page: {id: 'params', title: 'Binding URL Parameters', desc: 'using parameters from forms in #', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/params.html'}"></div>
-                <div data-bind="page: {id: 'binding_params_object', title: 'Binding parameters with default values', sourceOnShow: 'page/params_and_object.html', scrollToTop: true, sourceCache:  true, desc: 'params with default values'}"></div>
-                <div data-bind="page: {id: 'binding_wildcard_to_observable', title: 'Binding Wildcard to observable', sourceOnShow: 'page/binding_wildcard_to_observable.html', scrollToTop: true, sourceCache:  true, desc: 'set a name on the ?'}"></div>
-                <div data-bind="page: {id: 'bind_to_vm', title: 'Binding to View Model', sourceOnShow: 'page/bind_to_vm.html', scrollToTop: true, sourceCache: true, desc: 'bind page to view model', withOnShow: page.bindVM}"></div>
-                <div data-bind="page: {id: 'vars', title: 'Custom observables', sourceOnShow: 'page/vars.html', scrollToTop: true, sourceCache:  true, desc: 'pure local view-observables'}"></div>
-                <div data-bind="page: {id: 'binding_error', title: 'Binding Error', sourceOnShow: 'page/binding_error.html', scrollToTop: true, sourceCache:  true, desc: 'trigger event'}"></div>
+                <div data-bind="page: {id: 'change_binding_context', title: 'Change Binding Context', desc: 'like with or foreach', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/model/change_binding_context.html', role: 'start'}"></div>
+                <div data-bind="page: {id: 'lazy_bind_view_model', title: 'Lazy-Bind View-Model', desc: 'delay data binding until first displayed', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/model/lazy_bind_view_model.html'}"></div>
+                <div data-bind="page: {id: 'params', title: 'Binding URL Parameters', desc: 'using parameters from forms in #', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/model/params.html'}"></div>
+                <div data-bind="page: {id: 'binding_params_object', title: 'Binding parameters with default values', sourceOnShow: 'page/model/params_and_object.html', scrollToTop: true, withOnShow: requireVM('vm/model/params_and_object'), sourceCache:  true, desc: 'params with default values'}"></div>
+                <div data-bind="page: {id: 'binding_wildcard_to_observable', title: 'Binding Wildcard to observable', sourceOnShow: 'page/model/binding_wildcard_to_observable.html', scrollToTop: true, sourceCache:  true, desc: 'set a name on the ?'}"></div>
+                <div data-bind="page: {id: 'bind_to_vm', title: 'Binding to View Model', sourceOnShow: 'page/model/bind_to_vm.html', scrollToTop: true, sourceCache: true, desc: 'bind page to view model', withOnShow: requireVM('vm/model/bindVM')}"></div>
+                <div data-bind="page: {id: 'vars', title: 'Custom observables', sourceOnShow: 'page/model/vars.html', scrollToTop: true, sourceCache:  true, desc: 'pure local view-observables'}"></div>
+                <div data-bind="page: {id: 'binding_error', title: 'Binding Error', sourceOnShow: 'page/model/binding_error.html', scrollToTop: true, sourceCache:  true, desc: 'trigger event'}"></div>
                 <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
 
             <div data-bind="page: {id: 'view', title: 'View', desc: 'View'}">
-                <div data-bind="page: {id: 'load_external_content', sourceLoaded: externalContentLoaded, scrollToTop: true, sourceCache:  true, sourceOnShow: 'load_external_content.html .content', title: 'Load External Content', desc: 'from another HTML page', role: 'start'}"></div>
-                <div data-bind="page: {id: 'lazy_load_external_content', sourceLoaded: externalContentLazyLoaded, sourceOnShow: 'lazy_load_external_content.html .content', title: 'Lazy-Load External Content', desc: 'load pages on demand'}"></div>
-                <div data-bind="page: {id: 'cached_lazy', sourceLoaded: externalContentLazyLoaded, sourceOnShow: 'cached_lazy.html .content', scrollToTop: true, sourceCache:  true, title: 'Cache Lazy-Loaded Content', desc: 'cache the pages in the client'}"></div>
-                <div data-bind="page: {id: 'send_wildcard_to_source', title: 'Send Wildcards to Source', desc: 'using the ? as a parameter', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/send_wildcard_to_source.html'}"></div>
-                <div data-bind="page: {id: 'deep_load_content_into_wildcard', title: 'Deep Load Content into Wildcard', desc: 'arbitrarily nested content', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/deep_load_content_into_wildcard.html'}"></div>
-                <div data-bind="page: {id: 'load_into_iframe', title: 'Load Content into iframe', desc: 'instead of into the same document', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/load_into_iframe.html'}"></div>
-                <div data-bind="page: {id: 'configure_iframe', title: 'Configure iframe', desc: 'supply iframes with defaul values', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/configure_iframe.html'}"></div>
-                <div data-bind="page: {id: 'custom_view_loader', title: 'Load View using Custom Method', desc: 'for programming in the large', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/custom_view_loader.html'}"></div>
-                <div data-bind="page: {id: 'modals', title: 'Modals', desc: 'pages that can show up anywhere', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/modals.html'}"></div>
-                <div data-bind="page: {id: 'custom_hide_show', title: 'Custom Hide- and Show-methods', desc: 'effects for showing and hiding pages', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/custom_hide_show.html'}"></div>
-                <div data-bind="page: {id: 'loader', title: 'Loaders', desc: 'custom spinners etc before a page is loaded', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/loader.html'}"></div>
-                <div data-bind="page: {id: 'url_toggle_show', title: 'Pages that only toggle on', sourceOnShow: 'page/url_toggle_show.html', scrollToTop: true, sourceCache:  true, desc: 'pages that does not automatically hide'}"></div>
-                <div data-bind="page: {id: 'source_error', title: 'Source Error', sourceOnShow: 'page/source_error.html', scrollToTop: true, sourceCache:  true, desc: 'trigger event'}"></div>
+                <div data-bind="page: {id: 'load_external_content', sourceLoaded: externalContentLoaded, scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/view/load_external_content.html .content', title: 'Load External Content', desc: 'from another HTML page', role: 'start'}"></div>
+                <div data-bind="page: {id: 'lazy_load_external_content', sourceLoaded: externalContentLazyLoaded, sourceOnShow: 'page/view/lazy_load_external_content.html .content', title: 'Lazy-Load External Content', desc: 'load pages on demand'}"></div>
+                <div data-bind="page: {id: 'cached_lazy', sourceLoaded: externalContentLazyLoaded, sourceOnShow: 'page/view/cached_lazy.html .content', scrollToTop: true, sourceCache:  true, title: 'Cache Lazy-Loaded Content', desc: 'cache the pages in the client'}"></div>
+                <div data-bind="page: {id: 'send_wildcard_to_source', title: 'Send Wildcards to Source', desc: 'using the ? as a parameter', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/view/send_wildcard_to_source.html'}"></div>
+                <div data-bind="page: {id: 'deep_load_content_into_wildcard', title: 'Deep Load Content into Wildcard', desc: 'arbitrarily nested content', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/view/deep_load_content_into_wildcard.html'}"></div>
+                <div data-bind="page: {id: 'load_into_iframe', title: 'Load Content into iframe', desc: 'instead of into the same document', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/view/load_into_iframe.html'}"></div>
+                <div data-bind="page: {id: 'configure_iframe', title: 'Configure iframe', desc: 'supply iframes with defaul values', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/view/configure_iframe.html'}"></div>
+                <div data-bind="page: {id: 'custom_view_loader', title: 'Load View using Custom Method', desc: 'for programming in the large', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/view/custom_view_loader.html'}"></div>
+                <div data-bind="page: {id: 'modals', title: 'Modals', desc: 'pages that can show up anywhere', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/view/modals.html'}"></div>
+                <div data-bind="page: {id: 'custom_hide_show', title: 'Custom Hide- and Show-methods', desc: 'effects for showing and hiding pages', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/view/custom_hide_show.html'}"></div>
+                <div data-bind="page: {
+                  id: 'loader',
+                  title: 'Loaders',
+                  desc: 'custom spinners etc before a page is loaded',
+                  scrollToTop: true,
+                  withOnShow: requireVM('vm/view/loader'),
+                  sourceCache:  true,
+                  sourceOnShow: 'page/view/loader.html'}"
+                        ></div>
+                <div data-bind="page: {id: 'url_toggle_show', title: 'Pages that only toggle on', sourceOnShow: 'page/view/url_toggle_show.html', scrollToTop: true, sourceCache:  true, desc: 'pages that does not automatically hide'}"></div>
+                <div data-bind="page: {id: 'source_error', title: 'Source Error', sourceOnShow: 'page/view/source_error.html', scrollToTop: true, sourceCache:  true, desc: 'trigger event'}"></div>
                 <div data-bind="page: {id: 'fx', title: 'FX', sourceOnShow: 'page/view/fx.html', scrollToTop: true, sourceCache:  true, desc: 'effects between page transitions'}"></div>
                 <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
@@ -155,14 +165,21 @@
 
 
             <div data-bind="page: {id: 'widgets', title: 'Widgets', desc: 'Widgets'}">
-                <div data-bind="page: {id: 'tabpanel', title: 'Tab Panel', desc: 'roll your own tab panel', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/tabpanel.html', role: 'start'}"></div>
-                <div data-bind="page: {id: 'custom_widgets', title: 'Custom Widgets', desc: 'subclassing the page-binding', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/custom_widgets.html'}"></div>
-                <div data-bind="page: {id: 'custom_navigation_binding', title: 'Custom Navigation Binding', sourceOnShow: 'page/custom_navigation_binding.html', scrollToTop: true, sourceCache:  true, desc: 'developing a page-step: binding'}"></div>
+                <div data-bind="page: {id: 'tabpanel', title: 'Tab Panel', desc: 'roll your own tab panel', scrollToTop: true, sourceCache:  true, sourceOnShow: 'page/widgets/tabpanel.html', role: 'start'}"></div>
+                <div data-bind="page: {
+                id: 'custom_widgets',
+                title: 'Custom Widgets',
+                desc: 'subclassing the page-binding',
+                scrollToTop: true,
+                withOnShow: requireVM('vm/widgets/custom_widgets'),
+                sourceCache:  true,
+                sourceOnShow: 'page/widgets/custom_widgets.html'}"></div>
+                <div data-bind="page: {id: 'custom_navigation_binding', title: 'Custom Navigation Binding', sourceOnShow: 'page/widgets/custom_navigation_binding.html', scrollToTop: true, sourceCache:  true, desc: 'developing a page-step: binding'}"></div>
                 <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
 
             <div data-bind="page: {id: 'misc', title: 'Misc', desc: 'Misc'}">
-                <div data-bind="page: {id: 'crawling', title: 'Crawling', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/crawling.html', desc: 'making sure the site can be crawled', role: 'start'}"></div>
+                <div data-bind="page: {id: 'crawling', title: 'Crawling', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/misc/crawling.html', desc: 'making sure the site can be crawled', role: 'start'}"></div>
                 <div data-bind="page: {id: '?', title: '404 - Single Page Not Found', scrollToTop: true, sourceCache: true, sourceOnShow: 'page/404.html'}"></div>
             </div>
 
