@@ -204,11 +204,9 @@
             this.hideChild = function () {
                 var currentChild = me.currentChildO();
                 if (currentChild) {
-                    if (!currentChild.isStartPage()) {
-                        currentChild.hidePage(function () {
-                        });
-                        me.currentChildO(null);
-                    }
+                    currentChild.hidePage(function () {
+                    });
+                    me.currentChildO(null);
                 }
             };
 

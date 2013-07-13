@@ -23,6 +23,10 @@ See the [demo](http://pagerjs.com/demo/).
 
 ## Install
 
+Download
+
+
+
 Using npm
 
     npm install pagerjs
@@ -127,6 +131,13 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 ### 1.0.0
 
 - A lot of cleanup and some breaking changes!
+
+### 1.0.1
+
+-[Work with Knockout 2.3](https://github.com/finnsson/pagerjs/issues/127)
+-[hash urls](https://github.com/finnsson/pagerjs/issues/123)
+-[withOnShow is not updating route after source is loaded](https://github.com/finnsson/pagerjs/issues/121)
+-[Show/Hide Events event don't occur](https://github.com/finnsson/pagerjs/issues/131)
 
 ## Roadmap
 
