@@ -14,9 +14,9 @@
     $(document).ready(function () {
 
 
-        pager.Page.prototype.toJSON = function() {
-            console.error("toJSON");
-            return {};
+        pager.Page.prototype.toJSON = function () {
+            console.error("inside pager.Page.toJSON");
+            return undefined;
         };
 
         function AppViewModel() {
@@ -38,12 +38,14 @@
             };
         }
 
-        AppViewModel.prototype.toJSON = function() {
+        /*
+        AppViewModel.prototype.toJSON = function () {
             // return everything except __proto__ ?
+            console.error("inside AppViewModel.prototype.toJSON");
             var c = $.extend({}, this);
-            delete c['__proto__'];
+            delete c['$__page__'];
             return c;
-        };
+        };*/
 
         var theViewModel = new AppViewModel();
 
@@ -56,7 +58,14 @@
 
         ko.applyBindings(theViewModel);
 
-        console.log('-', ko.toJSON(theViewModel));
+        console.log('-', ko.toJSON(theViewModel, function (k, v) {
+            console.error("inside ko.toJSON");
+            if (k instanceof pager.Page) {
+                return undefined;
+            } else {
+                return v;
+            }
+        }));
 
         pager.start();
 
