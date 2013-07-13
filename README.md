@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/finnsson/pagerjs.png)](https://travis-ci.org/finnsson/pagerjs)
 
+![Logo](logo-512.png)
+
     one having or covering a specified number or kind of pages
       - Merriam-Webster
 
