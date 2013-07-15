@@ -6,7 +6,7 @@ module.exports = function (grunt) {
     // Project configuration.
     grunt.initConfig({
         meta:{
-            version:'1.1.0',
+            version:'1.0.1',
             banner:'/*! pager.js - v<%= meta.version %> - ' +
                 '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
                 '* http://oscar.finnsson.nu/pagerjs/\n' +

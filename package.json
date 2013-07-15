@@ -2,7 +2,7 @@
     "name": "pagerjs",
     "title": "pagerjs",
     "description": "Single page application framework for KnockoutJS",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "homepage": "http://pagerjs.com",
     "author": {
         "name": "Oscar Finnsson",

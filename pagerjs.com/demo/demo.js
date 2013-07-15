@@ -17,50 +17,6 @@ requirejs.config({
 requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange'], function ($, ko, _, pager) {
 
 
-    pager.PageAccordionItem = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-        pager.Page.apply(this, arguments);
-    };
-    pager.PageAccordionItem.prototype = new pager.Page();
-
-    // get second child
-    pager.PageAccordionItem.prototype.getAccordionBody = function () {
-        return $(this.element).children()[1];
-    };
-
-    // hide second child
-    pager.PageAccordionItem.prototype.hideElement = function (callback) {
-        // use hide if it is the first time the page is hidden
-        if (!this.pageAccordionItemHidden) {
-            this.pageAccordionItemHidden = true;
-            $(this.getAccordionBody()).hide();
-            if (callback) {
-                callback();
-            }
-        } else { // else use a slideUp animation
-            $(this.getAccordionBody()).slideUp();
-            if (callback) {
-                callback();
-            }
-        }
-    };
-
-    // show the second child using a slideDown animation
-    pager.PageAccordionItem.prototype.showElement = function (callback) {
-        $(this.getAccordionBody()).slideDown();
-        if (callback) {
-            callback();
-        }
-    };
-
-    ko.bindingHandlers['page-accordion-item'] = {
-        init:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-            var pageAccordionItem = new pager.PageAccordionItem(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
-            pageAccordionItem.init();
-        },
-        update:function () {
-        }
-    };
-
     ko.bindingHandlers['prettyprint'] = {
         init:function(element) {
             var $element = $(element);
@@ -85,34 +41,6 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
     };
 
     var viewModel = {
-        page: {
-            async: {
-                // wait 2 secs before returning ok
-                wait2: function() {
-                    var d = $.Deferred();
-                    setTimeout(function() {
-                        d.resolve();
-                    }, 2000);
-                    return d;
-                },
-                wait2Fail: function() {
-                    var d = $.Deferred();
-                    setTimeout(function() {
-                        d.reject();
-                    }, 2000);
-                    return d;
-                },
-                okIsLoading:ko.observable(),
-                notOkIsLoading: ko.observable()
-            },
-            bindVM: {
-                bindToVM: ko.observable(),
-                getText: function(p) {
-                    return $(p().element).html();
-                }
-            }
-        },
-        question: ko.observable('How many roads must a man walk down before you can call him a man?'),
         closePage: function(page) {
             return function() {
                 page.hideElementWrapper();
@@ -160,21 +88,6 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
             };
             return loader;
         },
-        spinnerLoader: function(page, element) {
-            var loader = {};
-            var txt = $('<img src="ajax-loader.gif"/>');
-            loader.load = function () {
-                $(element).empty();
-                $(element).append(txt);
-            };
-            loader.unload = function () {
-                txt.remove();
-            };
-            return loader;
-        },
-        eternalSource: function() {
-            // do nothing :)
-        },
         randomFailed:function (options) {
             var page = options.page;
             var route = options.route;
@@ -182,18 +95,6 @@ requirejs(['jquery', 'knockout', 'underscore', 'pager', 'bootstrap', 'hashchange
                 childId:route[0]
             });
             page.showPage(route);
-        },
-        loggedIn:ko.observable(false),
-        isLoggedIn:function (page, route, callback) {
-            if (viewModel.loggedIn()) {
-                callback();
-            } else {
-                window.location.href = "#!/navigation/guards/login";
-            }
-        },
-        logout:function () {
-            viewModel.loggedIn(false);
-            return true;
         },
         newChildren:ko.observableArray([])
     };

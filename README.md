@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/finnsson/pagerjs.png)](https://travis-ci.org/finnsson/pagerjs)
 
+![Logo](logo-512.png)
+
     one having or covering a specified number or kind of pages
       - Merriam-Webster
 
@@ -13,13 +15,17 @@ developed standalone but still communicate between each other.
 
 This makes it easier to design very large scale single page web sites.
 
-This readme is for version 1.0.0.
+This readme is for version 1.0.
 
 ## Getting Started
 
 See the [demo](http://pagerjs.com/demo/).
 
 ## Install
+
+Download
+
+
 
 Using npm
 
@@ -126,6 +132,13 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 
 - A lot of cleanup and some breaking changes!
 
+### 1.0.1
+
+-[Work with Knockout 2.3](https://github.com/finnsson/pagerjs/issues/127)
+-[hash urls](https://github.com/finnsson/pagerjs/issues/123)
+-[withOnShow is not updating route after source is loaded](https://github.com/finnsson/pagerjs/issues/121)
+-[Show/Hide Events event don't occur](https://github.com/finnsson/pagerjs/issues/131)
+
 ## Roadmap
 
 See [Milestones](https://github.com/finnsson/pagerjs/issues/milestones).
@@ -134,6 +147,20 @@ See [Milestones](https://github.com/finnsson/pagerjs/issues/milestones).
 
 Fork this repo. Install all dependencies (node.js, grunt, phnatomjs). Run all tests
 (`grunt qunit`). Run jslint (`grunt lint`). Make your changes. Run all tests and the linter again. Send a pull request.
+
+### Contributors
+
+[finnsson](https://github.com/finnsson)
+
+[GilesBradshaw](https://github.com/GilesBradshaw)
+
+[tedsteen](https://github.com/tedsteen)
+
+[Shildrak](https://github.com/Shildrak)
+
+[adimkov](https://github.com/adimkov)
+
+[imrefazekas](https://github.com/imrefazekas)
 
 ## License
 

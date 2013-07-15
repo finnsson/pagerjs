@@ -204,10 +204,9 @@
             this.hideChild = function () {
                 var currentChild = me.currentChildO();
                 if (currentChild) {
-                    currentChild.hidePage(function () {});
-                    if (!currentChild.isStartPage()) {
-                        me.currentChildO(null);
-                    }
+                    currentChild.hidePage(function () {
+                    });
+                    me.currentChildO(null);
                 }
             };
 
@@ -327,6 +326,8 @@
         /**
          *
          * @class pager.Page
+         *
+         * @constructor
          *
          * @param {Node} element
          * @param {Object} valueAccessor
@@ -484,6 +485,14 @@
             return makeComputed(this.find, this)(key);
         };
 
+        var absolutePathToRealPath = function (path) {
+            if (pager.useHTML5history) {
+                return $('base').attr('href') + path;
+            } else {
+                return pager.Href.hash + path;
+            }
+        };
+
         /**
          *
          * Utility method to generate a complete (computed observable) path relative to the current Page.
@@ -506,7 +515,8 @@
                     page = p;
                 } else { // if string
                     if (p.substring(0, 1) === '/') {
-                        return pager.page.getFullRoute()() + p.substring(1);
+                        var pagePath = pager.page.getFullRoute()().join('/') + p.substring(1);
+                        return absolutePathToRealPath(pagePath);
                     }
                     var parentsToTrim = 0;
                     while (p.substring(0, 3) === '../') {
@@ -517,18 +527,9 @@
                     var fullRoute = me.getFullRoute()();
                     var parentPath = fullRoute.slice(0, fullRoute.length - parentsToTrim).join('/');
                     var fullPathWithoutHash = (parentPath === '' ? '' : parentPath + '/') + p;
-                    if (pager.useHTML5history) {
-                        return $('base').attr('href') + fullPathWithoutHash;
-                    } else {
-                        return pager.Href.hash + fullPathWithoutHash;
-                    }
+                    return absolutePathToRealPath(fullPathWithoutHash);
                 }
-                var pagePath = page.getFullRoute()().join('/');
-                if (pager.useHTML5history) {
-                    return $('base').attr('href') + pagePath;
-                } else {
-                    return pager.Href.hash + pagePath;
-                }
+                return absolutePathToRealPath(page.getFullRoute()().join('/'));
             }
         };
 
@@ -581,7 +582,8 @@
         };
 
         /**
-         * @method pager.Page#showPage
+         * @method showPage
+         * @member pager.Page
          *
          * @param route
          * @param [pageRoute]
@@ -618,7 +620,8 @@
         };
 
         /**
-         * @method pager.Page#setParams
+         * @method setParams
+         * @member pager.Page
          *
          */
         p.setParams = function () {
@@ -674,7 +677,8 @@
         };
 
         /**
-         * @method pager.Page#hidePage
+         * @method hidePage
+         * @member pager.Page
          *
          * @param {Function} callback
          */
@@ -699,7 +703,8 @@
         };
 
         /**
-         * @method pager.Page#init
+         * @method init
+         * @member pager.Page
          *
          * @return {Object}
          */
@@ -1106,7 +1111,7 @@
 
         };
 
-        p.titleOrId = function() {
+        p.titleOrId = function () {
             return this.val('title') || this.id();
         };
 
@@ -1259,9 +1264,9 @@
             return me._child[key];
         };
 
-        pager.getActivePage = function() {
+        pager.getActivePage = function () {
             var active = pager.page;
-            while(active.currentChildPage()() != null) {
+            while (active.currentChildPage()() != null) {
                 active = active.currentChildPage()();
             }
             return active;

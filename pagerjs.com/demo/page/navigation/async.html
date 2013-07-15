@@ -103,4 +103,26 @@ viewModel = {
     </p>
 </div>
 
+        <br/>
+
+<div class="alert">
+    <h3>Tip!</h3>
+This page is loaded using the code
+    
+    <pre>
+        &lt;div data-bind="page: {
+          id: 'async',
+          withOnShow: <a title="The viewmodel for this page is lazy-loaded using requirejs" data-bind="tooltip: {}"> requireVM('vm/navigation/async')</a>,
+          title: 'Async',
+          desc: 'handling asynchronous navigation',
+          scrollToTop: true,
+          sourceCache:  true,
+          sourceOnShow: 'page/navigation/async.html'
+        }"&gt;&lt;/div&gt;
+                
+    </pre>
+</div>
+        
+        
+
 <div data-bind="template: {name: 'link-template'}"></div>

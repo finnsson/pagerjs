@@ -1,0 +1,80 @@
+<html>
+<head>
+    <script src="/lib/jquery-2.0.3.min.js"></script>
+    <script src="/lib/knockout-2.3.0.debug.js"></script>
+    <script src="../pager.js"></script>
+</head>
+<body>
+<div data-bind="page: {id: 'ignite', title: 'Greetings', role: 'start'}">
+    <!--
+    Sportif: <input type="checkbox" data-bind="checked: personal.sportif"/>
+    -->
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        pager.Page.prototype.toJSON = function () {
+            console.error("inside pager.Page.toJSON");
+            return undefined;
+        };
+
+        function AppViewModel() {
+            var self = this;
+            self.firstName = ko.observable("Bert");
+            self.lastName = ko.observable("Bertington");
+
+            self.fullName = ko.computed(function () {
+                return self.firstName() + " " + self.lastName();
+            }, this);
+
+            self.capitalizeLastName = function () {
+                var currentVal = self.lastName();   // Read the current value
+                self.lastName(currentVal.toUpperCase()); // Write back a modified value
+            };
+
+            self.personal = {
+                sportif: ko.observable(false)
+            };
+        }
+
+        /*
+        AppViewModel.prototype.toJSON = function () {
+            // return everything except __proto__ ?
+            console.error("inside AppViewModel.prototype.toJSON");
+            var c = $.extend({}, this);
+            delete c['$__page__'];
+            return c;
+        };*/
+
+        var theViewModel = new AppViewModel();
+
+        console.log('?', ko.toJSON(theViewModel));
+
+        pager.extendWithPage(theViewModel);
+
+        console.log(theViewModel);
+        console.log(':', ko.toJSON(theViewModel));
+
+        ko.applyBindings(theViewModel);
+
+        console.log('-', ko.toJSON(theViewModel, function (k, v) {
+            console.error("inside ko.toJSON");
+            if (k instanceof pager.Page) {
+                return undefined;
+            } else {
+                return v;
+            }
+        }));
+
+        pager.start();
+
+        console.log(theViewModel);
+
+        window.VM = theViewModel;
+
+        console.log('*', ko.toJSON(theViewModel));
+    });
+</script>
+</body>
+</html>
