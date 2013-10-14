@@ -845,7 +845,7 @@
                 });
             }
             var nameParam = this.getValue()['nameParam'];
-            if (nameParam && typeof nameParam === 'string') {
+            if (nameParam && typeof nameParam === 'string' && !m.ctx[nameParam]) {
                 m.ctx[nameParam] = ko.observable(null);
             }
             this.setParams();
