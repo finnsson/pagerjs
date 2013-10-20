@@ -1,0 +1,37 @@
+{
+  "name": "pagerjs",
+  "version": "1.0.0",
+  "homepage": "http://pagerjs.com/",
+  "authors": [
+    "Oscar Finnsson <oscar.finnsson@gmail.com>"
+  ],
+  "description": "The Single Page Application Framework for KnockoutJS",
+  "main": "pager.js",
+  "keywords": [
+    "knockout",
+    "history",
+    "router",
+    "pager",
+    "pages",
+    "page"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "test-data",
+    "test-html5",
+    "grunt.js",
+    "kodoc.js",
+    "pagerjs.com",
+    "pending_tests",
+    "*.png",
+    "lib"
+  ],
+  "dependencies": {
+    "knockoutjs": ">=2.2.0",
+    "jquery": ">=1.7.3"
+  }
+}

@@ -847,7 +847,7 @@
                 });
             }
             var nameParam = this.getValue()['nameParam'];
-            if (nameParam && typeof nameParam === 'string') {
+            if (nameParam && typeof nameParam === 'string' && !m.ctx[nameParam]) {
                 m.ctx[nameParam] = ko.observable(null);
             }
             this.setParams();
@@ -1504,7 +1504,7 @@
     if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
         // define as an anonymous module so, through path mapping, it can be
         // referenced as any module
-        define('pager', ['knockout', 'jquery'], function (ko) {
+        define('pager', ['knockout', 'jquery'], function (ko, $) {
             return pagerJsModule($, ko);
         });
     } else {
