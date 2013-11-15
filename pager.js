@@ -542,7 +542,7 @@
          * @param {Function} fn should return a $.Deferred (NOT a promise since async should be able to reject it).
          * @param {String/Object} ok route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
          * @param {String/Object} notOk route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
-         * @param {Observable} [state]
+         * @param {Function} [state]
          * @return {Function}
          */
         p.async = function (fn, ok, notOk, state) {
@@ -708,6 +708,8 @@
          */
         p.init = function () {
             var m = this;
+            m.cleanElement = m.element.innerHTML;
+
             var urlToggle = m.val('urlToggle');
 
             var id = m.val('id');
@@ -918,8 +920,14 @@
         p.loadWithOnShow = function () {
             var me = this;
             if (!me.withOnShowLoaded || me.val('sourceCache') !== true) {
-                me.withOnShowLoaded = true;
                 me.val('withOnShow')(function (vm) {
+                    if (!me.val('sourceOnShow') && me.withOnShowLoaded) {
+                        ko.cleanNode($(me.element));
+                        $(me.element).empty();
+                        me.element.innerHTML = me.cleanElement;
+                    }
+
+
                     var childBindingContext = me.bindingContext.createChildContext(vm);
                     me.ctx = vm;
                     // replace the childBindingContext
@@ -932,6 +940,7 @@
                         me.childManager.showChild(me.route);
                     }
                 }, me);
+                me.withOnShowLoaded = true;
             }
         };
 

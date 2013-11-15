@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Should access URI parameters</title>
+    <title>Should Rebind withOnShow</title>
     <script type="text/javascript" src="../lib/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="../lib/underscore-min.js"></script>
     <script type="text/javascript" src="../lib/knockout-3.0.0.js"></script>
@@ -14,35 +14,28 @@
 
 <div id="qunit"></div>
 
-<div data-bind="page: {id: '?', nameParam: 'theID', withOnShow: someWith()}">
-    <h1>Page is visible</h1>
-    <div id="name" data-bind="text: name"></div>
-    <div id="the_ID" data-bind="text: theID"></div>
+<div data-bind="page: {id: '?', withOnShow: showView}">
+    <h1 id="headline" data-bind="text:id"></h1>
 </div>
 
 <script type="text/javascript">
 
 
     var viewModel = {
-        theID: ko.observable(),
-        someWith: function() {
-            return function(callback) {
-                callback({
-                    name: 'Pelle',
-                    age: 31
-                });
-            };
+        showView: function (callback, page) {
+            callback({
+                id: ko.observable(page.currentId)
+            });
         }
     };
 
-    viewModel.theID.subscribe(function(val) {
-        console.error(val);
-    });
-
-    VM = viewModel;
-
     pager.extendWithPage(viewModel);
     ko.applyBindings(viewModel);
+
+    pager.onBindingError.add(function (err) {
+        console.error(err.error);
+        console.error(err.error.message);
+    });
 
     pager.start();
 </script>
@@ -52,15 +45,22 @@
 
 <script type="text/javascript">
 
-    asyncTest("Should access URI parameters", function () {
+    asyncTest("Should Rebind withOnShow", function () {
 
-        window.location.hash = '#first';
+        window.location.hash = '#first/name';
         until(function () {
-            return $('#name').text() === 'Pelle' && $('#the_ID').text() === 'first'
+            return $('#headline').text() === 'first';
         }, function () {
-            assert.equal($('#name').text(), 'Pelle', 'name should be pelle');
-            assert.equal($('#the_ID').text(), 'first', 'theID should be first');
-            start();
+            equal($('#headline').text(), 'first');
+
+            window.location.hash = '#second/name';
+
+            until(function () {
+                return $('#headline').text() === 'second';
+            }, function () {
+                equal($('#headline').text(), 'second');
+                start();
+            });
         });
 
 
