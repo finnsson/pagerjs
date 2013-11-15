@@ -1454,7 +1454,8 @@
                 goTo(relativeUrl);
             });
             pager.Href5.history.Adapter.bind(window, 'anchorchange', function () {
-                goTo(location.hash);
+                var hash = window.location.href.split('#')[1];
+                goTo(hash ? '#' + hash : '');
             });
             if (!options || !options.noGo) {
                 goTo(pager.Href5.history.getState().url.replace(pager.Href5.history.getBaseUrl(), ''));
@@ -1477,7 +1478,8 @@
                 window.location.hash = pager.Href.hash + id;
             }
             var onHashChange = function () {
-                goTo(window.location.hash);
+                var hash = window.location.href.split('#')[1];
+                goTo(hash ? '#' + hash : '');
             };
             $(window).bind('hashchange', onHashChange);
 

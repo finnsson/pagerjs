@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should allow params in href</title>
+    <script type="text/javascript" src="../lib/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-3.0.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div id="a">
+    <h1>a</h1>
+    <div data-bind="page: {id: 'first', params: ['ans']}">
+        <h2>first</h2>
+        <div id="answer" data-bind="text: ans"></div>
+    </div>
+</div>
+<script type="text/javascript">
+
+
+    try {
+        var viewModel = {
+        };
+        // dummy VM
+        var vm2 = {};
+
+        pager.extendWithPage(viewModel);
+        // use the same root page
+        vm2.$__page__ = viewModel.$__page__;
+        ko.applyBindings(viewModel, $('#a')[0]);
+
+        pager.start();
+    } catch (e) {
+        console.error(e);
+    }
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should allow params in href", function () {
+
+        $(function () {
+
+
+            window.location.hash = '#first?ans=' + encodeURIComponent('2013/11/15');
+
+            until(function () {
+                return $('#answer').is(':visible') && $('#answer').text() === '2013/11/15';
+            }, function () {
+                ok("/ is ok as a parameter");
+                start();
+            });
+        });
+
+    });
+</script>
+
+
+</body>
+</html>
