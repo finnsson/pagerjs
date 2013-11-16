@@ -111,6 +111,10 @@
                   <a href="#release-notes/1-0-0">1.0.0</a>
                 </li>
               
+                <li>
+                  <a href="#release-notes/1-0-1">1.0.1</a>
+                </li>
+              
             </ul>
           
         </li>
@@ -123,6 +127,14 @@
         <li>
           <a href="#how-to-contribute">How to Contribute</a>
           
+            <ul>
+              
+                <li>
+                  <a href="#how-to-contribute/contributors">Contributors</a>
+                </li>
+              
+            </ul>
+          
         </li>
       
         <li>
@@ -133,7 +145,7 @@
     </ul>
     
       <div class="extra" id="github">
-        <a href="https://github.com/finnsson/pagerjs">Source on Github</a>
+        <a href="https://github.com/finnsson/pagerjs">Source on GitHub</a>
       </div>
       
         <div class="extra" id="github-issues">
@@ -155,33 +167,21 @@
       <a href="https://github.com/finnsson/pagerjs" id="github-ribbon"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
     
     <h1><a href="http://oscar.finnsson.nu/pagerjs/">pager.js</a></h1>
-<p><a href="https://travis-ci.org/finnsson/pagerjs"><img src="https://travis-ci.org/finnsson/pagerjs.png" alt="Build Status"></a>
-
-</p>
-<pre><code>one having <span class="keyword">or</span> covering a specified number <span class="keyword">or</span> kind <span class="keyword">of</span> pages
+<p><a href="https://travis-ci.org/finnsson/pagerjs"><img src="https://travis-ci.org/finnsson/pagerjs.png" alt="Build Status"></a></p>
+<p><img src="logo-512.png" alt="Logo"></p>
+<pre><code>one having <span class="keyword">or</span> covering a specified <span class="type">number</span> <span class="keyword">or</span> kind <span class="keyword">of</span> pages
   - Merriam-Webster</code></pre>
-<p>See the <a href="http://pagerjs.com/demo/">demo</a>.
-
-</p>
+<p>See the <a href="http://pagerjs.com/demo/">demo</a>.</p>
 <p>pager.js is a JavaScript library based on KnockoutJS and jQuery that provides the possibility of
 creating single page applications in a declarative fashion - nesting subpages inside subpages where each subpage can be
-developed standalone but still communicate between each other.
-
-</p>
-<p>This makes it easier to design very large scale single page web sites.
-
-</p>
-<p>This readme is for version 1.0.0.
-
-</p>
+developed standalone but still communicate between each other.</p>
+<p>This makes it easier to design very large scale single page web sites.</p>
+<p>This readme is for version 1.0.1.</p>
 <h2 id='getting-started'>Getting Started</h2 id='getting-started'>
-<p>See the <a href="http://pagerjs.com/demo/">demo</a>.
-
-</p>
+<p>See the <a href="http://pagerjs.com/demo/">demo</a>.</p>
 <h2 id='install'>Install</h2 id='install'>
-<p>Using npm
-
-</p>
+<p>Download</p>
+<p>Using npm</p>
 <pre><code><span class="title">npm</span> install pagerjs</code></pre>
 <h2 id='dependencies'>Dependencies</h2 id='dependencies'>
 <ul>
@@ -190,15 +190,9 @@ developed standalone but still communicate between each other.
 </ul>
 <p>You will usually use pager.js in combination with either
 <a href="https://github.com/cowboy/jquery-hashchange">jQuery hashchange</a>
-or <a href="https://github.com/balupton/History.js/">History.js</a>.
-
-</p>
-<p>pager.js is not depending on any CSS framework!
-
-</p>
-<p>For developing pager.js you&#39;ll also need
-
-</p>
+or <a href="https://github.com/balupton/History.js/">History.js</a>.</p>
+<p>pager.js is not depending on any CSS framework!</p>
+<p>For developing pager.js you&#39;ll also need</p>
 <ul>
 <li><a href="http://nodejs.org/">Node.js</a></li>
 <li><a href="https://github.com/cowboy/grunt">Grunt</a></li>
@@ -208,26 +202,18 @@ or <a href="https://github.com/balupton/History.js/">History.js</a>.
 </ul>
 <h2 id='philosophy'>Philosophy</h2 id='philosophy'>
 <p>Developing a huge single page application should be like developing multiple small pages. That is the only way
-you&#39;ll be able to scale up and out the development. In order to ease development in the large pager.js got
-
-</p>
+you&#39;ll be able to scale up and out the development. In order to ease development in the large pager.js got</p>
 <ul>
 <li>views (pages) that can be loaded on-demand</li>
 <li>view-models that can be loaded on-demand</li>
 </ul>
-<p>These MVVM-triads can be developed in isolation and later on connected.
-
-</p>
+<p>These MVVM-triads can be developed in isolation and later on connected.</p>
 <h2 id='faq'>FAQ</h2 id='faq'>
 <h3 id='faq/can-i-use-it-together-with'>Can I use it together with...</h3 id='faq/can-i-use-it-together-with'>
 <p>pager.js is not depending on anything but jQuery and KnockoutJS. You can use it together with
-any CSS framework.
-
-</p>
+any CSS framework.</p>
 <h3 id='faq/can-i-use-true-urls-instead'>Can I use true URLs instead?</h3 id='faq/can-i-use-true-urls-instead'>
-<p>Yes. Use <code>pager.min.history.js</code> if you want to use it together with History.js.
-
-</p>
+<p>Yes. Use <code>pager.min.history.js</code> if you want to use it together with History.js.</p>
 <h2 id='release-notes'>Release Notes</h2 id='release-notes'>
 <h3 id='release-notes/0-2'>0.2</h3 id='release-notes/0-2'>
 <ul>
@@ -288,37 +274,50 @@ any CSS framework.
 <ul>
 <li>A lot of cleanup and some breaking changes!</li>
 </ul>
+<h3 id='release-notes/1-0-1'>1.0.1</h3 id='release-notes/1-0-1'>
+<ul>
+<li><a href="https://github.com/finnsson/pagerjs/issues/127">Work with Knockout 2.3</a></li>
+<li><a href="https://github.com/finnsson/pagerjs/issues/123">hash urls</a></li>
+<li><a href="https://github.com/finnsson/pagerjs/issues/121">withOnShow is not updating route after source is loaded</a></li>
+<li><a href="https://github.com/finnsson/pagerjs/issues/131">Show/Hide Events event don&#39;t occur</a></li>
+<li><a href="https://github.com/finnsson/pagerjs/pull/129">toJSON refinements</a></li>
+<li><a href="https://github.com/finnsson/pagerjs/issues/135">pagerjs AMD support replies on global $ variable</a></li>
+<li><a href="https://github.com/finnsson/pagerjs/issues/143">withOnShow not updating on navigation</a></li>
+<li><a href="https://github.com/finnsson/pagerjs/pull/146">Added bower.json for dependency installation when pulling in this module.</a></li>
+<li><a href="https://github.com/finnsson/pagerjs/pull/147">Do not overwrite nameParam on view model if it is already defined</a></li>
+</ul>
 <h2 id='roadmap'>Roadmap</h2 id='roadmap'>
-<p>See <a href="https://github.com/finnsson/pagerjs/issues/milestones">Milestones</a>.
-
-</p>
+<p>See <a href="https://github.com/finnsson/pagerjs/issues/milestones">Milestones</a>.</p>
 <h2 id='how-to-contribute'>How to Contribute</h2 id='how-to-contribute'>
 <p>Fork this repo. Install all dependencies (node.js, grunt, phnatomjs). Run all tests
-(<code>grunt qunit</code>). Run jslint (<code>grunt lint</code>). Make your changes. Run all tests and the linter again. Send a pull request.
-
-</p>
+(<code>grunt qunit</code>). Run jslint (<code>grunt lint</code>). Make your changes. Run all tests and the linter again. Send a pull request.</p>
+<h3 id='how-to-contribute/contributors'>Contributors</h3 id='how-to-contribute/contributors'>
+<p><a href="https://github.com/finnsson">finnsson</a></p>
+<p><a href="https://github.com/GilesBradshaw">GilesBradshaw</a></p>
+<p><a href="https://github.com/tedsteen">tedsteen</a></p>
+<p><a href="https://github.com/Shildrak">Shildrak</a></p>
+<p><a href="https://github.com/adimkov">adimkov</a></p>
+<p><a href="https://github.com/imrefazekas">imrefazekas</a></p>
+<p><a href="https://github.com/altmann">altmann</a></p>
+<p><a href="https://github.com/huochunpeng">huochunpeng</a></p>
+<p><a href="https://github.com/Munter">Munter</a></p>
+<p><a href="https://github.com/alvingonzales">alvingonzales</a></p>
+<p><a href="https://github.com/CuinnWylie">CuinnWylie</a></p>
 <h2 id='license'>License</h2 id='license'>
-<p>pager.js is under MIT license.
-
-</p>
-<p>Copyright (c) 2013 Oscar Finnsson
-
-</p>
+<p>pager.js is under MIT license.</p>
+<p>Copyright (c) 2013 Oscar Finnsson</p>
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the
 rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
- persons to whom the Software is furnished to do so, subject to the following conditions:
-
-</p>
+ persons to whom the Software is furnished to do so, subject to the following conditions:</p>
 <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
-Software.
-
-</p>
+Software.</p>
 <p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
 WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
 
   </div>
-</div></body>
+</div>
+</body>
 </html>
