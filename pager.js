@@ -696,6 +696,11 @@
             try {
                 ko.applyBindingsToDescendants(page.childBindingContext, page.element);
             } catch (e) {
+                if(!pager.onBindingError.has()) {
+                    if(window.console && window.console.error) {
+                        window.console.error(e);
+                    }
+                }
                 fire(page, 'onBindingError', {error: e});
             }
         };
