@@ -35,7 +35,8 @@
         "knockout": ">=2.2"
     },
     "devDependencies": {
-        "grunt": "~0.3.16"
+        "grunt": "~0.4",
+        "grunt-contrib-qunit": "~0.4"
     },
     "keywords": ["knockout"]
 }
