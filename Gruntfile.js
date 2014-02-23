@@ -3,7 +3,10 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-contrib-qunit');
+    //grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-qunit-istanbul');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+
 
     // Project configuration.
     grunt.initConfig({
@@ -20,22 +23,34 @@ module.exports = function (grunt) {
             base:'.'
         },
         qunit:{
+            options: {
+                '--web-security': 'no',
+                coverage: {
+                    src: ['pager.js'],
+                    instrumentedFiles: 'temp/',
+                    htmlReport: 'report/coverage',
+                    coberturaReport: 'report/',
+                    linesThresholdPct: 85
+                }
+            },
             files:['test/**/*.html']
         },
-        concat:{
-            demo:{
-                src:['<banner:meta.banner>', '<file_strip_banner:pager.js>'],
-                dest:'pagerjs.com/demo/pager.min.js'
-            }
-        },
-        min:{
+        uglify:{
             dist:{
-                src:['<banner:meta.banner>', '<file_strip_banner:pager.js>'],
-                dest:'dist/pager.min.js'
+                options: {
+                    banner: '<%= meta.banner %>'
+                },
+                files: {
+                    'dist/pager.min.js': ['pager.js']
+                }
             },
             demo:{
-                src:['<banner:meta.banner>', '<file_strip_banner:pager.js>'],
-                dest:'pagerjs.com/demo/pager.min.js'
+                options: {
+                    banner: '<%= meta.banner %>'
+                },
+                files: {
+                    'pagerjs.com/demo/pager.min.js': ['pager.js']
+                }
             }
         },
         watch:{
@@ -43,26 +58,26 @@ module.exports = function (grunt) {
             tasks:'lint qunit'
         },
         jshint:{
-            files: ['pager.js', 'test/**/*.js'],
-            options:{
-                curly:true,
-                eqeqeq:true,
-                immed:true,
-                latedef:true,
-                newcap:true,
-                noarg:true,
-                sub:true,
-                undef:true,
-                boss:true,
-                eqnull:true,
-                browser:true
-            },
-            globals:{
-                jQuery:true,
-                ko:true,
-                $:true,
-                define:true,
-                _:true
+            files: ['pager.js'],
+            options: {
+                "curly": true,
+                "eqeqeq": true,
+                "immed": true,
+                "latedef": true,
+                "newcap": true,
+                "noarg": true,
+                "sub": true,
+                "undef": true,
+                "boss": true,
+                "eqnull": true,
+                "browser": true,
+                "globals": {
+                    "jQuery": true,
+                    "ko": true,
+                    "$": true,
+                    "define": true,
+                    "_": true
+                }
             }
         },
         less:{
@@ -78,15 +93,14 @@ module.exports = function (grunt) {
             },
             demo:{
                 files:{
-                    'demo/pager.css':'pager.less'
+                    'pagerjs.com/demo/pager.css':'pager.less'
                 }
             }
-        },
-        uglify:{}
+        }
     });
 
     // Default task.
-    grunt.registerTask('default', ['jshint', 'less', 'qunit', 'concat', 'min']);
+    grunt.registerTask('default', ['jshint', 'less', 'qunit', 'uglify']);
 
     grunt.registerTask('travis', ['qunit', 'jshint']);
 

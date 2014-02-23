@@ -98,18 +98,18 @@
   -moz-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
-  -webkit-transform: rotatey(90deg) scale(1);
-  -moz-transform: rotatey(90deg) scale(1);
-  -ms-transform: rotatey(90deg) scale(1);
-  -o-transform: rotatey(90deg) scale(1);
-  transform: rotatey(90deg) scale(1);
+  -webkit-transform: rotateY(90deg) scale(1);
+  -moz-transform: rotateY(90deg) scale(1);
+  -ms-transform: rotateY(90deg) scale(1);
+  -o-transform: rotateY(90deg) scale(1);
+  transform: rotateY(90deg) scale(1);
 }
 .pagerjs-fx-flip-in {
-  -webkit-transform: rotatey(0deg) scale(1);
-  -moz-transform: rotatey(0deg) scale(1);
-  -ms-transform: rotatey(0deg) scale(1);
-  -o-transform: rotatey(0deg) scale(1);
-  transform: rotatey(0deg) scale(1);
+  -webkit-transform: rotateY(0deg) scale(1);
+  -moz-transform: rotateY(0deg) scale(1);
+  -ms-transform: rotateY(0deg) scale(1);
+  -o-transform: rotateY(0deg) scale(1);
+  transform: rotateY(0deg) scale(1);
 }
 .pagerjs-fx-popout-modal {
   -webkit-transition: all 0.3s ease-in-out;
