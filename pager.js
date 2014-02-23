@@ -758,7 +758,7 @@
                 m.childBindingContext = m.bindingContext.createChildContext(m.ctx);
                 ko.utils.extend(m.childBindingContext, { $page: this });
             } else {
-                var context = value['with'] || m.bindingContext['$observableData'] || m.viewModel;
+                var context = value['with'] || m.viewModel;
                 m.ctx = _ko.value(context);
                 m.augmentContext();
 
@@ -766,8 +766,7 @@
                     var dataInContext = ko.observable(m.ctx);
                     m.childBindingContext = m.bindingContext.createChildContext(dataInContext);
                     ko.utils.extend(m.childBindingContext, {
-                        $page: this,
-                        $observableData: context
+                        $page: this
                     });
                     applyBindingsToDescendants(m);
                     context.subscribe(function () {

@@ -57,6 +57,9 @@
         until(function () {
             return $('#answer').text() === '42' && $('#question').text() === 'How many roads must a man walk down before you can call him a man?'
         }, function () {
+
+            assert.equal($('#answer').text(), '42');
+
             ok(true, "answer and question is set");
 
             assert.equal(viewModel.myPage.getId(), "first", "ID is first");
