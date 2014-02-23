@@ -1,7 +1,9 @@
 /*global module:false*/
 module.exports = function (grunt) {
 
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-qunit');
 
     // Project configuration.
     grunt.initConfig({
@@ -16,9 +18,6 @@ module.exports = function (grunt) {
         server:{
             port:8000,
             base:'.'
-        },
-        lint:{
-            files:['pager.js', 'test/**/*.js']
         },
         qunit:{
             files:['test/**/*.html']
@@ -44,6 +43,7 @@ module.exports = function (grunt) {
             tasks:'lint qunit'
         },
         jshint:{
+            files: ['pager.js', 'test/**/*.js'],
             options:{
                 curly:true,
                 eqeqeq:true,
@@ -86,8 +86,8 @@ module.exports = function (grunt) {
     });
 
     // Default task.
-    grunt.registerTask('default', 'lint less qunit concat min');
+    grunt.registerTask('default', ['jshint', 'less', 'qunit', 'concat', 'min']);
 
-    grunt.registerTask('travis', 'qunit lint');
+    grunt.registerTask('travis', ['qunit', 'jshint']);
 
 };
