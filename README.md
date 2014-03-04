@@ -15,7 +15,7 @@ developed standalone but still communicate between each other.
 
 This makes it easier to design very large scale single page web sites.
 
-This readme is for version 1.0.
+This readme is for version 1.0.1.
 
 ## Getting Started
 
@@ -134,10 +134,15 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 
 ### 1.0.1
 
--[Work with Knockout 2.3](https://github.com/finnsson/pagerjs/issues/127)
--[hash urls](https://github.com/finnsson/pagerjs/issues/123)
--[withOnShow is not updating route after source is loaded](https://github.com/finnsson/pagerjs/issues/121)
--[Show/Hide Events event don't occur](https://github.com/finnsson/pagerjs/issues/131)
+- [Work with Knockout 2.3](https://github.com/finnsson/pagerjs/issues/127)
+- [hash urls](https://github.com/finnsson/pagerjs/issues/123)
+- [withOnShow is not updating route after source is loaded](https://github.com/finnsson/pagerjs/issues/121)
+- [Show/Hide Events event don't occur](https://github.com/finnsson/pagerjs/issues/131)
+- [toJSON refinements](https://github.com/finnsson/pagerjs/pull/129)
+- [pagerjs AMD support replies on global $ variable](https://github.com/finnsson/pagerjs/issues/135)
+- [withOnShow not updating on navigation](https://github.com/finnsson/pagerjs/issues/143)
+- [Added bower.json for dependency installation when pulling in this module.](https://github.com/finnsson/pagerjs/pull/146)
+- [Do not overwrite nameParam on view model if it is already defined](https://github.com/finnsson/pagerjs/pull/147)
 
 ## Roadmap
 
@@ -161,6 +166,16 @@ Fork this repo. Install all dependencies (node.js, grunt, phnatomjs). Run all te
 [adimkov](https://github.com/adimkov)
 
 [imrefazekas](https://github.com/imrefazekas)
+
+[altmann](https://github.com/altmann)
+
+[huochunpeng](https://github.com/huochunpeng)
+
+[Munter](https://github.com/Munter)
+
+[alvingonzales](https://github.com/alvingonzales)
+
+[CuinnWylie](https://github.com/CuinnWylie)
 
 ## License
 

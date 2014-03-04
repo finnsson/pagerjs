@@ -4,7 +4,7 @@
     <title>Should support async jump</title>
     <script type="text/javascript" src="../lib/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="../lib/underscore-min.js"></script>
-    <script type="text/javascript" src="../lib/knockout-2.3.0.js"></script>
+    <script type="text/javascript" src="../lib/knockout-3.0.0.js"></script>
     <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
     <script type="text/javascript" src="../pager.js"></script>
 
@@ -14,8 +14,8 @@
 
 <div id="qunit"></div>
 
-<a id="click_x" data-bind="click: $__page__.async(ok, 'x','y')">click</a>
-<a id="click_y" data-bind="click: $__page__.async(fail, 'x','y')">click</a>
+<a id="click_x" data-bind="click: $__page__.async(okPromise, 'x','y')">click</a>
+<a id="click_y" data-bind="click: $__page__.async(failPromise, 'x','y')">click</a>
 
 <div id="x" data-bind="page: {id: 'x'}">
     page x<br/>
@@ -26,7 +26,7 @@
         <div id="x_a_x" data-bind="page: {id: 'x'}">
             page x<br/>
             <a id="click_x_b_from_x_a_x"
-               data-bind="click: $page.async(fail, '../x/a/x',{path: '../../b', params: {foo: 'bar'}})">click</a>
+               data-bind="click: $page.async(failPromise, '../x/a/x',{path: '../../b', params: {foo: 'bar'}})">click</a>
         </div>
         <div id="x_a_y" data-bind="page: {id: 'y', params: ['ans', 'bar']}">
             page y<br/>
@@ -41,7 +41,7 @@
         <div id="x_b_foo" data-bind="text: foo"></div>
 
         <a id="click_x_a_y_from_x_b"
-           data-bind="click: $page.async(fail, '',{path: $page.find('../a/y'), params: {bar: 'foo', ans:'42'}})">click</a>
+           data-bind="click: $page.async(failPromise, '',{path: $page.find('../a/y'), params: {bar: 'foo', ans:'42'}})">click</a>
 
 
         <div id="x_b_x" data-bind="page: {id: 'x'}">
@@ -54,7 +54,7 @@
 </div>
 <div id="y" data-bind="page: {id: 'y'}">
     page y<br/>
-    <a id="click_x_a_x_from_y" data-bind="click: $page.async(ok, '../x/a/x','')">click</a>
+    <a id="click_x_a_x_from_y" data-bind="click: $page.async(okPromise, '../x/a/x','')">click</a>
 </div>
 <div id="z" data-bind="page: {id: 'z'}">
     page z<br/>
@@ -63,12 +63,12 @@
 
 <script type="text/javascript">
 
-    window.ok = function () {
+    window.okPromise = function () {
         var p = $.Deferred();
         p.resolve('ok');
         return p;
     };
-    window.fail = function () {
+    window.failPromise = function () {
         var p = $.Deferred();
         p.reject('ok');
         return p;

@@ -542,7 +542,7 @@
          * @param {Function} fn should return a $.Deferred (NOT a promise since async should be able to reject it).
          * @param {String/Object} ok route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
          * @param {String/Object} notOk route (e.g. '/some/path' or '../some/path'). Should not contain '#!/'.
-         * @param {Observable} [state]
+         * @param {Function} [state]
          * @return {Function}
          */
         p.async = function (fn, ok, notOk, state) {
@@ -635,7 +635,6 @@
                 if ($.isArray(userParams)) {
                     $.each(userParams, function (index, key) {
                         var value = params[key];
-                        value = isNaN(value) ? value : parseInt(value);
                         if (vm[key]) { // set observable ...
                             vm[key](value);
                         } else { // ... or create observable
@@ -662,7 +661,6 @@
             if (this.pageRoute) {
                 var nameParam = this.getValue()['nameParam'];
                 if (nameParam) {
-                    this.currentId = isNaN(this.currentId) ? this.currentId : parseInt(this.currentId);
                     if (typeof nameParam === 'string') {
                         if (this.ctx[nameParam]) { // set observable ...
                             this.ctx[nameParam](this.currentId);
@@ -698,6 +696,11 @@
             try {
                 ko.applyBindingsToDescendants(page.childBindingContext, page.element);
             } catch (e) {
+                if(!pager.onBindingError.has()) {
+                    if(window.console && window.console.error) {
+                        window.console.error(e);
+                    }
+                }
                 fire(page, 'onBindingError', {error: e});
             }
         };
@@ -710,6 +713,8 @@
          */
         p.init = function () {
             var m = this;
+            m.cleanElement = m.element.innerHTML;
+
             var urlToggle = m.val('urlToggle');
 
             var id = m.val('id');
@@ -920,8 +925,14 @@
         p.loadWithOnShow = function () {
             var me = this;
             if (!me.withOnShowLoaded || me.val('sourceCache') !== true) {
-                me.withOnShowLoaded = true;
                 me.val('withOnShow')(function (vm) {
+                    if (!me.val('sourceOnShow') && me.withOnShowLoaded) {
+                        ko.cleanNode($(me.element));
+                        $(me.element).empty();
+                        me.element.innerHTML = me.cleanElement;
+                    }
+
+
                     var childBindingContext = me.bindingContext.createChildContext(vm);
                     me.ctx = vm;
                     // replace the childBindingContext
@@ -929,14 +940,12 @@
                     me.augmentContext();
                     ko.utils.extend(childBindingContext, {$page: me});
                     applyBindingsToDescendants(me);
-                    me.showElementWrapper();
                     // what is signaling if a page is active or not?
                     if (me.route) {
                         me.childManager.showChild(me.route);
                     }
                 }, me);
-            } else {
-                me.showElementWrapper();
+                me.withOnShowLoaded = true;
             }
         };
 
@@ -990,7 +999,6 @@
 
                     if (!me.val('withOnShow')) {
                         applyBindingsToDescendants(me);
-                        me.showElementWrapper();
                     } else if (me.val('withOnShow')) {
                         me.loadWithOnShow();
                     }
@@ -1001,9 +1009,7 @@
                     }
                     // possibly continue routing
                     if (me.route) {
-                        if (!me.val('withOnShow')) {
-                            me.childManager.showChild(me.route);
-                        }
+                        me.childManager.showChild(me.route);
                     }
                 };
                 if (typeof _ko.value(source) === 'string') {
@@ -1089,6 +1095,7 @@
             var element = this.element;
             var me = this;
             //var value = me.getValue();
+            me.showElementWrapper(callback);
             if (me.val('title')) {
                 window.document.title = me.val('title');
             }
@@ -1098,17 +1105,11 @@
                     (typeof(me.val('sourceCache')) === 'number' && element.__pagerLoaded__ + me.val('sourceCache') * 1000 < pager.now())) {
                     element.__pagerLoaded__ = pager.now();
                     me.loadSource(me.val('sourceOnShow'));
-                } else {
-                    me.showElementWrapper(callback);
                 }
             }
             else if (me.val('withOnShow')) {
                 me.loadWithOnShow();
             }
-            else {
-                me.showElementWrapper(callback);
-            }
-
         };
 
         p.titleOrId = function () {
@@ -1458,7 +1459,8 @@
                 goTo(relativeUrl);
             });
             pager.Href5.history.Adapter.bind(window, 'anchorchange', function () {
-                goTo(location.hash);
+                var hash = window.location.href.split('#')[1];
+                goTo(hash ? '#' + hash : '');
             });
             if (!options || !options.noGo) {
                 goTo(pager.Href5.history.getState().url.replace(pager.Href5.history.getBaseUrl(), ''));
@@ -1481,7 +1483,8 @@
                 window.location.hash = pager.Href.hash + id;
             }
             var onHashChange = function () {
-                goTo(window.location.hash);
+                var hash = window.location.href.split('#')[1];
+                goTo(hash ? '#' + hash : '');
             };
             $(window).bind('hashchange', onHashChange);
 

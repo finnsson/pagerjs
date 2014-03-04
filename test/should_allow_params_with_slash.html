@@ -15,16 +15,11 @@
 <div id="qunit"></div>
 
 <div id="a">
-
-    <a id="click" data-bind="page-href: {path: 'first', params: {nam: 'foobar', ans: 42}}">click me</a>
-
-    <div data-bind="page: {id: 'first', params: ['nam','ans']}">
+    <h1>a</h1>
+    <div data-bind="page: {id: 'first', params: ['ans']}">
+        <h2>first</h2>
         <div id="answer" data-bind="text: ans"></div>
-        <div id="name" data-bind="text: nam"></div>
     </div>
-</div>
-<div id="b">
-
 </div>
 <script type="text/javascript">
 
@@ -39,7 +34,6 @@
         // use the same root page
         vm2.$__page__ = viewModel.$__page__;
         ko.applyBindings(viewModel, $('#a')[0]);
-        ko.applyBindings(vm2, $('#b')[0]);
 
         pager.start();
     } catch (e) {
@@ -57,27 +51,13 @@
         $(function () {
 
 
-            window.location.hash = '#';
+            window.location.hash = '#first?ans=' + encodeURIComponent('2013/11/15');
 
             until(function () {
-                return !$('#answer').is(':visible');
+                return $('#answer').is(':visible') && $('#answer').text() === '2013/11/15';
             }, function () {
-                until(function () {
-                    return $('#click').attr('href') === '#first?nam=foobar&ans=42';
-                }, function () {
-
-
-                    location.hash = $('#click').attr('href');
-
-                    until(function () {
-                        return $('#answer').text() === '42' && $('#name').text() === 'foobar'
-                    }, function () {
-                        ok(true, "answer and name is set");
-                        start();
-                    });
-
-                });
-
+                ok("/ is ok as a parameter");
+                start();
             });
         });
 
