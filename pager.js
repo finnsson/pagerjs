@@ -1306,18 +1306,46 @@
             }
         };
 
-// page-href
-
+        /**
+        *
+        * @type {string}
+        */
+        var _dataAttribute = 'page-href';
+        
         /**
          *
          * @type {Boolean}
          */
         pager.useHTML5history = false;
+        
         /**
          *
          * @type {String}
          */
         pager.rootURI = '/';
+
+        /**
+         *
+         * @type {String}
+         */
+        pager.dataAttribute = ko.computed({
+            read: function () {
+                return _dataAttribute;
+            },
+            write: function (value) {
+                if(!value){
+                    var err = new Error();
+                    err.message = 'Data Attribute cannot be blank';
+                    throw err;
+                }          
+                
+                if(ko.bindingHandlers[_dataAttribute]){
+                    delete ko.bindingHandlers[_dataAttribute];
+                }
+                _dataAttribute = value;
+                ko.bindingHandlers[_dataAttribute] = koBindingHandlerMethod;
+            }
+        });
 
         pager.Href = function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             this.element = element;
@@ -1380,7 +1408,7 @@
             });
         };
 
-        ko.bindingHandlers['page-href'] = {
+        var koBindingHandlerMethod = {
             init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
                 var Cls = pager.useHTML5history ? pager.Href5 : pager.Href;
                 var href = new Cls(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext);
@@ -1393,6 +1421,8 @@
             }
         };
 
+        ko.bindingHandlers[pager.dataAttribute()] = koBindingHandlerMethod;
+         
         pager.fx = {};
 
         pager.fx.cssAsync = function (css) {
