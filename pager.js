@@ -922,7 +922,7 @@
             }
         };
 
-        p.loadWithOnShow = function () {
+        p.loadWithOnShow = function (showCallback) {
             var me = this;
             if (!me.withOnShowLoaded || me.val('sourceCache') !== true) {
                 me.val('withOnShow')(function (vm) {
@@ -940,12 +940,15 @@
                     me.augmentContext();
                     ko.utils.extend(childBindingContext, {$page: me});
                     applyBindingsToDescendants(me);
-                    // what is signaling if a page is active or not?
+					me.showElementWrapper(showCallback);
+					// what is signaling if a page is active or not?
                     if (me.route) {
                         me.childManager.showChild(me.route);
                     }
                 }, me);
                 me.withOnShowLoaded = true;
+            } else {
+				me.showElementWrapper(showCallback);
             }
         };
 
@@ -953,12 +956,15 @@
          * @method pager.Page#loadSource
          * @param source
          */
-        p.loadSource = function (source) {
+        p.loadSource = function (source, showCallback) {
             var value = this.getValue();
             var me = this;
             var element = this.element;
             var loader = null;
             var loaderMethod = value.loader || pager.loader;
+			if (!me.val('withOnShow')) {
+				me.showElementWrapper(showCallback);
+			}
             if (value.frame === 'iframe') {
                 var iframe = $('iframe', $(element));
                 if (iframe.length === 0) {
@@ -999,8 +1005,8 @@
 
                     if (!me.val('withOnShow')) {
                         applyBindingsToDescendants(me);
-                    } else if (me.val('withOnShow')) {
-                        me.loadWithOnShow();
+					} else if (me.val('withOnShow')) {
+						me.loadWithOnShow(showCallback);
                     }
 
                     // trigger event
@@ -1094,8 +1100,8 @@
         p.show = function (callback) {
             var element = this.element;
             var me = this;
-            //var value = me.getValue();
-            me.showElementWrapper(callback);
+            //me.showElementWrapper(callback);
+			//var value = me.getValue();
             if (me.val('title')) {
                 window.document.title = me.val('title');
             }
@@ -1104,11 +1110,16 @@
                 if (!me.val('sourceCache') || !element.__pagerLoaded__ ||
                     (typeof(me.val('sourceCache')) === 'number' && element.__pagerLoaded__ + me.val('sourceCache') * 1000 < pager.now())) {
                     element.__pagerLoaded__ = pager.now();
-                    me.loadSource(me.val('sourceOnShow'));
-                }
+                    me.loadSource(me.val('sourceOnShow'), callback);
+				} else {
+					me.showElementWrapper(callback);
+				}
             }
             else if (me.val('withOnShow')) {
-                me.loadWithOnShow();
+                me.loadWithOnShow(callback);
+            }
+			else {
+				me.showElementWrapper(callback);
             }
         };
 
