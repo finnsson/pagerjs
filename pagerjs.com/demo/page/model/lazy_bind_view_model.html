@@ -45,4 +45,26 @@ var requireVM = function (module) {
 &lt;/script&gt;
     </pre>
 
+        <p class="lead">
+Another <a data-bind="tooltip: {}" title="Thanks to hagabaka">example</a> using <code>$.getJSON</code> instead of requirejs is:
+        </p>
+<pre data-bind="prettyprint: {}" class="prettyprint linenums">
+&lt;div data-bind='page: {id: 'one', withOnShow: "$root.loadData(\"one\")"}'&gt;
+  &lt;span data-bind='text: $data'&gt;
+&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt;
+    viewModel = {
+        loadData: function(id) {
+            return function(callback) {
+                $.getJSON(urlFor(id), function(data) {
+                    callback(data);
+                }
+            }
+        }
+    }
+&lt;/script&gt;
+
+</pre>
+
 <div data-bind="template: {name: 'link-template'}"></div>
