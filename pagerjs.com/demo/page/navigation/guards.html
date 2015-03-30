@@ -9,6 +9,10 @@
         takes 3 parameters: page, route, and callback. If the callback is called
         the navigation takes place - otherwise it is stopped.
         <br/>
+        Optionally, you can compose guards for your routes, by adding an array as the guard parameter,
+        like: <code>guard: [someMethod, anotherMethod, thirdMethod]</code> The guards are run in the
+        order they are supplied, and the route will only change when all your guard method callbacks have fired.
+        <br>
         Use cases are login, validating steps in state machines, etc.
         <br/>
         The reason the guard takes a callback as the third argument is simply because the guard might be asynchronous,
