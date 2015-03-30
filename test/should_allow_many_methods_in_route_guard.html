@@ -63,43 +63,51 @@ QUnit.module("Multiple route guards");
 
  QUnit.asyncTest("route content should be hidden", function(assert) {
      viewModel.setCond(false);
-     $('#goto-r')[0].click();
-     setTimeout(function() {
-         equal($('#routecontainer').is(':visible'), false, "content is not visible");
-         assert.equal(window.location.hash, '#user', "route hash should noy change to #test");
-         start();
-     }, 300);
+     window.location.hash = '#test';
+     until(function() {
+         return $('#routecontainer').is(':hidden');
+     }, function() {
+        equal($('#routecontainer').is(':visible'), false, "content is not visible");
+        assert.equal(window.location.hash, '#user', "route hash should not change to #test");
+        start();
+     });
  });
 
  QUnit.asyncTest("route content should be visible", function(assert) {
      viewModel.setCond(true);
-     $('#goto-r')[0].click();
-     setTimeout(function() {
+     window.location.hash = '#test';
+     until(function() {
+        return $('#routecontainer').is(':visible');
+     }, function() {
          equal($('#routecontainer').is(':visible'), true, "content is visible");
          assert.equal(window.location.hash, '#test', "route hash should change to #test");
-         start();
-     }, 300);
+        start();
+     });
  });
 
- QUnit.asyncTest( "route content should not visible when one guard fails", function(assert) {
+ QUnit.asyncTest("route content should not visible when one guard fails", function(assert) {
      viewModel.setCond(true);
      viewModel.setCond2(false);
-     $('#goto-r')[0].click();
-     setTimeout(function() {
-         equal($('#routecontainer').is(':visible'), false, "content is not visible");
-         assert.equal(window.location.hash, '#user', "route hash should not change to #test");
-         start();
-     }, 300);
+     window.location.hash = '#test';
+     until(function() {
+        return $('#routecontainer').is(':hidden');
+     }, function() {
+        equal($('#routecontainer').is(':visible'), false, "content is not visible");
+        assert.equal(window.location.hash, '#user', "route hash should not change to #test");
+        start();
+     });
  });
 
  QUnit.asyncTest("the new multiple route feature should not break a single route guard", function(assert) {
      viewModel.setCond(true);
-     $('#goto-r2')[0].click();
-     setTimeout(function() {
-         equal($('#routecontainer2').is(':visible'), true, "content is visible");
-         assert.equal(window.location.hash, '#test2', "route hash should change to #test2");
-         start();
-     }, 300);
+     window.location.hash = '#test2';
+     until(function() {
+        return $('#routecontainer2').is(':visible');
+     }, function() {
+        equal($('#routecontainer2').is(':visible'), true, "content is visible");
+        assert.equal(window.location.hash, '#test2', "route hash should change to #test2");
+        start(); 
+     });
  });
 </script>
 
