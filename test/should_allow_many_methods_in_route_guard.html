@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multiple route guards</title>
+    <script type="text/javascript" src="../lib/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-3.0.0.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<a id="goto-r" href="#test">go to route with many guards</a>
+<br>
+<a id="goto-r2" href="#test2">go to route with a single guard</a>
+
+<div id="routecontainer" data-bind="page: {id: 'test', 'guard': [firstGuard, secondGuard]}">
+  <p class="inside-route">CONTENT INSIDE MULTIPLE ROUTE GUARDS
+  </p>
+</div>
+
+<div id="routecontainer2" data-bind="page: {id: 'test2', 'guard': firstGuard}">
+  <p class="inside-route">CONTENT INSIDE SINGLE ROUTE GUARD
+  </p>
+</div>
+<script type="text/javascript">
+
+ var viewModel = {
+     setCond: ko.observable(true),
+     setCond2: ko.observable(true),
+     firstGuard: function(page, route, callback) {
+         if (viewModel.setCond()) {
+           //console.log('route guard one runned');
+           callback();
+         } else {
+           history.back();
+         };
+     },
+     secondGuard: function(page, route, callback) {
+         if (viewModel.setCond() && viewModel.setCond2()) {
+           //console.log('route guard two runned');
+           callback();
+         } else {
+           history.back();
+         };
+     },
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+    pager.start('user');
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+QUnit.module("Multiple route guards");
+
+ QUnit.asyncTest("route content should be hidden", function(assert) {
+     viewModel.setCond(false);
+     $('#goto-r')[0].click();
+     setTimeout(function() {
+         equal($('#routecontainer').is(':visible'), false, "content is not visible");
+         assert.equal(window.location.hash, '#user', "route hash should noy change to #test");
+         start();
+     }, 300);
+ });
+
+ QUnit.asyncTest("route content should be visible", function(assert) {
+     viewModel.setCond(true);
+     $('#goto-r')[0].click();
+     setTimeout(function() {
+         equal($('#routecontainer').is(':visible'), true, "content is visible");
+         assert.equal(window.location.hash, '#test', "route hash should change to #test");
+         start();
+     }, 300);
+ });
+
+ QUnit.asyncTest( "route content should not visible when one guard fails", function(assert) {
+     viewModel.setCond(true);
+     viewModel.setCond2(false);
+     $('#goto-r')[0].click();
+     setTimeout(function() {
+         equal($('#routecontainer').is(':visible'), false, "content is not visible");
+         assert.equal(window.location.hash, '#user', "route hash should not change to #test");
+         start();
+     }, 300);
+ });
+
+ QUnit.asyncTest("the new multiple route feature should not break a single route guard", function(assert) {
+     viewModel.setCond(true);
+     $('#goto-r2')[0].click();
+     setTimeout(function() {
+         equal($('#routecontainer2').is(':visible'), true, "content is visible");
+         assert.equal(window.location.hash, '#test2', "route hash should change to #test2");
+         start();
+     }, 300);
+ });
+</script>
+
+
+</body>
+</html>
