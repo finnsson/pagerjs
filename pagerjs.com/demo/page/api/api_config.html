@@ -14,10 +14,10 @@
 <h3>In JavaScript</h3>
 <pre data-bind="prettyprint: {}" class="prettyprint linenums">
 // create a page
-var somePage = new pager.Page();
+var myPage = new pager.Page();
 // configure the page (the keys are the configurations you can see on this API page)
 valueAccessorObject = {
-    id:"someID"
+    id:"myID"
 };
 myPage.valueAccessor = function () {
     return valueAccessorObject;
@@ -27,7 +27,8 @@ myPage.viewModel = {
     answer:42,
     question:'How many roads must a man walk down before you can call him a man?'
 };
-// bind the page to the main view model
+// bind the page to the main view model.
+// and use this 'myPage' on your HTML like 'data-bind="page: myPage"'.
 var viewModel = {
     myPage:myPage
 };
