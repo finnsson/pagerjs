@@ -31,7 +31,7 @@
     "lib"
   ],
   "dependencies": {
-    "knockoutjs": ">=2.2.0",
+    "knockout": ">=2.2.0",
     "jquery": ">=1.7.3"
   }
 }
