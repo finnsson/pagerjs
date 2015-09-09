@@ -229,7 +229,7 @@
                 $.each(children(), function (childIndex, child) {
                     if (!match) {
                         var id = child.getId();
-                        if (id === currentRoute ||
+                        if (((pager.ignoreRouteCase && ((id || "").toLowerCase() === (currentRoute || "").toLowerCase())) || id === currentRoute) ||
                             ((currentRoute === '' || currentRoute == null) && child.isStartPage())) {
                             match = true;
                             currentChild = child;
@@ -1239,7 +1239,11 @@
          * @returns {boolean}
          */
         p.isStartPage = function () {
-            return this.getId() === 'start' || this.getRole() === 'start';
+            if (pager.ignoreRouteCase) {
+                return (this.getId() || "").toLowerCase() === 'start' || (this.getRole() || "").toLowerCase() === 'start';
+            } else {
+                return this.getId() === 'start' || this.getRole() === 'start';
+            }
         };
 
         p.nullObject = new pager.Page();
@@ -1322,6 +1326,12 @@
          * @type {String}
          */
         pager.rootURI = '/';
+
+        /**
+         *
+         * @type {Boolean}
+         */
+        pager.ignoreRouteCase = false;
 
         /**
          *
