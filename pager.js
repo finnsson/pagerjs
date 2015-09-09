@@ -291,20 +291,39 @@
                     fire(me.page, 'onNoMatch', {route: route});
                 };
 
-                var showCurrentChild = function () {
-                    fire(me.page, 'onMatch', {route: route});
-                    var guard = _ko.value(currentChild.getValue().guard);
-                    if (guard) {
-                        guard(currentChild, route, function () {
-                            if (me.timeStamp === timeStamp) {
-                                currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
-                            }
-                        }, oldCurrentChild);
-                    } else {
-                        currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
-                    }
-                };
+              var showCurrentChild = function() {
+                fire(me.page, 'onMatch', {
+                  route: route
+                });
 
+                var fired = 0;
+                var guard = _ko.value(currentChild.getValue().guard);
+
+                // If there is more than one guard for the route.
+                if (guard && $.isArray(guard)) {
+                  $.each(guard, function(_, guard) {
+                    guard(currentChild, route, function() {
+                      fired++;
+                      // Allow route change only if all callbacks were fired.
+                      if (fired === guard.length - 1) {
+                        if (me.timeStamp === timeStamp) {
+                          currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
+                        }
+                      }
+                    }, oldCurrentChild);
+                  });
+                }
+                // There is only one guard.
+                else if (guard) {
+                  guard(currentChild, route, function() {
+                    if (me.timeStamp === timeStamp) {
+                      currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
+                    }
+                  }, oldCurrentChild);
+                } else {
+                  currentChild.showPage(route.slice(1), currentRoutePair, route[0]);
+                }
+              };
                 if (oldCurrentChild && oldCurrentChild === currentChild) {
                     showCurrentChild();
                 } else if (oldCurrentChild) {
@@ -1314,13 +1333,13 @@
         * @type {string}
         */
         var _dataAttribute = 'page-href';
-        
+
         /**
          *
          * @type {Boolean}
          */
         pager.useHTML5history = false;
-        
+
         /**
          *
          * @type {String}
@@ -1346,8 +1365,8 @@
                     var err = new Error();
                     err.message = 'Data Attribute cannot be blank';
                     throw err;
-                }          
-                
+                }
+
                 if(ko.bindingHandlers[_dataAttribute]){
                     delete ko.bindingHandlers[_dataAttribute];
                 }
@@ -1431,7 +1450,7 @@
         };
 
         ko.bindingHandlers[pager.dataAttribute()] = koBindingHandlerMethod;
-         
+
         pager.fx = {};
 
         pager.fx.cssAsync = function (css) {
