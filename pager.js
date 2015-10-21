@@ -161,7 +161,18 @@
                 search = /([^&=]+)=?([^&]*)/g;
 
             while (match = search.exec(query)) {
-                urlParams[match[1]] = match[2];
+                if (/\[\]$/.test(match[1])) {
+                    // handle array parameters
+                    var name = match[1].replace(/\[\]$/, '');
+                    if (!(name in urlParams)) {
+                        urlParams[name] = [];
+                    }
+                    urlParams[name].push(match[2]);
+                }
+                else {
+                    // single (non-array) parameters
+                    urlParams[match[1]] = match[2];
+                }
             }
             return urlParams;
         };
