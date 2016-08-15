@@ -1496,7 +1496,7 @@
         pager.fx.jQuerySync = function (show, hide) {
             return {
                 showElement: function (page, callback) {
-                    show.call($(page.element), 300, callback);
+                    setTimeout(function () { show.call($(page.element), 300, callback); }, 300);
                 },
                 hideElement: function (page, callback) {
                     hide.call($(page.element), 300, function () {
