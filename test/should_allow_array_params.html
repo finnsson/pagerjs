@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Should access URI parameters</title>
+    <script type="text/javascript" src="../lib/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../lib/underscore-min.js"></script>
+    <script type="text/javascript" src="../lib/knockout-3.0.0.js"></script>
+    <script type="text/javascript" src="../lib/jquery.ba-hashchange.min.js"></script>
+    <script type="text/javascript" src="../pager.js"></script>
+
+    <link rel="stylesheet" href="../lib/qunit.css"/>
+</head>
+<body>
+
+<div id="qunit"></div>
+
+<div id="page1" data-bind="page: {id: 'first', params: ['names'] }">
+    <div id="names" data-bind="text: names"></div>
+    <div id="array" data-bind="text: array"></div>
+</div>
+
+<script type="text/javascript">
+    var viewModel = {
+        array: ko.observableArray(['first', 'second'])
+    };
+
+    pager.extendWithPage(viewModel);
+    ko.applyBindings(viewModel);
+
+    pager.start();
+</script>
+
+<script type="text/javascript" src="../lib/qunit-until.js"></script>
+<script type="text/javascript" src="../lib/qunit.js"></script>
+
+<script type="text/javascript">
+
+    asyncTest("Should allow array parameters", function () {
+        
+        window.location.hash = '#first?names[]=first&names[]=second';
+        until(function () {
+            return $('#array').text() === $('#names').text();
+        }, function () {
+            ok(true, "names is set to a list of values");
+            start();
+        });
+
+    });
+</script>
+
+
+</body>
+</html>
