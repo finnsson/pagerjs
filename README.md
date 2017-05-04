@@ -15,7 +15,7 @@ developed standalone but still communicate between each other.
 
 This makes it easier to design very large scale single page web sites.
 
-This readme is for version 1.0.1.
+This readme is for version 1.1.0
 
 ## Getting Started
 
@@ -72,6 +72,13 @@ any CSS framework.
 Yes. PagerJS supports true URLs with History.js.
 
 ## Release Notes
+
+### 1.1.0
+
+- [Allow for ctrl/command/shift new windows for html5 links.](https://github.com/finnsson/pagerjs/pull/217)
+- [Allow arrays in GET parameters](https://github.com/finnsson/pagerjs/pull/215)
+- [Allow multiple methods in route guards](https://github.com/finnsson/pagerjs/pull/205)
+- Various bug fixes
 
 ### 1.0.1
 
