@@ -1437,10 +1437,14 @@
                 attr: {
                     'href': self.path
                 },
-                click: function () {
+                click: function (data, e) {
                     var path = self.path();
                     if (path === '' || path === '/') {
                         path = $('base').attr('href');
+                    }
+                    if (e.shiftKey || e.ctrlKey || e.metaKey) {
+                      window.open(path, '_blank');
+                      return;
                     }
                     pager.Href5.history.pushState(null, null, path);
                 }
