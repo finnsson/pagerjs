@@ -69,7 +69,7 @@ any CSS framework.
 
 ### Can I use true URLs instead?
 
-Yes. Use `pager.min.history.js` if you want to use it together with History.js.
+Yes. PagerJS supports true URLs with History.js.
 
 ## Release Notes
 
