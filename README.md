@@ -73,6 +73,58 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 
 ## Release Notes
 
+### 1.0.1
+
+- [Work with Knockout 2.3](https://github.com/finnsson/pagerjs/issues/127)
+- [hash urls](https://github.com/finnsson/pagerjs/issues/123)
+- [withOnShow is not updating route after source is loaded](https://github.com/finnsson/pagerjs/issues/121)
+- [Show/Hide Events event don't occur](https://github.com/finnsson/pagerjs/issues/131)
+- [toJSON refinements](https://github.com/finnsson/pagerjs/pull/129)
+- [pagerjs AMD support replies on global $ variable](https://github.com/finnsson/pagerjs/issues/135)
+- [withOnShow not updating on navigation](https://github.com/finnsson/pagerjs/issues/143)
+- [Added bower.json for dependency installation when pulling in this module.](https://github.com/finnsson/pagerjs/pull/146)
+- [Do not overwrite nameParam on view model if it is already defined](https://github.com/finnsson/pagerjs/pull/147)
+
+### 1.0.0
+
+- A lot of cleanup and some breaking changes!
+
+### 0.7
+
+- [Remove underscorejs dependency](https://github.com/finnsson/pagerjs/issues/49)
+- [pager.start id does not honor pager.Href.hash](https://github.com/finnsson/pagerjs/issues/51)
+- [Sending wildcards to the viewmodel](https://github.com/finnsson/pagerjs/issues/52)
+- [Should handle pages that does not react to URL changes](https://github.com/finnsson/pagerjs/issues/61)
+- [Should handle pages that does not hide on URL changes](https://github.com/finnsson/pagerjs/issues/62)
+- [Should handle exceptions in with/withOnShow](https://github.com/finnsson/pagerjs/issues/46)
+- [Should handle exceptions on source/sourceOnShow](https://github.com/finnsson/pagerjs/issues/47)
+
+### 0.6
+
+- [Should contain common effects](https://github.com/finnsson/pagerjs/issues/28)
+- [HTML5 History Boilerplate](https://github.com/finnsson/pagerjs/issues/34)
+- [page-hash and page-href5 bindings for hash or html5 history](https://github.com/finnsson/pagerjs/issues/29)
+- [Access to Page in withOnShow handler](https://github.com/finnsson/pagerjs/issues/27)
+- [Add BeforeNavigate Event handler to allow user to stop transition](https://github.com/finnsson/pagerjs/issues/1)
+- [page-href should be possible to feed with a page-instance](https://github.com/finnsson/pagerjs/issues/39)
+- [Should be possible to use hash bang #!/ instead of hash](https://github.com/finnsson/pagerjs/issues/38)
+- [Scoped pure view observables using vars](https://github.com/finnsson/pagerjs/issues/32)
+- [Wildcards should deep-load content if configured so](https://github.com/finnsson/pagerjs/issues/31)
+- [Should be able to change initial page](https://github.com/finnsson/pagerjs/issues/44)
+- [Demo as is does not work in IE7](https://github.com/finnsson/pagerjs/issues/43)
+
+### 0.4
+
+- [Should be possible to add guards](https://github.com/finnsson/pagerjs/issues/26)
+- [Should be possible to send URI (fragment identifier) parameters to a page](https://github.com/finnsson/pagerjs/issues/25)
+- [Should be possible to load view content using a custom method](https://github.com/finnsson/pagerjs/issues/24)
+- [Should be possible to navigate into modals](https://github.com/finnsson/pagerjs/issues/23)
+- [Should be possible to specify loaders on pages](https://github.com/finnsson/pagerjs/issues/22)
+- [Should be possible to change the page title](https://github.com/finnsson/pagerjs/issues/21)
+- [Should be possible to run custom JS on "navigate failed"](https://github.com/finnsson/pagerjs/issues/20)
+- [Tab panel custom widget](https://github.com/finnsson/pagerjs/issues/19)
+- [Should be possible to run custom JS on "navigate to"](https://github.com/finnsson/pagerjs/issues/18)
+
 ### 0.2
 
 - [Should be possible to circumvent the routing](https://github.com/finnsson/pagerjs/issues/17)
@@ -92,57 +144,6 @@ Yes. Use `pager.min.history.js` if you want to use it together with History.js.
 - [Should navigate to page using scoped IDs.](https://github.com/finnsson/pagerjs/issues/3)
 - [Should display page with id start by default](https://github.com/finnsson/pagerjs/issues/2)
 
-### 0.4
-
-- [Should be possible to add guards](https://github.com/finnsson/pagerjs/issues/26)
-- [Should be possible to send URI (fragment identifier) parameters to a page](https://github.com/finnsson/pagerjs/issues/25)
-- [Should be possible to load view content using a custom method](https://github.com/finnsson/pagerjs/issues/24)
-- [Should be possible to navigate into modals](https://github.com/finnsson/pagerjs/issues/23)
-- [Should be possible to specify loaders on pages](https://github.com/finnsson/pagerjs/issues/22)
-- [Should be possible to change the page title](https://github.com/finnsson/pagerjs/issues/21)
-- [Should be possible to run custom JS on "navigate failed"](https://github.com/finnsson/pagerjs/issues/20)
-- [Tab panel custom widget](https://github.com/finnsson/pagerjs/issues/19)
-- [Should be possible to run custom JS on "navigate to"](https://github.com/finnsson/pagerjs/issues/18)
-
-### 0.6
-
-- [Should contain common effects](https://github.com/finnsson/pagerjs/issues/28)
-- [HTML5 History Boilerplate](https://github.com/finnsson/pagerjs/issues/34)
-- [page-hash and page-href5 bindings for hash or html5 history](https://github.com/finnsson/pagerjs/issues/29)
-- [Access to Page in withOnShow handler](https://github.com/finnsson/pagerjs/issues/27)
-- [Add BeforeNavigate Event handler to allow user to stop transition](https://github.com/finnsson/pagerjs/issues/1)
-- [page-href should be possible to feed with a page-instance](https://github.com/finnsson/pagerjs/issues/39)
-- [Should be possible to use hash bang #!/ instead of hash](https://github.com/finnsson/pagerjs/issues/38)
-- [Scoped pure view observables using vars](https://github.com/finnsson/pagerjs/issues/32)
-- [Wildcards should deep-load content if configured so](https://github.com/finnsson/pagerjs/issues/31)
-- [Should be able to change initial page](https://github.com/finnsson/pagerjs/issues/44)
-- [Demo as is does not work in IE7](https://github.com/finnsson/pagerjs/issues/43)
-
-### 0.7
-
-- [Remove underscorejs dependency](https://github.com/finnsson/pagerjs/issues/49)
-- [pager.start id does not honor pager.Href.hash](https://github.com/finnsson/pagerjs/issues/51)
-- [Sending wildcards to the viewmodel](https://github.com/finnsson/pagerjs/issues/52)
-- [Should handle pages that does not react to URL changes](https://github.com/finnsson/pagerjs/issues/61)
-- [Should handle pages that does not hide on URL changes](https://github.com/finnsson/pagerjs/issues/62)
-- [Should handle exceptions in with/withOnShow](https://github.com/finnsson/pagerjs/issues/46)
-- [Should handle exceptions on source/sourceOnShow](https://github.com/finnsson/pagerjs/issues/47)
-
-### 1.0.0
-
-- A lot of cleanup and some breaking changes!
-
-### 1.0.1
-
-- [Work with Knockout 2.3](https://github.com/finnsson/pagerjs/issues/127)
-- [hash urls](https://github.com/finnsson/pagerjs/issues/123)
-- [withOnShow is not updating route after source is loaded](https://github.com/finnsson/pagerjs/issues/121)
-- [Show/Hide Events event don't occur](https://github.com/finnsson/pagerjs/issues/131)
-- [toJSON refinements](https://github.com/finnsson/pagerjs/pull/129)
-- [pagerjs AMD support replies on global $ variable](https://github.com/finnsson/pagerjs/issues/135)
-- [withOnShow not updating on navigation](https://github.com/finnsson/pagerjs/issues/143)
-- [Added bower.json for dependency installation when pulling in this module.](https://github.com/finnsson/pagerjs/pull/146)
-- [Do not overwrite nameParam on view model if it is already defined](https://github.com/finnsson/pagerjs/pull/147)
 
 ## Roadmap
 
