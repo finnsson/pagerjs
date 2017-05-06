@@ -185,6 +185,8 @@ Fork this repo. Install all dependencies (node.js, grunt, phnatomjs). Run all te
 
 [CuinnWylie](https://github.com/CuinnWylie)
 
+[DKhalil](https://github.com/DKhalil)
+
 ## License
 
 pager.js is under MIT license.
