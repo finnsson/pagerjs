@@ -154,7 +154,7 @@ Yes. PagerJS supports true URLs with History.js.
 
 ## Roadmap
 
-See [Milestones](https://github.com/finnsson/pagerjs/issues/milestones).
+See [Milestones](https://github.com/finnsson/pagerjs/milestones).
 
 ## How to Contribute
 
