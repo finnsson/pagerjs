@@ -815,7 +815,7 @@
             if (urlToggle !== 'none') {
                 // check if this page should trigger showChild at parent
                 var parent = m.parentPage;
-                if (parent.route && (parent.route[0].split('?')[0] === m.getId() || (parent.route.length && m.getId() === '?') )) {
+                if (parent.route && parent.route.length && (parent.route[0].split('?')[0] === m.getId() || m.getId() === '?')) {
                     // call once the current event loop is finished.
                     setTimeout(function () {
                         parent.showPage(parent.route);
